@@ -4,10 +4,12 @@ import { Button } from '../../../../projects/ui/src/lib/button/button';
 import { Card } from '../../../../projects/ui/src/lib/card/card';
 import { TooltipDirective } from '../../../../projects/ui/src/lib/tooltip/tooltip.directive';
 import { IconAdd } from '../../../../projects/ui/src/lib/icons/add';
+import { ModalComponent } from '../../../../projects/ui/src/lib/modal/modal';
+import { DialogComponent } from '../../../../projects/ui/src/lib/dialog/dialog';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Button, Card, IconAdd, TooltipDirective],
+  imports: [RouterOutlet, Button, Card, IconAdd, TooltipDirective, ModalComponent, DialogComponent],
   templateUrl: './app.html',
   styleUrls: [
     './app.scss',
@@ -17,4 +19,6 @@ import { IconAdd } from '../../../../projects/ui/src/lib/icons/add';
 })
 export class App {
   protected readonly title = signal('demo');
+  protected demoOpen = false;
+  protected dialogOpen = false;
 }

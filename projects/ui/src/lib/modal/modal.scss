@@ -1,0 +1,37 @@
+/* Modal surface styles only - relies on dialog.scss for overlay/backdrop */
+
+[data-bspk='modal'] {
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto; /* allow modal to grow to fill dialog box */
+    gap: var(--spacing-sizing-02);
+    padding: var(--spacing-sizing-05);
+
+    [data-screen-size='small'] & {
+        padding: var(--spacing-sizing-04);
+    }
+
+    > [data-modal-header] {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: var(--spacing-sizing-04);
+    }
+
+    [data-modal-main] {
+    flex: 1 1 auto;
+    min-height: 0; /* allow proper overflow inside flex */
+    overflow-y: auto;
+    }
+
+    > [data-modal-footer] {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+        gap: var(--spacing-sizing-04);
+    }
+}
+
+/** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */

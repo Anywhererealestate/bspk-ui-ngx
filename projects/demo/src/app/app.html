@@ -28,6 +28,25 @@
   <div style="width: 300px">
       <span [tooltip]="{label: 'Told ya!', showTail: true, placement: 'bottom'}">Hover me for tooltip!</span>
   </div>
+
+  <div style="margin-top: 20px">
+    <ui-button label="Open Modal" (click)="demoOpen = true"></ui-button>
+
+    <ui-modal [open]="demoOpen" (onClose)="demoOpen = false" header="Example modal" description="This is a demo modal">
+      <p>Modal content — Add any content here.</p>
+    </ui-modal>
+    
+    <div style="margin-top: 12px">
+      <ui-button label="Open Dialog" (click)="dialogOpen = true"></ui-button>
+
+      <ui-dialog [open]="dialogOpen" (onClose)="dialogOpen = false">
+        <div style="padding: 20px;">
+        <p>This is demo dialog content.</p>
+        <ui-button label="Close" (click)="dialogOpen = false"></ui-button>
+        </div>
+      </ui-dialog>
+    </div>
+  </div>
 </main>
 
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
