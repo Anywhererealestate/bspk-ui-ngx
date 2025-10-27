@@ -4,9 +4,22 @@
     max-height: 100%;
     display: flex;
     flex-direction: column;
-    flex: 1 1 auto; /* allow modal to grow to fill dialog box */
+    flex: 1;
     gap: var(--spacing-sizing-02);
     padding: var(--spacing-sizing-05);
+
+    [data-close-button] {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--spacing-sizing-06);
+        height: var(--spacing-sizing-06);
+        background: none;
+        border: none;
+        cursor: pointer;
+        font: var(--font);
+        flex-shrink: 0;
+    }
 
     [data-screen-size='small'] & {
         padding: var(--spacing-sizing-04);
