@@ -9,20 +9,20 @@ import {
   SimpleChanges,
   TemplateRef,
   ViewChild,
-  ViewContainerRef,
   Renderer2,
   ViewEncapsulation,
 } from '@angular/core';
 import { PortalModule } from '@angular/cdk/portal';
 import { IconClose } from '../icons/close';
 import { DialogComponent } from '../dialog/dialog';
+import { Button } from '../button/button';
 
 export type ModalCallToAction = { label: string; onClick?: () => void; destructive?: boolean };
 
 @Component({
   selector: 'ui-modal',
   standalone: true,
-  imports: [CommonModule, PortalModule, IconClose, DialogComponent],
+  imports: [CommonModule, PortalModule, IconClose, DialogComponent, Button],
   templateUrl: './modal.html',
   styleUrls: ['./modal.scss'],
   encapsulation: ViewEncapsulation.None,

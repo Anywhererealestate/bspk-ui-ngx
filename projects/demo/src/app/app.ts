@@ -7,6 +7,7 @@ import { TooltipDirective } from '../../../../projects/ui/src/lib/tooltip/toolti
 import { IconAdd } from '../../../../projects/ui/src/lib/icons/add';
 import { ModalComponent } from '../../../../projects/ui/src/lib/modal/modal';
 import { DialogComponent } from '../../../../projects/ui/src/lib/dialog/dialog';
+import { DrawerComponent } from '../../../../projects/ui/src/lib/drawer/drawer';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,7 @@ import { DialogComponent } from '../../../../projects/ui/src/lib/dialog/dialog';
     TooltipDirective,
     ModalComponent,
     DialogComponent,
+    DrawerComponent,
     Accordion,
   ],
   templateUrl: './app.html',
@@ -31,4 +33,5 @@ export class App {
   protected readonly title = signal('demo');
   protected demoOpen = false;
   protected dialogOpen = false;
+  protected drawerOpen = false;
 }

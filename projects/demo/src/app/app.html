@@ -42,6 +42,16 @@
     </ui-modal>
     
     <div style="margin-top: 12px">
+      <ui-button label="Open Drawer" (click)="drawerOpen = true"></ui-button>
+
+      <ui-drawer [open]="drawerOpen" (onClose)="drawerOpen = false" placement="right" [modal]="true" [closeButton]="true" header="Example Drawer">
+        <div style="padding: 20px; width: 320px;">
+          <p>This is demo drawer content.</p>
+        </div>
+      </ui-drawer>
+    </div>
+
+    <div style="margin-top: 12px">
       <ui-button label="Open Dialog" (click)="dialogOpen = true"></ui-button>
 
       <ui-dialog [open]="dialogOpen" (onClose)="dialogOpen = false">
