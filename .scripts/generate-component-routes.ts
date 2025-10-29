@@ -11,48 +11,41 @@
 
 import fs from 'fs';
 
-const components: {
+type ComponentMeta = {
   name: string;
   slug: string;
-  type: string;
+  type: 'component' | 'directive';
   classContent: string;
   template: string;
-}[] = [];
+};
+
+// GENERATE COMPONENT META
+
+const componentMeta: ComponentMeta[] = [];
 
 fs.readdirSync('projects/demo/src/app/examples').forEach((file) => {
   const [slug, _ext] = file.split('.');
   const content = fs.readFileSync(`projects/demo/src/app/examples/${file}`).toString().trim();
-
-  // derive component name from slug
-  const name = slugToName(slug);
-
-  // get meta info ftom html comment
-  const { meta, code } = parseHtml(content);
-
-  components.push({
-    name,
+  componentMeta.push({
     slug,
-    type: meta.type || 'component',
-    classContent: meta.class,
-    template: code,
+    name: slugToName(slug),
+    ...parseHtml(content),
   });
 });
 
+// GENERATE ROUTES FILE
+
 fs.writeFileSync(
   `projects/demo/src/app/component.routes.ts`,
-  `/**
-@generated: ${new Date().toISOString()}
-*/
-` +
-    components
-      .map(({ name, slug }) => `import { ${name}RouteComponent } from './routes/${slug}';`)
-      .join('\n') +
-    `
+  `/** generated: ${new Date().toISOString()} */
+import { ${componentMeta
+    .map(({ name }) => `${name}RouteComponent`)
+    .join(', ')} } from './routes/components';
 import { NavRoute } from './types';
 
 export const componentItems: NavRoute[] = [
   { title: 'Components', section: true },
-  ${components
+  ${componentMeta
     .map(
       ({ name, slug }) => `{ path: '${slug}', component: ${name}RouteComponent, title: '${name}' },`
     )
@@ -61,76 +54,93 @@ export const componentItems: NavRoute[] = [
 `
 );
 
-const componentsFile = [
-  `/** generated: ${new Date().toISOString()} */`,
-  `import { Component } from '@angular/core';`,
-];
+// GENERATE COMPONENT ROUTES FILE
 
-components.forEach(({ name, slug, type, classContent, template }) => {
+const componentsContent: string[] = [];
+
+const fileImports = [`import { Component } from '@angular/core';`];
+
+componentMeta.forEach(({ name, slug, type, classContent, template }) => {
   if (type === 'component') {
-    componentsFile.push(
+    fileImports.push(
       `import { ${name} } from '../../../../../projects/ui/src/lib/${slug}/${slug}';`
     );
   }
 
   if (type === 'directive') {
-    componentsFile.push(
+    fileImports.push(
       `import { ${name}Directive } from '../../../../../projects/ui/src/lib/${slug}/${slug}.directive';`
     );
   }
 
+  const componentImports = Array.from(template.matchAll(/<ui-([a-z0-9-]+)( [^>]*)?>/g))
+    .flatMap((m) => m[1])
+    .map((slug) => slugToName(slug));
+
+  const icons = Array.from(template.matchAll(/<icon-([a-z0-9-]+)( [^>]*)?>/g))
+    .flatMap((m) => m[1])
+    .map((slug) => ({ slug, name: slugToName(slug) }));
+
   // import any icons (<icon-add></icon-add>)
-  componentsFile.push(
-    ...Array.from(template.matchAll(/<icon-([a-z0-9-]+)( [^>]*)?>/g))
-      .flatMap((m) => m[1])
-      .map((iconTag) => {
-        const name = slugToName(iconTag);
-        return `import { Icon${name} } from '../../../../../projects/ui/src/lib/icons/${iconTag}';`;
-      })
+  fileImports.push(
+    ...icons.map(({ slug, name }) => {
+      return `import { Icon${name} } from '../../../../../projects/ui/src/lib/icons/${slug}';`;
+    })
   );
 
-  // ?.forEach((iconTag) => {
-  //   const iconName = iconTag
-  //     .replace('<', '')
-  //     .replace('>', '')
-  //     .split(' ')[0]
-  //     .split('-')
-  //     .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-  //     .join('');
+  // look for used components
+  const imports = [...componentImports, ...icons.map(({ name }) => `Icon${name}`)];
 
-  //   componentsFile.push(
-  //     `import { ${iconName} } from '../../../../../projects/ui/src/lib/icons/${
-  //       iconTag.replace('<', '').replace('>', '').split(' ')[0]
-  //     }.icon';`
-  //   );
-  // });
+  componentsContent.push(
+    type === 'directive'
+      ? directiveTemplate({ name, slug, template, imports })
+      : componentTemplate({ name, slug, template, classContent, imports })
+  );
 });
 
 fs.writeFileSync(
   'projects/demo/src/app/routes/components.ts',
-  componentsFile
-    // remove duplicate imports
-    .filter((line, index, arr) => line === '\n' || arr.indexOf(line) === index)
-    .join('\n')
+  [
+    `/** generated: ${new Date().toISOString()} */`,
+    fileImports
+      // remove duplicate imports
+      .filter((line, index, arr) => line === '\n' || arr.indexOf(line) === index)
+      .join('\n'),
+    ...componentsContent,
+  ].join('\n')
 );
 
-function parseHtml(content: string) {
+function parseHtml(content: string): Omit<ComponentMeta, 'name' | 'slug'> {
   const metaRegex = /<!-- ([^:]+): (.*?) -->/g;
   const metaMatch = Array.from(content.matchAll(metaRegex));
   const meta: Record<string, string> = {};
   for (const match of metaMatch) {
     meta[match[1]] = match[2];
   }
-  return { meta, code: content.replace(/<!--.*?-->/g, '').trim() };
+
+  return {
+    ...meta,
+    type: meta.type === 'directive' ? 'directive' : 'component',
+    classContent: meta.class || '',
+    template: content.replace(/<!--.*?-->/g, '').trim(),
+  };
 }
 
-function componentTemplate(name: string, slug: string, code: string) {
+type TemplateParams = {
+  name: string;
+  slug: string;
+  template: string;
+  classContent?: string;
+  imports?: string[];
+};
+
+function componentTemplate({ name, slug, template, classContent, imports }: TemplateParams) {
   return `
 @Component({
   selector: '${slug}-route',
   standalone: true,
-  imports: [${name}],
-  template: \`${code}\`,
+  imports: [${[...(imports || []), name].join(', ')}],
+  template: \`${template}\`,
   styles: [
     \`
       :host {
@@ -139,21 +149,16 @@ function componentTemplate(name: string, slug: string, code: string) {
     \`,
   ],
 })
-export class ${name}RouteComponent {}
+export class ${name}RouteComponent { ${classContent ? `\n${classContent}\n` : ''}}
 `;
 }
 
-function directiveTemplate(name: string, slug: string, code: string) {
-  return `/**
-@generated: ${new Date().toISOString()}
-*/
-import { Component } from '@angular/core';
-import { ${name}Directive } from '../../../../../projects/ui/src/lib/${slug}/${slug}.directive';
-
+function directiveTemplate({ name, slug, template, imports }: TemplateParams) {
+  return `
 @Component({
   selector: '${slug}-route',
-  imports: [${name}Directive],
-  template: \`${code}\`,
+  imports: [${[...(imports || []), name + 'Directive'].join(', ')}],
+  template: \`${template}\`,
   styles: [
     \`
       :host {

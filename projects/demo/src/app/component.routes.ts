@@ -1,14 +1,5 @@
-/**
-@generated: 2025-10-29T18:03:31.696Z
-*/
-import { AccordionRouteComponent } from './routes/accordion';
-import { BadgeRouteComponent } from './routes/badge';
-import { ButtonRouteComponent } from './routes/button';
-import { CardRouteComponent } from './routes/card';
-import { DialogRouteComponent } from './routes/dialog';
-import { DrawerRouteComponent } from './routes/drawer';
-import { ModalRouteComponent } from './routes/modal';
-import { TooltipRouteComponent } from './routes/tooltip';
+/** generated: 2025-10-29T18:36:35.100Z */
+import { AccordionRouteComponent, BadgeRouteComponent, ButtonRouteComponent, CardRouteComponent, DialogRouteComponent, DrawerRouteComponent, ModalRouteComponent, TooltipRouteComponent } from './routes/components';
 import { NavRoute } from './types';
 
 export const componentItems: NavRoute[] = [
