@@ -7,19 +7,19 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { DialogComponent } from '../dialog/dialog';
+import { Dialog } from '../dialog/dialog';
 import { Button } from '../button/button';
 import { IconClose } from '../icons/close';
 
 @Component({
   selector: 'ui-drawer',
   standalone: true,
-  imports: [CommonModule, DialogComponent, Button, IconClose],
+  imports: [CommonModule, Dialog, Button, IconClose],
   templateUrl: './drawer.html',
   styleUrls: ['./drawer.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class DrawerComponent implements OnDestroy {
+export class Drawer implements OnDestroy {
   /** Drawer header. */
   @Input() header = '';
 
@@ -47,7 +47,7 @@ export class DrawerComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    // nothing to clean up; DialogComponent manages overlay lifecycle
+    // nothing to clean up; Dialog manages overlay lifecycle
   }
 }
 

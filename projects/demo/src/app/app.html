@@ -1,84 +1,16 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<main class="main" style="display: flex; flex-direction: column; gap: 20px">
-  <ng-template #addIcon>
-    <icon-add></icon-add>
-  </ng-template>
-
-  <!-- * * * * * * * Button * * * * * * * -->
-  <ui-button label="Label test" size="large" [icon]="addIcon" />
-  <ui-button label="Label test" size="medium" variant="secondary" [icon]="addIcon" />
-  <ui-button label="Label test" size="small" variant="tertiary" [icon]="addIcon" />
-
-  <ui-button><icon-add width="24" />Custom Content Example</ui-button>
-
-  <!-- * * * * * * * Card * * * * * * * -->
-  <div style="width: 300px">
-    <ui-card variant="outlined">
-      <p>Card works! <br />(variant="outlined")</p>
-    </ui-card>
+<div data-body-width="true" data-navbar="true">
+  <span data-backdrop="true"></span>
+  <div data-header="true">
+    <h1 data-brand="true">
+      <a data-name="true" href="/" data-bspk="link" data-subtle="true" target="_self"
+        ><span>BSPK</span></a
+      ><span>Version: x</span>
+    </h1>
   </div>
-  <div style="width: 300px">
-    <ui-card variant="elevated">
-      <p>Card works! <br />(variant="elevated")</p>
-    </ui-card>
-  </div>
-  <div style="width: 300px">
-      <span [tooltip]="{label: 'Told ya!', showTail: true, placement: 'bottom'}">Hover me for tooltip!</span>
-  </div>
-
-  <div style="margin-top: 20px">
-    <ui-button label="Open Modal" (click)="demoOpen = true"></ui-button>
-
-    <ui-modal [open]="demoOpen" (onClose)="demoOpen = false" header="Example modal" description="This is a demo modal">
-      <p>Modal content — Add any content here.</p>
-    </ui-modal>
-    
-    <div style="margin-top: 12px">
-      <ui-button label="Open Drawer" (click)="drawerOpen = true"></ui-button>
-
-      <ui-drawer [open]="drawerOpen" (onClose)="drawerOpen = false" placement="right" [modal]="true" [closeButton]="true" header="Example Drawer">
-        <div style="padding: 20px; width: 320px;">
-          <p>This is demo drawer content.</p>
-        </div>
-      </ui-drawer>
-    </div>
-
-    <div style="margin-top: 12px">
-      <ui-button label="Open Dialog" (click)="dialogOpen = true"></ui-button>
-
-      <ui-dialog [open]="dialogOpen" (onClose)="dialogOpen = false">
-        <div style="padding: 20px;">
-        <p>This is demo dialog content.</p>
-        <ui-button label="Close" (click)="dialogOpen = false"></ui-button>
-        </div>
-      </ui-dialog>
-    </div>
-  </div>
-
-  <!-- * * * * * * * Accordion * * * * * * * -->
-  <div style="margin:16px; width: 300px;">
-    <ui-accordion [singleOpen]="false" [items]="[{title: 'Foo', children: 'Foo Children'}, {title: 'Bar', children: 'Bar Children'}, {title: 'Car', children: 'Car Children'}]"></ui-accordion>
-  </div>
-  <div style="margin:16px; width: 300px;">
-    <ui-accordion [singleOpen]="true" [items]="[{title: 'Foo', children: 'Foo Children'}, {title: 'Bar', children: 'Bar Children'}, {title: 'Car', children: 'Car Children'}]"></ui-accordion>
-  </div>
-  
+</div>
+<nav data-navigation>
+  <app-nav />
+</nav>
+<main data-main>
+  <router-outlet />
 </main>
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced.  * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder  * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<router-outlet />

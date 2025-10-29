@@ -25,7 +25,7 @@ import { FocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
   styleUrls: ['./dialog.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class DialogComponent implements OnChanges, OnDestroy {
+export class Dialog implements OnChanges, OnDestroy {
   /**
    * If the dialog should appear.
    *

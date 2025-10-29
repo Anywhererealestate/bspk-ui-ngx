@@ -14,7 +14,7 @@ import {
 } from '@angular/core';
 import { PortalModule } from '@angular/cdk/portal';
 import { IconClose } from '../icons/close';
-import { DialogComponent } from '../dialog/dialog';
+import { Dialog } from '../dialog/dialog';
 import { Button } from '../button/button';
 
 export type ModalCallToAction = { label: string; onClick?: () => void; destructive?: boolean };
@@ -22,12 +22,12 @@ export type ModalCallToAction = { label: string; onClick?: () => void; destructi
 @Component({
   selector: 'ui-modal',
   standalone: true,
-  imports: [CommonModule, PortalModule, IconClose, DialogComponent, Button],
+  imports: [CommonModule, PortalModule, IconClose, Dialog, Button],
   templateUrl: './modal.html',
   styleUrls: ['./modal.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ModalComponent implements OnChanges, OnDestroy {
+export class Modal implements OnChanges, OnDestroy {
   /**
    * Modal header.
    *
@@ -86,7 +86,7 @@ export class ModalComponent implements OnChanges, OnDestroy {
   constructor(private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    // Modal now delegates opening to the internal DialogComponent via template bindings.
+    // Modal now delegates opening to the internal Dialog via template bindings.
   }
 
   public emitClose() {
