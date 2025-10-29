@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "dev": "npx tsx .scripts/generate-component-routes.ts && ng serve demo --open",
-    "gh-build": "ng build --project demo --configuration production --base-href 'bspk-ui-ngx/'"
+    "gh-build": "ng build --project demo --configuration production --base-href '/bspk-ui-ngx/'"
   },
   "prettier": {
     "printWidth": 100,
