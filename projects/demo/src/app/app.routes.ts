@@ -4,7 +4,7 @@ import { componentItems } from './component.routes';
 import { NavRoute } from './types';
 
 export const navigationItems: NavRoute[] = [
-  { path: '', component: HomeRouteComponent, hide: true, title: 'Home' },
+  { path: '', component: HomeRouteComponent, hide: true, title: 'BSPK' },
 
   ...componentItems,
 

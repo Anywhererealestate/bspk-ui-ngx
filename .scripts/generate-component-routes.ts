@@ -1,7 +1,7 @@
 /**
  *
  * Generates example components for each component example
- * `projects/demo/src/app/examples`.
+ * `projects/demo/examples`.
  *
  *
  * $ npx tsx .scripts/generate-component-routes.ts
@@ -23,9 +23,11 @@ type ComponentMeta = {
 
 const componentMeta: ComponentMeta[] = [];
 
-fs.readdirSync('projects/demo/src/app/examples').forEach((file) => {
+const EXAMPLES_DIR = 'projects/demo/examples';
+
+fs.readdirSync(EXAMPLES_DIR).forEach((file) => {
   const [slug, _ext] = file.split('.');
-  const content = fs.readFileSync(`projects/demo/src/app/examples/${file}`).toString().trim();
+  const content = fs.readFileSync(`${EXAMPLES_DIR}/${file}`).toString().trim();
   componentMeta.push({
     slug,
     name: slugToName(slug),
