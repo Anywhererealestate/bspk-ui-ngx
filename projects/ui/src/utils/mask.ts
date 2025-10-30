@@ -3,7 +3,7 @@ export interface Mask {
   mask: string;
 
   /** The regex patterns for specific characters */
-  patterns?: { [character: string]: { pattern: RegExp; optional?: boolean } };
+  patterns: Record<string, { pattern: RegExp; optional?: boolean }>;
 
   /**
    * Any additional characters that should be considered special
@@ -44,7 +44,7 @@ export const PhoneNumberMask: Mask = {
   mask: '#00-000-0000',
   patterns: {
     '#': { pattern: /[2-9]/ },
-    0: { pattern: /[0-9]/ },
+    '0': { pattern: /[0-9]/ },
   },
   errorMessage: 'Phone number must be formatted as ###-###-####',
 };
@@ -57,7 +57,7 @@ export const PhoneNumber2Mask: Mask = {
   mask: '#00.000.0000',
   patterns: {
     '#': { pattern: /[2-9]/ },
-    0: { pattern: /[0-9]/ },
+    '0': { pattern: /[0-9]/ },
   },
 };
 
@@ -69,7 +69,7 @@ export const PhoneNumber3Mask: Mask = {
   mask: '(#00) 000-0000',
   patterns: {
     '#': { pattern: /[2-9]/ },
-    0: { pattern: /[0-9]/ },
+    '0': { pattern: /[0-9]/ },
   },
 };
 
@@ -79,6 +79,7 @@ export const PhoneNumber3Mask: Mask = {
  */
 export const ZipCodeMask: Mask = {
   mask: '00000|00000-0000',
+  patterns: {},
 };
 
 /**
@@ -88,7 +89,7 @@ export const ZipCodeMask: Mask = {
 export const WholeNumberMask: Mask = {
   mask: '0*',
   patterns: {
-    0: { pattern: /[0-9]/ },
+    '0': { pattern: /[0-9]/ },
   },
 };
 
@@ -99,7 +100,7 @@ export const WholeNumberMask: Mask = {
 export const DecimalNumberMask: Mask = Object.freeze({
   mask: '0*.00',
   patterns: {
-    0: { pattern: /^(0|[1-9]d*)(.d+)?$/ },
+    '0': { pattern: /^(0|[1-9]d*)(.d+)?$/ },
   },
 });
 

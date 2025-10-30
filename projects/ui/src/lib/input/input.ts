@@ -1,6 +1,6 @@
 import { Component, input, ViewEncapsulation } from '@angular/core';
 
-import { NgxMaskDirective, provideNgxMask } from 'ngx-mask';
+import { provideNgxMask } from 'ngx-mask';
 import {
   provideValidator,
   provideValueAccessor,
@@ -10,7 +10,7 @@ import {
 
 @Component({
   selector: 'ui-input',
-  imports: [NgxMaskDirective],
+  imports: [],
   templateUrl: './input.html',
   styleUrl: './input.scss',
   providers: [provideValueAccessor(Input), provideValidator(Input), provideNgxMask()],
