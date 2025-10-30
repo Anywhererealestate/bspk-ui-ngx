@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npx tsx meta.ts && ng serve",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "examples": "npx tsx .scripts/generate-component-routes.ts",
-    "dev": "npx tsx .scripts/generate-component-routes.ts && ng serve demo --open",
+    "dev": "npm-run-all --parallel start watch:other",
+    "watch:other": "watch 'npx tsx .scripts/generate-component-routes.ts' projects/demo/examples",
     "gh-build": "ng build --project demo --configuration production --base-href '/bspk-ui-ngx/' && cp -r ./dist/browser/index.html ./dist/browser/404.html"
   },
   "prettier": {
@@ -44,6 +44,7 @@
     "@angular/build": "^20.3.3",
     "@angular/cli": "^20.3.3",
     "@angular/compiler-cli": "^20.3.0",
+    "@testing-library/angular": "^18.1.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
@@ -52,6 +53,8 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^20.3.0",
-    "typescript": "~5.9.2"
+    "npm-run-all": "^4.1.5",
+    "typescript": "~5.9.2",
+    "watch": "^1.0.2"
   }
 }

@@ -16,6 +16,7 @@ import { TxtDirective } from '../../../../../projects/ui/src/lib/txt/txt.directi
   standalone: true,
   imports: [Accordion],
   template: `<h1>Accordion</h1>
+
     <p>An accordion component that allows for expandable and collapsible content sections.</p>
 
     <h2>Default (multiple open)</h2>
@@ -30,6 +31,7 @@ import { TxtDirective } from '../../../../../projects/ui/src/lib/txt/txt.directi
     ></ui-accordion>
 
     <h2>Single Open</h2>
+
     <ui-accordion
       [singleOpen]="true"
       [items]="[
@@ -52,11 +54,25 @@ export class AccordionRouteComponent {}
   selector: 'badge-route',
   standalone: true,
   imports: [Badge, Badge, Badge, Button, Badge, Button, Badge],
-  template: `<ui-badge [count]="5" />
-    <ui-badge [count]="100" />
+  template: `<h1>Badge</h1>
+
+    <h2>Basic Usage</h2>
+
+    <div>
+      <ui-badge [count]="5" />
+    </div>
+    <div>
+      <ui-badge [count]="100" />
+    </div>
+
+    <h2>Badge with Button</h2>
+
     <ui-badge [count]="44">
       <ui-button label="Label test" size="large" variant="secondary" icon="Add"></ui-button>
     </ui-badge>
+
+    <h2>Badge with Border Surface</h2>
+
     <ui-badge [count]="101" [surfaceBorder]="true">
       <ui-button label="Label test" size="large" variant="primary" icon="Add"></ui-button>
     </ui-badge>`,
@@ -74,9 +90,22 @@ export class BadgeRouteComponent {}
   selector: 'button-route',
   standalone: true,
   imports: [Button, Button, Button, Button, IconAdd, Button],
-  template: `<ui-button label="Label test" size="large" icon="Add" />
+  template: `<h1>Button</h1>
+
+    <h2>Primary</h2>
+
+    <ui-button label="Label test" size="large" icon="Add" />
+
+    <h2>Secondary</h2>
+
     <ui-button label="Label test" size="medium" variant="secondary" icon="Add" />
+
+    <h2>Tertiary</h2>
+
     <ui-button label="Label test" size="small" variant="tertiary" icon="Add" />
+
+    <h2>Custom Content</h2>
+
     <ui-button><icon-add width="24" />Custom Content Example</ui-button>`,
   styles: [
     `
@@ -92,11 +121,18 @@ export class ButtonRouteComponent {}
   selector: 'card-route',
   standalone: true,
   imports: [Card, Card, Card],
-  template: `<div style="width: 300px">
+  template: `<h1>Card</h1>
+
+    <h2>Outlined Variant</h2>
+
+    <div style="width: 300px">
       <ui-card variant="outlined">
         <p>Card works! <br />(variant="outlined")</p>
       </ui-card>
     </div>
+
+    <h2>Elevated Variant</h2>
+
     <div style="width: 300px">
       <ui-card variant="elevated">
         <p>Card works! <br />(variant="elevated")</p>
@@ -116,7 +152,9 @@ export class CardRouteComponent {}
   selector: 'dialog-route',
   standalone: true,
   imports: [Button, Button, Dialog],
-  template: `<ui-button label="Open Dialog" (click)="open = true"></ui-button>
+  template: `<h1>Dialog</h1>
+
+    <ui-button label="Open Dialog" (click)="open = true"></ui-button>
 
     <ui-dialog
       [open]="open"
@@ -145,7 +183,9 @@ export class DialogRouteComponent {
   selector: 'drawer-route',
   standalone: true,
   imports: [Button, Drawer],
-  template: `<ui-button label="Open Drawer" (click)="open = true"></ui-button>
+  template: `<h1>Drawer</h1>
+
+    <ui-button label="Open Drawer" (click)="open = true"></ui-button>
 
     <ui-drawer
       [open]="open"
@@ -173,7 +213,9 @@ export class DrawerRouteComponent {
   selector: 'modal-route',
   standalone: true,
   imports: [Button, Modal],
-  template: `<ui-button label="Open Modal" (click)="open = true"></ui-button>
+  template: `<h1>Modal</h1>
+
+    <ui-button label="Open Modal" (click)="open = true"></ui-button>
 
     <ui-modal
       [open]="open"
@@ -198,11 +240,13 @@ export class ModalRouteComponent {
 @Component({
   selector: 'tooltip-route',
   imports: [TooltipDirective],
-  template: `<div style="margin: 16px; width: 300px">
-    <span [tooltip]="{ label: 'Told ya!', showTail: true, placement: 'bottom' }"
-      >Hover me for tooltip!</span
-    >
-  </div>`,
+  template: `<h1>Tooltip Directive</h1>
+
+    <div style="margin: 16px; width: 300px">
+      <span [tooltip]="{ label: 'Told ya!', showTail: true, placement: 'bottom' }"
+        >Hover me for tooltip!</span
+      >
+    </div>`,
   styles: [
     `
       :host {
@@ -216,7 +260,9 @@ export class TooltipRouteComponent {}
 @Component({
   selector: 'txt-route',
   imports: [TxtDirective],
-  template: `<div txt="body-base">body-base</div>
+  template: `<h1>Txt Directive</h1>
+
+    <div txt="body-base">body-base</div>
     <div txt="body-large">body-large</div>
     <div txt="body-small">body-small</div>
     <div txt="body-x-small">body-x-small</div>
