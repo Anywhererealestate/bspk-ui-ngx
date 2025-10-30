@@ -3,14 +3,10 @@ import { Component, effect, ElementRef, input, ViewEncapsulation, inject } from 
 import { IconRegistry } from './icon-registry.service';
 
 @Component({
-  selector: 'bspk-icon',
+  selector: 'ui-icon',
   imports: [],
   template: '',
-  host: {
-    'data-bspk': 'icon',
-    role: 'img',
-  },
-  encapsulation: ViewEncapsulation.None,
+  styles: ':host { display: contents; }',
 })
 export class Icon {
   /**

@@ -23,17 +23,9 @@
   } @else {
   <!-- Default button content -->
   <!-- Icon (if provided) -->
-  @if (shouldShowIcon) {
+  @if (icon) {
   <span [attr.aria-hidden]="true" [attr.data-button-icon]="true">
-    <!-- Template-based icon -->
-    @if (isIconTemplate && icon) {
-    <bspk-icon [name]="icon"></bspk-icon>
-    }
-
-    <!-- String-based icon (assuming it's a CSS class or similar) -->
-    @if (isIconString && icon) {
-    <i [class]="icon"></i>
-    }
+    <ui-icon [name]="icon"></ui-icon>
   </span>
   }
 
