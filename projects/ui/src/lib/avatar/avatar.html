@@ -1,0 +1,59 @@
+<!-- <span
+  data-bspk="avatar"
+  [attr.aria-label]="name"
+  aria-roledescription="person"
+  [attr.aria-disabled]="disabled || undefined"
+  [attr.tabindex]="!disabled && avatarClick.observers.length ? 0 : undefined"
+  [attr.role]="avatarClick.observers.length ? 'button' : 'img'"
+  [attr.data-color]="color"
+  [attr.data-size]="size"
+  (click)="onClick($event)"
+  [class.disabled]="disabled"
+>
+  <ng-container *ngIf="image; else noImage">
+    <img [src]="image" [alt]="name" aria-hidden="true" />
+  </ng-container>
+  <ng-template #noImage>
+    <ng-container *ngIf="showIcon; else showInitials">
+      <span aria-hidden="true" data-icon> -->
+        <!-- Replace with your Angular SVG icon component if available -->
+        <!-- <svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><rect x="6" y="16" width="12" height="6" rx="3" /></svg>
+      </span>
+    </ng-container>
+    <ng-template #showInitials>
+      <span *ngIf="computedInitials" aria-hidden="true" data-initials>
+        {{ computedInitials }}
+      </span>
+    </ng-template>
+  </ng-template>
+</span> -->
+
+<span
+  data-bspk="avatar"
+  [attr.aria-label]="name"
+  aria-roledescription="person"
+  [attr.aria-disabled]="disabled || undefined"
+  [attr.tabindex]="!disabled && avatarClick.observers.length ? 0 : undefined"
+  [attr.role]="avatarClick.observers.length ? 'button' : 'img'"
+  [attr.data-color]="color"
+  [attr.data-size]="size"
+  (click)="onClick($event)"
+  [class.disabled]="disabled"
+>
+  @if (image) {
+    <img [src]="image" [alt]="name" aria-hidden="true" />
+  } @else {
+    @if (showIcon) {
+      <span aria-hidden="true" data-icon>
+        <!-- Replace with your Angular SVG icon component if available -->
+        <svg width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4" /><rect x="6" y="16" width="12" height="6" rx="3" /></svg>
+      </span>
+    } @else {
+      @if (computedInitials) {
+        <span aria-hidden="true" data-initials>
+            {{ computedInitials }}
+        </span>
+    }
+    }
+  }
+</span>
