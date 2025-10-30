@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
-import { Icon } from '../icon/icon';
+import { Icon } from '../icon';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 export type ButtonSize = 'large' | 'medium' | 'small' | 'x-small';
@@ -37,7 +37,7 @@ export type ButtonWidth = 'fill' | 'hug';
 @Component({
   selector: 'ui-button',
   templateUrl: './button.html',
-  styleUrls: ['./button.scss', '../styles/base.scss', '../styles/colors.scss'],
+  styleUrls: ['./button.scss', '../styles/colors.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, Icon],
 })
@@ -147,25 +147,12 @@ export class Button implements OnInit {
    */
   @Output() onMouseLeave = new EventEmitter<MouseEvent>();
 
-  // Computed properties
-  get shouldShowIcon(): boolean {
-    return !!this.icon;
-  }
-
   get shouldShowLabel(): boolean {
     return !this.iconOnly;
   }
 
   get effectiveTooltip(): string | undefined {
     return this.toolTip || (this.iconOnly ? this.label : undefined);
-  }
-
-  get isIconString(): boolean {
-    return typeof this.icon === 'string';
-  }
-
-  get isIconTemplate(): boolean {
-    return !!this.icon;
   }
 
   get buttonClasses(): string {
