@@ -4,6 +4,8 @@ import { IconRegistry } from './icon-registry.service';
 
 @Component({
   selector: 'bspk-icon',
+  imports: [],
+  template: '',
   host: {
     'data-bspk': 'icon',
     role: 'img',
