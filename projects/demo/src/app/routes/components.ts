@@ -12,8 +12,6 @@ import { Input } from '../../../../../projects/ui/src/lib/input';
 import { Modal } from '../../../../../projects/ui/src/lib/modal';
 import { TooltipDirective } from '../../../../../projects/ui/src/lib/tooltip/tooltip.directive';
 import { TxtDirective } from '../../../../../projects/ui/src/lib/txt/txt.directive';
-import { Icon } from '../../../../ui/src/lib/icon';
-import { IconPerson } from '../../../../ui/src/lib/icons/person';
 
 @Component({
     selector: 'accordion-route',
