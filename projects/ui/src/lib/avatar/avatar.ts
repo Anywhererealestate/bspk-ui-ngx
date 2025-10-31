@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { IconPerson } from '../icons/person';
 
 export type SizeVariant =
   | 'large'
@@ -16,7 +16,7 @@ export type SizeVariant =
 @Component({
   selector: 'ui-avatar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, IconPerson ],
   templateUrl: './avatar.html',
   styleUrls: ['./avatar.scss', '../styles/base.scss', '../styles/colors.scss'],
 })
