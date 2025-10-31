@@ -4,11 +4,11 @@ import { componentItems } from './component.routes';
 import { NavRoute } from './types';
 
 export const navigationItems: NavRoute[] = [
-  { path: '', component: HomeRouteComponent, hide: true, title: 'BSPK' },
+    { path: '', component: HomeRouteComponent, hide: true, title: 'BSPK' },
 
-  ...componentItems,
+    ...componentItems,
 
-  { path: '**', redirectTo: '', title: "404'd", hide: true },
+    { path: '**', redirectTo: '', title: "404'd", hide: true },
 ];
 
 export const routes: Routes = navigationItems.filter((route) => !route.section);

@@ -1,7 +1,10 @@
+ui-card {
+    display: contents;
+}
 
 [data-bspk='card'] {
     display: block;
-    background: var(--surface-neutral-t1-base);   
+    background: var(--surface-neutral-t1-base);
     border-radius: var(--radius-md);
     overflow: hidden;
 

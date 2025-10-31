@@ -161,7 +161,7 @@ function directiveTemplate({ name, slug, template, imports }: TemplateParams) {
   return `
 @Component({
   selector: '${slug}-route',
-  imports: [${[...(imports || []), name + 'Directive'].join(', ')}],
+  imports: [${[...(imports || []), `${name  }Directive`].join(', ')}],
   template: \`${template}\`,
   styles: [
     \`
