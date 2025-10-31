@@ -5,17 +5,17 @@ import { provideHttpClient } from '@angular/common/http';
 import { BspkIcon } from './icon';
 
 describe('BspkIcon', () => {
-  it('should render', async () => {
-    await render(BspkIcon, {
-      inputs: {
-        name: 'Check',
-      },
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+    it('should render', async () => {
+        await render(BspkIcon, {
+            inputs: {
+                name: 'Check',
+            },
+            providers: [provideHttpClient(), provideHttpClientTesting()],
+        });
+
+        const http = TestBed.inject(HttpTestingController);
+        http.expectOne('/assets/bspk-icons/Check.svg').flush('<svg></svg>');
+
+        expect(await screen.findByRole('img')).toBeInTheDocument();
     });
-
-    const http = TestBed.inject(HttpTestingController);
-    http.expectOne('/assets/bspk-icons/Check.svg').flush('<svg></svg>');
-
-    expect(await screen.findByRole('img')).toBeInTheDocument();
-  });
 });

@@ -1,14 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
-export type CardVariant = 'outlined' | 'elevated';
+export type CardVariant = 'elevated' | 'outlined';
 
 @Component({
-  selector: 'ui-card',
-  standalone: true,
-  imports: [],
-  templateUrl: './card.html',
-  styleUrl: './card.scss',
+    selector: 'ui-card',
+    standalone: true,
+    imports: [],
+    templateUrl: './card.html',
+    styleUrl: './card.scss',
+    encapsulation: ViewEncapsulation.None,
 })
 export class Card {
-  @Input() variant: CardVariant | undefined;
+    @Input() variant: CardVariant | undefined;
 }

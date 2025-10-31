@@ -11,13 +11,13 @@
             <ng-content></ng-content>
         </div>
 
-        <div *ngIf="(callToAction || cancelButton)" [attr.data-button-format]="buttonFormat" data-modal-footer>
+        <div *ngIf="callToAction || cancelButton" [attr.data-button-format]="buttonFormat" data-modal-footer>
             <button *ngIf="callToAction" type="button" (click)="onCallToActionClick()" class="bspk-btn bspk-primary">
                 {{ callToAction.label }}
             </button>
 
             <button *ngIf="cancelButton" type="button" (click)="onCancelClick()" class="bspk-btn bspk-tertiary">
-                {{ (typeof cancelButton === 'string') ? cancelButton : 'Cancel' }}
+                {{ typeof cancelButton === 'string' ? cancelButton : 'Cancel' }}
             </button>
         </div>
     </div>

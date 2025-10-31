@@ -3,10 +3,10 @@ import { RouterOutlet } from '@angular/router';
 import { AppNavComponent } from './components/app-nav';
 
 @Component({
-  selector: 'app-root',
-  imports: [RouterOutlet, AppNavComponent],
-  templateUrl: './app.html',
+    selector: 'app-root',
+    imports: [RouterOutlet, AppNavComponent],
+    templateUrl: './app.html',
 })
 export class App {
-  protected readonly title = signal('demo');
+    protected readonly title = signal('demo');
 }
