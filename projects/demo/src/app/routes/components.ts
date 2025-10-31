@@ -58,11 +58,53 @@ export class AccordionRouteComponent { }
   selector: 'avatar-route',
   standalone: true,
   imports: [Avatar],
-  template: `<ui-avatar color="blue" initials="AR" name="Andre Giant" size="large" />
+  template: `<ui-avatar color="blue" initials="JD" name="John Doe" size="xxxxx-large" />
+<ui-avatar color="teal" initials="KA" name="Kate Anders" size="xxxxx-large" />
+<ui-avatar color="green" initials="AB" name="Ali Bogs" size="xxxx-large" />
+<ui-avatar color="lime" initials="BH" name="Bea Hopkins" size="xxxx-large" />
+<ui-avatar color="yellow" initials="TM" name="Tim Meadows" size="xxx-large" />
+<ui-avatar color="orange" initials="AG" name="Andre Giant" size="xxx-large" />
+<ui-avatar color="red" initials="MJ" name="Megan Jett" size="xx-large" />
+<ui-avatar color="pink" initials="TS" name="Tom South" size="xx-large" />
+<ui-avatar color="magenta" initials="CN" name="Cal North" size="x-large" />
+<ui-avatar color="purple" initials="DW" name="Dan West" size="large" />
+<ui-avatar color="grey" initials="KE" name="Kel East" size="medium" />
+<ui-avatar color="primary" initials="SL" name="Sasha Lee" size="small" />
+<ui-avatar color="secondary" initials="NP" name="Nan Polo" size="x-small" />
 
-<ui-avatar [showIcon]=false color="green" initials="MJ" name="Megan Jett" size="medium" />
-<ui-avatar color="red" initials="TS" name="Tom Smith" size="small" />
-<ui-avatar color="purple" initials="SL" name="Sasha Lee" size="x-small" />`,
+<ui-avatar color="blue" [showIcon]="false" iinitials="JD" name="John Doe" size="xxxxx-large" />
+<ui-avatar color="teal" [showIcon]="false" initials="KA" name="Kate Anders" size="xxxxx-large" />
+<ui-avatar color="green" [showIcon]="false" initials="AB" name="Ali Bogs" size="xxxx-large" />
+<ui-avatar color="lime" [showIcon]="false" initials="BH" name="Bea Hopkins" size="xxxx-large" />
+<ui-avatar color="yellow" [showIcon]="false" initials="TM" name="Tim Meadows" size="xxx-large" />
+<ui-avatar color="orange" [showIcon]="false" initials="AG" name="Andre Giant" size="xxx-large" />
+<ui-avatar color="red" [showIcon]="false" initials="MJ" name="Megan Jett" size="xx-large" />
+<ui-avatar color="pink" [showIcon]="false" initials="TS" name="Tom South" size="xx-large" />
+<ui-avatar color="magenta" [showIcon]="false" initials="CN" name="Cal North" size="x-large" />
+<ui-avatar color="purple" [showIcon]="false" initials="DW" name="Dan West" size="large" />
+<ui-avatar color="grey" [showIcon]="false" initials="KE" name="Kel East" size="medium" />
+<ui-avatar color="primary" [showIcon]="false" initials="SL" name="Sasha Lee" size="small" />
+<ui-avatar color="secondary" [showIcon]="false" initials="NP" name="Nan Polo" size="x-small" />
+
+<ui-avatar image="./avatar-01.png" initials="TM" name="Tim Meadows" size="xxxxx-large" />
+<ui-avatar image="./avatar-02.png" initials="AG" name="Andre Giant" size="xxxx-large" />
+<ui-avatar image="./avatar-03.png" initials="MJ" name="Megan Jett" size="xxx-large" />
+<ui-avatar image="./avatar-04.png" initials="TS" name="Tom South" size="xx-large" />
+<ui-avatar image="./avatar-05.png" initials="CN" name="Cal North" size="x-large" />
+<ui-avatar image="./avatar-06.png" initials="DW" name="Dan West" size="large" />
+<ui-avatar image="./avatar-07.png" initials="KE" name="Kel East" size="medium" />
+<ui-avatar image="./avatar-08.png" initials="SL" name="Sasha Lee" size="small" />
+<ui-avatar image="./avatar-09.png" initials="NP" name="Nan Polo" size="x-small" />
+
+<ui-avatar initials="TM" name="Tim Meadows" size="xxxxx-large" />
+<ui-avatar initials="AG" name="Andre Giant" size="xxxx-large" />
+<ui-avatar initials="MJ" name="Megan Jett" size="xxx-large" />
+<ui-avatar initials="TS" name="Tom South" size="xx-large" />
+<ui-avatar initials="CN" name="Cal North" size="x-large" />
+<ui-avatar initials="DW" name="Dan West" size="large" />
+<ui-avatar initials="KE" name="Kel East" size="medium" />
+<ui-avatar initials="SL" name="Sasha Lee" size="small" />
+<ui-avatar initials="NP" name="Nan Polo" size="x-small" />`,
   styles: [
     `
       :host {
