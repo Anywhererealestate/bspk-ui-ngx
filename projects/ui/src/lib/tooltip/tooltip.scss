@@ -11,7 +11,6 @@
 [data-bspk='tooltip'] {
     pointer-events: none;
     z-index: var(--z-index-tooltip-popover);
-    display: inline-block;
 
     [data-text] {
         display: block;
