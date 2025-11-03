@@ -1,10 +1,17 @@
-ui-tooltip {
-    display: contents;
+// add this selector to the parant element of the tooltip directive
+[data-tooltip-content] {
+    display: flex;
+}
+
+// this selector is automatically added by the tooltip directive to the element the tooltip directive is applied
+[data-tooltip-directive] {
+    display: inline-block;
 }
 
 [data-bspk='tooltip'] {
     pointer-events: none;
     z-index: var(--z-index-tooltip-popover);
+    display: inline-block;
 
     [data-text] {
         display: block;

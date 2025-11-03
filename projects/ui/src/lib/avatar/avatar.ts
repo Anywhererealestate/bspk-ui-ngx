@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, HostBinding, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconPerson } from '../icons/person';
+import { TooltipDirective } from '../tooltip';
 
 export type SizeVariant =
     | 'large'
@@ -16,7 +17,7 @@ export type SizeVariant =
 @Component({
     selector: 'ui-avatar',
     standalone: true,
-    imports: [CommonModule, IconPerson],
+    imports: [CommonModule, IconPerson, TooltipDirective],
     templateUrl: './avatar.html',
     styleUrls: ['./avatar.scss', '../styles/base.scss', '../styles/colors.scss'],
     encapsulation: ViewEncapsulation.None,

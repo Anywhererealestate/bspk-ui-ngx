@@ -13,6 +13,7 @@ import {
 
 import { CommonModule } from '@angular/common';
 import { Icon } from '../icon';
+import { TooltipDirective } from '../tooltip';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 export type ButtonSize = 'large' | 'medium' | 'small' | 'x-small';
@@ -40,7 +41,7 @@ export type ButtonWidth = 'fill' | 'hug';
     templateUrl: './button.html',
     styleUrls: ['./button.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, Icon],
+    imports: [CommonModule, Icon, TooltipDirective],
     encapsulation: ViewEncapsulation.None,
 })
 export class Button implements OnInit {
