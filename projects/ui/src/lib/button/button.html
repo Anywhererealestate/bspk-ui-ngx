@@ -1,92 +1,36 @@
-<!-- Tooltip wrapper (if tooltip is provided) -->
-@if (toolTip) {
-    <div data-tooltip-content>
-        <span [tooltip]="{ label: toolTip, showTail: true }">
-            <button
-                #buttonElement
-                [type]="type"
-                [attr.aria-label]="label"
-                [attr.data-bspk]="'button'"
-                [attr.data-bspk-owner]="owner || null"
-                [attr.data-destructive]="destructive || null"
-                [attr.data-size]="size"
-                [attr.data-touch-target-parent]="true"
-                [attr.data-variant]="variant"
-                [attr.data-width]="width"
-                [disabled]="disabled || null"
-                [class]="buttonClasses"
-                (click)="handleClick($event)"
-                (focus)="handleFocus($event)"
-                (blur)="handleBlur($event)"
-                (mouseover)="handleMouseOver($event)"
-                (mouseleave)="handleMouseLeave($event)"
-            >
-                @if (!label) {
-                    <ng-content></ng-content>
-                } @else {
-                    @if (icon) {
-                        <span [attr.aria-hidden]="true" [attr.data-button-icon]="true">
-                            <ui-icon [name]="icon"></ui-icon>
-                        </span>
-                    }
-                    @if (shouldShowLabel) {
-                        <span [attr.data-button-label]="true">
-                            {{ label }}
-                        </span>
-                    }
-                }
-                <span [attr.data-touch-target]="true"></span>
-            </button>
-        </span>
-    </div>
-} @else {
-    <button
-        #buttonElement
-        [type]="type"
-        [attr.aria-label]="label"
-        [attr.data-bspk]="'button'"
-        [attr.data-bspk-owner]="owner || null"
-        [attr.data-destructive]="destructive || null"
-        [attr.data-size]="size"
-        [attr.data-touch-target-parent]="true"
-        [attr.data-variant]="variant"
-        [attr.data-width]="width"
-        [disabled]="disabled || null"
-        [class]="buttonClasses"
-        (click)="handleClick($event)"
-        (focus)="handleFocus($event)"
-        (blur)="handleBlur($event)"
-        (mouseover)="handleMouseOver($event)"
-        (mouseleave)="handleMouseLeave($event)"
-    >
-        @if (!label) {
-            <ng-content></ng-content>
-        } @else {
-            @if (icon) {
-                <span [attr.aria-hidden]="true" [attr.data-button-icon]="true">
-                    <ui-icon [name]="icon"></ui-icon>
-                </span>
-            }
-            @if (shouldShowLabel) {
-                <span [attr.data-button-label]="true">
-                    {{ label }}
-                </span>
-            }
-        }
-        <span [attr.data-touch-target]="true"></span>
-    </button>
-}
-
-<!-- 
-Alternative approach if using Angular Material or another tooltip library:
-
 <button
-  [matTooltip]="effectiveTooltip"
-  [matTooltipDisabled]="!effectiveTooltip"
-  matTooltipPosition="above"
-  ... rest of attributes
+    [tooltip]="{ label: toolTip, showTail: true, disabled: !toolTip }"
+    #buttonElement
+    [type]="type"
+    [attr.aria-label]="label"
+    [attr.data-bspk]="'button'"
+    [attr.data-bspk-owner]="owner || null"
+    [attr.data-destructive]="destructive || null"
+    [attr.data-size]="size"
+    [attr.data-touch-target-parent]="true"
+    [attr.data-variant]="variant"
+    [attr.data-width]="width"
+    [disabled]="disabled || null"
+    [class]="buttonClasses"
+    (click)="handleClick($event)"
+    (focus)="handleFocus($event)"
+    (blur)="handleBlur($event)"
+    (mouseover)="handleMouseOver($event)"
+    (mouseleave)="handleMouseLeave($event)"
 >
-  ... button content
-</button> -->
-
-<!-- Copyright 2025 Anywhere Real Estate - CC BY 4.0 -->
+    @if (!label) {
+        <ng-content></ng-content>
+    } @else {
+        @if (icon) {
+            <span [attr.aria-hidden]="true" [attr.data-button-icon]="true">
+                <ui-icon [name]="icon"></ui-icon>
+            </span>
+        }
+        @if (shouldShowLabel) {
+            <span [attr.data-button-label]="true">
+                {{ label }}
+            </span>
+        }
+    }
+    <span [attr.data-touch-target]="true"></span>
+</button>

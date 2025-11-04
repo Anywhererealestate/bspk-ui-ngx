@@ -8,11 +8,11 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 })
 export class Tooltip {
     /** The tooltip content. */
-    @Input() label: string = '';
+    @Input() label?: string = '';
     /**
      * Determines if the tooltip should hide the tail.
      *
      * @default true
      */
-    @Input() showTail: boolean = true;
+    @Input() showTail?: boolean = true;
 }

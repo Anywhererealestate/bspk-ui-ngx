@@ -324,9 +324,7 @@ protected open = false;
   imports: [TooltipDirective],
   template: `<h2>Tooltip Directive</h2>
 
-<div data-tooltip-content>
-    <span [tooltip]="{ label: 'Told ya!', showTail: true, placement: 'bottom' }">Hover me for tooltip!</span>
-</div>`,
+<span [tooltip]="{ label: 'Told ya!', showTail: true, placement: 'bottom' }">Hover me for tooltip!</span>`,
   styles: [
     `
       :host {
