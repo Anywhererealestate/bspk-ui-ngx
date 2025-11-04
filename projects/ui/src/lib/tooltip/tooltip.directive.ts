@@ -40,7 +40,6 @@ export class TooltipDirective implements OnDestroy {
         private renderer: Renderer2,
     ) {
         // Always set display: inline-block on the host element
-        // this.renderer.setStyle(this.elementRef.nativeElement, 'display', 'inline-block');
         this.renderer.setAttribute(this.elementRef.nativeElement, 'data-tooltip-directive', '');
     }
 
@@ -73,8 +72,6 @@ export class TooltipDirective implements OnDestroy {
         this.overlayRef = this.overlay.create({
             positionStrategy,
             scrollStrategy: this.overlay.scrollStrategies.reposition(),
-            width: 'auto', // <-- add this
-            minWidth: 0, // <-- and this if needed
         });
 
         const strat: any = positionStrategy;
