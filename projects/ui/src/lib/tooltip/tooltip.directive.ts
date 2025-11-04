@@ -1,4 +1,4 @@
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy } from '@angular/core';
+import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2 } from '@angular/core';
 import { Overlay, OverlayRef, ConnectedPosition } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -37,7 +37,11 @@ export class TooltipDirective implements OnDestroy {
     constructor(
         private overlay: Overlay,
         private elementRef: ElementRef,
-    ) {}
+        private renderer: Renderer2,
+    ) {
+        // Always set display: inline-block on the host element
+        this.renderer.setAttribute(this.elementRef.nativeElement, 'data-tooltip-directive', '');
+    }
 
     ngOnDestroy(): void {
         this.posSub?.unsubscribe?.();
