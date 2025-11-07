@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { axe } from 'jest-axe';
 
 import { Accordion } from './accordion';
+import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
 describe('Accordion', () => {
   let component: Accordion;
@@ -19,4 +21,6 @@ describe('Accordion', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
 });

@@ -17,7 +17,7 @@ export class Icon {
   /**
    * @see https://bspk.anywhere.re/icons
    */
-  readonly name = input.required<string>();
+  name = input.required<string>();
 
   constructor() {
     const elementRef = inject(ElementRef);

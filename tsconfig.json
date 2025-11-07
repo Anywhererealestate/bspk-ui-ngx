@@ -11,6 +11,8 @@
     "skipLibCheck": true,
     "isolatedModules": true,
     "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
@@ -33,13 +35,10 @@
       "path": "./projects/ui/tsconfig.lib.json"
     },
     {
-      "path": "./projects/ui/tsconfig.spec.json"
+      "path": "./tsconfig.spec.json"
     },
     {
       "path": "./projects/demo/tsconfig.app.json"
     },
-    {
-      "path": "./projects/demo/tsconfig.spec.json"
-    }
   ]
 }
