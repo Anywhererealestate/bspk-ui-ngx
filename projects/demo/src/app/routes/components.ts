@@ -10,6 +10,7 @@ import { Card } from '../../../../../projects/ui/src/lib/card';
 import { Dialog } from '../../../../../projects/ui/src/lib/dialog';
 import { Drawer } from '../../../../../projects/ui/src/lib/drawer';
 import { Input } from '../../../../../projects/ui/src/lib/input';
+import { Menu } from '../../../../../projects/ui/src/lib/menu';
 import { Modal } from '../../../../../projects/ui/src/lib/modal';
 import { TooltipDirective } from '../../../../../projects/ui/src/lib/tooltip/tooltip.directive';
 import { TxtDirective } from '../../../../../projects/ui/src/lib/txt/txt.directive';
@@ -293,6 +294,36 @@ protected open = false;
   ],
 })
 export class InputRouteComponent { }
+
+
+@Component({
+  selector: 'menu-route',
+  standalone: true,
+  imports: [Menu],
+  template: `<h2>Menu</h2>
+
+<h3>Basic Menu</h3>
+
+<div style="width: 250px">
+    <ui-menu
+        label="Menu Example"
+        [width]="'250px'"
+        [style]="{ padding: '8px', display: 'flex', flexDirection: 'column', gap: '12px' }"
+    >
+        <div>list item coming soon...</div>
+        <div>list item coming soon...</div>
+        <div>list item coming soon...</div>
+    </ui-menu>
+</div>`,
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
+})
+export class MenuRouteComponent { }
 
 
 @Component({
