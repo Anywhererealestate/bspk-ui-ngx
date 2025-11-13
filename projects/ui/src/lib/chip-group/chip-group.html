@@ -1,0 +1,18 @@
+<div data-bspk="chip-group" [attr.data-wrap]="wrap ? true : null">
+    @if (items?.length) {
+        @for (item of items; track item) {
+            <ui-chip
+                [label]="item.label"
+                [disabled]="item.disabled"
+                [flat]="item.flat"
+                [selected]="item.selected"
+                [leadingIcon]="item.leadingIcon"
+                [trailingIcon]="item.trailingIcon"
+                [trailingBadge]="item.trailingBadge"
+                (chipClick)="item.onClick?.($event)"
+            ></ui-chip>
+        }
+    } @else {
+        <ng-content></ng-content>
+    }
+</div>
