@@ -1,0 +1,16 @@
+<ng-container [ngSwitch]="isTruncated">
+    <ui-tooltip *ngSwitchCase="true" [label]="label || children">
+        <ng-container [ngSwitch]="elementType">
+            <span *ngSwitchCase="'span'" data-bspk-utility="truncated" role="note">{{ children }}</span>
+            <div *ngSwitchCase="'div'" data-bspk-utility="truncated" role="note">{{ children }}</div>
+            <span *ngSwitchDefault data-bspk-utility="truncated" role="note">{{ children }}</span>
+        </ng-container>
+    </ui-tooltip>
+    <ng-container *ngSwitchDefault>
+        <ng-container [ngSwitch]="elementType">
+            <span *ngSwitchCase="'span'" data-bspk-utility="truncated">{{ children }}</span>
+            <div *ngSwitchCase="'div'" data-bspk-utility="truncated">{{ children }}</div>
+            <span *ngSwitchDefault data-bspk-utility="truncated">{{ children }}</span>
+        </ng-container>
+    </ng-container>
+</ng-container>
