@@ -1,0 +1,32 @@
+<button
+    data-bspk="chip"
+    [attr.data-disabled]="disabled || undefined"
+    [attr.data-flat]="flat || undefined"
+    [attr.data-selected]="selected || undefined"
+    data-touch-target-parent
+    [disabled]="disabled"
+    (click)="onClick($event)"
+>
+    @if (leadingIcon) {
+        <span [attr.aria-hidden]="true" data-chip-icon>
+            <ui-icon [name]="leadingIcon"></ui-icon>
+        </span>
+    }
+
+    <span>{{ label }}</span>
+
+    @if (trailingIcon) {
+        <span [attr.aria-hidden]="true" data-chip-icon>
+            <ui-icon [name]="trailingIcon"></ui-icon>
+        </span>
+    }
+
+    @if (trailingBadge && !trailingIcon) {
+        <ui-badge
+            [count]="trailingBadge.count"
+            [size]="trailingBadge.size === 'small' || trailingBadge.size === 'x-small' ? trailingBadge.size : 'small'"
+            [surfaceBorder]="trailingBadge.surfaceBorder ?? false"
+        ></ui-badge>
+    }
+    <span data-touch-target></span>
+</button>
