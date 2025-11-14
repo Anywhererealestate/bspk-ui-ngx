@@ -1,0 +1,47 @@
+<h2>Chip</h2>
+
+<h3>Outlined Variant</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" />
+</div>
+
+<h3>Leading Icon</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" leadingIcon="Add" />
+</div>
+
+<h3>Trailing Icon</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" trailingIcon="Add" />
+</div>
+
+<h3>Both Icons</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" leadingIcon="Add" trailingIcon="Add" />
+</div>
+
+<h3>Badge</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" [trailingBadge]="{ count: 3 }" />
+</div>
+
+<h3>Badge & Trailing Icon</h3>
+<p>When both are provided the icon will be visible. You cannot have both trailing items.</p>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" [trailingBadge]="{ count: 3 }" trailingIcon="Add" />
+</div>
+
+<h3>Flat = true</h3>
+<div style="width: 300px">
+    <ui-chip [flat]="true" label="Hello I'm Chip" />
+</div>
+
+<h3>Disabled = true</h3>
+<div style="width: 300px">
+    <ui-chip [disabled]="true" label="Hello I'm Chip" />
+</div>
+
+<h3>Selected = true</h3>
+<div style="width: 300px">
+    <ui-chip [selected]="true" label="Hello I'm Chip" />
+</div>

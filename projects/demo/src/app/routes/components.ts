@@ -7,6 +7,7 @@ import { Badge } from '../../../../../projects/ui/src/lib/badge';
 import { Button } from '../../../../../projects/ui/src/lib/button';
 import { IconAdd } from '../../../../../projects/ui/src/lib/icons/add';
 import { Card } from '../../../../../projects/ui/src/lib/card';
+import { Chip } from '../../../../../projects/ui/src/lib/chip';
 import { Dialog } from '../../../../../projects/ui/src/lib/dialog';
 import { Drawer } from '../../../../../projects/ui/src/lib/drawer';
 import { Input } from '../../../../../projects/ui/src/lib/input';
@@ -224,6 +225,68 @@ export class ButtonRouteComponent { }
   ],
 })
 export class CardRouteComponent { }
+
+
+@Component({
+  selector: 'chip-route',
+  standalone: true,
+  imports: [Chip],
+  template: `<h2>Chip</h2>
+
+<h3>Outlined Variant</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" />
+</div>
+
+<h3>Leading Icon</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" leadingIcon="Add" />
+</div>
+
+<h3>Trailing Icon</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" trailingIcon="Add" />
+</div>
+
+<h3>Both Icons</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" leadingIcon="Add" trailingIcon="Add" />
+</div>
+
+<h3>Badge</h3>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" [trailingBadge]="{ count: 3 }" />
+</div>
+
+<h3>Badge & Trailing Icon</h3>
+<p>When both are provided the icon will be visible. You cannot have both trailing items.</p>
+<div style="width: 300px">
+    <ui-chip label="Hello I'm Chip" [trailingBadge]="{ count: 3 }" trailingIcon="Add" />
+</div>
+
+<h3>Flat = true</h3>
+<div style="width: 300px">
+    <ui-chip [flat]="true" label="Hello I'm Chip" />
+</div>
+
+<h3>Disabled = true</h3>
+<div style="width: 300px">
+    <ui-chip [disabled]="true" label="Hello I'm Chip" />
+</div>
+
+<h3>Selected = true</h3>
+<div style="width: 300px">
+    <ui-chip [selected]="true" label="Hello I'm Chip" />
+</div>`,
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
+})
+export class ChipRouteComponent { }
 
 
 @Component({
