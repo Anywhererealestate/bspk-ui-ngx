@@ -231,25 +231,27 @@ export class CardRouteComponent { }
 @Component({
   selector: 'chip-group-route',
   standalone: true,
-  imports: [ChipGroup, Chip],
+  imports: [ChipGroup],
   template: `<h2>Chip Group</h2>
 
 <h3>Basic</h3>
 <div style="width: 500px">
-    <ui-chip-group>
-        <ui-chip label="Hello I'm Chip" />
-        <ui-chip label="Hello I'm Chip" />
-        <ui-chip label="Hello I'm Chip" />
-        <ui-chip label="Hello I'm Chip" />
-        <ui-chip label="Hello I'm Chip" />
-        <ui-chip label="Hello I'm Chip" />
-    </ui-chip-group>
+    <ui-chip-group
+        [items]="[
+            { label: 'Chip 1' },
+            { label: 'Chip 2', trailingIcon: 'Add' },
+            { label: 'Chip 3', leadingIcon: 'Add', trailingBadge: { count: 2 } },
+            { label: 'Chip 4, flat = true', flat: true },
+            { label: 'Chip 5 selected = true', selected: true },
+            { label: 'Chip 6 disabled = true', disabled: true },
+        ]"
+    />
 </div>
 
-<h3>scroll = true, items=[...]</h3>
+<h3>Scroll</h3>
 <div style="width: 500px">
     <ui-chip-group
-        [scroll]="true"
+        overflow="scroll"
         [items]="[
             { label: 'Chip 1' },
             { label: 'Chip 2', trailingIcon: 'Add' },
@@ -262,10 +264,10 @@ export class CardRouteComponent { }
     </ui-chip-group>
 </div>
 
-<h3>scroll = true, items=[...] all items have flat = true</h3>
+<h3>Scroll & Flat</h3>
 <div style="width: 500px">
     <ui-chip-group
-        [scroll]="true"
+        overflow="scroll"
         [items]="[
             { label: 'Chip 1', flat: true },
             { label: 'Chip 2', trailingIcon: 'Add', flat: true },

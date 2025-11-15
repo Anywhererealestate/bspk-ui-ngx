@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Chip } from '../chip/chip';
 
+export type Overflow = 'wrap' | 'scroll';
+
 export type ChipGroupItem = {
     label: string;
     disabled?: boolean;
@@ -21,7 +23,7 @@ export type ChipGroupItem = {
 })
 export class ChipGroup {
     /** To allow chips to scroll. If set to false chips will wrap. */
-    @Input() scroll: boolean = false;
+    @Input() overflow: Overflow = 'wrap';
 
     /** Only Chip components should be used as children. */
     @Input() items?: ChipGroupItem[];
