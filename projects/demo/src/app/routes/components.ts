@@ -241,7 +241,7 @@ export class CardRouteComponent { }
             { label: 'Chip 1' },
             { label: 'Chip 2', trailingIcon: 'Add' },
             { label: 'Chip 3', leadingIcon: 'Add', trailingBadge: { count: 2 } },
-            { label: 'Chip 4, flat = true', flat: true },
+            { label: 'Chip 4, flat = true' },
             { label: 'Chip 5 selected = true', selected: true },
             { label: 'Chip 6 disabled = true', disabled: true },
         ]"
@@ -256,7 +256,7 @@ export class CardRouteComponent { }
             { label: 'Chip 1' },
             { label: 'Chip 2', trailingIcon: 'Add' },
             { label: 'Chip 3', leadingIcon: 'Add', trailingBadge: { count: 2 } },
-            { label: 'Chip 4, flat = true', flat: true },
+            { label: 'Chip 4, flat = true' },
             { label: 'Chip 5 selected = true', selected: true },
             { label: 'Chip 6 disabled = true', disabled: true },
         ]"
