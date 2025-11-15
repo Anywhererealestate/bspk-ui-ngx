@@ -14,6 +14,7 @@ import { Input } from '../../../../../projects/ui/src/lib/input';
 import { Modal } from '../../../../../projects/ui/src/lib/modal';
 import { Tag } from '../../../../../projects/ui/src/lib/tag';
 import { TooltipDirective } from '../../../../../projects/ui/src/lib/tooltip/tooltip.directive';
+import { Truncated } from '../../../../../projects/ui/src/lib/truncated';
 import { TxtDirective } from '../../../../../projects/ui/src/lib/txt/txt.directive';
 
 @Component({
@@ -474,6 +475,42 @@ export class TagRouteComponent {}
     ],
 })
 export class TooltipRouteComponent {}
+
+@Component({
+    selector: 'truncated-route',
+    standalone: true,
+    imports: [Truncated],
+    template: `<h2>Truncated</h2>
+        <div style="max-width: 100px">
+            <ui-truncated>
+                lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam. In vel enim quis massa
+                convallis tincidunt. Aenean euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod
+                aliquam nisl nunc euismod nisi.
+            </ui-truncated>
+            <div
+                style="
+            max-width: 100%;
+            display: inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            background-color: transparent;
+        "
+            >
+                lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vel mauris quam. In vel enim quis massa
+                convallis tincidunt. Aenean euismod, nisl eget consectetur sagittis, nisl nunc consectetur nisi, euismod
+                aliquam nisl nunc euismod nisi.
+            </div>
+        </div>`,
+    styles: [
+        `
+            :host {
+                display: contents;
+            }
+        `,
+    ],
+})
+export class TruncatedRouteComponent {}
 
 @Component({
     selector: 'txt-route',
