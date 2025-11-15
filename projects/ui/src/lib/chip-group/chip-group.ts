@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Chip } from '../chip/chip';
 
 export type Overflow = 'wrap' | 'scroll';
@@ -20,6 +20,7 @@ export type ChipGroupItem = {
     imports: [Chip],
     templateUrl: './chip-group.html',
     styleUrl: './chip-group.scss',
+    encapsulation: ViewEncapsulation.None,
 })
 export class ChipGroup {
     /** To allow chips to scroll. If set to false chips will wrap. */
