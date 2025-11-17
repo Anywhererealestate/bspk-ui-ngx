@@ -17,8 +17,4 @@ export class ChipGroup {
 
     /** Only Chip components should be used as children. */
     @Input() items?: ChipProps[];
-
-    get anyFlatFalse(): boolean {
-        return !!this.items?.some((item) => item.flat === false || item.flat == null);
-    }
 }
