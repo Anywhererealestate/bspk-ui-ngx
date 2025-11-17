@@ -10,9 +10,16 @@ import { IconRegistry } from './icon-registry.service';
     encapsulation: ViewEncapsulation.None,
 })
 export class Icon {
+<<<<<<< HEAD
+  /**
+   * @see https://bspk.anywhere.re/icons
+   */
+  name = input.required<string>();
+=======
     /** @see https://bspk.anywhere.re/icons */
     readonly name = input.required<string>();
     @Input() width?: string;
+>>>>>>> main
 
     constructor() {
         const elementRef = inject(ElementRef);
