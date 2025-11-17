@@ -19,7 +19,7 @@ export type SizeVariant =
     standalone: true,
     imports: [CommonModule, IconPerson, TooltipDirective],
     templateUrl: './avatar.html',
-    styleUrls: ['./avatar.scss', '../styles/base.scss', '../styles/colors.scss'],
+    styleUrls: ['./avatar.scss'],
     encapsulation: ViewEncapsulation.None,
 })
 export class Avatar {

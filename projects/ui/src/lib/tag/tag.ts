@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 export type ColorVariant =
     | 'primary'
@@ -21,7 +21,8 @@ export type ColorVariant =
     standalone: true,
     imports: [],
     templateUrl: './tag.html',
-    styleUrls: ['./tag.scss', '../styles/base.scss', '../styles/colors.scss'],
+    styleUrls: ['./tag.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class Tag {
     /** The label of the tag. */

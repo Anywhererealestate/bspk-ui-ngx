@@ -7,6 +7,7 @@ import { Badge } from '../../../../../projects/ui/src/lib/badge';
 import { Button } from '../../../../../projects/ui/src/lib/button';
 import { IconAdd } from '../../../../../projects/ui/src/lib/icons/add';
 import { Card } from '../../../../../projects/ui/src/lib/card';
+import { ChipGroup } from '../../../../../projects/ui/src/lib/chip-group';
 import { Chip } from '../../../../../projects/ui/src/lib/chip';
 import { Dialog } from '../../../../../projects/ui/src/lib/dialog';
 import { Drawer } from '../../../../../projects/ui/src/lib/drawer';
@@ -225,6 +226,68 @@ export class ButtonRouteComponent { }
   ],
 })
 export class CardRouteComponent { }
+
+
+@Component({
+  selector: 'chip-group-route',
+  standalone: true,
+  imports: [ChipGroup],
+  template: `<h2>Chip Group</h2>
+
+<h3>Basic</h3>
+<div style="width: 500px">
+    <ui-chip-group
+        [items]="[
+            { label: 'Chip 1' },
+            { label: 'Chip 2', trailingIcon: 'Add' },
+            { label: 'Chip 3', leadingIcon: 'Add', trailingBadge: { count: 2 } },
+            { label: 'Chip 4, flat = true' },
+            { label: 'Chip 5 selected = true', selected: true },
+            { label: 'Chip 6 disabled = true', disabled: true },
+        ]"
+    />
+</div>
+
+<h3>Scroll</h3>
+<div style="width: 500px">
+    <ui-chip-group
+        overflow="scroll"
+        [items]="[
+            { label: 'Chip 1' },
+            { label: 'Chip 2', trailingIcon: 'Add' },
+            { label: 'Chip 3', leadingIcon: 'Add', trailingBadge: { count: 2 } },
+            { label: 'Chip 4, flat = true' },
+            { label: 'Chip 5 selected = true', selected: true },
+            { label: 'Chip 6 disabled = true', disabled: true },
+        ]"
+    >
+    </ui-chip-group>
+</div>
+
+<h3>Scroll & Flat</h3>
+<div style="width: 500px">
+    <ui-chip-group
+        overflow="scroll"
+        [items]="[
+            { label: 'Chip 1', flat: true },
+            { label: 'Chip 2', trailingIcon: 'Add', flat: true },
+            { label: 'Chip 3', leadingIcon: 'Add', trailingBadge: { count: 2 }, flat: true },
+            { label: 'Chip 4, flat = true', flat: true },
+            { label: 'Chip 5 selected = true', selected: true, flat: true },
+            { label: 'Chip 6 disabled = true', disabled: true, flat: true },
+        ]"
+    >
+    </ui-chip-group>
+</div>`,
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
+})
+export class ChipGroupRouteComponent { }
 
 
 @Component({
