@@ -1,37 +1,40 @@
-import { Component, effect, ElementRef, input, ViewEncapsulation, inject } from '@angular/core';
+import { Component, effect, ElementRef, input, ViewEncapsulation, inject, Input } from '@angular/core';
 
 import { IconRegistry } from './icon-registry.service';
 
 @Component({
-  selector: 'bspk-icon',
-  imports: [],
-  template: '',
-  styleUrl: './icon.scss',
-  host: {
-    'data-bspk': 'icon',
-    role: 'img',
-  },
-  encapsulation: ViewEncapsulation.None,
+    selector: 'ui-icon',
+    imports: [],
+    template: '',
+    styles: 'ui-icon { display: contents; }',
+    encapsulation: ViewEncapsulation.None,
 })
 export class Icon {
+<<<<<<< HEAD
   /**
    * @see https://bspk.anywhere.re/icons
    */
   name = input.required<string>();
+=======
+    /** @see https://bspk.anywhere.re/icons */
+    readonly name = input.required<string>();
+    @Input() width?: string;
+>>>>>>> main
 
-  constructor() {
-    const elementRef = inject(ElementRef);
-    const iconRegistry = inject(IconRegistry);
+    constructor() {
+        const elementRef = inject(ElementRef);
+        const iconRegistry = inject(IconRegistry);
 
-    effect(async (onCleanup) => {
-      let canceled = false;
-      onCleanup(() => {
-        canceled = true;
-      });
-      const res = await iconRegistry.getIcon(this.name());
-      if (!canceled) {
-        elementRef.nativeElement.innerHTML = res;
-      }
-    });
-  }
+        effect(async (onCleanup) => {
+            let canceled = false;
+            onCleanup(() => {
+                canceled = true;
+            });
+            const res = await iconRegistry.getIcon(this.name());
+            if (canceled) return;
+
+            elementRef.nativeElement.innerHTML = res;
+            if (this.width) elementRef.nativeElement.children[0]?.setAttribute('width', this.width);
+        });
+    }
 }
