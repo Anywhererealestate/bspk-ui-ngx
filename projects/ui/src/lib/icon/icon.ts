@@ -19,7 +19,7 @@ import { IconRegistry } from './icon-registry.service';
 })
 export class Icon {
   /** @see https://bspk.anywhere.re/icons */
-  readonly name = input.required<string>();
+  name = input.required<string>();
   @Input() width?: string;
 
   constructor() {
