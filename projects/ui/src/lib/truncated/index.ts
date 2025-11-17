@@ -1,1 +1,1 @@
-export * from './truncated';
+export * from './truncated.directive';
