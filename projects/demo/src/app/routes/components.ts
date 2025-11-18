@@ -177,16 +177,7 @@ export class BadgeRouteComponent {}
 
         <h3>Primary with Tooltip</h3>
 
-        <<<<<<< HEAD
-        <ui-button (click)="handleClick()" label="Label test" size="large" icon="Add" toolTip="Hello" />
-        =======
-        <ui-button
-            label="Label test"
-            size="large"
-            icon="Add"
-            toolTip="Hello lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum "
-        />
-        >>>>>>> 0c834fb (chore(Truncated): [BSPK-208] change back to a component to conditionally render the Tooltip)
+        <ui-button label="Label test" size="large" icon="Add" toolTip="Hello" />
 
         <h3>Custom Content</h3>
 
@@ -474,14 +465,7 @@ export class TagRouteComponent {}
     imports: [TooltipDirective],
     template: `<h2>Tooltip Directive</h2>
 
-        <span
-            [tooltip]="{
-                label: 'Told ya!  lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum',
-                showTail: true,
-                placement: 'bottom',
-            }"
-            >Hover me for tooltip!</span
-        >`,
+        <span [tooltip]="{ label: 'Told ya!', showTail: true, placement: 'bottom' }">Hover me for tooltip!</span>`,
     styles: [
         `
             :host {
