@@ -8,7 +8,6 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { TooltipDirective } from '../tooltip/tooltip.directive';
-import { TruncatedDirective } from './truncated.directive';
 
 @Component({
   selector: 'ui-truncated',
