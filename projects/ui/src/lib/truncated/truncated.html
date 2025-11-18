@@ -1,3 +1,12 @@
-<span data-truncated [tooltip]="{ label: el.textContent, showTail: true, disabled: false }"
-  ><ng-content></ng-content
-></span>
+@switch (isTruncated) {
+  @case (true) {
+    <span data-truncated [tooltip]="{ label: projectedText, showTail: true, disabled: false }" #el>
+      <ng-content>{{ projectedText }}</ng-content>
+    </span>
+  }
+  @default {
+    <span data-truncated #el>
+      <ng-content></ng-content>
+    </span>
+  }
+}
