@@ -11,6 +11,7 @@ import { Chip } from '../../../../../projects/ui/src/lib/chip';
 import { Dialog } from '../../../../../projects/ui/src/lib/dialog';
 import { Drawer } from '../../../../../projects/ui/src/lib/drawer';
 import { Input } from '../../../../../projects/ui/src/lib/input';
+import { ListItem } from '../../../../../projects/ui/src/lib/list-item';
 import { Modal } from '../../../../../projects/ui/src/lib/modal';
 import { Tag } from '../../../../../projects/ui/src/lib/tag';
 import { TooltipDirective } from '../../../../../projects/ui/src/lib/tooltip/tooltip.directive';
@@ -357,6 +358,24 @@ protected open = false;
   ],
 })
 export class InputRouteComponent { }
+
+@Component({
+  selector: 'list-item-route',
+  standalone: true,
+  imports: [ListItem],
+  template: `<h2>ListItem</h2>
+    <ui-list-item label="Example Label" subText="Example Subtext" />`,
+  styles: [
+    `
+      :host {
+        display: contents;
+      }
+    `,
+  ],
+})
+export class ListItemRouteComponent { 
+protected open = false;
+}
 
 
 @Component({

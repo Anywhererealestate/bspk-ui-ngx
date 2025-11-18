@@ -1,0 +1,42 @@
+            
+<div
+    data-bspk="list-item"
+    [attr.data-disabled]="isDisabled"
+    [attr.data-readonly]="isReadOnly"
+    [attr.data-width]=[width]
+    id="id"
+    (onClick)="handleClick()"
+    ref="innerRef"
+>
+    @if (leading) {
+        <span data-leading>
+            @if (isTemplateRef(leading)) {
+                <ng-container>
+                    <ng-container *ngTemplateOutlet="leading as TemplateRef"></ng-container>
+                </ng-container>
+            } @else {
+                leadingText
+            }
+            <ng-template #leadingText>{{ leading }}</ng-template>
+        </span>
+    }
+    <span data-item-label>
+        <span data-text>{{label}}</span>
+
+        @if (subText) {
+            <span data-sub-text>{{subText}}</span>
+        }
+    </span>
+    @if (trailing) {
+        <span data-trailing>
+            @if (isTemplateRef(trailing)) {
+                <ng-container>
+                    <ng-container *ngTemplateOutlet="trailing as TemplateRef"></ng-container>
+                </ng-container>
+            } @else {
+                trailingText
+            }
+            <ng-template #trailingText>{{ trailing }}</ng-template>
+        </span>
+    }
+</div>
