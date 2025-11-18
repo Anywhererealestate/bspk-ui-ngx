@@ -1,39 +1,26 @@
-import {
-  Component,
-  Input,
-  ViewEncapsulation,
-  ElementRef,
-  ViewChild,
-  AfterViewChecked,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { TooltipDirective } from '../tooltip/tooltip.directive';
+import { Component, ViewEncapsulation, ElementRef, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import { TooltipDirective, TooltipProps } from '../tooltip/tooltip.directive';
 
 @Component({
-  selector: 'ui-truncated',
-  imports: [TooltipDirective],
-  styleUrls: ['./truncated.scss'],
-  templateUrl: './truncated.html',
-  encapsulation: ViewEncapsulation.None,
+    selector: 'ui-truncated',
+    imports: [TooltipDirective],
+    styleUrls: ['./truncated.scss'],
+    templateUrl: './truncated.html',
+    encapsulation: ViewEncapsulation.None,
 })
-export class Truncated implements AfterViewChecked {
-  isTruncated = false;
-  projectedText = '';
+export class Truncated implements AfterViewInit {
+    tooltip: TooltipProps | string = '';
 
-  @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
+    @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+    constructor(private cdr: ChangeDetectorRef) {}
 
-  ngAfterViewChecked() {
-    const el = this.elRef?.nativeElement;
-    if (el) {
-      const wasTruncated = this.isTruncated;
-      this.isTruncated = el.scrollWidth > el.clientWidth;
-      // Only trigger change detection if the value changed to avoid infinite loops
-      this.projectedText = el.textContent?.trim() || '';
-      if (wasTruncated !== this.isTruncated) {
-        this.cdr.detectChanges();
-      }
+    ngAfterViewInit() {
+        const el = this.elRef?.nativeElement;
+
+        if (el && el.scrollWidth > el.clientWidth && this.tooltip === '') {
+            this.tooltip = { label: el.textContent?.trim() || '', showTail: true };
+            this.cdr.detectChanges();
+        }
     }
-  }
 }
