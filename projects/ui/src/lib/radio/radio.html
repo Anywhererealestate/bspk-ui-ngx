@@ -1,1 +1,16 @@
-<p>radio works!</p>
+<span data-bspk="radio">
+    <input
+        type="radio"
+        [checked]="checked"
+        [attr.data-invalid]="invalid ? true : null"
+        [disabled]="disabled"
+        (change)="onInputChange($event)"
+        [attr.name]="name"
+        [attr.value]="value"
+        [attr.id]="id"
+        [attr.aria-describedby]="ariaDescribedby"
+        [attr.aria-label]="ariaLabel"
+        [attr.aria-labelledby]="ariaLabelledby"
+    />
+    <span aria-hidden="true"></span>
+</span>
