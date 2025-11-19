@@ -185,9 +185,11 @@ ui-button {
         }
 
         &[data-destructive] {
-            background: transparent;
-            color: var(--status-error);
-            border: solid 1px var(--status-error);
+            &:not([disabled]) {
+                background: transparent;
+                color: var(--status-error);
+                border: solid 1px var(--status-error);
+            }
         }
     }
 
@@ -217,7 +219,9 @@ ui-button {
         }
 
         &[data-destructive] {
-            color: var(--status-error);
+            &:not([disabled]) {
+                color: var(--status-error);
+            }
         }
     }
 }
