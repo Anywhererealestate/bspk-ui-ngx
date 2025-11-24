@@ -1,0 +1,22 @@
+<div
+    data-bspk="textarea"
+    [data-disabled]="disabled || undefined"
+    [data-invalid]="invalid || undefined"
+    [data-read-only]="readOnly || undefined"
+    data-size="{size}"
+>
+    <textarea
+        [aria-describedby]="ariaDescribedBy || undefined"
+        [attr.aria-errormessage]="ariaErrorMessage || undefined"
+        [attr.aria-invalid]="invalid || undefined"
+        [attr.aria-label]="ariaLabel || undefined"
+        [disabled]="disabled"
+        [id]="id"
+        [name]="name"
+        [placeholder]="placeholder"
+        [readOnly]="readOnly"
+        [value]="value"
+        [wrap]="hard"
+    />
+    <div aria-hidden data-replicated-value />
+</div>
