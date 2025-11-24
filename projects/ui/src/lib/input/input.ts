@@ -14,7 +14,7 @@ import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, 
         'data-bspk': 'input',
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
-        '[attr.data-show-clear-button]': 'showClearButton || null',
+        '[attr.data-show-clear-button]': 'getShowClearButton() || null',
     },
     encapsulation: ViewEncapsulation.None,
 })
@@ -25,6 +25,16 @@ export class UIInput extends TextInputControlValueAccessor {
          * @default true
          */
     @Input() showClearButton?: boolean = true;
+
+    getShowClearButton(): boolean {
+        return !!(
+            this.showClearButton !== false &&
+            !this.readOnly() &&
+            !this.disabled() &&
+            this.value() &&
+            this.value().toString().length > 0
+        );
+    }
 
     clearInput() {
         this.value.set('');

@@ -23,7 +23,10 @@
      />
 
 <ng-content select="[data-trailing]">
-    @if (showClearButton && !readOnly() && !disabled() && value()) {
+    @if (trailing()) {
+        <span data-trailing>{{ trailing() }}</span>
+    }
+    @if (getShowClearButton()) {
         <ui-button
         label="Clear"
         [iconOnly]="true"
@@ -33,8 +36,5 @@
         >
             <icon-cancel></icon-cancel>
         </ui-button>
-    }
-    @if (trailing()) {
-        <span data-trailing>{{ trailing() }}</span>
     }
 </ng-content>
