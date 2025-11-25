@@ -37,6 +37,7 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
     readonly readOnly = input(false, { transform: booleanAttribute });
     readonly placeholder = input<string | undefined>(undefined);
     readonly name = input<string | undefined>(undefined);
+    readonly owner = input<string | undefined>(undefined);
     readonly autoComplete = input<AutoCompleteOptions>('off');
     readonly ariaLabel = input<string | undefined>(undefined);
     readonly id = input<string | undefined>(undefined);

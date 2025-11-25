@@ -11,8 +11,9 @@
     [attr.data-invalid]="inputInvalid"
     [disabled]="inputDisabled"
     [id]="inputId"
-    [placeholder]="inputPlaceholder"
-    [name]="inputName"
+    [attr.placeholder]="inputPlaceholder"
+    [attr.name]="inputName"
+    [attr.owner]="inputOwner"
     [attr.autocomplete]="inputAutocomplete"
     [readOnly]="inputReadOnly"
     [required]="inputRequired"
@@ -26,15 +27,16 @@
     @if (trailing()) {
         <span data-trailing>{{ trailing() }}</span>
     }
-    @if (getShowClearButton()) {
-        <ui-button
-        tooltip="Clear input"
-        aria-label="Clear input"
-        variant="tertiary"
-        [size]="buttonSize"
-        (click)="clearInput()"
-        >
-            <icon-cancel></icon-cancel>
-        </ui-button>
-    }
 </ng-content>
+
+@if (getShowClearButton()) {
+    <ui-button
+    tooltip="Clear input"
+    aria-label="Clear input"
+    variant="tertiary"
+    [size]="buttonSize"
+    (click)="clearInput()"
+    >
+        <icon-cancel></icon-cancel>
+    </ui-button>
+}

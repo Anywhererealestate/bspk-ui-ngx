@@ -14,7 +14,7 @@ import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, 
         'data-bspk': 'input',
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
-        '[attr.data-show-clear-button]': 'getShowClearButton',
+        '[attr.data-show-clear-button]': 'getShowClearButton()',
     },
     encapsulation: ViewEncapsulation.None,
 })
@@ -51,8 +51,8 @@ export class UIInput extends TextInputControlValueAccessor {
         return this.ariaLabel() || this.label();
     }
 
-    get inputInvalid(): boolean {
-        return this.invalid();
+    get inputInvalid(): boolean | null {
+        return this.invalid() || null;
     }
 
     get inputDisabled(): boolean {
@@ -63,12 +63,16 @@ export class UIInput extends TextInputControlValueAccessor {
         return this.id() || this.controlId();
     }
 
-    get inputPlaceholder(): string {
-        return this.placeholder() || '';
+    get inputPlaceholder(): string | null {
+        return this.placeholder() || null;
     }
 
     get inputName(): string | null {
         return this.name() || null;
+    }
+
+    get inputOwner(): string | null {
+        return this.owner() || null;
     }
 
     get inputAutocomplete(): string | null {
