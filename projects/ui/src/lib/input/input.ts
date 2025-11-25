@@ -41,7 +41,7 @@ export class UIInput extends TextInputControlValueAccessor {
     }
 
     // this method to ensures the returned value is of type ButtonSize
-    getButtonSize(): ButtonSize {
+    get buttonSize(): ButtonSize {
         const validSizes: ButtonSize[] = ['small', 'medium', 'large'];
         const sizeValue = this.size();
         return validSizes.includes(sizeValue as ButtonSize) ? sizeValue as ButtonSize : 'medium';
@@ -51,8 +51,20 @@ export class UIInput extends TextInputControlValueAccessor {
         return this.ariaLabel() || this.label();
     }
 
+    get inputInvalid(): boolean {
+        return this.invalid();
+    }
+
+    get inputDisabled(): boolean {
+        return this.disabled() || this.disabledState();
+    }
+
     get inputId(): string {
         return this.id() || this.controlId();
+    }
+
+    get inputPlaceholder(): string {
+        return this.placeholder() || '';
     }
 
     get inputName(): string | null {
@@ -61,6 +73,22 @@ export class UIInput extends TextInputControlValueAccessor {
 
     get inputAutocomplete(): string | null {
         return this.autoComplete() || null;
+    }
+
+    get inputReadOnly(): boolean | null {
+        return this.readOnly() || null;
+    }
+
+    get inputRequired(): boolean | null {
+        return this.required() || null;
+    }
+
+    get inputType(): string {
+        return this.type();
+    }
+
+    get inputValue(): string | undefined {
+        return this.value();
     }
 
     readonly controlId = input(randomString());

@@ -6,18 +6,18 @@
 
 <input
     data-main-input
-    [attr.aria-invalid]="invalid()"
     [attr.aria-label]="inputAriaLabel"
-    [attr.data-invalid]="invalid()"
-    [disabled]="disabled() || disabledState()"
+    [attr.aria-invalid]="inputInvalid"
+    [attr.data-invalid]="inputInvalid"
+    [disabled]="inputDisabled"
     [id]="inputId"
-    [placeholder]="placeholder() || ''"
+    [placeholder]="inputPlaceholder"
     [name]="inputName"
     [attr.autocomplete]="inputAutocomplete"
-    [readOnly]="readOnly() || null"
-    [required]="required() || null"
-    [type]="type()"
-    [value]="value()"
+    [readOnly]="inputReadOnly"
+    [required]="inputRequired"
+    [type]="inputType"
+    [value]="inputValue"
     (blur)="handleBlur($event)"
     (input)="handleInput($event)"
      />
@@ -31,7 +31,7 @@
         tooltip="Clear input"
         aria-label="Clear input"
         variant="tertiary"
-        [size]="getButtonSize()"
+        [size]="buttonSize"
         (click)="clearInput()"
         >
             <icon-cancel></icon-cancel>
