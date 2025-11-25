@@ -71,10 +71,6 @@ export class UIInput extends TextInputControlValueAccessor {
         return this.name() || null;
     }
 
-    get inputOwner(): string | null {
-        return this.owner() || null;
-    }
-
     get inputAutocomplete(): string | null {
         return this.autoComplete() || null;
     }
