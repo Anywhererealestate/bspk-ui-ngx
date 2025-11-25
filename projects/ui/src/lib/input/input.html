@@ -19,8 +19,7 @@
     [type]="inputType"
     [value]="inputValue"
     (blur)="handleBlur($event)"
-    (input)="handleInput($event)"
-     />
+    (input)="handleInput($event)" />
 
 <ng-content select="[data-trailing]">
     @if (trailing()) {
@@ -30,12 +29,10 @@
 
 @if (getShowClearButton()) {
     <ui-button
-    tooltip="Clear input"
-    aria-label="Clear input"
-    variant="tertiary"
-    [size]="buttonSize"
-    (click)="clearInput()"
-    >
-        <icon-cancel></icon-cancel>
-    </ui-button>
+        label="Clear input"
+        variant="tertiary"
+        [size]="buttonSize"
+        (click)="clearInput()"
+        icon="Cancel"
+        [iconOnly]="true" />
 }

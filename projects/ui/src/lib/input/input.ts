@@ -1,12 +1,11 @@
 import { Component, input, Input, ViewEncapsulation } from '@angular/core';
 import { UIButton, ButtonSize } from '../button/button';
-import { IconCancel } from '../icons/cancel';
 import { provideNgxMask } from 'ngx-mask';
 import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
 
 @Component({
     selector: 'ui-input',
-    imports: [UIButton, IconCancel],
+    imports: [UIButton],
     templateUrl: './input.html',
     styleUrl: './input.scss',
     providers: [provideValueAccessor(UIInput), provideValidator(UIInput), provideNgxMask()],
@@ -20,19 +19,21 @@ import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, 
 })
 export class UIInput extends TextInputControlValueAccessor {
     /**
-         * Specifies if the clear button should be shown. This should almost always be true, but can be set to false.
-         *
-         * @default true
-         */
+     * Specifies if the clear button should be shown. This should almost always be true, but can be set to false.
+     *
+     * @default true
+     */
     @Input() showClearButton?: boolean = true;
 
     getShowClearButton(): boolean | null {
-        return !!(
-            this.showClearButton !== false &&
-            !this.readOnly() &&
-            !this.disabled() &&
-            this.value() &&
-            this.value().toString().length > 0
+        return (
+            !!(
+                this.showClearButton !== false &&
+                !this.readOnly() &&
+                !this.disabled() &&
+                this.value()?.length > 0 &&
+                document?.activeElement?.id === this.inputId // focused
+            ) || null
         );
     }
 
@@ -44,7 +45,7 @@ export class UIInput extends TextInputControlValueAccessor {
     get buttonSize(): ButtonSize {
         const validSizes: ButtonSize[] = ['small', 'medium', 'large'];
         const sizeValue = this.size();
-        return validSizes.includes(sizeValue as ButtonSize) ? sizeValue as ButtonSize : 'medium';
+        return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
     }
 
     get inputAriaLabel(): string | undefined {
