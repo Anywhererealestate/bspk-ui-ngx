@@ -17,7 +17,7 @@ ui-input {
     gap: var(--spacing-sizing-01);
     width: 100%;
 
-    &[data-show-clear-button = 'true'] {
+    &[data-show-clear-button] {
         padding-right: 0;
     }
 
@@ -101,15 +101,9 @@ ui-input {
     [data-leading],
     [data-trailing] {
         position: relative;
-        
+
         svg {
             width: var(--field-icon-width);
-        }
-    }
-
-    icon-cancel {
-        svg {
-            width: var(--field-clear-width);
         }
     }
 
