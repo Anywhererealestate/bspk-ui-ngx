@@ -6,7 +6,9 @@ const iconsDir = path.join(process.cwd(), 'projects/ui/src/lib/icons');
 const iconDir = path.join(process.cwd(), 'projects/ui/src/lib/icon');
 
 // Find all .ts files (icon components) in the icons directory
-const iconFiles = fs.readdirSync(iconsDir).filter(file => file.endsWith('.ts'));
+const iconFiles = fs
+    .readdirSync(iconsDir)
+    .filter(file => file.endsWith('.ts') && file !== 'index.ts');
 
 const iconFileNames = iconFiles.map(file => file.replace(/\.ts$/, ''));
 
@@ -17,19 +19,37 @@ function toPascalCase(str: string) {
         .replace(/([a-z])([A-Z]+)/g, (_, a, b) => a + b); // Preserve consecutive uppercase
 }
 
+function extractSvgFromFile(filePath: string): string {
+    const content = fs.readFileSync(filePath, 'utf8');
+    // Match: template: `<svg ...>...</svg>`
+    const match = content.match(/template:\s*`([\s\S]*?)`/);
+    return match ? match[1].trim() : '';
+}
+
 const registryEntries: string[] = [];
 const registryObject: string[] = [];
+
+// iconFiles.forEach(file => {
+//     // kebab-case name without 'icon-' and '.ts'
+//     const kebabName = file.replace(/^icon-/, '').replace(/\.ts$/, '');
+//     // PascalCase for class name
+//     const pascalName = toPascalCase(kebabName);
+//     // Import statement for the icon component
+//     registryEntries.push(`import { Icon${pascalName} } from '../icons/${kebabName}';`);
+//     // Registry key matches kebab-case (selector), value is PascalCase class
+//     registryObject.push(`  '${kebabName}': Icon${pascalName}`);
+// });
 
 iconFiles.forEach(file => {
     // kebab-case name without 'icon-' and '.ts'
     const kebabName = file.replace(/^icon-/, '').replace(/\.ts$/, '');
-    // PascalCase for class name
-    const pascalName = toPascalCase(kebabName);
-    // Import statement for the icon component
-    registryEntries.push(`import { Icon${pascalName} } from '../icons/${kebabName}';`);
-    // Registry key matches kebab-case (selector), value is PascalCase class
-    registryObject.push(`  '${kebabName}': Icon${pascalName}`);
+    const filePath = path.join(iconsDir, file);
+    const svgString = extractSvgFromFile(filePath)
+        .replace(/`/g, '\\`'); // Escape backticks for template literals
+
+    registryObject.push(`  '${kebabName}': \`${svgString}\``);
 });
+
 // Output file path
 const outputPath = path.join(iconDir, 'icon-registry.ts');
 
