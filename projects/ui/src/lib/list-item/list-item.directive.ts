@@ -5,7 +5,7 @@ import { Directive, Input, Output, EventEmitter, HostBinding, HostListener } fro
   standalone: true,
 })
 export class UiListItemDirective {
-  @Input('uiListItem') label?: string;
+  @Input('listItem') label?: string;
   @Input() href?: string;
   @Input() actionable?: boolean;
   @Input() active?: boolean;
