@@ -1,7 +1,7 @@
 import { Directive, Input, Output, EventEmitter, HostBinding, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[uiListItem]',
+  selector: '[list-item]',
   standalone: true,
 })
 export class UiListItemDirective {
