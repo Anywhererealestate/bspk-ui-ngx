@@ -1,22 +1,14 @@
-<div
+<textarea
+    [attr.aria-invalid]="invalid()"
+    [attr.aria-label]="label()"
+    [attr.data-invalid]="invalid()"
+    [disabled]="disabled() || disabledState()"
+    [id]="controlId()"
+    [placeholder]="placeholder() || ''"
+    [readOnly]="readOnly() || null"
+    [required]="required() || null"
+    [value]="value()"
+    (blur)="handleBlur($event)"
+    (input)="handleInput($event)"
     data-bspk="textarea"
-    [data-disabled]="disabled || undefined"
-    [data-invalid]="invalid || undefined"
-    [data-read-only]="readOnly || undefined"
-    data-size="{size}"
->
-    <textarea
-        [aria-describedby]="ariaDescribedBy || undefined"
-        [attr.aria-errormessage]="ariaErrorMessage || undefined"
-        [attr.aria-invalid]="invalid || undefined"
-        [attr.aria-label]="ariaLabel || undefined"
-        [disabled]="disabled"
-        [id]="id"
-        [name]="name"
-        [placeholder]="placeholder"
-        [readOnly]="readOnly"
-        [value]="value"
-        [wrap]="hard"
-    />
-    <div aria-hidden data-replicated-value />
-</div>
+></textarea>

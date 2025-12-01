@@ -1,14 +1,20 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, input } from '@angular/core';
+import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
+import { provideNgxMask } from 'ngx-mask';
 
 @Component({
     selector: 'ui-text-area',
     imports: [],
     templateUrl: './text-area.html',
     styleUrl: './text-area.scss',
+    providers: [provideValueAccessor(Input), provideValidator(Input), provideNgxMask()],
+    host: {
+        'data-bspk': 'input',
+        '[attr.data-size]': 'size()',
+        '[attr.data-invalid]': 'invalid() || null',
+    },
 })
-export class TextArea {
-    /** The placeholder of the field. */
-    @Input() placeholder?: string;
+export class TextArea extends TextInputControlValueAccessor {
     /**
      * The maximum number of characters that the field will accept.
      *
@@ -33,4 +39,6 @@ export class TextArea {
      * @maximum 10
      */
     @Input() maxRows?: number;
+
+    readonly controlId = input(randomString());
 }
