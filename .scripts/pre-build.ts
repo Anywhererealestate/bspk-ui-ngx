@@ -85,8 +85,14 @@ componentMeta.forEach(({ name, slug, type, classContent, template }) => {
     // look for used components
     const imports = [...componentImports, ...icons.map(({ name }) => `Icon${name}`)];
 
-    const iconComponentMatches = Array.from(template.matchAll(/\[icon\]="([\w]+)"/g))
-    .map(m => m[1]);
+    // Find all icon usages for [icon], [leadingIcon], [trailingIcon]
+const iconComponentMatches = [
+    ...Array.from(template.matchAll(/\[icon\]="([\w]+)"/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/\[leadingIcon\]="([\w]+)"/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/\[trailingIcon\]="([\w]+)"/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/leadingIcon:\s*([\w]+)/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/trailingIcon:\s*([\w]+)/g)).map(m => m[1]),
+];
 
 // Add imports for detected icon components
 iconComponentMatches.forEach(iconComp => {
@@ -95,7 +101,7 @@ iconComponentMatches.forEach(iconComp => {
     );
 });
 
-    if (slug !== 'icon')
+    if (slug)
         componentsContent.push(
             type === 'directive'
                 ? directiveTemplate({ name, slug, template, imports })
@@ -118,7 +124,7 @@ fs.writeFileSync(
         `export const componentItems: NavRoute[] = [
   { title: 'Components', section: true },
   ${componentMeta
-      .filter(({ slug }) => slug !== 'icon')
+    //   .filter(({ slug }) => slug !== 'icon')
       .map(
           ({ name, slug }) =>
               `{ path: '${slug}', component: ${name}RouteComponent, title: '${name.replace(/^UI/, '')}' },`,
@@ -156,7 +162,14 @@ type TemplateParams = {
 
 function componentTemplate({ name, slug, template, classContent, imports }: TemplateParams) {
     const hasHandleClick = template.includes('handleClick');
-    const iconComponentMatches = Array.from(template.matchAll(/\[icon\]="([\w]+)"/g)).map(m => m[1]);
+    // Find all icon usages for [icon], [leadingIcon], [trailingIcon]
+const iconComponentMatches = [
+    ...Array.from(template.matchAll(/\[icon\]="([\w]+)"/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/\[leadingIcon\]="([\w]+)"/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/\[trailingIcon\]="([\w]+)"/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/leadingIcon:\s*([\w]+)/g)).map(m => m[1]),
+    ...Array.from(template.matchAll(/trailingIcon:\s*([\w]+)/g)).map(m => m[1]),
+];
 
     // Get existing public properties from classContent
     const existingProps = new Set<string>();

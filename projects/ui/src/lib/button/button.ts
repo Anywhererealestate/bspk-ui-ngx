@@ -23,7 +23,7 @@ import { UITooltipDirective } from '../tooltip';
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 export type ButtonSize = 'large' | 'medium' | 'small' | 'x-small';
 export type ButtonWidth = 'fill' | 'hug';
-export type IconType = string | BspkIcon;
+export type IconType = BspkIcon;
 
 /**
  * A clickable component that allows users to perform an action, make a choice or trigger a change in state.

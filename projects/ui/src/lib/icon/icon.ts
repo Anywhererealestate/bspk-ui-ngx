@@ -1,6 +1,5 @@
-import { Component, effect, ElementRef, input, ViewEncapsulation, inject, Input } from '@angular/core';
-
-import { IconRegistry } from './icon-registry.service';
+import { Component, effect, ElementRef, input, ViewEncapsulation, inject, Input, ViewContainerRef  } from '@angular/core';
+import { BspkIcon } from '../../types/bspk-icon';
 
 @Component({
     selector: 'ui-icon',
@@ -11,23 +10,28 @@ import { IconRegistry } from './icon-registry.service';
 })
 export class UIIcon {
     /** @see https://bspk.anywhere.re/icons */
-    name = input.required<string>();
+    @Input() icon!: BspkIcon;
     @Input() width?: string;
 
     constructor() {
         const elementRef = inject(ElementRef);
-        const iconRegistry = inject(IconRegistry);
+        const viewContainerRef = inject(ViewContainerRef);
 
         effect(async (onCleanup) => {
             let canceled = false;
             onCleanup(() => {
                 canceled = true;
             });
-            const res = await iconRegistry.getIcon(this.name());
-            if (canceled) return;
 
-            elementRef.nativeElement.innerHTML = res;
-            if (this.width) elementRef.nativeElement.children[0]?.setAttribute('width', this.width);
+            // If icon is a component (BspkIcon), render it dynamically
+            if (typeof this.icon === 'function') {
+                viewContainerRef.clear();
+                const ref = viewContainerRef.createComponent(this.icon);
+                if (this.width) {
+                    (ref.instance as { width?: string }).width = this.width;
+                }
+                return;
+            }
         });
     }
 }
