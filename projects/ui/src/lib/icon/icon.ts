@@ -1,4 +1,13 @@
-import { Component, effect, ElementRef, input, ViewEncapsulation, inject, Input, ViewContainerRef  } from '@angular/core';
+import {
+    Component,
+    effect,
+    ElementRef,
+    input,
+    ViewEncapsulation,
+    inject,
+    Input,
+    ViewContainerRef,
+} from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
 
 @Component({

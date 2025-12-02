@@ -63,7 +63,7 @@ export class UIButton implements OnInit {
      *
      * Should be a SVG from the BSPK icon library.
      */
-    @Input() icon?:  IconType;
+    @Input() icon?: IconType;
 
     /**
      * When true the button label is hidden and only the icon is shown. When label isn't showing it is used in a tooltip
