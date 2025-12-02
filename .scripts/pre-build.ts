@@ -157,7 +157,20 @@ type TemplateParams = {
 function componentTemplate({ name, slug, template, classContent, imports }: TemplateParams) {
     const hasHandleClick = template.includes('handleClick');
     const iconComponentMatches = Array.from(template.matchAll(/\[icon\]="([\w]+)"/g)).map(m => m[1]);
-    const iconPublicProps = iconComponentMatches.map(iconComp => `public ${iconComp} = ${iconComp};`).join('\n  ');
+
+    // Get existing public properties from classContent
+    const existingProps = new Set<string>();
+    if (classContent) {
+        const matches = Array.from(classContent.matchAll(/public\s+(\w+)\s*=/g));
+        matches.forEach(m => existingProps.add(m[1]));
+    }
+
+    // Only add public property if it doesn't already exist
+    const uniqueIconComponentMatches = Array.from(new Set(iconComponentMatches));
+const iconPublicProps = uniqueIconComponentMatches
+    .filter(iconComp => !existingProps.has(iconComp))
+    .map(iconComp => `public ${iconComp} = ${iconComp};`)
+    .join('\n  ');
 
     return `
 @Component({
