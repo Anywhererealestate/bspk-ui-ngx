@@ -1,0 +1,22 @@
+<h2>Table</h2>
+
+<p>Sortable columns with pagination.</p>
+
+<ui-table
+    [title]="'U.S. States — Capitals & Quick Facts'"
+    [size]="'medium'"
+    [pageSize]="5"
+    [columns]="[
+        { key: 'state', label: 'State', width: '160px', sort: 'string' },
+        { key: 'capital', label: 'Capital', width: '140px' },
+        { key: 'population', label: 'Population', width: '140px', sort: 'number' },
+        { key: 'nickname', label: 'Nickname', width: '1fr' },
+    ]"
+    [data]="[
+        { id: 'ca', state: 'California', capital: 'Sacramento', population: 39512223, nickname: 'The Golden State' },
+        { id: 'ny', state: 'New York', capital: 'Albany', population: 19299981, nickname: 'The Empire State' },
+        { id: 'nj', state: 'New Jersey', capital: 'Trenton', population: 8882190, nickname: 'The Garden State' },
+        { id: 'tx', state: 'Texas', capital: 'Austin', population: 29183290, nickname: 'The Lone Star State' },
+        { id: 'hi', state: 'Hawaii', capital: 'Honolulu', population: 1415872, nickname: 'The Aloha State' },
+        { id: 'ak', state: 'Alaska', capital: 'Juneau', population: 731545, nickname: 'The Last Frontier' },
+    ]"></ui-table>

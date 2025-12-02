@@ -1,0 +1,172 @@
+import { CommonModule } from '@angular/common';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { UIPagination } from '../pagination';
+import { UIIcon } from '../icon';
+
+export type TableSize = 'large' | 'medium' | 'small' | 'x-large';
+
+export type TableCellValue = unknown;
+
+export type TableRow = {
+    [key: string]: TableCellValue | TableCellValue[];
+    id: string;
+};
+
+export type BuiltInColumnSorters = 'boolean' | 'date' | 'number' | 'string';
+export type TableColumnSortingFn = (a: TableCellValue, b: TableCellValue) => number;
+
+export type TableColumn<R extends TableRow> = {
+    key: string;
+    label: string;
+    width?: string;
+    align?: 'center' | 'left' | 'right';
+    valign?: 'bottom' | 'center' | 'top';
+    sort?: BuiltInColumnSorters | TableColumnSortingFn;
+    formatter?: (row: R, size: TableSize) => unknown;
+};
+
+type SortOrder = 'asc' | 'desc';
+type SortState = { key: string; order: SortOrder }[];
+
+function parseDateTime(val: TableCellValue): number {
+    let dateValue: any = val;
+    if (typeof val === 'string' || typeof val === 'number') dateValue = new Date(val);
+    return dateValue instanceof Date && !isNaN(dateValue.getTime()) ? dateValue.getTime() : 0;
+}
+
+const BUILT_IN_COLUMN_SORTERS: Record<BuiltInColumnSorters, TableColumnSortingFn> = {
+    string: (a, b) => `${a}`.localeCompare(`${b}`),
+    number: (a, b) => {
+        const aNum = typeof a === 'number' ? a : Number(a) || 0;
+        const bNum = typeof b === 'number' ? b : Number(b) || 0;
+        return aNum - bNum;
+    },
+    boolean: (a, b) => (a === b ? 0 : a ? 1 : -1),
+    date: (a, b) => parseDateTime(a) - parseDateTime(b),
+};
+
+@Component({
+    selector: 'ui-table',
+    standalone: true,
+    imports: [CommonModule, UIPagination, UIIcon],
+    templateUrl: './table.html',
+    styleUrls: ['./table.scss'],
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk': 'table',
+    },
+})
+export class UITable<R extends TableRow> {
+    @Input() data: R[] = [];
+    @Input() columns: (TableColumn<R> | boolean)[] = [];
+    @Input() title?: string;
+    @Input() size: TableSize = 'medium';
+    @Input() pageSize: number = 10;
+
+    pageIndex = 0;
+    sorting: SortState = [];
+
+    get hasPagination(): boolean {
+        return (this.data?.length || 0) > this.pageSize;
+    }
+
+    get normalizedColumns(): TableColumn<R>[] {
+        return (this.columns || []).filter((c): c is TableColumn<R> => typeof c === 'object' && c !== null);
+    }
+
+    get totalColumns(): number {
+        return this.normalizedColumns.length;
+    }
+
+    get totalPages(): number {
+        const len = this.data?.length || 0;
+        return Math.ceil(len / this.pageSize) || 1;
+    }
+
+    get rows(): R[] {
+        const cols = this.normalizedColumns;
+        let result = [...(this.data || [])];
+
+        if (this.sorting.length) {
+            result.sort((a, b) => {
+                for (const { key, order } of this.sorting) {
+                    const aValue = (a as any)[key];
+                    const bValue = (b as any)[key];
+                    const colSort = cols.find((c) => c.key === key)?.sort;
+                    if (!colSort) continue;
+                    const sortFn = typeof colSort === 'function' ? colSort : BUILT_IN_COLUMN_SORTERS[colSort];
+                    const next = sortFn(aValue, bValue);
+                    if (next !== 0) return next * (order === 'asc' ? 1 : -1);
+                }
+                return 0;
+            });
+        }
+
+        const start = this.pageIndex * this.pageSize;
+        const end = start + this.pageSize;
+        return result.slice(start, end);
+    }
+
+    toggleSorting(key: string) {
+        const current = this.sorting.find((s) => s.key === key)?.order;
+        let nextOrder: SortOrder | undefined;
+        if (!current) nextOrder = 'asc';
+        else if (current === 'asc') nextOrder = 'desc';
+        else nextOrder = undefined;
+
+        if (!nextOrder) {
+            this.sorting = this.sorting.filter((s) => s.key !== key);
+        } else if (current) {
+            this.sorting = this.sorting.map((s) => (s.key === key ? { ...s, order: nextOrder! } : s));
+        } else {
+            this.sorting = [...this.sorting, { key, order: nextOrder }];
+        }
+    }
+
+    trackRow(index: number, row: R) {
+        return row.id;
+    }
+
+    setPageIndex(idx: number) {
+        this.pageIndex = idx;
+    }
+
+    startRow(): number {
+        const total = this.data.length;
+        return total === 0 ? 0 : this.pageIndex * this.pageSize + 1;
+    }
+
+    endRow(): number {
+        const end = this.pageIndex * this.pageSize + this.pageSize;
+        return Math.min(end, this.data.length);
+    }
+
+    formatCell(value: unknown): string | null {
+        if (value == null) return null;
+        if (Array.isArray(value)) return value.map((v) => this.formatCell(v) ?? '').join(', ');
+        if (typeof value === 'object') {
+            console.warn('Unexpected object value:', value);
+            return null;
+        }
+        return String(value);
+    }
+
+    gridTemplateColumns(): string {
+        return this.normalizedColumns.map((c) => 'minmax(min-content,' + (c.width || '1fr') + ')').join(' ');
+    }
+
+    ariaSortForColumn(columnKey: string) {
+        return this.sorting.find((s) => s.key === columnKey)?.order === 'asc'
+            ? 'ascending'
+            : this.sorting.find((s) => s.key === columnKey)?.order === 'desc'
+              ? 'descending'
+              : 'none';
+    }
+
+    sortIcon(columnKey: string): 'ArrowUpward' | 'ArrowDownward' | null {
+        const sortState = this.sorting.find((s) => s.key === columnKey);
+        return sortState ? (sortState.order === 'asc' ? 'ArrowUpward' : 'ArrowDownward') : null;
+    }
+}
+
+/** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */

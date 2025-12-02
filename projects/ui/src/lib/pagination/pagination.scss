@@ -1,0 +1,26 @@
+[data-bspk='pagination'] {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sizing-01);
+    flex: 1;
+
+    [data-input-form] {
+        display: contents;
+    }
+
+    [data-bspk='input'] {
+        max-width: var(--spacing-sizing-12);
+
+        input {
+            text-align: center;
+        }
+    }
+
+    button[data-bspk-owner='pagination'][data-bspk='button'][data-size='small'] {
+        padding: 6px 0;
+    }
+}
+
+/** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */
