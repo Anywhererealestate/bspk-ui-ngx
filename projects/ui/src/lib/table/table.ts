@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { UIPagination } from '../pagination';
 import { UIIcon } from '../icon';
+import { sendAriaLiveMessage } from '../../utils';
 
 export type TableSize = 'large' | 'medium' | 'small' | 'x-large';
 
@@ -108,19 +109,20 @@ export class UITable<R extends TableRow> {
     }
 
     toggleSorting(key: string) {
-        const current = this.sorting.find((s) => s.key === key)?.order;
-        let nextOrder: SortOrder | undefined;
-        if (!current) nextOrder = 'asc';
-        else if (current === 'asc') nextOrder = 'desc';
-        else nextOrder = undefined;
+        const exists = this.sorting.find((sort) => sort.key === key);
+        const order: SortOrder | undefined = getNextOrder(exists?.order);
 
-        if (!nextOrder) {
-            this.sorting = this.sorting.filter((s) => s.key !== key);
-        } else if (current) {
-            this.sorting = this.sorting.map((s) => (s.key === key ? { ...s, order: nextOrder! } : s));
-        } else {
-            this.sorting = [...this.sorting, { key, order: nextOrder }];
-        }
+        // update to nextOrder
+        if (order && exists) this.sorting = this.sorting.map((sort) => (sort.key === key ? { ...sort, order } : sort));
+
+        // add nextOrder
+        if (order && !exists) this.sorting = [...this.sorting, { key, order }];
+
+        // remove sorting
+        if (!order && exists) this.sorting = this.sorting.filter((sort) => sort.key !== key);
+
+        const columnLabel = this.normalizedColumns.find((col) => col.key === key)?.label || key;
+        sendAriaLiveMessage(`${order ? `Sorted ${order}ending` : 'Removed sorting'} by ${columnLabel}`);
     }
 
     trackRow(index: number, row: R) {
@@ -167,6 +169,12 @@ export class UITable<R extends TableRow> {
         const sortState = this.sorting.find((s) => s.key === columnKey);
         return sortState ? (sortState.order === 'asc' ? 'ArrowUpward' : 'ArrowDownward') : null;
     }
+}
+
+function getNextOrder(currentOrder: SortOrder | undefined): SortOrder | undefined {
+    if (!currentOrder) return 'asc';
+    if (currentOrder === 'asc') return 'desc';
+    return undefined;
 }
 
 /** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */
