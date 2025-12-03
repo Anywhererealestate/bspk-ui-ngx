@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewE
 import { CommonModule } from '@angular/common';
 import { UIButton } from '../button/button';
 import { UIInput } from '../input';
-import { IconChevronRight } from '../icons';
+import { IconChevronLeft, IconChevronRight } from '../icons';
 import { sendAriaLiveMessage } from '../../utils';
 
 // After this point the manual input renders. With equal or fewer pages
@@ -58,7 +58,7 @@ export class UIPagination implements OnChanges {
     readonly INPUT_TYPE_THRESHOLD = INPUT_TYPE_THRESHOLD;
 
     ChevronRight = IconChevronRight;
-    ChevronLeft = IconChevronRight;
+    ChevronLeft = IconChevronLeft;
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['value']) {
