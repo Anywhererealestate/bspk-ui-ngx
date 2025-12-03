@@ -24,7 +24,7 @@
                                     {{ column.label }}
                                     @if (sortIcon(column.key)) {
                                         <span aria-hidden data-sort-icon>
-                                            <ui-icon name="{{ sortIcon(column.key) }}"></ui-icon>
+                                            <ui-icon [icon]="sortIcon(column.key)!"></ui-icon>
                                         </span>
                                     }
                                 </button>

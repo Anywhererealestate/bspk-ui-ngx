@@ -2,6 +2,8 @@ import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewE
 import { CommonModule } from '@angular/common';
 import { UIButton } from '../button/button';
 import { UIInput } from '../input';
+import { IconChevronRight } from '../icons';
+import { sendAriaLiveMessage } from '../../utils';
 
 // After this point the manual input renders. With equal or fewer pages
 // the individual page buttons render instead (matches React implementation).
@@ -55,6 +57,9 @@ export class UIPagination implements OnChanges {
 
     readonly INPUT_TYPE_THRESHOLD = INPUT_TYPE_THRESHOLD;
 
+    ChevronRight = IconChevronRight;
+    ChevronLeft = IconChevronRight;
+
     ngOnChanges(changes: SimpleChanges) {
         if (changes['value']) {
             this.inputValue = String(this.value);
@@ -70,6 +75,7 @@ export class UIPagination implements OnChanges {
     emit(page: number) {
         const next = this.clamp(page);
         this.onChange.emit(next);
+        sendAriaLiveMessage(`Page ${page} of ${this.numPages}`);
     }
 
     previousPage() {

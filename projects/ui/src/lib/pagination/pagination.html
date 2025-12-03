@@ -2,7 +2,7 @@
     <ng-container>
         <ui-button
             [disabled]="!inBounds(value - 1)"
-            icon="ChevronLeft"
+            [icon]="ChevronLeft"
             [iconOnly]="true"
             [label]="value === 1 ? 'First page' : 'Previous page (' + (value - 1) + ')'"
             (onClick)="previousPage()"
@@ -38,7 +38,7 @@
 
         <ui-button
             [disabled]="!inBounds(value + 1)"
-            icon="ChevronRight"
+            [icon]="ChevronRight"
             [iconOnly]="true"
             [label]="value === numPages ? 'Last page' : 'Next page (' + (value + 1) + ')'"
             (onClick)="nextPage()"

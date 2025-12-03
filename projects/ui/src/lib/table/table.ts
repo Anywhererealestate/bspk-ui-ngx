@@ -3,6 +3,8 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { UIPagination } from '../pagination';
 import { UIIcon } from '../icon';
 import { sendAriaLiveMessage } from '../../utils';
+import { IconArrowDownward, IconArrowUpward } from '../icons';
+import { BspkIcon } from '../../types/bspk-icon';
 
 export type TableSize = 'large' | 'medium' | 'small' | 'x-large';
 
@@ -165,9 +167,9 @@ export class UITable<R extends TableRow> {
               : 'none';
     }
 
-    sortIcon(columnKey: string): 'ArrowUpward' | 'ArrowDownward' | null {
+    sortIcon(columnKey: string): BspkIcon | null {
         const sortState = this.sorting.find((s) => s.key === columnKey);
-        return sortState ? (sortState.order === 'asc' ? 'ArrowUpward' : 'ArrowDownward') : null;
+        return sortState ? (sortState.order === 'asc' ? IconArrowUpward : IconArrowDownward) : null;
     }
 }
 
