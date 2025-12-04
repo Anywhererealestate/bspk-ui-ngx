@@ -56,11 +56,11 @@ const fileImports = [`import { Component } from '@angular/core';`];
 // Find all icon usages for [icon], [leadingIcon], [trailingIcon], leadingIcon:, trailingIcon:
 function findIconComponentMatches(template: string): string[] {
     return [
-        ...Array.from(template.matchAll(/\[icon\]="([\w]+)"/g)).map(m => m[1]),
-        ...Array.from(template.matchAll(/\[leadingIcon\]="([\w]+)"/g)).map(m => m[1]),
-        ...Array.from(template.matchAll(/\[trailingIcon\]="([\w]+)"/g)).map(m => m[1]),
-        ...Array.from(template.matchAll(/leadingIcon:\s*([\w]+)/g)).map(m => m[1]),
-        ...Array.from(template.matchAll(/trailingIcon:\s*([\w]+)/g)).map(m => m[1]),
+        ...Array.from(template.matchAll(/\[icon\]="([\w]+)"/g)).map((m) => m[1]),
+        ...Array.from(template.matchAll(/\[leadingIcon\]="([\w]+)"/g)).map((m) => m[1]),
+        ...Array.from(template.matchAll(/\[trailingIcon\]="([\w]+)"/g)).map((m) => m[1]),
+        ...Array.from(template.matchAll(/leadingIcon:\s*([\w]+)/g)).map((m) => m[1]),
+        ...Array.from(template.matchAll(/trailingIcon:\s*([\w]+)/g)).map((m) => m[1]),
     ];
 }
 
@@ -99,12 +99,16 @@ componentMeta.forEach(({ name, slug, type, classContent, template }) => {
     // Find all icon usages for [icon], [leadingIcon], [trailingIcon]
     const iconComponentMatches = findIconComponentMatches(template);
 
-// Add imports for detected icon components
-iconComponentMatches.forEach(iconComp => {
-    fileImports.push(
-        `import { ${iconComp} } from '../../../../../projects/ui/src/lib/icons/${iconComp.replace(/^Icon/, '').replace(/([A-Z])/g, '-$1').toLowerCase().replace(/^-/, '')}';`
-    );
-});
+    // Add imports for detected icon components
+    iconComponentMatches.forEach((iconComp) => {
+        fileImports.push(
+            `import { ${iconComp} } from '../../../../../projects/ui/src/lib/icons/${iconComp
+                .replace(/^Icon/, '')
+                .replace(/([A-Z])/g, '-$1')
+                .toLowerCase()
+                .replace(/^-/, '')}';`,
+        );
+    });
 
     if (slug)
         componentsContent.push(
@@ -112,8 +116,6 @@ iconComponentMatches.forEach(iconComp => {
                 ? directiveTemplate({ name, slug, template, imports })
                 : componentTemplate({ name, slug, template, classContent, imports }),
         );
-
-    
 });
 
 fs.writeFileSync(
@@ -140,18 +142,44 @@ fs.writeFileSync(
 
 execSync(`npx prettier --write ${componentsRoutesPath}`);
 
+// function parseHtml(content: string): Omit<ComponentMeta, 'name' | 'slug'> {
+//     // Collect all <!-- class: ... --> comments
+//     const classPropertyRegex = /<!--\s*class:\s*([^;]+;)\s*-->/g;
+//     const classProperties: string[] = [];
+//     let match;
+//     while ((match = classPropertyRegex.exec(content))) {
+//         classProperties.push(match[1].trim());
+//     }
+
+//     const metaRegex = /<!-- ([^:]+): (.*?) -->/g;
+//     const metaMatch = Array.from(content.matchAll(metaRegex));
+//     const meta: Record<string, string> = {};
+//     for (const match of metaMatch) {
+//         meta[match[1]] = match[2];
+//     }
+
+//     return {
+//         ...meta,
+//         type: meta.type === 'directive' ? 'directive' : 'component',
+//         classContent: [...(classProperties || '')].filter(Boolean).join('\n'),
+//         template: content.replace(/<!--.*?-->/g, '').trim(),
+//     };
+// }
+
 function parseHtml(content: string): Omit<ComponentMeta, 'name' | 'slug'> {
-    const metaRegex = /<!-- ([^:]+): (.*?) -->/g;
-    const metaMatch = Array.from(content.matchAll(metaRegex));
+    // Collect all <!-- class: ... --> comments
+    const classProperties = Array.from(content.matchAll(/<!--\s*class:\s*([^;]+;)\s*-->/g)).map((m) => m[1].trim());
+
+    // Collect all <!-- key: value --> meta comments
     const meta: Record<string, string> = {};
-    for (const match of metaMatch) {
-        meta[match[1]] = match[2];
-    }
+    Array.from(content.matchAll(/<!-- ([^:]+): (.*?) -->/g)).forEach((m) => {
+        meta[m[1]] = m[2];
+    });
 
     return {
         ...meta,
         type: meta.type === 'directive' ? 'directive' : 'component',
-        classContent: meta.class || '',
+        classContent: classProperties.join('\n'),
         template: content.replace(/<!--.*?-->/g, '').trim(),
     };
 }
@@ -173,15 +201,15 @@ function componentTemplate({ name, slug, template, classContent, imports }: Temp
     const existingProps = new Set<string>();
     if (classContent) {
         const matches = Array.from(classContent.matchAll(/public\s+(\w+)\s*=/g));
-        matches.forEach(m => existingProps.add(m[1]));
+        matches.forEach((m) => existingProps.add(m[1]));
     }
 
     // Only add public property if it doesn't already exist
     const uniqueIconComponentMatches = Array.from(new Set(iconComponentMatches));
-const iconPublicProps = uniqueIconComponentMatches
-    .filter(iconComp => !existingProps.has(iconComp))
-    .map(iconComp => `public ${iconComp} = ${iconComp};`)
-    .join('\n  ');
+    const iconPublicProps = uniqueIconComponentMatches
+        .filter((iconComp) => !existingProps.has(iconComp))
+        .map((iconComp) => `public ${iconComp} = ${iconComp};`)
+        .join('\n  ');
 
     return `
 @Component({
@@ -199,12 +227,12 @@ const iconPublicProps = uniqueIconComponentMatches
 })
 export class ${name}RouteComponent {${iconPublicProps}
 ${
-        hasHandleClick
-            ? `  handleClick() {
+    hasHandleClick
+        ? `  handleClick() {
     console.log('${name} clicked!');
   }`
-            : ''
-    }
+        : ''
+}
 ${classContent ? `\n${classContent}\n` : ''}}
 `;
 }

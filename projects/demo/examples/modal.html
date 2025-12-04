@@ -1,9 +1,52 @@
-<!-- class: protected open = false; -->
+<!-- class: protected open1 = false; -->
+<!-- class: protected open2 = false; -->
+<!-- class: protected open3 = false; -->
 
 <h2>Modal</h2>
+<h3>Basic Usage</h3>
+<div>
+    <ui-button label="Open Modal" (click)="open1 = true"></ui-button>
+    <ui-modal [open]="open1" (onClose)="open1 = false" header="Example modal" description="This is a demo modal">
+        <p>Modal content — Add any content here.</p>
+    </ui-modal>
+</div>
 
-<ui-button label="Open Modal" (click)="open = true"></ui-button>
+<!-- Confirmation Modal Example -->
+<h3>Confirmation Modal</h3>
+<div>
+    <ui-button label="Open Confirmation Modal" (click)="open2 = true"></ui-button>
+    <ui-modal
+        [open]="open2"
+        (onClose)="open2 = false"
+        header="Confirmation Modal"
+        description="This modal has a call to action and a cancel button."
+        callToActionLabel="Call to Action"
+        (callToAction)="handleClick()"
+        cancelButtonLabel="Cancel"
+        (cancel)="open2 = false">
+        <p>
+            This is a confirmation modal. It has a call to action and a cancel button. The call to action is the primary
+            button and the cancel button is the tertiary button.
+        </p>
+    </ui-modal>
+</div>
 
-<ui-modal [open]="open" (onClose)="open = false" header="Example modal" description="This is a demo modal">
-    <p>Modal content — Add any content here.</p>
-</ui-modal>
+<!-- Scrolling Modal Example -->
+<h3>Scrolling Modal</h3>
+<div>
+    <ui-button label="Open Scrolling Modal" (click)="open3 = true"></ui-button>
+    <ui-modal [open]="open3" (onClose)="open3 = false" header="Header Only" description="This modal has no buttons.">
+        <p>
+            This is a demo of a scrolling modal. Most modals won’t scroll but mobile uses modals as dropdowns which may
+            have more items than can fit in the screen.
+        </p>
+        <div style="max-height: 300px; overflow-y: auto">
+            <!-- @for (let i = 1; i <= 30; i++) {
+                <div style="display: flex; align-items: center; margin-bottom: 8px">
+                    <label style="flex: 1">Option {{ i }}</label>
+                    <input type="checkbox" aria-label="" name="" />
+                </div>
+            } -->
+        </div>
+    </ui-modal>
+</div>

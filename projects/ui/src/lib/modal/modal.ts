@@ -22,7 +22,7 @@ export type ModalCallToAction = { label: string; onClick?: () => void; destructi
 @Component({
     selector: 'ui-modal',
     standalone: true,
-    imports: [CommonModule, PortalModule, IconClose, UIDialog, UIButton],
+    imports: [CommonModule, PortalModule, UIDialog, UIButton],
     templateUrl: './modal.html',
     styleUrls: ['./modal.scss'],
     encapsulation: ViewEncapsulation.None,
@@ -56,6 +56,8 @@ export class UIModal implements OnChanges, OnDestroy {
      * @default false
      */
     @Input() cancelButton: boolean | string = false;
+
+    public IconClose = IconClose;
     /**
      * The call to action button to display in the footer of the modal.
      *

@@ -2,9 +2,7 @@
     <div data-bspk="modal">
         <div data-modal-header>
             <div data-dialog-title>{{ header }}</div>
-            <ui-button variant="tertiary" (click)="emitClose()">
-                <icon-close width="12px" height="12px"></icon-close>
-            </ui-button>
+            <ui-button label="close" variant="tertiary" [icon]="IconClose" [iconOnly]="true" (click)="emitClose()" />
         </div>
 
         <div data-modal-main>
