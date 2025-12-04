@@ -18,6 +18,7 @@
     [required]="inputRequired"
     [type]="inputType"
     [value]="inputValue"
+    (focus)="handleFocus()"
     (blur)="handleBlur($event)"
     (input)="handleInput($event)" />
 
