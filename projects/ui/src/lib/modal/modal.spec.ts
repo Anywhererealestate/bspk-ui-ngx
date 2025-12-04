@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Modal } from './modal';
+import { UIModal } from './modal';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-describe('Modal', () => {
-    let component: Modal;
-    let fixture: ComponentFixture<Modal>;
+describe('UIModal', () => {
+    let component: UIModal;
+    let fixture: ComponentFixture<UIModal>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [Modal],
+            imports: [UIModal],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(Modal);
+        fixture = TestBed.createComponent(UIModal);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

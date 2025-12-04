@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Drawer } from './drawer';
+import { UIDrawer } from './drawer';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-describe('Drawer', () => {
-    let component: Drawer;
-    let fixture: ComponentFixture<Drawer>;
+describe('UIDrawer', () => {
+    let component: UIDrawer;
+    let fixture: ComponentFixture<UIDrawer>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [Drawer],
+            imports: [UIDrawer],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(Drawer);
+        fixture = TestBed.createComponent(UIDrawer);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

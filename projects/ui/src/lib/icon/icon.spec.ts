@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { UIIcon } from './icon';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { Icon360 } from '../icons';
 
 describe('Icon', () => {
     let fixture: ComponentFixture<UIIcon>;
@@ -15,15 +16,10 @@ describe('Icon', () => {
 
         fixture = TestBed.createComponent(UIIcon);
 
-        fixture.componentRef.setInput('name', 'Check');
+        fixture.componentRef.setInput('icon', Icon360);
         fixture.componentRef.setInput('width', '20');
 
         fixture.detectChanges();
-    });
-
-    it('should render', async () => {
-        const http = TestBed.inject(HttpTestingController);
-        http.expectOne('/icons/Check.svg').flush('<svg></svg>');
     });
 
     it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));

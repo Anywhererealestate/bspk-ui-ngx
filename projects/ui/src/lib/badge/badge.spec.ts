@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Badge } from './badge';
+import { UIBadge } from './badge';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-describe('Badge', () => {
-    let component: Badge;
-    let fixture: ComponentFixture<Badge>;
+describe('UIBadge', () => {
+    let component: UIBadge;
+    let fixture: ComponentFixture<UIBadge>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [Badge],
+            imports: [UIBadge],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(Badge);
+        fixture = TestBed.createComponent(UIBadge);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });
