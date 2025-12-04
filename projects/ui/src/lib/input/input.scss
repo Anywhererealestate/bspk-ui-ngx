@@ -1,8 +1,14 @@
+ui-input {
+    display: contents;
+}
+
 [data-bspk='input'] {
     --border-color: var(--stroke-neutral-base);
 
     display: flex;
     flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
     background-color: var(--surface-neutral-t1-base);
     border: solid 1px var(--border-color);
     height: var(--field-height);

@@ -9,15 +9,19 @@ import {
     OnInit,
     ChangeDetectionStrategy,
     ViewEncapsulation,
+    Type,
 } from '@angular/core';
 
+import { BspkIcon } from '../../types/bspk-icon';
+
 import { CommonModule } from '@angular/common';
-import { Icon } from '../icon';
-import { TooltipDirective } from '../tooltip';
+import { UIIcon } from '../icon';
+import { UITooltipDirective } from '../tooltip';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 export type ButtonSize = 'large' | 'medium' | 'small' | 'x-small';
 export type ButtonWidth = 'fill' | 'hug';
+export type IconType = BspkIcon;
 
 /**
  * A clickable component that allows users to perform an action, make a choice or trigger a change in state.
@@ -41,10 +45,10 @@ export type ButtonWidth = 'fill' | 'hug';
     templateUrl: './button.html',
     styleUrls: ['./button.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, Icon, TooltipDirective],
+    imports: [CommonModule, UIIcon, UITooltipDirective],
     encapsulation: ViewEncapsulation.None,
 })
-export class Button implements OnInit {
+export class UIButton implements OnInit {
     @ViewChild('buttonElement', { static: true }) buttonElement!: ElementRef<HTMLButtonElement>;
 
     /**
@@ -54,12 +58,15 @@ export class Button implements OnInit {
      */
     @Input() label!: string;
 
+    /** Use only for custom buttons. The aria-label of the button for accessibility purposes. */
+    @Input() ariaLabel?: string;
+
     /**
      * The icon of the button.
      *
      * Should be a SVG from the BSPK icon library.
      */
-    @Input() icon?: string;
+    @Input() icon?: IconType;
 
     /**
      * When true the button label is hidden and only the icon is shown. When label isn't showing it is used in a tooltip
@@ -100,7 +107,7 @@ export class Button implements OnInit {
     @Input() width: ButtonWidth = 'hug';
 
     /** The tool tip text that appears when hovered. */
-    @Input() toolTip?: string;
+    @Input() tooltip?: string;
 
     /**
      * Whether the button is disabled.
@@ -143,8 +150,8 @@ export class Button implements OnInit {
         return !this.iconOnly;
     }
 
-    get effectiveTooltip(): string | undefined {
-        return this.toolTip || (this.iconOnly ? this.label : undefined);
+    get tooltipLabel(): string | undefined {
+        return this.tooltip || (this.iconOnly ? this.label : undefined);
     }
 
     get buttonClasses(): string {

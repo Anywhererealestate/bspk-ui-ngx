@@ -24,16 +24,32 @@ export type ColorVariant =
     styleUrls: ['./tag.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class Tag {
-    /** The label of the tag. */
+export class UITag {
+    /**
+     * The label of the tag.
+     *
+     * @required
+     */
     @Input() label!: string;
 
-    /** The size of the tag. */
+    /**
+     * The size of the tag.
+     *
+     * @default small
+     */
     @Input() size: 'small' | 'x-small' = 'small';
 
-    /** The color of the tag. */
-    @Input() color: ColorVariant = 'white';
+    /**
+     * The color of the tag.
+     *
+     * @default grey
+     */
+    @Input() color: ColorVariant = 'grey';
 
-    /** The display variant of the tag. */
+    /**
+     * The display variant of the tag.
+     *
+     * @default flat
+     */
     @Input() variant: 'corner-wrap' | 'flat' | 'pill' = 'flat';
 }

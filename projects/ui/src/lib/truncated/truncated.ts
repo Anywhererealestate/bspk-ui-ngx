@@ -1,16 +1,24 @@
 import { Component, ViewEncapsulation, ElementRef, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
-import { TooltipDirective, TooltipProps } from '../tooltip/tooltip.directive';
+import { UITooltipDirective, TooltipProps } from '../tooltip/tooltip.directive';
 
 @Component({
     selector: 'ui-truncated',
-    imports: [TooltipDirective],
+    imports: [UITooltipDirective],
     styleUrls: ['./truncated.scss'],
     templateUrl: './truncated.html',
     encapsulation: ViewEncapsulation.None,
 })
-export class Truncated implements AfterViewInit {
+export class UITruncated implements AfterViewInit {
     tooltip: TooltipProps | string = '';
-
+    /**
+     * The content to render.
+     *
+     * @example
+     *     Some really long text that might be truncated when displayed in a small container.
+     *
+     * @type string
+     * @required
+     */
     @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
 
     constructor(private cdr: ChangeDetectorRef) {}

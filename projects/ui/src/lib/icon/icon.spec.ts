@@ -1,19 +1,19 @@
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { Icon } from './icon';
+import { UIIcon } from './icon';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
 describe('Icon', () => {
-    let fixture: ComponentFixture<Icon>;
+    let fixture: ComponentFixture<UIIcon>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [Icon],
+            imports: [UIIcon],
             providers: [provideHttpClient(), provideHttpClientTesting()],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(Icon);
+        fixture = TestBed.createComponent(UIIcon);
 
         fixture.componentRef.setInput('name', 'Check');
         fixture.componentRef.setInput('width', '20');
