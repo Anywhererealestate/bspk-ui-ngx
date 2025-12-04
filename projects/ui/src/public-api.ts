@@ -12,5 +12,7 @@ export * from './lib/icon';
 export * from './lib/icons';
 export * from './lib/input';
 export * from './lib/modal';
+export * from './lib/pagination';
+export * from './lib/table';
 export * from './lib/tooltip';
 export * from './lib/txt';
