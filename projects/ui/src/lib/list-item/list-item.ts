@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   encapsulation: ViewEncapsulation.None,
 })
 
-export class ListItem {
+export class UIListItem {
 /**
   /**
    * The leading element to display in the ListItem.
