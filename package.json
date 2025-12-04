@@ -14,7 +14,7 @@
         "dev": "npm run prebuild && npm-run-all --parallel watch:other start",
         "prebuild": "npx tsx .scripts/pre-build.ts",
         "watch:other": "watch 'npm run prebuild' projects/demo/examples",
-        "gh-build": "npm run prebuild && ng build --project demo --configuration production --base-href '/bspk-ui-ngx/' && cp -r ./dist/browser/index.html ./dist/browser/404.html"
+        "gh-build": "npm run prebuild && ng build --project demo --configuration production && cp -r ./dist/browser/index.html ./dist/browser/404.html"
     },
     "private": true,
     "peerDependencies": {
