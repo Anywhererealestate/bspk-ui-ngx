@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ChipGroup } from './chip-group';
+import { UIChipGroup } from './chip-group';
 
-describe('ChipGroup', () => {
-    let component: ChipGroup;
-    let fixture: ComponentFixture<ChipGroup>;
+describe('UIChipGroup', () => {
+    let component: UIChipGroup;
+    let fixture: ComponentFixture<UIChipGroup>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ChipGroup],
+            imports: [UIChipGroup],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(ChipGroup);
+        fixture = TestBed.createComponent(UIChipGroup);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

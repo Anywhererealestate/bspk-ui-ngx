@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIButton } from './button';
+import { UIInput } from './input';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-describe('Button', () => {
-    let fixture: ComponentFixture<UIButton>;
+describe('UIInput', () => {
+    let fixture: ComponentFixture<UIInput>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [UIButton],
+            imports: [UIInput],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIButton);
-        fixture.componentRef.setInput('label', 'Example label');
+        fixture = TestBed.createComponent(UIInput);
+        fixture.componentRef.setInput('label', 'Test Input');
 
         fixture.detectChanges();
     });

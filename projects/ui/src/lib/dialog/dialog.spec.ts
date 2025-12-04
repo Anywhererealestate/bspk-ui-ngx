@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Dialog } from './dialog';
+import { UIDialog } from './dialog';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-describe('Dialog', () => {
-    let component: Dialog;
-    let fixture: ComponentFixture<Dialog>;
+describe('UIDialog', () => {
+    let component: UIDialog;
+    let fixture: ComponentFixture<UIDialog>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [Dialog],
+            imports: [UIDialog],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(Dialog);
+        fixture = TestBed.createComponent(UIDialog);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Truncated } from './truncated';
+import { UITruncated } from './truncated';
 
-describe('Truncated', () => {
-    let component: Truncated;
-    let fixture: ComponentFixture<Truncated>;
+describe('UITruncated', () => {
+    let component: UITruncated;
+    let fixture: ComponentFixture<UITruncated>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [Truncated],
+            imports: [UITruncated],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(Truncated);
+        fixture = TestBed.createComponent(UITruncated);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

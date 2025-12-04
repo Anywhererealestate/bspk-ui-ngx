@@ -1,24 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIBadge } from './badge';
+import { UIPagination } from './pagination';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-describe('UIBadge', () => {
-    let component: UIBadge;
-    let fixture: ComponentFixture<UIBadge>;
+describe('UIPagination', () => {
+    let component: UIPagination;
+    let fixture: ComponentFixture<UIPagination>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [UIBadge],
+            imports: [UIPagination],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIBadge);
+        fixture = TestBed.createComponent(UIPagination);
         component = fixture.componentInstance;
         fixture.detectChanges();
-    });
-
-    it('should create', () => {
-        expect(component).toBeTruthy();
     });
 
     it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
