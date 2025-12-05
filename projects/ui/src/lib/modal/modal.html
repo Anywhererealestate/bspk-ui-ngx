@@ -8,15 +8,24 @@
         <div data-modal-main>
             <ng-content></ng-content>
         </div>
-
-        <div *ngIf="callToAction || cancelButton" [attr.data-button-format]="buttonFormat" data-modal-footer>
-            <button *ngIf="callToAction" type="button" (click)="onCallToActionClick()" class="bspk-btn bspk-primary">
-                {{ callToAction.label }}
-            </button>
-
-            <button *ngIf="cancelButton" type="button" (click)="onCancelClick()" class="bspk-btn bspk-tertiary">
-                {{ typeof cancelButton === 'string' ? cancelButton : 'Cancel' }}
-            </button>
-        </div>
+        @if (callToAction || cancelButton) {
+            <div [attr.data-button-format]="buttonFormat" data-modal-footer>
+                @if (callToAction && callToAction.label) {
+                    <ui-button
+                        [label]="callToAction.label"
+                        type="button"
+                        (click)="onCallToActionClick()"
+                        class="bspk-btn bspk-primary" />
+                }
+                @if (cancelButton) {
+                    <ui-button
+                        [label]="typeof cancelButton === 'string' ? cancelButton : 'Cancel'"
+                        type="button"
+                        (click)="onCancelClick()"
+                        variant="tertiary"
+                        class="bspk-btn bspk-tertiary" />
+                }
+            </div>
+        }
     </div>
 </ui-dialog>

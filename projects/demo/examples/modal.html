@@ -20,9 +20,26 @@
         (onClose)="open2 = false"
         header="Confirmation Modal"
         description="This modal has a call to action and a cancel button."
-        callToActionLabel="Call to Action"
-        (callToAction)="handleClick()"
+        [callToAction]="{ label: 'Call to Action', onClick: handleClick }"
         cancelButtonLabel="Cancel"
+        (cancel)="open2 = false">
+        <p>
+            This is a confirmation modal. It has a call to action and a cancel button. The call to action is the primary
+            button and the cancel button is the tertiary button.
+        </p>
+    </ui-modal>
+</div>
+
+<h3>2 buttons</h3>
+<div>
+    <ui-button label="Open Confirmation Modal" (click)="open2 = true"></ui-button>
+    <ui-modal
+        [open]="open2"
+        (onClose)="open2 = false"
+        header="Confirmation Modal"
+        description="This modal has a call to action and a cancel button."
+        [callToAction]="{ label: 'Call to Action', onClick: handleClick }"
+        [cancelButton]="true"
         (cancel)="open2 = false">
         <p>
             This is a confirmation modal. It has a call to action and a cancel button. The call to action is the primary
