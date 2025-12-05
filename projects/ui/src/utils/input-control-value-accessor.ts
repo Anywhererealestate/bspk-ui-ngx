@@ -128,7 +128,14 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
         // noop
     }
 
+    isFocused = false;
+
+    handleFocus() {
+        this.isFocused = true;
+    }
+
     handleBlur(event: FocusEvent) {
+        this.isFocused = false;
         this.onTouched();
         this.blur.emit(event);
     }

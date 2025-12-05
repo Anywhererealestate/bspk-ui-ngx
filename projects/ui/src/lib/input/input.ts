@@ -28,13 +28,6 @@ export class UIInput extends TextInputControlValueAccessor {
 
     public IconCancel = IconCancel;
 
-    isFocused = false;
-
-    // Call from template's (focus) event
-    handleFocus() {
-        this.isFocused = true;
-    }
-
     getShowClearButton(): boolean | null {
         return !!(
             this.showClearButton !== false &&
