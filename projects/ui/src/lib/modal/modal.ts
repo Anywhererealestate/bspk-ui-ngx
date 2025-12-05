@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
     Component,
     EventEmitter,
+    HostListener,
     Input,
     OnChanges,
     OnDestroy,
@@ -16,13 +17,14 @@ import { PortalModule } from '@angular/cdk/portal';
 import { IconClose } from '../icons/close';
 import { UIDialog } from '../dialog/dialog';
 import { UIButton } from '../button/button';
+import { UITxtDirective } from '../txt/txt.directive';
 
 export type ModalCallToAction = { label: string; onClick?: () => void; destructive?: boolean };
 
 @Component({
     selector: 'ui-modal',
     standalone: true,
-    imports: [CommonModule, PortalModule, UIDialog, UIButton],
+    imports: [CommonModule, PortalModule, UIDialog, UIButton, UITxtDirective],
     templateUrl: './modal.html',
     styleUrls: ['./modal.scss'],
     encapsulation: ViewEncapsulation.None,
@@ -89,6 +91,13 @@ export class UIModal implements OnChanges, OnDestroy {
 
     ngOnChanges(changes: SimpleChanges) {
         // Modal now delegates opening to the internal Dialog via template bindings.
+    }
+
+    isMobile = window.innerWidth <= 640;
+
+    @HostListener('window:resize')
+    onResize() {
+        this.isMobile = window.innerWidth <= 640;
     }
 
     public emitClose() {

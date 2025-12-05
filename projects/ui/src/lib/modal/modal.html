@@ -1,7 +1,7 @@
 <ui-dialog [open]="open" [placement]="'center'" [showScrim]="true" (onClose)="emitClose()">
     <div data-bspk="modal">
         <div data-modal-header>
-            <div data-dialog-title>{{ header }}</div>
+            <div txt="heading-h4">{{ header }}</div>
             <ui-button label="close" variant="tertiary" [icon]="IconClose" [iconOnly]="true" (click)="emitClose()" />
         </div>
 
@@ -15,7 +15,8 @@
                         [label]="callToAction.label"
                         type="button"
                         (click)="onCallToActionClick()"
-                        class="bspk-btn bspk-primary" />
+                        [size]="isMobile ? 'medium' : 'small'"
+                        [width]="buttonFormat === 'vertical' && isMobile ? 'fill' : 'hug'" />
                 }
                 @if (cancelButton) {
                     <ui-button
@@ -23,7 +24,8 @@
                         type="button"
                         (click)="onCancelClick()"
                         variant="tertiary"
-                        class="bspk-btn bspk-tertiary" />
+                        [size]="isMobile ? 'medium' : 'small'"
+                        [width]="buttonFormat === 'vertical' && isMobile ? 'fill' : 'hug'" />
                 }
             </div>
         }

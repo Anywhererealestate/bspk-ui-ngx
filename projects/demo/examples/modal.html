@@ -1,6 +1,9 @@
 <!-- class: protected open1 = false; -->
 <!-- class: protected open2 = false; -->
 <!-- class: protected open3 = false; -->
+<!-- class: protected open4 = false; -->
+<!-- class: protected open5 = false; -->
+<!-- class: protected open6 = false; -->
 
 <h2>Modal</h2>
 <h3>Basic Usage</h3>
@@ -30,17 +33,53 @@
     </ui-modal>
 </div>
 
+<h3>1 button</h3>
+<div>
+    <ui-button label="Open Single Button" (click)="open3 = true"></ui-button>
+    <ui-modal
+        [open]="open3"
+        (onClose)="open3 = false"
+        header="Confirmation Modal"
+        description="This modal has a call to action and a cancel button."
+        [callToAction]="{ label: 'Call to Action', onClick: handleClick }">
+        <p>
+            This is a confirmation modal. It has a call to action and a cancel button. The call to action is the primary
+            button and the cancel button is the tertiary button.
+        </p>
+    </ui-modal>
+</div>
+
 <h3>2 buttons</h3>
 <div>
-    <ui-button label="Open Confirmation Modal" (click)="open2 = true"></ui-button>
+    <ui-button label="Open Two Buttons" (click)="open4 = true"></ui-button>
     <ui-modal
-        [open]="open2"
-        (onClose)="open2 = false"
+        [open]="open4"
+        (onClose)="open4 = false"
         header="Confirmation Modal"
         description="This modal has a call to action and a cancel button."
         [callToAction]="{ label: 'Call to Action', onClick: handleClick }"
         [cancelButton]="true"
-        (cancel)="open2 = false">
+        (cancel)="open4 = false">
+        <p>
+            This is a confirmation modal. It has a call to action and a cancel button. The call to action is the primary
+            button and the cancel button is the tertiary button.
+        </p>
+    </ui-modal>
+</div>
+
+<h3>button format vertical</h3>
+<p>the buttons will be stacked in small screen sizes</p>
+<div>
+    <ui-button label="Open Two Buttons" (click)="open5 = true"></ui-button>
+    <ui-modal
+        [open]="open5"
+        (onClose)="open5 = false"
+        header="Confirmation Modal"
+        description="This modal has a call to action and a cancel button."
+        [callToAction]="{ label: 'Call to Action', onClick: handleClick }"
+        [cancelButton]="true"
+        (cancel)="open5 = false"
+        buttonFormat="vertical">
         <p>
             This is a confirmation modal. It has a call to action and a cancel button. The call to action is the primary
             button and the cancel button is the tertiary button.
@@ -51,8 +90,8 @@
 <!-- Scrolling Modal Example -->
 <h3>Scrolling Modal</h3>
 <div>
-    <ui-button label="Open Scrolling Modal" (click)="open3 = true"></ui-button>
-    <ui-modal [open]="open3" (onClose)="open3 = false" header="Header Only" description="This modal has no buttons.">
+    <ui-button label="Open Scrolling Modal" (click)="open6 = true"></ui-button>
+    <ui-modal [open]="open6" (onClose)="open6 = false" header="Header Only" description="This modal has no buttons.">
         <p>
             This is a demo of a scrolling modal. Most modals won’t scroll but mobile uses modals as dropdowns which may
             have more items than can fit in the screen.

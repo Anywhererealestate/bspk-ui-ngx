@@ -33,6 +33,20 @@ ui-modal {
         justify-content: flex-start;
         gap: var(--spacing-sizing-04);
     }
+
+    [data-button-format='horizontal'] {
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+    }
+
+    [data-button-format='vertical'] {
+        flex-direction: column;
+
+        @media (width >= 640px) {
+            flex-direction: row-reverse;
+            justify-content: flex-start;
+        }
+    }
 }
 
 /** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */
