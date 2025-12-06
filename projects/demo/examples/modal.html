@@ -14,8 +14,7 @@
     </ui-modal>
 </div>
 
-<!-- Confirmation Modal Example -->
-<h3>Confirmation Modal</h3>
+<h3>Confirmation Modal Example</h3>
 <div>
     <ui-button label="Open Confirmation Modal" (click)="open2 = true"></ui-button>
     <ui-modal
@@ -33,7 +32,7 @@
     </ui-modal>
 </div>
 
-<h3>1 button</h3>
+<h3>Single button</h3>
 <div>
     <ui-button label="Open Single Button" (click)="open3 = true"></ui-button>
     <ui-modal
@@ -49,7 +48,7 @@
     </ui-modal>
 </div>
 
-<h3>2 buttons</h3>
+<h3>Both buttons</h3>
 <div>
     <ui-button label="Open Two Buttons" (click)="open4 = true"></ui-button>
     <ui-modal
@@ -87,7 +86,6 @@
     </ui-modal>
 </div>
 
-<!-- Scrolling Modal Example -->
 <h3>Scrolling Modal</h3>
 <div>
     <ui-button label="Open Scrolling Modal" (click)="open6 = true"></ui-button>
@@ -96,13 +94,31 @@
             This is a demo of a scrolling modal. Most modals won’t scroll but mobile uses modals as dropdowns which may
             have more items than can fit in the screen.
         </p>
-        <div style="max-height: 300px; overflow-y: auto">
-            <!-- @for (let i = 1; i <= 30; i++) {
-                <div style="display: flex; align-items: center; margin-bottom: 8px">
-                    <label style="flex: 1">Option {{ i }}</label>
-                    <input type="checkbox" aria-label="" name="" />
-                </div>
-            } -->
+        <div style="display: flex; flex-direction: column; gap: 8px; max-height: 200px; overflow-y: auto">
+            <div style="display: flex; align-items: center; padding: 20px 8px">
+                <label style="flex: 1">Option 1</label>
+                <input type="checkbox" aria-label="" name="" />
+            </div>
+            <div style="display: flex; align-items: center; padding: 20px 8px">
+                <label style="flex: 2">Option 2</label>
+                <input type="checkbox" aria-label="" name="" />
+            </div>
+            <div style="display: flex; align-items: center; padding: 20px 8px">
+                <label style="flex: 3">Option 3</label>
+                <input type="checkbox" aria-label="" name="" />
+            </div>
+            <div style="display: flex; align-items: center; padding: 20px 8px">
+                <label style="flex: 4">Option 4</label>
+                <input type="checkbox" aria-label="" name="" />
+            </div>
+            <div style="display: flex; align-items: center; padding: 20px 8px">
+                <label style="flex: 5">Option 5</label>
+                <input type="checkbox" aria-label="" name="" />
+            </div>
+            <div style="display: flex; align-items: center; padding: 20px 8px">
+                <label style="flex: 6">Option 6</label>
+                <input type="checkbox" aria-label="" name="" />
+            </div>
         </div>
     </ui-modal>
 </div>
