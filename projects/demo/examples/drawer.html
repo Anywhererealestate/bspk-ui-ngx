@@ -2,10 +2,25 @@
 
 <h2>Drawer</h2>
 
+<h3>Basic</h3>
 <ui-button label="Open Drawer" (click)="open = true"></ui-button>
+
+<ui-drawer
+    [open]="open"
+    (onClose)="open = false"
+    header="Example drawer"
+    [closeButton]="true"
+    description="This is a demo drawer">
+    <div style="padding: 20px; width: 320px">
+        <p>This is demo drawer content.</p>
+    </div>
+</ui-drawer>
+
+<h3>Basic</h3>
+<!-- <ui-button label="Open Drawer" (click)="open = true"></ui-button>
 
 <ui-drawer [open]="open" (onClose)="open = false" header="Example drawer" description="This is a demo drawer">
     <div style="padding: 20px; width: 320px">
         <p>This is demo drawer content.</p>
     </div>
-</ui-drawer>
+</ui-drawer> -->

@@ -3,11 +3,12 @@ import { Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } 
 import { UIDialog } from '../dialog/dialog';
 import { UIButton } from '../button/button';
 import { IconClose } from '../icons/close';
+import { UITxtDirective } from '../txt/txt.directive';
 
 @Component({
     selector: 'ui-drawer',
     standalone: true,
-    imports: [CommonModule, UIDialog, UIButton, IconClose],
+    imports: [CommonModule, UIDialog, UIButton, UITxtDirective],
     templateUrl: './drawer.html',
     styleUrls: ['./drawer.scss'],
     encapsulation: ViewEncapsulation.None,
@@ -24,6 +25,8 @@ export class UIDrawer implements OnDestroy {
 
     /** Show a close button in the header. */
     @Input() closeButton = false;
+
+    public IconClose = IconClose;
 
     /** The placement of the drawer. */
     @Input() placement: 'bottom' | 'left' | 'right' | 'top' = 'right';

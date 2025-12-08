@@ -8,11 +8,21 @@
         [widthFull]="placement === 'bottom' || placement === 'top'">
         <div data-bspk="drawer">
             <div data-drawer-header [attr.data-drawer-close-only]="!header ? 'true' : null">
-                <div *ngIf="header" data-drawer-title>{{ header }}</div>
+                @if (header) {
+                    <div txt="heading-h4" data-drawer-title>{{ header }}</div>
+                }
+                @if (closeButton) {
+                    <ui-button
+                        label="close"
+                        variant="tertiary"
+                        [icon]="IconClose"
+                        [iconOnly]="true"
+                        (click)="emitClose()" />
+                }
 
-                <ui-button *ngIf="closeButton" variant="tertiary" (onClick)="emitClose()">
+                <!-- <ui-button *ngIf="closeButton" variant="tertiary" (onClick)="emitClose()">
                     <icon-close></icon-close>
-                </ui-button>
+                </ui-button> -->
             </div>
 
             <ng-content></ng-content>
@@ -30,9 +40,14 @@
         <div data-drawer-header [attr.data-drawer-close-only]="!header ? 'true' : null">
             <div *ngIf="header" data-drawer-title>{{ header }}</div>
 
-            <ui-button *ngIf="closeButton" variant="tertiary" (onClick)="emitClose()">
-                <icon-close></icon-close>
-            </ui-button>
+            @if (closeButton) {
+                <ui-button
+                    label="close"
+                    variant="tertiary"
+                    [icon]="IconClose"
+                    [iconOnly]="true"
+                    (click)="emitClose()" />
+            }
         </div>
 
         <ng-content></ng-content>
