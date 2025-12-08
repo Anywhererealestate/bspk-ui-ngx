@@ -30,13 +30,8 @@ export class UIInput extends TextInputControlValueAccessor {
 
     getShowClearButton(): boolean | null {
         return (
-            !!(
-                this.showClearButton !== false &&
-                !this.readOnly() &&
-                !this.disabled() &&
-                this.value()?.length > 0 &&
-                document?.activeElement?.id === this.inputId // focused
-            ) || null
+            !!(this.showClearButton !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
+            null
         );
     }
 
