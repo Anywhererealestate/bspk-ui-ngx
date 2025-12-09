@@ -1,25 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Modal } from './modal';
+import { UIModal } from './modal';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-describe('Modal', () => {
-  let component: Modal;
-  let fixture: ComponentFixture<Modal>;
+describe('UIModal', () => {
+    let component: UIModal;
+    let fixture: ComponentFixture<UIModal>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Modal],
-    }).compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UIModal],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(Modal);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(UIModal);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 
-  it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
+    it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
 });

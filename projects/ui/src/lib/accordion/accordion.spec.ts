@@ -1,26 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { axe } from 'jest-axe';
 
-import { Accordion } from './accordion';
+import { UIAccordion } from './accordion';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
 describe('Accordion', () => {
-  let component: Accordion;
-  let fixture: ComponentFixture<Accordion>;
+    let component: UIAccordion;
+    let fixture: ComponentFixture<UIAccordion>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Accordion],
-    }).compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UIAccordion],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(Accordion);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(UIAccordion);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 
-  it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
+    it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
 });

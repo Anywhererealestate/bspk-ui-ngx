@@ -10,13 +10,12 @@ import { provideNgxMask } from 'ngx-mask';
     providers: [provideValueAccessor(Input), provideValidator(Input), provideNgxMask()],
     host: {
         '[attr.data-size]': 'size()',
-        '[attr.data-invalid]': 'invalid() || null',
         '[attr.aria-label]': 'label()',
         '(input)': 'handleInput($event)',
         '(blur)': 'handleBlur($event)',
     },
 })
-export class TextArea extends TextInputControlValueAccessor {
+export class UITextArea extends TextInputControlValueAccessor {
     /**
      * The maximum number of characters that the field will accept.
      *

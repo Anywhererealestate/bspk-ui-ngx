@@ -1,23 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Avatar } from './avatar';
+import { UIAvatar } from './avatar';
 
-describe('Avatar', () => {
-  let component: Avatar;
-  let fixture: ComponentFixture<Avatar>;
+describe('UIAvatar', () => {
+    let component: UIAvatar;
+    let fixture: ComponentFixture<UIAvatar>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Avatar]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UIAvatar],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(Avatar);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(UIAvatar);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

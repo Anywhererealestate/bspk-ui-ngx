@@ -64,14 +64,14 @@
             linear-gradient(var(--surface-neutral-t1-base), var(--surface-neutral-t1-base));
     }
 
-    &[data-readonly] {
+    &[readonly] {
         --border-color: var(--stroke-neutral-disabled-light);
 
         background: linear-gradient(var(--interactions-disabled-opacity), var(--interactions-disabled-opacity)),
             linear-gradient(var(--surface-neutral-t1-base), var(--surface-neutral-t1-base));
     }
 
-    &[data-disabled],
+    &[disabled],
     &:has([data-main-input][disabled]) {
         --border-color: var(--stroke-neutral-disabled-light);
 
@@ -83,7 +83,7 @@
         }
     }
 
-    &[data-invalid='true'] {
+    &[aria-invalid='true'] {
         --border-color: var(--status-error);
     }
 

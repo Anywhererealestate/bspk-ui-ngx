@@ -1,23 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Tag } from './tag';
+import { UITag } from './tag';
 
-describe('Tag', () => {
-  let component: Tag;
-  let fixture: ComponentFixture<Tag>;
+describe('UITag', () => {
+    let component: UITag;
+    let fixture: ComponentFixture<UITag>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Tag]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UITag],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(Tag);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(UITag);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });
