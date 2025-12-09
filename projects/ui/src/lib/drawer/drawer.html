@@ -1,45 +1,13 @@
-<ng-container *ngIf="modal; else persistent">
-    <ui-dialog
-        [open]="open"
-        [placement]="placement"
-        [showScrim]="true"
-        [disableFocusTrap]="disableFocusTrap"
-        (onClose)="emitClose()"
-        [widthFull]="placement === 'bottom' || placement === 'top'">
-        <div data-bspk="drawer">
-            <div data-drawer-header [attr.data-drawer-close-only]="!header ? 'true' : null">
-                @if (header) {
-                    <div txt="heading-h4" data-drawer-title>{{ header }}</div>
-                }
-                @if (closeButton) {
-                    <ui-button
-                        label="close"
-                        variant="tertiary"
-                        [icon]="IconClose"
-                        [iconOnly]="true"
-                        (click)="emitClose()" />
-                }
-
-                <!-- <ui-button *ngIf="closeButton" variant="tertiary" (onClick)="emitClose()">
-                    <icon-close></icon-close>
-                </ui-button> -->
-            </div>
-
-            <ng-content></ng-content>
-        </div>
-    </ui-dialog>
-</ng-container>
-
-<ng-template #persistent>
+<ng-template #drawerContent>
     <section
-        *ngIf="open"
         data-bspk="drawer"
-        data-no-portal
-        [attr.data-persistent-placement]="placement"
+        [attr.data-no-portal]="modal ? null : true"
+        [attr.data-persistent-placement]="modal ? null : placement"
         role="complementary">
         <div data-drawer-header [attr.data-drawer-close-only]="!header ? 'true' : null">
-            <div *ngIf="header" data-drawer-title>{{ header }}</div>
-
+            @if (header) {
+                <div txt="heading-h4" data-drawer-title>{{ header }}</div>
+            }
             @if (closeButton) {
                 <ui-button
                     label="close"
@@ -49,7 +17,22 @@
                     (click)="emitClose()" />
             }
         </div>
-
         <ng-content></ng-content>
     </section>
 </ng-template>
+
+@if (modal) {
+    <ui-dialog
+        [open]="open"
+        [placement]="placement"
+        [showScrim]="true"
+        [disableFocusTrap]="disableFocusTrap"
+        (onClose)="emitClose()"
+        [widthFull]="placement === 'bottom' || placement === 'top'">
+        <ng-container *ngTemplateOutlet="drawerContent"></ng-container>
+    </ui-dialog>
+} @else {
+    @if (open) {
+        <ng-container *ngTemplateOutlet="drawerContent"></ng-container>
+    }
+}

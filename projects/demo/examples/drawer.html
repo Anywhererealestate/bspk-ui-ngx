@@ -1,26 +1,156 @@
-<!-- class: protected open = false; -->
+<!-- class: protected open1 = false; -->
+<!-- class: protected open2 = false; -->
+<!-- class: protected open3 = false; -->
+<!-- class: protected open4 = false; -->
+<!-- class: protected open5 = false; -->
+<!-- class: protected open6 = false; -->
+<!-- class: protected open7 = false; -->
+<!-- class: protected open8 = false; -->
 
 <h2>Drawer</h2>
 
 <h3>Basic</h3>
-<ui-button label="Open Drawer" (click)="open = true"></ui-button>
+<ui-button label="Open Drawer" (click)="open1 = true"></ui-button>
 
 <ui-drawer
-    [open]="open"
-    (onClose)="open = false"
+    [modal]="true"
+    [open]="open1"
+    (onClose)="open1 = false"
     header="Example drawer"
-    [closeButton]="true"
     description="This is a demo drawer">
-    <div style="padding: 20px; width: 320px">
+    <div>
         <p>This is demo drawer content.</p>
     </div>
 </ui-drawer>
 
-<h3>Basic</h3>
-<!-- <ui-button label="Open Drawer" (click)="open = true"></ui-button>
+<h3>placement: top</h3>
+<ui-button label="Open Drawer" (click)="open2 = true"></ui-button>
 
-<ui-drawer [open]="open" (onClose)="open = false" header="Example drawer" description="This is a demo drawer">
-    <div style="padding: 20px; width: 320px">
+<ui-drawer
+    [open]="open2"
+    (onClose)="open2 = false"
+    header="Example drawer"
+    [closeButton]="true"
+    placement="top"
+    description="This is a demo drawer">
+    <div>
         <p>This is demo drawer content.</p>
     </div>
-</ui-drawer> -->
+</ui-drawer>
+
+<h3>placement: right</h3>
+<ui-button label="Open Drawer" (click)="open3 = true"></ui-button>
+
+<ui-drawer
+    [open]="open3"
+    (onClose)="open3 = false"
+    header="Example drawer"
+    [closeButton]="true"
+    placement="right"
+    description="This is a demo drawer">
+    <div>
+        <p>This is demo drawer content.</p>
+    </div>
+</ui-drawer>
+
+<h3>placement: bottom</h3>
+<ui-button label="Open Drawer" (click)="open4 = true"></ui-button>
+
+<ui-drawer
+    [open]="open4"
+    (onClose)="open4 = false"
+    header="Example drawer"
+    [closeButton]="true"
+    placement="bottom"
+    description="This is a demo drawer">
+    <div>
+        <p>This is demo drawer content.</p>
+    </div>
+</ui-drawer>
+
+<h3>placement: left</h3>
+<ui-button label="Open Drawer" (click)="open5 = true"></ui-button>
+
+<ui-drawer
+    [open]="open5"
+    (onClose)="open5 = false"
+    header="Example drawer"
+    [closeButton]="true"
+    placement="left"
+    description="This is a demo drawer">
+    <div>
+        <p>This is demo drawer content.</p>
+    </div>
+</ui-drawer>
+
+<h3>closeButton: true</h3>
+<ui-button label="Open Drawer" (click)="open6 = true"></ui-button>
+
+<ui-drawer
+    [open]="open6"
+    [closeButton]="true"
+    (onClose)="open6 = false"
+    header="Example drawer"
+    description="This is a demo drawer">
+    <div>
+        <p>This is demo drawer content.</p>
+    </div>
+</ui-drawer>
+
+<h3>Left Responsive</h3>
+<div
+    style="
+        position: relative;
+        max-width: 700px;
+        border: 1px solid #ccc;
+        height: 300px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+    ">
+    <ui-button label="Open Drawer" (click)="open7 = true"> </ui-button>
+    <ui-drawer
+        [modal]="false"
+        [open]="open7"
+        (onClose)="open7 = false"
+        header="Example drawer"
+        [closeButton]="true"
+        placement="left"
+        description="This is a demo drawer">
+        <div>
+            <p>This is demo drawer content.</p>
+        </div>
+    </ui-drawer>
+</div>
+
+<h3>Right Responsive</h3>
+<div
+    style="
+        position: relative;
+        max-width: 700px;
+        border: 1px solid #ccc;
+        height: 300px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+    ">
+    <ui-button label="Open Drawer" (click)="open8 = true"> </ui-button>
+    <ui-drawer
+        [modal]="false"
+        [open]="open8"
+        (onClose)="open8 = false"
+        header="Example drawer"
+        [closeButton]="true"
+        placement="right"
+        description="This is a demo drawer">
+        <div>
+            <p>This is demo drawer content.</p>
+        </div>
+    </ui-drawer>
+</div>
