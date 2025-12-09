@@ -9,9 +9,11 @@ import { provideNgxMask } from 'ngx-mask';
     styleUrl: './text-area.scss',
     providers: [provideValueAccessor(Input), provideValidator(Input), provideNgxMask()],
     host: {
-        'data-bspk': 'input',
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
+        '[attr.aria-label]': 'label()',
+        '(input)': 'handleInput($event)',
+        '(blur)': 'handleBlur($event)',
     },
 })
 export class TextArea extends TextInputControlValueAccessor {

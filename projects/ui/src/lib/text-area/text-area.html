@@ -1,14 +1,9 @@
 <textarea
-    [attr.aria-invalid]="invalid()"
-    [attr.aria-label]="label()"
-    [attr.data-invalid]="invalid()"
+    data-bspk="textarea"
     [disabled]="disabled() || disabledState()"
     [id]="controlId()"
     [placeholder]="placeholder() || ''"
     [readOnly]="readOnly() || null"
     [required]="required() || null"
     [value]="value()"
-    (blur)="handleBlur($event)"
-    (input)="handleInput($event)"
-    data-bspk="textarea"
 ></textarea>

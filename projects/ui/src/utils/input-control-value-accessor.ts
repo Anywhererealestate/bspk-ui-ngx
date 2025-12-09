@@ -10,14 +10,11 @@ import {
     OnInit,
     output,
     signal,
-    viewChild,
 } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgControl, ValidationErrors, Validator } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { NgxMaskDirective, NgxMaskService } from 'ngx-mask';
 import { noop } from './util';
 import { getErrors } from './error-formatter';
-import { Mask } from './mask';
 
 export const textInputSizes = ['small', 'medium', 'large'];
 export type TextInputSize = (typeof textInputSizes)[number];
@@ -34,9 +31,7 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
     readonly disabled = input(false, { transform: booleanAttribute });
     readonly readOnly = input(false, { transform: booleanAttribute });
     readonly placeholder = input<string>();
-    readonly leading = input<string>();
-    readonly trailing = input<string>();
-    readonly mask = input<Mask>();
+
     readonly blur = output<FocusEvent>();
     readonly focusin = output<FocusEvent>();
 
@@ -46,8 +41,9 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
 
     private readonly injector = inject(Injector);
     private readonly sanitizer = inject(DomSanitizer);
-    private readonly maskDirective = viewChild(NgxMaskDirective);
-    private readonly maskService = inject(NgxMaskService);
+
+    // Hook for subclasses
+    onInit() {}
 
     constructor() {
         let first = true;
@@ -60,16 +56,14 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
             }
             this.onChange(value);
         });
-
-        effect(() => {
-            this.maskDirective()?.writeValue(this.value());
-        });
     }
 
     ngOnInit() {
         this.ngControl = this.injector.get(NgControl, null, { self: true, optional: true });
 
-        this.maskDirective()?.writeValue(this.value());
+        if (this.onInit) {
+            this.onInit;
+        }
     }
 
     ngDoCheck() {
@@ -78,7 +72,7 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
         }
     }
 
-    private onChange: (value: string) => void = noop;
+    onChange: (value: string) => void = noop;
     private onTouched: () => void = noop;
 
     registerOnChange(fn: any): void {
@@ -133,8 +127,8 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
 
     handleInput(event: Event) {
         const raw = (event.target as HTMLInputElement).value;
-        const out = this.mask()?.dropSpecialCharacters ? this.maskService.removeMask(raw) : raw;
-        this.value.set(out);
-        this.onChange(out);
+
+        this.value.set(raw);
+        this.onChange(raw);
     }
 }
