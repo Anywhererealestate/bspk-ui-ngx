@@ -142,30 +142,6 @@ fs.writeFileSync(
 
 execSync(`npx prettier --write ${componentsRoutesPath}`);
 
-// function parseHtml(content: string): Omit<ComponentMeta, 'name' | 'slug'> {
-//     // Collect all <!-- class: ... --> comments
-//     const classPropertyRegex = /<!--\s*class:\s*([^;]+;)\s*-->/g;
-//     const classProperties: string[] = [];
-//     let match;
-//     while ((match = classPropertyRegex.exec(content))) {
-//         classProperties.push(match[1].trim());
-//     }
-
-//     const metaRegex = /<!-- ([^:]+): (.*?) -->/g;
-//     const metaMatch = Array.from(content.matchAll(metaRegex));
-//     const meta: Record<string, string> = {};
-//     for (const match of metaMatch) {
-//         meta[match[1]] = match[2];
-//     }
-
-//     return {
-//         ...meta,
-//         type: meta.type === 'directive' ? 'directive' : 'component',
-//         classContent: [...(classProperties || '')].filter(Boolean).join('\n'),
-//         template: content.replace(/<!--.*?-->/g, '').trim(),
-//     };
-// }
-
 function parseHtml(content: string): Omit<ComponentMeta, 'name' | 'slug'> {
     // Collect all <!-- class: ... --> comments
     const classProperties = Array.from(content.matchAll(/<!--\s*class:\s*([^;]+;)\s*-->/g)).map((m) => m[1].trim());
