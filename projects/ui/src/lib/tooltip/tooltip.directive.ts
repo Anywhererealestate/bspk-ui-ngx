@@ -1,4 +1,14 @@
-import { ComponentRef, Directive, ElementRef, HostListener, Input, OnDestroy, Renderer2 } from '@angular/core';
+import {
+    ComponentRef,
+    Directive,
+    ElementRef,
+    HostListener,
+    Input,
+    OnDestroy,
+    Renderer2,
+    OnChanges,
+    SimpleChanges,
+} from '@angular/core';
 import { Overlay, OverlayRef, ConnectedPosition } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { UITooltip } from './tooltip';
@@ -23,7 +33,7 @@ export type TooltipProps = {
 };
 
 @Directive({ selector: '[tooltip]' })
-export class UITooltipDirective implements OnDestroy {
+export class UITooltipDirective implements OnDestroy, OnChanges {
     /** Accepts a string (tooltip label) or a config object { label, placement, showTail, disabled } */
     @Input('tooltip') tooltip: TooltipProps | string = '';
 
@@ -38,6 +48,15 @@ export class UITooltipDirective implements OnDestroy {
     ) {
         // Always set display: inline-block on the host element
         this.renderer.setAttribute(this.elementRef.nativeElement, 'data-tooltip-directive', '');
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes['tooltip'] && this.attached) {
+            const cfg = this.normalizedConfig();
+            this.attached.instance.label = cfg.label;
+            this.attached.instance.showTail = cfg.showTail;
+            this.setAttachedAttribute('data-show-tail', String(cfg.showTail));
+        }
     }
 
     ngOnDestroy(): void {
