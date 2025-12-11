@@ -32,7 +32,7 @@ export type TooltipProps = {
     disabled?: boolean;
 };
 
-@Directive({ selector: '[x-tooltip]' })
+@Directive({ selector: '[tooltip]' })
 export class UITooltipDirective implements OnDestroy, OnChanges {
     /** Accepts a string (tooltip label) or a config object { label, placement, showTail, disabled } */
     @Input('tooltip') tooltip: TooltipProps | string = '';

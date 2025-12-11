@@ -33,7 +33,7 @@ const INPUT_TYPE_THRESHOLD = 7;
         role: 'group',
     },
 })
-export class UIXPagination implements OnChanges {
+export class UIPagination implements OnChanges {
     /**
      * The number of pages to display in the pagination component.
      *
