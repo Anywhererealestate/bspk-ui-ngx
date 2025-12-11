@@ -7,7 +7,6 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
-import { execSync } from 'child_process';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
@@ -19,6 +18,8 @@ const classNameComponentPattern = /^UI[A-Z][a-zA-Z0-9]+$/;
 const classNameDirectivePattern = /^UI[A-Z][a-zA-Z0-9]+Directive$/;
 const componentSelectorPattern = /^ui-[a-z0-9-]+$/;
 const directiveSelectorPattern = /^\[(?!ui)[a-z0-9-]+\]$/;
+
+const errors: string[] = [];
 
 files.forEach((dirent) => {
     if (dirent.isDirectory()) {
@@ -47,45 +48,40 @@ files.forEach((dirent) => {
                 const className = classMatch[1];
 
                 if (type === 'component' && !classNameComponentPattern.test(className)) {
-                    return error(
+                    errors.push(
                         `Class name "${className}" in file "${filePath}" does not follow the convention "UI[ComponentName]".`,
                     );
                 }
 
                 if (type === 'directive' && !classNameDirectivePattern.test(className)) {
-                    return error(
+                    errors.push(
                         `Class name "${className}" in file "${filePath}" does not follow the convention "UI[DirectiveName]Directive".`,
                     );
                 }
             } else {
-                return error(`No class found in file "${filePath}".`);
+                errors.push(`No class found in file "${filePath}".`);
             }
 
             if (selectorMatch) {
                 const selector = selectorMatch[1];
 
                 if (type === 'directive' && !directiveSelectorPattern.test(selector)) {
-                    return error(
+                    errors.push(
                         `Selector "${selector}" in file "${filePath}" does not follow the convention [directive-name]. Should be "${dirent.name}".`,
                     );
                 }
 
                 if (type === 'component' && !componentSelectorPattern.test(selector)) {
-                    return error(
+                    errors.push(
                         `Selector "${selector}" in file "${filePath}" does not follow the convention "ui-[component-name]".`,
                     );
                 }
             } else {
-                return error(`No selector found in file "${filePath}".`);
+                errors.push(`No selector found in file "${filePath}".`);
             }
         });
     }
 });
-
-function error(message: string) {
-    console.error('❌ Lint Error:', message);
-    process.exit(1);
-}
 
 console.log('\x1b[32mAll components and directives follow naming conventions 🎉✅\x1b[0m\n');
 
@@ -99,9 +95,13 @@ const { publicApiPath, publicApiContent } = getPublicApiFileContent();
 const existingPublicApiContent = fs.readFileSync(publicApiPath, 'utf-8');
 
 if (existingPublicApiContent !== publicApiContent) {
-    console.error('❌ Lint Error: Public API is out of date. Please run:');
-    console.error('\n   npx tsx .scripts/update-public-api.ts --write\n');
-    process.exit(1);
+    errors.push('Public API is out of date. Please run:');
+    errors.push('\n   npx tsx .scripts/update-public-api.ts --write\n');
 } else {
     console.log('\x1b[32mPublic API is up to date 🎉✅\x1b[0m\n');
+}
+
+if (errors.length > 0) {
+    console.error('❌ Lint Error:\n', errors.join('\n'));
+    process.exit(1);
 }
