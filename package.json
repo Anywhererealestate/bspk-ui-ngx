@@ -6,6 +6,7 @@
         "lint:css": "npx stylelint '**/*.scss'",
         "lint:css:fix": "npx stylelint '**/*.scss' --fix",
         "ng": "ng",
+        "lint": "npx tsx .scripts/lint.ts",
         "start": "npm run prebuild && ng serve",
         "build": "npm run prebuild && ng build",
         "newc": "ng generate component --project=ui",
@@ -14,7 +15,8 @@
         "dev": "npm run prebuild && npm-run-all --parallel watch:other start",
         "prebuild": "npx tsx .scripts/pre-build.ts",
         "watch:other": "watch 'npm run prebuild' projects/demo/examples",
-        "gh-build": "npm run prebuild && ng build --project demo --configuration production && cp -r ./dist/browser/index.html ./dist/browser/404.html"
+        "gh-build": "npm run prebuild && ng build --project demo --configuration production && cp -r ./dist/browser/index.html ./dist/browser/404.html",
+        "pr": "npm run lint && npm run prebuild && git push --set-upstream origin $(git symbolic-ref --short HEAD)  && open \"https://github.com/Anywhererealestate/bspk-ui-ngx/compare/main...$(git symbolic-ref --short HEAD)\""
     },
     "private": true,
     "peerDependencies": {
