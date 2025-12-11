@@ -111,8 +111,8 @@ export class UIAccordion implements OnChanges {
         return this.openSections.includes(itemId);
     }
 
-    trackById(_: number, item: AccordionSection) {
-        return item.id;
+    isSectionVisible(item: AccordionSection): boolean {
+        return this.isOpen(item.id) && !item.disabled;
     }
 
     isTemplateRef(value: any): value is TemplateRef<any> {
