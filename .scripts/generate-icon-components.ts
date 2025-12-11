@@ -1,7 +1,8 @@
 /**
  * Generates Angular components for each SVG icon in the @bspk/icons package.
- * 
+ *
  * Generates the BspkIcon type used in the UI project
+ *
  * This type is a union of all icon component classes in the icons directory
  *
  * $ npx tsx .scripts/generate-icon-components.ts
@@ -29,7 +30,6 @@ import { execSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 
-// Add this line:
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
 const iconsDir = path.join(__dirname, '../node_modules/@bspk/icons');
@@ -58,7 +58,7 @@ svgFiles.forEach((file) => {
             .replace(/^-/, '') // Remove leading dash if present
             .toLowerCase();
     }
-    
+
     // Usage in your script:
     const slug = toKebabCase(name);
     const component = componentTemplate(svgContent, slug, name);
@@ -71,15 +71,13 @@ svgFiles.forEach((file) => {
 const iconsLocalDir = path.join(process.cwd(), 'projects/ui/src/lib/icons');
 
 // Find all .ts files (icon components) in the icons directory
-const iconFiles = fs
-    .readdirSync(iconsLocalDir)
-    .filter(file => file.endsWith('.ts') && file !== 'index.ts');
+const iconFiles = fs.readdirSync(iconsLocalDir).filter((file) => file.endsWith('.ts') && file !== 'index.ts');
 
-const iconNames = iconFiles.map(file => file.replace(/\.ts$/, ''));
+const iconNames = iconFiles.map((file) => file.replace(/\.ts$/, ''));
 
 function toPascalCase(str: string) {
     return str
-        .replace(/(^\w|-\w)/g, m => m.replace(/-/, '').toUpperCase())
+        .replace(/(^\w|-\w)/g, (m) => m.replace(/-/, '').toUpperCase())
         .replace(/(\d+)([a-zA-Z])/g, (_, num, chr) => num + chr.toUpperCase()) // Capitalize after numbers
         .replace(/([a-z])([A-Z]+)/g, (_, a, b) => a + b); // Preserve consecutive uppercase
 }
@@ -91,8 +89,8 @@ const lines: string[] = [
     'export type BspkIcon =',
 ];
 
-iconNames.forEach(iconNames => {
-    const pascalName = toPascalCase(iconNames)
+iconNames.forEach((iconNames) => {
+    const pascalName = toPascalCase(iconNames);
     lines.push(`  | typeof Icons.Icon${pascalName}`);
 });
 
