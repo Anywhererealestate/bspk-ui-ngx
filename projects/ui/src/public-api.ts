@@ -15,8 +15,6 @@ export * from './lib/dialog';
 export * from './lib/drawer';
 export * from './lib/icon';
 export * from './lib/icons';
-export * from './lib/input';
-export * from './lib/modal';
 export * from './lib/pagination';
 export * from './lib/radio';
 export * from './lib/table';
