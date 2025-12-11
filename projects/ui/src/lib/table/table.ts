@@ -60,11 +60,34 @@ const BUILT_IN_COLUMN_SORTERS: Record<BuiltInColumnSorters, TableColumnSortingFn
     },
 })
 export class UITable<R extends TableRow> {
+    /**
+     * The data of the table.
+     *
+     * Array<TableRow>
+     */
     @Input() data: R[] = [];
+    /**
+     * The column definitions of the table.
+     *
+     * @type Array<TableColumn>
+     */
     @Input() columns: (TableColumn<R> | boolean)[] = [];
+    /** The title of the table. */
     @Input() title?: string;
+    /**
+     * The size of the table.
+     *
+     * @default medium
+     */
     @Input() size: TableSize = 'medium';
-    @Input() pageSize = 10;
+    /**
+     * The number of rows per page.
+     *
+     * If the number of rows exceeds the page size, pagination controls will be displayed.
+     *
+     * @default 10
+     */
+    @Input() pageSize: number = 10;
 
     pageIndex = 0;
     sorting: SortState = [];
