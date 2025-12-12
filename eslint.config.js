@@ -12,9 +12,9 @@ const configExtends = [
 ];
 
 export default defineConfig([
+    { ignores: ['**/node_modules/**', '**/dist/**', '**/out/**', '**/.angular/**', '**/icons/**'] },
     {
         files: ['projects/ui/**/*.ts'],
-        ignores: ['**/icons/**', '.angular/**'],
         extends: configExtends,
         rules: {
             '@angular-eslint/directive-selector': [
@@ -37,7 +37,6 @@ export default defineConfig([
     },
     {
         files: ['projects/**/*.ts'],
-        ignores: ['**/icons/**'],
         extends: configExtends,
         processor: angular.processInlineTemplates,
         rules: {
