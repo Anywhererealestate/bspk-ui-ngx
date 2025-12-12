@@ -1,0 +1,9 @@
+<label [attr.data-bspk]="'toggle-option'" [class.disabled]="disabled">
+    <ng-content></ng-content>
+    @if (label) {
+        <span>{{ label }}</span>
+    }
+    @if (description) {
+        <span class="description">{{ description }}</span>
+    }
+</label>
