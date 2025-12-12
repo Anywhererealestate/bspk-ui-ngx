@@ -13,7 +13,7 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angu
  * @phase Utility
  */
 
-export type RadioProps = {
+export interface RadioProps {
     name: string;
     value: string;
     ariaLabel?: string;
@@ -25,7 +25,7 @@ export type RadioProps = {
     change: (event: Event) => void;
     selected?: boolean;
     click?: (event: Event) => void;
-};
+}
 
 @Component({
     selector: 'ui-radio',
