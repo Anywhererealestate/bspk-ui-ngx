@@ -9,7 +9,6 @@ import {
     OnInit,
     ChangeDetectionStrategy,
     ViewEncapsulation,
-    Type,
 } from '@angular/core';
 
 import { BspkIcon } from '../../types/bspk-icon';
@@ -76,14 +75,14 @@ export class UIButton implements OnInit {
      *
      * @default false
      */
-    @Input() iconOnly: boolean = false;
+    @Input() iconOnly = false;
 
     /**
      * The function of the button is destructive.
      *
      * @default false
      */
-    @Input() destructive: boolean = false;
+    @Input() destructive = false;
 
     /**
      * The size of the button.
@@ -114,7 +113,7 @@ export class UIButton implements OnInit {
      *
      * @default false
      */
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
 
     /**
      * The button type attribute.

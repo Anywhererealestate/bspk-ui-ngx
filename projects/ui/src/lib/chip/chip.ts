@@ -3,7 +3,7 @@ import { UIIcon } from '../icon';
 import { BspkIcon } from '../../types/bspk-icon';
 import { BadgeProps, UIBadge } from '../badge';
 
-export type ChipProps = {
+export interface ChipProps {
     disabled?: boolean;
     flat?: boolean;
     label: string;
@@ -12,7 +12,7 @@ export type ChipProps = {
     trailingIcon?: BspkIcon;
     trailingBadge?: BadgeProps;
     click?: (event: Event) => void;
-};
+}
 
 /**
  * Dynamically generated options that are suggested to the user as responses or prompts.

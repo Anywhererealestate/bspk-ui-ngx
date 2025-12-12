@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnDestroy, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { UIDialog } from '../dialog/dialog';
 import { UIButton } from '../button/button';
 import { IconClose } from '../icons/close';
@@ -12,7 +12,7 @@ import { IconClose } from '../icons/close';
     styleUrls: ['./drawer.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class UIDrawer implements OnDestroy {
+export class UIDrawer {
     /** Drawer header. */
     @Input() header = '';
 
@@ -33,14 +33,8 @@ export class UIDrawer implements OnDestroy {
 
     @Output() onClose = new EventEmitter<void>();
 
-    constructor() {}
-
     public emitClose() {
         this.onClose.emit();
-    }
-
-    ngOnDestroy() {
-        // nothing to clean up; Dialog manages overlay lifecycle
     }
 }
 

@@ -8,12 +8,12 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
-export type BadgeProps = {
+export interface BadgeProps {
     count?: number;
     size?: string;
     color?: string;
     surfaceBorder?: boolean;
-};
+}
 
 /**
  * Visual indicator for new items within a parent page represented with a numerical count of new items.
@@ -66,7 +66,7 @@ export class UIBadge implements AfterViewInit {
      *
      * @default false
      */
-    @Input() surfaceBorder: boolean = false;
+    @Input() surfaceBorder = false;
 
     /**
      * Indicates whether the badge has projected (custom) content.

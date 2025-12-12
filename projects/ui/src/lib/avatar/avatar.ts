@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, HostBinding, ViewEncapsulation } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IconPerson } from '../icons/person';
 import { UITooltipDirective } from '../tooltip';
@@ -69,7 +69,7 @@ export class UIAvatar {
      *
      * @default grey
      */
-    @Input() color: string = 'grey';
+    @Input() color = 'grey';
 
     /**
      * Customizable initials to display in the avatar limited to 2 characters.
@@ -89,7 +89,7 @@ export class UIAvatar {
      *
      * @default true
      */
-    @Input() showIcon: boolean = true;
+    @Input() showIcon = true;
 
     /**
      * The url to the image to display in the avatar.
@@ -106,14 +106,14 @@ export class UIAvatar {
      *
      * @default false
      */
-    @Input() hideTooltip: boolean = false;
+    @Input() hideTooltip = false;
 
     /**
      * Determines if the element is [disabled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled).
      *
      * @default false
      */
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
 
     /**
      * The function to call when the avatar is clicked.
@@ -138,6 +138,12 @@ export class UIAvatar {
     handleOnClick(event: MouseEvent) {
         if (!this.disabled) {
             this.onClick.emit(event);
+        }
+    }
+
+    handleKeyDown(event: KeyboardEvent) {
+        if (!this.disabled && event.key === 'Enter') {
+            this.onClick.emit();
         }
     }
 }

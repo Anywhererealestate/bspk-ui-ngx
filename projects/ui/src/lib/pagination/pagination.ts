@@ -41,19 +41,19 @@ export class UIPagination implements OnChanges {
      *
      * @default 2
      */
-    @Input() numPages: number = 2;
+    @Input() numPages = 2;
     /**
      * The current (1-based) page number.
      *
      * @default 1
      */
-    @Input() value: number = 1;
+    @Input() value = 1;
 
     /** Called when the page changes. */
     @Output() onChange = new EventEmitter<number>();
 
     // Internal string representation for the input field when large page counts.
-    inputValue: string = '1';
+    inputValue = '1';
 
     readonly INPUT_TYPE_THRESHOLD = INPUT_TYPE_THRESHOLD;
 

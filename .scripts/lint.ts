@@ -40,7 +40,7 @@ files.forEach((dirent) => {
         if (fs.existsSync(directiveFilePath)) filesToCheck.push({ filePath: directiveFilePath, type: 'directive' });
 
         filesToCheck.forEach(({ filePath, type }) => {
-            let content = fs.readFileSync(filePath, 'utf-8');
+            const content = fs.readFileSync(filePath, 'utf-8');
 
             const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
             const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[${dirent.name}]`;

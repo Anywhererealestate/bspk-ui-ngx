@@ -10,15 +10,15 @@ export type TableSize = 'large' | 'medium' | 'small' | 'x-large';
 
 export type TableCellValue = unknown;
 
-export type TableRow = {
+export interface TableRow {
     [key: string]: TableCellValue | TableCellValue[];
     id: string;
-};
+}
 
 export type BuiltInColumnSorters = 'boolean' | 'date' | 'number' | 'string';
 export type TableColumnSortingFn = (a: TableCellValue, b: TableCellValue) => number;
 
-export type TableColumn<R extends TableRow> = {
+export interface TableColumn<R extends TableRow> {
     key: string;
     label: string;
     width?: string;
@@ -26,7 +26,7 @@ export type TableColumn<R extends TableRow> = {
     valign?: 'bottom' | 'center' | 'top';
     sort?: BuiltInColumnSorters | TableColumnSortingFn;
     formatter?: (row: R, size: TableSize) => unknown;
-};
+}
 
 type SortOrder = 'asc' | 'desc';
 type SortState = { key: string; order: SortOrder }[];
@@ -64,7 +64,7 @@ export class UITable<R extends TableRow> {
     @Input() columns: (TableColumn<R> | boolean)[] = [];
     @Input() title?: string;
     @Input() size: TableSize = 'medium';
-    @Input() pageSize: number = 10;
+    @Input() pageSize = 10;
 
     pageIndex = 0;
     sorting: SortState = [];
@@ -88,7 +88,7 @@ export class UITable<R extends TableRow> {
 
     get rows(): R[] {
         const cols = this.normalizedColumns;
-        let result = [...(this.data || [])];
+        const result = [...(this.data || [])];
 
         if (this.sorting.length) {
             result.sort((a, b) => {
