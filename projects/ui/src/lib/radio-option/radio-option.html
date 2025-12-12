@@ -1,0 +1,11 @@
+<ui-toggle-option [label]="label" [description]="description" [disabled]="disabled" data-bspk="radio-option">
+    <ui-radio
+        [name]="name"
+        [value]="value"
+        [checked]="checked ?? false"
+        [disabled]="disabled ?? false"
+        [required]="required ?? false"
+        [invalid]="invalid ?? false"
+        [ariaLabel]="ariaLabel"
+        (checkedChange)="checkedChange.emit($event)"></ui-radio>
+</ui-toggle-option>

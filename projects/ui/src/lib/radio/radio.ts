@@ -13,6 +13,20 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angu
  * @phase Utility
  */
 
+export type RadioProps = {
+    name: string;
+    value: string;
+    ariaLabel?: string;
+    checked?: boolean;
+    disabled?: boolean;
+    id?: string;
+    invalid?: boolean;
+    required?: boolean;
+    change: (event: Event) => void;
+    selected?: boolean;
+    click?: (event: Event) => void;
+};
+
 @Component({
     selector: 'ui-radio',
     standalone: true,
