@@ -265,6 +265,92 @@ import { UITable } from './table';
                 },
                 { id: 'wy', state: 'Wyoming', capital: 'Cheyenne', population: 578759, nickname: 'The Equality State' },
             ]"></ui-table>
+
+        <h2>Table: different pagination</h2>
+        <p>Table with 3 pages of content.</p>
+
+        <ui-table
+            [title]="'States Table (3 pages)'"
+            [size]="'medium'"
+            [pageSize]="5"
+            [columns]="[
+                { key: 'state', label: 'State', width: '160px', sort: 'string' },
+                { key: 'capital', label: 'Capital', width: '140px' },
+                { key: 'population', label: 'Population', width: '140px', sort: 'number' },
+                { key: 'nickname', label: 'Nickname', width: '1fr' },
+            ]"
+            [data]="[
+                {
+                    id: 'ca',
+                    state: 'California',
+                    capital: 'Sacramento',
+                    population: 39512223,
+                    nickname: 'The Golden State',
+                },
+                { id: 'ny', state: 'New York', capital: 'Albany', population: 19299981, nickname: 'The Empire State' },
+                { id: 'tx', state: 'Texas', capital: 'Austin', population: 29183290, nickname: 'The Lone Star State' },
+                {
+                    id: 'fl',
+                    state: 'Florida',
+                    capital: 'Tallahassee',
+                    population: 21477737,
+                    nickname: 'The Sunshine State',
+                },
+                {
+                    id: 'il',
+                    state: 'Illinois',
+                    capital: 'Springfield',
+                    population: 12671821,
+                    nickname: 'The Prairie State',
+                },
+                {
+                    id: 'pa',
+                    state: 'Pennsylvania',
+                    capital: 'Harrisburg',
+                    population: 12801989,
+                    nickname: 'The Keystone State',
+                },
+                { id: 'oh', state: 'Ohio', capital: 'Columbus', population: 11689100, nickname: 'The Buckeye State' },
+                { id: 'ga', state: 'Georgia', capital: 'Atlanta', population: 10617423, nickname: 'The Peach State' },
+                {
+                    id: 'nc',
+                    state: 'North Carolina',
+                    capital: 'Raleigh',
+                    population: 10488084,
+                    nickname: 'The Tar Heel State',
+                },
+                {
+                    id: 'mi',
+                    state: 'Michigan',
+                    capital: 'Lansing',
+                    population: 9986857,
+                    nickname: 'The Great Lakes State',
+                },
+                {
+                    id: 'nj',
+                    state: 'New Jersey',
+                    capital: 'Trenton',
+                    population: 8882190,
+                    nickname: 'The Garden State',
+                },
+                { id: 'va', state: 'Virginia', capital: 'Richmond', population: 8535519, nickname: 'The Old Dominion' },
+                {
+                    id: 'wa',
+                    state: 'Washington',
+                    capital: 'Olympia',
+                    population: 7614893,
+                    nickname: 'The Evergreen State',
+                },
+                {
+                    id: 'az',
+                    state: 'Arizona',
+                    capital: 'Phoenix',
+                    population: 7151502,
+                    nickname: 'The Grand Canyon State',
+                },
+                { id: 'ma', state: 'Massachusetts', capital: 'Boston', population: 6892503, nickname: 'The Bay State' },
+            ]">
+        </ui-table>
     `,
 })
 export class UITableExample {}
