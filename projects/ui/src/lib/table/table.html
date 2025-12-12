@@ -23,7 +23,7 @@
                                 <button type="button" (click)="toggleSorting(column.key)">
                                     {{ column.label }}
                                     @if (sortIcon(column.key)) {
-                                        <span aria-hidden data-sort-icon>
+                                        <span aria-hidden="true" data-sort-icon>
                                             <ui-icon [icon]="sortIcon(column.key)!"></ui-icon>
                                         </span>
                                     }

@@ -124,10 +124,6 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
         return errors;
     }
 
-    registerOnValidatorChange(fn: () => void): void {
-        // noop
-    }
-
     handleBlur(event: FocusEvent) {
         this.onTouched();
         this.blur.emit(event);

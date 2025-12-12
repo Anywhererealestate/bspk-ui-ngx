@@ -4,22 +4,24 @@ import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 import angular from 'angular-eslint';
 
+const configExtends = [
+    eslint.configs.recommended,
+    tseslint.configs.recommended,
+    tseslint.configs.stylistic,
+    angular.configs.tsRecommended,
+];
+
 export default defineConfig([
     {
-        files: ['**/*.ts'],
-        extends: [
-            eslint.configs.recommended,
-            tseslint.configs.recommended,
-            tseslint.configs.stylistic,
-            angular.configs.tsRecommended,
-        ],
-        processor: angular.processInlineTemplates,
+        files: ['projects/ui/**/*.ts'],
+        ignores: ['**/icons/**', '.angular/**'],
+        extends: configExtends,
         rules: {
             '@angular-eslint/directive-selector': [
                 'error',
                 {
                     type: 'attribute',
-                    prefix: 'ui',
+                    prefix: '',
                     style: 'camelCase',
                 },
             ],
@@ -31,6 +33,19 @@ export default defineConfig([
                     style: 'kebab-case',
                 },
             ],
+        },
+    },
+    {
+        files: ['projects/**/*.ts'],
+        ignores: ['**/icons/**'],
+        extends: configExtends,
+        processor: angular.processInlineTemplates,
+        rules: {
+            '@angular-eslint/no-output-on-prefix': 'off',
+            '@angular-eslint/prefer-inject': 'off',
+            '@typescript-eslint/no-explicit-any': 'off',
+            '@angular-eslint/no-output-native': 'off',
+            '@typescript-eslint/no-empty-object-type': 'off',
         },
     },
     {

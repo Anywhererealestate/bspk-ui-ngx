@@ -80,7 +80,7 @@ export class UIAccordion implements OnChanges {
      *
      * @default true
      */
-    @Input() singleOpen: boolean = true;
+    @Input() singleOpen = true;
 
     openSections: string[] = [];
 

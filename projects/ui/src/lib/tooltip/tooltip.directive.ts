@@ -13,7 +13,7 @@ import { Overlay, OverlayRef, ConnectedPosition } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { UITooltip } from './tooltip';
 
-export type TooltipProps = {
+export interface TooltipProps {
     /** The tooltip content. */
     label?: string;
     /**
@@ -30,7 +30,7 @@ export type TooltipProps = {
     showTail?: boolean;
     /** Determines if the tooltip is disabled. */
     disabled?: boolean;
-};
+}
 
 /** Directive to add a tooltip to any element. */
 @Directive({ selector: '[tooltip]' })
@@ -40,7 +40,7 @@ export class UITooltipDirective implements OnDestroy, OnChanges {
      *
      * @important This directive should be added to inline or inline-block elements otherwise positioning may be incorrect.
      */
-    @Input('tooltip') tooltip: TooltipProps | string = '';
+    @Input() tooltip: TooltipProps | string = '';
 
     private overlayRef?: OverlayRef;
     private attached?: ComponentRef<UITooltip>;
@@ -140,7 +140,7 @@ export class UITooltipDirective implements OnDestroy, OnChanges {
             const root = hostEl.querySelector('[data-bspk="tooltip"]') as HTMLElement | null;
             const target = root || hostEl;
             target.setAttribute(name, value);
-        } catch (e) {
+        } catch {
             // ignore
         }
     }

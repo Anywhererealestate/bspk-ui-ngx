@@ -15,7 +15,7 @@ export function randomNumber(min = 0, max = 100): number {
  * @param length - The length of the random ID to generate.
  * @returns A random string of the specified length containing alphanumeric characters.
  */
-export function randomString(length: number = 8): string {
+export function randomString(length = 8): string {
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
     const rand = new Uint32Array(length);
