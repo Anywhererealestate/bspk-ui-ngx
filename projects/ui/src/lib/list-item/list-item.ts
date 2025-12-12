@@ -1,6 +1,20 @@
 import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
-
+/**
+ * A hybrid interactive component that is used frequently to organize content and offers a wide range of control and
+ * navigation in most experiences.
+ *
+ * With its flexible and simple structure, the list item element is core and can meet the needs of many uses cases.
+ *
+ * The ListItem has three main elements: leading element, label, and trailing element.
+ *
+ * Leading elements should be one of the following Icon, Img, Avatar.
+ *
+ * Trailing elements should be one of the following Icon, Checkbox, Button, Radio, Switch, Tag, Txt.
+ *
+ * @name ListItem
+ * @phase Dev
+ */
 @Component({
     selector: 'ui-list-item',
     standalone: true,
@@ -99,24 +113,48 @@ import { NgTemplateOutlet } from '@angular/common';
     },
 })
 export class UIListItem {
+    /** Indicates the current active state of the item. */
     @Input() active?: boolean;
+    /** Owner identifier for analytics or debugging; emitted as `data-bspk-owner`. */
     @Input() owner?: string;
+    /** The ARIA label for the list item. */
     @Input() ariaLabel?: string | null;
+    /** Indicates the current selected state of the list item in selectable contexts. */
     @Input() ariaSelected?: boolean | null;
+    /** ARIA disabled state; when set, the item is non-interactive. */
     @Input() ariaDisabled?: boolean | null;
+    /** ARIA readonly state; when set, the item does not accept interaction. */
     @Input() ariaReadonly?: boolean | null;
+    /** The `for` attribute target when rendering as a label. */
     @Input() htmlFor?: string;
+    /** Native disabled state; when set, the item is non-interactive. */
     @Input() disabled?: boolean;
+    /** Native readonly state; when set, the item does not accept interaction. */
     @Input() readonly?: boolean;
-
+    /**
+     * The element type to render as.
+     *
+     * @default div
+     */
     @Input() as: 'div' | 'a' | 'button' | 'label' = 'div';
+    /** The href of the list item. If provided, renders as an anchor element. */
     @Input() href?: string;
-
+    /**
+     * The label to display in the ListItem.
+     *
+     * @required
+     */
     @Input() label!: string;
+    /** The subtext to display in the ListItem. */
     @Input() subText?: string;
-
+    /**
+     * Determines how the ListItem uses horizontal space. If set to 'fill', options expand to fill the container's
+     * width. If set to 'hug', options only take up as much space as the content requires.
+     *
+     * @default fill
+     */
     @Input() width?: 'fill' | 'hug';
-
+    /** Explicit tabIndex; defaults to 0 when actionable, otherwise -1. */
     @Input() tabIndex?: number | null;
 
     @Output() clicked = new EventEmitter<Event>();
