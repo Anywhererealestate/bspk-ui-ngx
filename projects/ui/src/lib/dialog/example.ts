@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIButton } from '../button';
-import { UIDialog } from './dialog';
+import { DialogPlacement, UIDialog } from './dialog';
 
 @Component({
     selector: 'ui-dialog-example',
@@ -10,16 +11,42 @@ import { UIDialog } from './dialog';
     template: `
         <h2>Dialog</h2>
 
-        <ui-button label="Open Dialog" (click)="open = true"></ui-button>
+        @for (placement of placements; track placement) {
+            <p><ui-button [label]="'Open ' + placement + ' Dialog'" (click)="openDialog(placement)"></ui-button></p>
 
-        <ui-dialog [open]="open" (onClose)="open = false" header="Example dialog" description="This is a demo dialog">
-            <div style="padding: 20px">
-                <p>This is demo dialog content.</p>
-                <ui-button label="Close" (click)="open = false"></ui-button>
-            </div>
-        </ui-dialog>
+            <ui-dialog [open]="open[placement]" (onClose)="closeDialog(placement)" [placement]="placement">
+                <div style="padding: 20px">
+                    <p>This is {{ placement }} demo dialog content.</p>
+                    <div style="display: flex; gap: 10px">
+                        <ui-button label="Close" (click)="closeDialog(placement)"></ui-button>
+                        <ui-button variant="tertiary" label="Snackbar" (click)="snackbar()"></ui-button>
+                    </div>
+                </div>
+            </ui-dialog>
+        }
     `,
+    encapsulation: ViewEncapsulation.None,
 })
 export class UIDialogExample {
-    protected open = false;
+    placements: DialogPlacement[] = ['bottom', 'center', 'left', 'right', 'top'];
+
+    protected open: Record<DialogPlacement, boolean> = {
+        bottom: false,
+        center: false,
+        left: false,
+        right: false,
+        top: false,
+    };
+
+    openDialog(placement: DialogPlacement) {
+        this.open[placement] = true;
+    }
+
+    closeDialog(placement: DialogPlacement) {
+        this.open[placement] = false;
+    }
+
+    snackbar() {
+        sendSnackbar('Dialog button clicked');
+    }
 }

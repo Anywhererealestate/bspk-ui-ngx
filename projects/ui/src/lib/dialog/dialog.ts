@@ -1,6 +1,4 @@
 import { FocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { PortalModule, TemplatePortal } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -10,22 +8,60 @@ import {
     OnDestroy,
     Output,
     SimpleChanges,
-    TemplateRef,
+    ElementRef,
     ViewChild,
-    ViewContainerRef,
-    Renderer2,
     ViewEncapsulation,
+    ChangeDetectorRef,
 } from '@angular/core';
+import { UIPortal } from '../portal/portal';
+import { UIScrim } from '../scrim/scrim';
 
+export type DialogPlacement = 'bottom' | 'center' | 'left' | 'right' | 'top';
+
+/**
+ * Dialogs display important information that users need to acknowledge. They appear over the interface and block
+ * further interactions until an action is selected.
+ *
+ * This is a low-level component that provides the container and functionality for dialogs. You will typically want to
+ * use a higher-level component that provides a consistent UI and behavior for dialogs such as Modal.
+ *
+ * @name Dialog
+ * @phase Utility
+ */
 @Component({
     selector: 'ui-dialog',
     standalone: true,
-    imports: [CommonModule, PortalModule],
-    templateUrl: './dialog.html',
+    imports: [CommonModule, UIPortal, UIScrim],
+    template: `
+        @if (open) {
+            <ui-portal [container]="container">
+                <div
+                    data-bspk="dialog"
+                    [attr.data-bspk-owner]="owner || null"
+                    [attr.data-placement]="placement"
+                    [attr.id]="id || null"
+                    role="presentation"
+                    #dialogRoot>
+                    <div data-dialog-box [attr.data-width-full]="widthFull ? 'true' : null" tabindex="-1" #boxRef>
+                        <ng-content></ng-content>
+                    </div>
+                </div>
+                <ui-scrim [visible]="showScrim !== false" owner="dialog" (click)="handleScrimClick()"></ui-scrim>
+            </ui-portal>
+        }
+    `,
     styleUrls: ['./dialog.scss'],
+    host: {
+        style: 'display: contents;',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class UIDialog implements OnChanges, OnDestroy {
+    /** The content of the dialog. */
+    // Content is projected via <ng-content>
+
+    /** A ref to the dialog element. */
+    @Input() innerRef?: (el: HTMLDivElement | null) => void;
     /**
      * If the dialog should appear.
      *
@@ -33,11 +69,17 @@ export class UIDialog implements OnChanges, OnDestroy {
      */
     @Input() open = false;
     /**
+     * Function to call when the dialog is closed.
+     *
+     * @required
+     */
+    @Output() onClose = new EventEmitter<void>();
+    /**
      * The placement of the dialog on the screen.
      *
      * @default center
      */
-    @Input() placement: 'bottom' | 'center' | 'left' | 'right' | 'top' = 'center';
+    @Input() placement: DialogPlacement = 'center';
     /**
      * Whether the dialog should have a scrim behind it.
      *
@@ -49,7 +91,6 @@ export class UIDialog implements OnChanges, OnDestroy {
      *
      * @default false
      */
-
     @Input() widthFull = false;
     /**
      * If focus trapping should be disabled. Generally this should not be disabled as dialogs should always trap focus.
@@ -57,98 +98,76 @@ export class UIDialog implements OnChanges, OnDestroy {
      * @default false
      */
     @Input() disableFocusTrap = false;
-    /**
-     * Function to call when the dialog is closed.
-     *
-     * @type () => void
-     * @required
-     */
-    @Output() onClose = new EventEmitter<void>();
+    /** Owner identifier for tracking/analytics. */
+    @Input() owner?: string;
+    /** Optional DOM container to render into (via Portal). Defaults to `document.body`. */
+    @Input() container?: HTMLElement | null;
+    /** Id for the dialog element. */
+    @Input() id?: string;
 
-    @ViewChild('dialogTemplate', { static: true }) dialogTemplate!: TemplateRef<any>;
+    @ViewChild('boxRef', { static: false }) boxRef?: ElementRef<HTMLDivElement>;
+    @ViewChild('dialogRoot', { static: false }) dialogRoot?: ElementRef<HTMLDivElement>;
 
-    private overlayRef?: OverlayRef;
-    private portal?: TemplatePortal<any>;
     private focusTrap?: FocusTrap;
 
     constructor(
-        private overlay: Overlay,
-        private vcr: ViewContainerRef,
-        private renderer: Renderer2,
         private focusTrapFactory: FocusTrapFactory,
+        private changeDetector: ChangeDetectorRef,
     ) {}
 
     ngOnChanges(changes: SimpleChanges) {
+        this.changeDetector.detectChanges();
         if (changes['open']) {
-            if (this.open) this.openOverlay();
-            else this.closeOverlay();
+            this.attach();
+        } else {
+            this.detach();
+        }
+    }
+
+    attach() {
+        if (typeof document === 'undefined') return;
+        document.documentElement.style.overflow = 'hidden';
+        document.addEventListener('keydown', this.handleKeydown);
+
+        // Focus trap setup
+        const el = this.boxRef?.nativeElement;
+        if (el && !this.disableFocusTrap) {
+            this.focusTrap = this.focusTrapFactory.create(el);
+            try {
+                this.focusTrap.focusInitialElementWhenReady();
+            } catch {
+                el.focus();
+            }
+        }
+    }
+
+    detach() {
+        if (typeof document === 'undefined') return;
+        document.documentElement.style.overflow = '';
+        document.removeEventListener('keydown', this.handleKeydown);
+
+        if (this.focusTrap) {
+            this.focusTrap.destroy();
+            this.focusTrap = undefined;
         }
     }
 
     emitClose() {
         this.onClose.emit();
-        this.closeOverlay();
     }
 
     ngOnDestroy() {
-        this.closeOverlay();
+        this.detach();
     }
 
-    private openOverlay() {
-        if (this.overlayRef) return;
-
-        this.overlayRef = this.overlay.create({
-            hasBackdrop: true,
-            scrollStrategy: this.overlay.scrollStrategies.block(),
-        });
-
-        this.portal = new TemplatePortal(this.dialogTemplate, this.vcr);
-        this.overlayRef.attach(this.portal);
-
-        const pane = this.overlayRef.overlayElement;
-        if (pane) {
-            pane.setAttribute('data-bspk', 'dialog');
-            pane.setAttribute('data-placement', this.placement);
-            pane.setAttribute('role', 'presentation');
+    handleKeydown = (event: KeyboardEvent) => {
+        if (event.key === 'Escape' && this.open) {
+            this.emitClose();
         }
+    };
 
-        const backdrop = (this.overlayRef as any).backdropElement as HTMLElement | null;
-        if (backdrop) backdrop.setAttribute('data-bspk-overlay-backdrop', '');
-
-        this.overlayRef.backdropClick().subscribe(() => this.emitClose());
-        this.overlayRef.keydownEvents().subscribe((event: KeyboardEvent) => {
-            if (event.key === 'Escape') this.emitClose();
-        });
-
-        // create focus trap after attach
-        setTimeout(() => {
-            if (!this.overlayRef) return;
-            const dialogBox = this.overlayRef.overlayElement.querySelector<HTMLElement>('[data-dialog-box]');
-            if (dialogBox) {
-                if (!this.disableFocusTrap) {
-                    this.focusTrap = this.focusTrapFactory.create(dialogBox);
-                    try {
-                        this.focusTrap.focusInitialElementWhenReady();
-                    } catch {
-                        // fallback: focus the dialog box
-                        dialogBox.focus();
-                    }
-                }
-
-                if (this.widthFull) dialogBox.setAttribute('data-width-full', 'true');
-            }
-        });
-    }
-
-    private closeOverlay() {
-        if (!this.overlayRef) return;
-        if (this.focusTrap) {
-            this.focusTrap.destroy();
-            this.focusTrap = undefined;
-        }
-        this.overlayRef.dispose();
-        this.overlayRef = undefined;
-        this.portal = undefined;
+    handleScrimClick() {
+        this.emitClose();
     }
 }
 
