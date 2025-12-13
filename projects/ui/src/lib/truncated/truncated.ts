@@ -17,7 +17,6 @@ import { UITooltipDirective, TooltipProps } from '../tooltip/tooltip.directive';
     encapsulation: ViewEncapsulation.None,
 })
 export class UITruncated implements AfterViewInit {
-    tooltip: TooltipProps | string = '';
     /**
      * The content to render.
      *
@@ -28,6 +27,8 @@ export class UITruncated implements AfterViewInit {
      * @required
      */
     @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
+
+    tooltip: TooltipProps | string = '';
 
     private cdr = inject(ChangeDetectorRef);
 

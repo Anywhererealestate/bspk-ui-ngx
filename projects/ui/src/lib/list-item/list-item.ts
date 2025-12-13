@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 /**
  * A hybrid interactive component that is used frequently to organize content and offers a wide range of control and
  * navigation in most experiences.
@@ -136,7 +136,7 @@ export class UIListItem {
      *
      * @default div
      */
-    @Input() as: 'div' | 'a' | 'button' | 'label' = 'div';
+    @Input() as: 'a' | 'button' | 'div' | 'label' = 'div';
     /** The href of the list item. If provided, renders as an anchor element. */
     @Input() href?: string;
     /**

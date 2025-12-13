@@ -1,8 +1,8 @@
 import { Component, input, Input, ViewEncapsulation } from '@angular/core';
-import { UIButton, ButtonSize } from '../button/button';
-import { IconCancel } from '../icons/cancel';
 import { provideNgxMask } from 'ngx-mask';
 import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
+import { UIButton, ButtonSize } from '../button/button';
+import { IconCancel } from '../icons/cancel';
 
 @Component({
     selector: 'ui-input',
@@ -28,16 +28,7 @@ export class UIInput extends TextInputControlValueAccessor {
 
     public IconCancel = IconCancel;
 
-    getShowClearButton(): boolean | null {
-        return (
-            !!(this.showClearButton !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
-            null
-        );
-    }
-
-    clearInput() {
-        this.value.set('');
-    }
+    readonly controlId = input(randomString());
 
     // this method to ensures the returned value is of type ButtonSize
     get buttonSize(): ButtonSize {
@@ -90,5 +81,14 @@ export class UIInput extends TextInputControlValueAccessor {
         return this.value();
     }
 
-    readonly controlId = input(randomString());
+    getShowClearButton(): boolean | null {
+        return (
+            !!(this.showClearButton !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
+            null
+        );
+    }
+
+    clearInput() {
+        this.value.set('');
+    }
 }

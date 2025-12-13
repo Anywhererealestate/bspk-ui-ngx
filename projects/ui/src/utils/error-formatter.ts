@@ -1,5 +1,5 @@
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AbstractControl } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 export function getErrors(formControl: AbstractControl, sanitizer: DomSanitizer): SafeHtml | string {
     if (!formControl?.invalid) {

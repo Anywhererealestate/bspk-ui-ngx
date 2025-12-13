@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { IconPerson } from '../icons/person';
 import { UITooltipDirective } from '../tooltip';
 
@@ -114,12 +114,7 @@ export class UIAvatar {
      * @default false
      */
     @Input() disabled = false;
-
-    /**
-     * The function to call when the avatar is clicked.
-     *
-     * @type () => void
-     */
+    /** The function to call when the avatar is clicked. */
     @Output() onClick = new EventEmitter<MouseEvent>();
 
     get computedInitials(): string | undefined {

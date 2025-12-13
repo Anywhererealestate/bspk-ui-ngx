@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIPagination } from './pagination';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIPagination } from './pagination';
 
 describe('UIPagination', () => {
     let fixture: ComponentFixture<UIPagination>;

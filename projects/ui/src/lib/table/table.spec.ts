@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UITable } from './table';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UITable } from './table';
 
 describe('UITable', () => {
     let fixture: ComponentFixture<UITable<any>>;

@@ -20,7 +20,7 @@ export class UITooltip {
      *
      * @default top
      */
-    @Input() placement: 'top' | 'bottom' | 'left' | 'right' = 'top';
+    @Input() placement: 'bottom' | 'left' | 'right' | 'top' = 'top';
     /**
      * Determines if the tooltip is disabled.
      *

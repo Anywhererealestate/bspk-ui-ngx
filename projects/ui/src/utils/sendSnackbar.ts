@@ -26,7 +26,8 @@ export function sendSnackbar(message: string): void {
 
     // For environments where DOM is not available (e.g., server-side rendering), we can log the message
     if (typeof document === 'undefined') {
-        console.log(message);
+        // eslint-disable-next-line no-console
+        console.error(message);
     }
 
     sendAriaLiveMessage(message);

@@ -1,3 +1,5 @@
+import { Overlay, OverlayRef, ConnectedPosition } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
 import {
     ComponentRef,
     Directive,
@@ -9,8 +11,6 @@ import {
     OnChanges,
     SimpleChanges,
 } from '@angular/core';
-import { Overlay, OverlayRef, ConnectedPosition } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
 import { UITooltip } from './tooltip';
 
 export interface TooltipProps {
@@ -55,6 +55,34 @@ export class UITooltipDirective implements OnDestroy, OnChanges {
         this.renderer.setAttribute(this.elementRef.nativeElement, 'data-tooltip-directive', '');
     }
 
+    @HostListener('mouseenter')
+    @HostListener('focus')
+    show() {
+        const cfg = this.normalizedConfig();
+        if (cfg.disabled) return;
+        this.createOverlayForPlacement(cfg.placement);
+        const tooltipRef: ComponentRef<UITooltip> | undefined = this.overlayRef?.attach(new ComponentPortal(UITooltip));
+
+        if (tooltipRef) {
+            this.attached = tooltipRef;
+            tooltipRef.instance.label = cfg.label;
+            tooltipRef.instance.showTail = cfg.showTail;
+            this.setAttachedAttribute('data-show-tail', String(cfg.showTail));
+        }
+    }
+
+    @HostListener('mouseleave')
+    @HostListener('blur')
+    hide() {
+        if (this.attached) {
+            this.attached.destroy();
+            this.attached = undefined;
+        }
+        this.overlayRef?.detach();
+        this.posSub?.unsubscribe();
+        this.posSub = undefined;
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['tooltip'] && this.attached) {
             const cfg = this.normalizedConfig();
@@ -95,42 +123,14 @@ export class UITooltipDirective implements OnDestroy, OnChanges {
             scrollStrategy: this.overlay.scrollStrategies.reposition(),
         });
 
-        const strat: any = positionStrategy;
-        if (strat && strat.positionChanges && typeof strat.positionChanges.subscribe === 'function') {
-            this.posSub = strat.positionChanges.subscribe((change: any) => {
+        const strategy: any = positionStrategy;
+        if (strategy && strategy.positionChanges && typeof strategy.positionChanges.subscribe === 'function') {
+            this.posSub = strategy.positionChanges.subscribe((change: any) => {
                 const pair = change.connectionPair;
                 const placementResolved = this.mapPairToPlacement(pair);
                 this.setAttachedAttribute('data-placement', placementResolved);
             });
         }
-    }
-
-    @HostListener('mouseenter')
-    @HostListener('focus')
-    show() {
-        const cfg = this.normalizedConfig();
-        if (cfg.disabled) return;
-        this.createOverlayForPlacement(cfg.placement);
-        const tooltipRef: ComponentRef<UITooltip> | undefined = this.overlayRef?.attach(new ComponentPortal(UITooltip));
-
-        if (tooltipRef) {
-            this.attached = tooltipRef;
-            tooltipRef.instance.label = cfg.label;
-            tooltipRef.instance.showTail = cfg.showTail;
-            this.setAttachedAttribute('data-show-tail', String(cfg.showTail));
-        }
-    }
-
-    @HostListener('mouseleave')
-    @HostListener('blur')
-    hide() {
-        if (this.attached) {
-            this.attached.destroy();
-            this.attached = undefined;
-        }
-        this.overlayRef?.detach();
-        this.posSub?.unsubscribe();
-        this.posSub = undefined;
     }
 
     private setAttachedAttribute(name: string, value: string) {

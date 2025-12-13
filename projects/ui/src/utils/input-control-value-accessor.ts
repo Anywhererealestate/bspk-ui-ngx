@@ -15,13 +15,13 @@ import {
 import { AbstractControl, ControlValueAccessor, NgControl, ValidationErrors, Validator } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgxMaskDirective, NgxMaskService } from 'ngx-mask';
-import { noop } from './util';
 import { getErrors } from './error-formatter';
 import { Mask } from './mask';
+import { noop } from './util';
 
 export const textInputSizes = ['small', 'medium', 'large'];
 export type TextInputSize = (typeof textInputSizes)[number];
-export type TextInputType = 'number' | 'text' | 'password';
+export type TextInputType = 'number' | 'password' | 'text';
 export const autoCompleteOptions = ['on', 'off'];
 export type AutoCompleteOptions = (typeof autoCompleteOptions)[number];
 
@@ -55,6 +55,9 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
     private readonly maskDirective = viewChild(NgxMaskDirective);
     private readonly maskService = inject(NgxMaskService);
 
+    private onChange: (value: string) => void = noop;
+    private onTouched: () => void = noop;
+
     constructor() {
         let first = true;
         effect(() => {
@@ -83,9 +86,6 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
             this.errorState.set(getErrors(this.ngControl.control, this.sanitizer));
         }
     }
-
-    private onChange: (value: string) => void = noop;
-    private onTouched: () => void = noop;
 
     registerOnChange(fn: any): void {
         this.onChange = fn;

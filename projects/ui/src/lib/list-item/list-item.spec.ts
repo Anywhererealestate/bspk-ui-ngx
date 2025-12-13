@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIListItem } from './list-item';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIListItem } from './list-item';
 
 describe('UIListItem', () => {
     let fixture: ComponentFixture<UIListItem>;

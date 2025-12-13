@@ -1,9 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UIButton } from '../button/button';
-import { UIInput } from '../input';
-import { IconChevronLeft, IconChevronRight } from '../icons';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
+import { UIButton } from '../button/button';
+import { IconChevronLeft, IconChevronRight } from '../icons';
+import { UIInput } from '../input';
 
 // After this point the manual input renders. With equal or fewer pages
 // the individual page buttons render instead (matches React implementation).
@@ -66,12 +66,6 @@ export class UIPagination implements OnChanges {
         }
     }
 
-    private clamp(page: number): number {
-        if (page < 1) return 1;
-        if (page > this.numPages) return this.numPages;
-        return page;
-    }
-
     emit(page: number) {
         const next = this.clamp(page);
         this.onChange.emit(next);
@@ -108,6 +102,12 @@ export class UIPagination implements OnChanges {
 
     label(): string {
         return `Go to page ${this.value}`;
+    }
+
+    private clamp(page: number): number {
+        if (page < 1) return 1;
+        if (page > this.numPages) return this.numPages;
+        return page;
     }
 }
 

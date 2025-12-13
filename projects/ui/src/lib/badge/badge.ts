@@ -69,6 +69,15 @@ export class UIBadge implements AfterViewInit {
     @Input() surfaceBorder = false;
 
     /**
+     * The context for which the badge is applied.
+     *
+     * Could be a button, link, or any other element that the badge is associated with.
+     *
+     * @type
+     */
+    @ViewChild('contentWrapper', { static: false }) contentWrapper!: ElementRef<HTMLSpanElement>;
+
+    /**
      * Indicates whether the badge has projected (custom) content.
      *
      * This is set to `true` if any content is projected into the badge component (for example,
@@ -78,14 +87,6 @@ export class UIBadge implements AfterViewInit {
      * @internal
      */
     hasProjectedContent = false;
-    /**
-     * The context for which the badge is applied.
-     *
-     * Could be a button, link, or any other element that the badge is associated with.
-     *
-     * @type
-     */
-    @ViewChild('contentWrapper', { static: false }) contentWrapper!: ElementRef<HTMLSpanElement>;
 
     constructor(private cdr: ChangeDetectorRef) {}
 

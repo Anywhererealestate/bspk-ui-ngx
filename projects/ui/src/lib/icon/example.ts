@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIIcon } from './icon';
 import { IconIcecream } from '../icons/icecream';
+import { UIIcon } from './icon';
 
 @Component({
     selector: 'ui-icon-example',

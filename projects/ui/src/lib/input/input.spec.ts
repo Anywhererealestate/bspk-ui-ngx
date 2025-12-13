@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIInput } from './input';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIInput } from './input';
 
 describe('UIInput', () => {
     let fixture: ComponentFixture<UIInput>;

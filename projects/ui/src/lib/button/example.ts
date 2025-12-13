@@ -1,13 +1,14 @@
+/* eslint-disable no-console */
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIButton } from './button';
-import { IconGTranslate } from '../icons/g-translate';
-import { IconBrail } from '../icons/brail';
-import { IconBarn } from '../icons/barn';
-import { IconCloud } from '../icons/cloud';
-import { IconWarningFill } from '../icons/warning-fill';
-import { IconBox } from '../icons/box';
 import { IconAdd } from '../icons/add';
+import { IconBarn } from '../icons/barn';
+import { IconBox } from '../icons/box';
+import { IconBrail } from '../icons/brail';
+import { IconCloud } from '../icons/cloud';
+import { IconGTranslate } from '../icons/g-translate';
+import { IconWarningFill } from '../icons/warning-fill';
+import { UIButton } from './button';
 
 @Component({
     selector: 'ui-button-example',

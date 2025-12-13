@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIListItem } from './list-item';
-import { IconFolder } from '../icons/folder';
-import { IconChevronRight } from '../icons/chevron-right';
-import { IconMoreVert } from '../icons/more-vert';
-import { IconDelete } from '../icons/delete';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIButton } from '../button';
+import { IconChevronRight } from '../icons/chevron-right';
+import { IconDelete } from '../icons/delete';
+import { IconFolder } from '../icons/folder';
+import { IconMoreVert } from '../icons/more-vert';
+import { UIListItem } from './list-item';
 
 @Component({
     selector: 'ui-list-item-example',

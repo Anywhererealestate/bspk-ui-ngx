@@ -1,6 +1,6 @@
 import { Directive, DoCheck, inject, Injector, OnInit, signal } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { NgControl } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { getErrors } from './error-formatter';
 
 @Directive()

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UITooltip } from './tooltip';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UITooltip } from './tooltip';
 
 describe('UITooltip', () => {
     let component: UITooltip;

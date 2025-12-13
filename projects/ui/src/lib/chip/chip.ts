@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { UIIcon } from '../icon';
 import { BspkIcon } from '../../types/bspk-icon';
 import { BadgeProps, UIBadge } from '../badge';
+import { UIIcon } from '../icon';
 
 export interface ChipProps {
     disabled?: boolean;
