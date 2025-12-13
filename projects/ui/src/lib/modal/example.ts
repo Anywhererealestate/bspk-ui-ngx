@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIModal } from './modal';
 import { UIButton } from '../button';
+import { UIModal } from './modal';
 
 @Component({
     selector: 'ui-modal-example',

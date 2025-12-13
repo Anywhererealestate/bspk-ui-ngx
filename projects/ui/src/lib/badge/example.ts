@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIBadge } from './badge';
 import { UIButton } from '../button';
 import { IconAdd } from '../icons/add';
+import { UIBadge } from './badge';
 
 @Component({
     selector: 'ui-badge-example',

@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { UIPagination } from '../pagination';
-import { UIIcon } from '../icon';
-import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
-import { IconArrowDownward, IconArrowUpward } from '../icons';
 import { BspkIcon } from '../../types/bspk-icon';
+import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
+import { UIIcon } from '../icon';
+import { IconArrowDownward, IconArrowUpward } from '../icons';
+import { UIPagination } from '../pagination';
 
 /**
  * A component that displays data in a tabular format with support for sorting and pagination.
@@ -188,6 +188,7 @@ export class UITable<R extends TableRow> {
         if (value == null) return null;
         if (Array.isArray(value)) return value.map((v) => this.formatCell(v) ?? '').join(', ');
         if (typeof value === 'object') {
+            // eslint-disable-next-line no-console
             console.warn('Unexpected object value:', value);
             return null;
         }
@@ -195,7 +196,7 @@ export class UITable<R extends TableRow> {
     }
 
     gridTemplateColumns(): string {
-        return this.normalizedColumns.map((c) => 'minmax(min-content,' + (c.width || '1fr') + ')').join(' ');
+        return this.normalizedColumns.map((c) => `minmax(min-content,${c.width || '1fr'})`).join(' ');
     }
 
     ariaSortForColumn(columnKey: string) {

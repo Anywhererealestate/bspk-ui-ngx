@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIChip } from './chip';
 import { IconAdd } from '../icons/add';
 import { IconIcecream } from '../icons/icecream';
+import { UIChip } from './chip';
 
 @Component({
     selector: 'ui-chip-example',

@@ -1,9 +1,9 @@
+import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideHttpClient } from '@angular/common/http';
-import { UIIcon } from './icon';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 import { Icon360 } from '../icons';
+import { UIIcon } from './icon';
 
 describe('Icon', () => {
     let fixture: ComponentFixture<UIIcon>;

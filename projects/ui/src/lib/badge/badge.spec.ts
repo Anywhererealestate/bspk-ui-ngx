@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIBadge } from './badge';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIBadge } from './badge';
 
 describe('UIBadge', () => {
     let component: UIBadge;

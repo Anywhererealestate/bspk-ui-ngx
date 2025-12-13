@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { UIAvatar } from './avatar';
@@ -16,7 +17,7 @@ import { UIAvatar } from './avatar';
         <ui-avatar color="lime" initials="BH" name="Bea Hopkins" size="xxxx-large" />
         <ui-avatar color="yellow" initials="TM" name="Tim Meadows" size="xxx-large" />
         <ui-avatar color="orange" name="Andre Giant" size="xxx-large" />
-        <ui-avatar color="red" name="Megan Jett" size="xx-large" />
+        <ui-avatar color="red" name="Megan Jetson" size="xx-large" />
         <ui-avatar color="pink" name="Tom South" size="xx-large" />
         <ui-avatar color="magenta" name="Cal North" size="x-large" />
         <ui-avatar color="purple" name="Dan West" size="large" />
@@ -31,7 +32,7 @@ import { UIAvatar } from './avatar';
         <ui-avatar color="lime" [showIcon]="false" name="Bea Hopkins" size="xxxx-large" />
         <ui-avatar color="yellow" [showIcon]="false" name="Tim Meadows" size="xxx-large" />
         <ui-avatar color="orange" [showIcon]="false" name="Andre Giant" size="xxx-large" />
-        <ui-avatar color="red" [showIcon]="false" name="Megan Jett" size="xx-large" />
+        <ui-avatar color="red" [showIcon]="false" name="Megan Jetson" size="xx-large" />
         <ui-avatar color="pink" [showIcon]="false" name="Tom South" size="xx-large" />
         <ui-avatar color="magenta" [showIcon]="false" name="Cal North" size="x-large" />
         <ui-avatar color="purple" [showIcon]="false" name="Dan West" size="large" />
@@ -42,7 +43,7 @@ import { UIAvatar } from './avatar';
         <h3>with image</h3>
         <ui-avatar image="./avatar-01.png" name="Tim Meadows" size="xxxxx-large" />
         <ui-avatar image="./avatar-02.png" name="Andre Giant" size="xxxx-large" />
-        <ui-avatar image="./avatar-03.png" name="Megan Jett" size="xxx-large" />
+        <ui-avatar image="./avatar-03.png" name="Megan Jetson" size="xxx-large" />
         <ui-avatar image="./avatar-04.png" name="Tom South" size="xx-large" />
         <ui-avatar image="./avatar-05.png" name="Cal North" size="x-large" />
         <ui-avatar image="./avatar-06.png" name="Dan West" size="large" />

@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { randomString } from '../../utils/randomString';
 import { IconKeyboardArrowDown } from '../icons/keyboard-arrow-down';
 import { IconKeyboardArrowUp } from '../icons/keyboard-arrow-up';

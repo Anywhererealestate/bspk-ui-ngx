@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIButton } from './button';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIButton } from './button';
 
 describe('Button', () => {
     let fixture: ComponentFixture<UIButton>;

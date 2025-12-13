@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
-import { UIDialog } from '../dialog/dialog';
 import { UIButton } from '../button/button';
+import { UIDialog } from '../dialog/dialog';
 import { IconClose } from '../icons/close';
 
 @Component({

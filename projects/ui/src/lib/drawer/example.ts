@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIDrawer } from './drawer';
 import { UIButton } from '../button';
+import { UIDrawer } from './drawer';
 
 @Component({
     selector: 'ui-drawer-example',

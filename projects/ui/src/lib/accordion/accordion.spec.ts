@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIAccordion } from './accordion';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIAccordion } from './accordion';
 
 describe('Accordion', () => {
     let component: UIAccordion;

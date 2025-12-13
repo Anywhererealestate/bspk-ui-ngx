@@ -1,19 +1,19 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 
 export type ColorVariant =
-    | 'primary'
-    | 'secondary'
-    | 'grey'
-    | 'white'
     | 'blue'
     | 'green'
+    | 'grey'
     | 'lime'
     | 'magenta'
     | 'orange'
     | 'pink'
+    | 'primary'
     | 'purple'
     | 'red'
+    | 'secondary'
     | 'teal'
+    | 'white'
     | 'yellow';
 
 @Component({

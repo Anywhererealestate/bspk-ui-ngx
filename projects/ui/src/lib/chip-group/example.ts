@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIChipGroup } from './chip-group';
-import { IconIcecream } from '../icons/icecream';
 import { IconAccessible } from '../icons/accessible';
 import { IconAdd } from '../icons/add';
-import { IconGarage } from '../icons/garage';
 import { IconBakeryDining } from '../icons/bakery-dining';
-import { IconPets } from '../icons/pets';
-import { IconRemove } from '../icons/remove';
-import { IconReplay } from '../icons/replay';
-import { IconPlayPause } from '../icons/play-pause';
 import { IconBlock } from '../icons/block';
-import { IconModeCool } from '../icons/mode-cool';
-import { IconLightMode } from '../icons/light-mode';
 import { IconCloud } from '../icons/cloud';
 import { IconDarkMode } from '../icons/dark-mode';
 import { IconEgg } from '../icons/egg';
+import { IconGarage } from '../icons/garage';
+import { IconIcecream } from '../icons/icecream';
+import { IconLightMode } from '../icons/light-mode';
+import { IconModeCool } from '../icons/mode-cool';
+import { IconPets } from '../icons/pets';
+import { IconPlayPause } from '../icons/play-pause';
+import { IconRemove } from '../icons/remove';
+import { IconReplay } from '../icons/replay';
+import { UIChipGroup } from './chip-group';
 
 @Component({
     selector: 'ui-chip-group-example',
