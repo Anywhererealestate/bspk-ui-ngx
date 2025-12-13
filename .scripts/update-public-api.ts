@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-export function getPublicApiFileContent() {
+function getPublicApiFileContent() {
     const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
     const libDir = path.join(__dirname, '../projects/ui/src/lib');
@@ -26,9 +26,13 @@ ${exportLines.join('\n')}
     return { publicApiPath, publicApiContent };
 }
 
-// if --write flag is provided, write the file
-if (process.argv.includes('--write')) {
+export function updatePublicApi() {
     const { publicApiPath, publicApiContent } = getPublicApiFileContent();
     fs.writeFileSync(publicApiPath, publicApiContent);
-    console.log('Updated public API at', publicApiPath);
+    console.log('\x1b[32m✅ Updated public API at ' + publicApiPath + ' 🎉\x1b[0m');
+}
+
+// if --write flag is provided, write the file
+if (process.argv.includes('--write')) {
+    updatePublicApi();
 }
