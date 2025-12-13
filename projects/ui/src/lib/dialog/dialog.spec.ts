@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIDialog } from './dialog';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIDialog } from './dialog';
 
 describe('UIDialog', () => {
     let component: UIDialog;

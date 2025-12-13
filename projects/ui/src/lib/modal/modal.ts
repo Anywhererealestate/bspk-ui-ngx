@@ -1,9 +1,9 @@
+import { PortalModule } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
-import { PortalModule } from '@angular/cdk/portal';
-import { IconClose } from '../icons/close';
-import { UIDialog } from '../dialog/dialog';
 import { UIButton } from '../button/button';
+import { UIDialog } from '../dialog/dialog';
+import { IconClose } from '../icons/close';
 
 export interface ModalCallToAction {
     label: string;

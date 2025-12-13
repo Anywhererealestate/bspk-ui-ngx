@@ -1,3 +1,6 @@
+import { FocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { PortalModule, TemplatePortal } from '@angular/cdk/portal';
 import { CommonModule } from '@angular/common';
 import {
     Component,
@@ -13,9 +16,6 @@ import {
     Renderer2,
     ViewEncapsulation,
 } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { PortalModule, TemplatePortal } from '@angular/cdk/portal';
-import { FocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
 
 @Component({
     selector: 'ui-dialog',
@@ -85,6 +85,15 @@ export class UIDialog implements OnChanges, OnDestroy {
         }
     }
 
+    emitClose() {
+        this.onClose.emit();
+        this.closeOverlay();
+    }
+
+    ngOnDestroy() {
+        this.closeOverlay();
+    }
+
     private openOverlay() {
         if (this.overlayRef) return;
 
@@ -140,15 +149,6 @@ export class UIDialog implements OnChanges, OnDestroy {
         this.overlayRef.dispose();
         this.overlayRef = undefined;
         this.portal = undefined;
-    }
-
-    public emitClose() {
-        this.onClose.emit();
-        this.closeOverlay();
-    }
-
-    ngOnDestroy() {
-        this.closeOverlay();
     }
 }
 

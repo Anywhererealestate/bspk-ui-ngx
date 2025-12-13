@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIDialog } from './dialog';
 import { UIButton } from '../button';
+import { UIDialog } from './dialog';
 
 @Component({
     selector: 'ui-dialog-example',
