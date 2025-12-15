@@ -13,7 +13,7 @@ import {
     ViewEncapsulation,
     ChangeDetectorRef,
 } from '@angular/core';
-import { UIPortal } from '../portal/portal';
+import { UIPortalDirective } from '../portal';
 import { UIScrim } from '../scrim/scrim';
 
 export type DialogPlacement = 'bottom' | 'center' | 'left' | 'right' | 'top';
@@ -31,23 +31,22 @@ export type DialogPlacement = 'bottom' | 'center' | 'left' | 'right' | 'top';
 @Component({
     selector: 'ui-dialog',
     standalone: true,
-    imports: [CommonModule, UIPortal, UIScrim],
+    imports: [CommonModule, UIPortalDirective, UIScrim],
     template: `
         @if (open) {
-            <ui-portal [container]="container">
-                <div
-                    data-bspk="dialog"
-                    [attr.data-bspk-owner]="owner || null"
-                    [attr.data-placement]="placement"
-                    [attr.id]="id || null"
-                    role="presentation"
-                    #dialogRoot>
-                    <div data-dialog-box [attr.data-width-full]="widthFull ? 'true' : null" tabindex="-1" #boxRef>
-                        <ng-content></ng-content>
-                    </div>
+            <div
+                [ui-portal]
+                data-bspk="dialog"
+                [attr.data-bspk-owner]="owner || null"
+                [attr.data-placement]="placement"
+                [attr.id]="id || null"
+                role="presentation"
+                #dialogRoot>
+                <div data-dialog-box [attr.data-width-full]="widthFull ? 'true' : null" tabindex="-1" #boxRef>
+                    <ng-content></ng-content>
                 </div>
-                <ui-scrim [visible]="showScrim !== false" owner="dialog" (click)="handleScrimClick()"></ui-scrim>
-            </ui-portal>
+            </div>
+            <ui-scrim [visible]="showScrim !== false" owner="dialog" (click)="handleScrimClick()"></ui-scrim>
         }
     `,
     styleUrls: ['./dialog.scss'],
