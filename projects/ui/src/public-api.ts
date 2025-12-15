@@ -23,7 +23,6 @@ export * from './lib/radio';
 export * from './lib/radio-option';
 export * from './lib/table';
 export * from './lib/tag';
-export * from './lib/toggle-option';
 export * from './lib/tooltip';
 export * from './lib/truncated';
 export * from './lib/txt';

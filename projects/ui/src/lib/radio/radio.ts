@@ -31,7 +31,21 @@ export interface RadioProps {
     selector: 'ui-radio',
     standalone: true,
     imports: [],
-    templateUrl: './radio.html',
+    template: `<span data-bspk="radio">
+        <input
+            [attr.name]="name"
+            [attr.id]="id"
+            [attr.aria-label]="ariaLabel"
+            type="radio"
+            [attr.value]="value"
+            [checked]="checked"
+            [attr.checked]="checked ? '' : null"
+            [required]="required"
+            [attr.data-invalid]="invalid ? true : null"
+            [disabled]="disabled"
+            (change)="onInputChange($event)" />
+        <span aria-hidden="true"></span>
+    </span> `,
     styleUrl: './radio.scss',
     encapsulation: ViewEncapsulation.None,
 })
