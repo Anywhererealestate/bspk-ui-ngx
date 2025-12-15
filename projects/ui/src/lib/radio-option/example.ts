@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIRadioOption } from './radio-option';
 import { RadioProps } from '../radio/radio';
+import { UIRadioOption } from './radio-option';
 
 @Component({
     selector: 'ui-radio-option-example',

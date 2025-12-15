@@ -32,9 +32,9 @@ export class UIRadioOption {
     @Input() disabled?: boolean;
     @Input() radioInput?: RadioProps;
 
+    @Output() checkedChange = new EventEmitter<boolean>();
+
     get ariaLabel(): string | undefined {
         return this.description ? `${this.label} - ${this.description}` : this.label;
     }
-
-    @Output() checkedChange = new EventEmitter<boolean>();
 }
