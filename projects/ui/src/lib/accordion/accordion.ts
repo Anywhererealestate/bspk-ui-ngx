@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
 import { randomString } from '../../utils/randomString';
 import { IconKeyboardArrowDown } from '../icons/keyboard-arrow-down';
 import { IconKeyboardArrowUp } from '../icons/keyboard-arrow-up';
@@ -80,7 +80,7 @@ export class UIAccordion implements OnChanges {
      *
      * @default true
      */
-    @Input() singleOpen: boolean = true;
+    @Input() singleOpen = true;
 
     openSections: string[] = [];
 
@@ -111,8 +111,8 @@ export class UIAccordion implements OnChanges {
         return this.openSections.includes(itemId);
     }
 
-    trackById(_: number, item: AccordionSection) {
-        return item.id;
+    isSectionVisible(item: AccordionSection): boolean {
+        return this.isOpen(item.id) && !item.disabled;
     }
 
     isTemplateRef(value: any): value is TemplateRef<any> {

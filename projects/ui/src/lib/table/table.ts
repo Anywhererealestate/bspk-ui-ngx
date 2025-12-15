@@ -1,24 +1,40 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { UIPagination } from '../pagination';
-import { UIIcon } from '../icon';
-import { sendAriaLiveMessage } from '../../utils';
-import { IconArrowDownward, IconArrowUpward } from '../icons';
 import { BspkIcon } from '../../types/bspk-icon';
+import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
+import { UIIcon } from '../icon';
+import { IconArrowDownward, IconArrowUpward } from '../icons';
+import { UIPagination } from '../pagination';
+
+/**
+ * A component that displays data in a tabular format with support for sorting and pagination.
+ *
+ * @example
+ *     <ui-table
+ *     [data]="[{ id: 'ca', name: 'California', capital: 'Sacramento' }, { id: 'tx', name: 'Texas', capital: 'Austin' }, { id: 'fl', name: 'Florida', capital:'Tallahassee' }]"
+ *     [columns]="[{ key: 'state', label: 'State', width: '160px', sort: 'string' },{ key: 'capital', label: 'Capital', width: '140px' }]"
+ *     [pageSize]="5"
+ *     size="medium"
+ *     title="Sample State Capital Table">
+ *     </ui-table>
+ *
+ * @name Table
+ * @phase UXReview
+ */
 
 export type TableSize = 'large' | 'medium' | 'small' | 'x-large';
 
 export type TableCellValue = unknown;
 
-export type TableRow = {
+export interface TableRow {
     [key: string]: TableCellValue | TableCellValue[];
     id: string;
-};
+}
 
 export type BuiltInColumnSorters = 'boolean' | 'date' | 'number' | 'string';
 export type TableColumnSortingFn = (a: TableCellValue, b: TableCellValue) => number;
 
-export type TableColumn<R extends TableRow> = {
+export interface TableColumn<R extends TableRow> {
     key: string;
     label: string;
     width?: string;
@@ -26,7 +42,7 @@ export type TableColumn<R extends TableRow> = {
     valign?: 'bottom' | 'center' | 'top';
     sort?: BuiltInColumnSorters | TableColumnSortingFn;
     formatter?: (row: R, size: TableSize) => unknown;
-};
+}
 
 type SortOrder = 'asc' | 'desc';
 type SortState = { key: string; order: SortOrder }[];
@@ -60,11 +76,34 @@ const BUILT_IN_COLUMN_SORTERS: Record<BuiltInColumnSorters, TableColumnSortingFn
     },
 })
 export class UITable<R extends TableRow> {
+    /**
+     * The data of the table.
+     *
+     * Array<TableRow>
+     */
     @Input() data: R[] = [];
+    /**
+     * The column definitions of the table.
+     *
+     * @type Array<TableColumn>
+     */
     @Input() columns: (TableColumn<R> | boolean)[] = [];
+    /** The title of the table. */
     @Input() title?: string;
+    /**
+     * The size of the table.
+     *
+     * @default medium
+     */
     @Input() size: TableSize = 'medium';
-    @Input() pageSize: number = 10;
+    /**
+     * The number of rows per page.
+     *
+     * If the number of rows exceeds the page size, pagination controls will be displayed.
+     *
+     * @default 10
+     */
+    @Input() pageSize = 10;
 
     pageIndex = 0;
     sorting: SortState = [];
@@ -88,7 +127,7 @@ export class UITable<R extends TableRow> {
 
     get rows(): R[] {
         const cols = this.normalizedColumns;
-        let result = [...(this.data || [])];
+        const result = [...(this.data || [])];
 
         if (this.sorting.length) {
             result.sort((a, b) => {
@@ -149,6 +188,7 @@ export class UITable<R extends TableRow> {
         if (value == null) return null;
         if (Array.isArray(value)) return value.map((v) => this.formatCell(v) ?? '').join(', ');
         if (typeof value === 'object') {
+            // eslint-disable-next-line no-console
             console.warn('Unexpected object value:', value);
             return null;
         }
@@ -156,7 +196,7 @@ export class UITable<R extends TableRow> {
     }
 
     gridTemplateColumns(): string {
-        return this.normalizedColumns.map((c) => 'minmax(min-content,' + (c.width || '1fr') + ')').join(' ');
+        return this.normalizedColumns.map((c) => `minmax(min-content,${c.width || '1fr'})`).join(' ');
     }
 
     ariaSortForColumn(columnKey: string) {

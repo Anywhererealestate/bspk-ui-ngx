@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Route, RouterLink, RouterLinkActive } from '@angular/router';
-import { navigationItems, routes } from '../app.routes';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { navigationItems } from '../app.routes';
 
 @Component({
     selector: 'app-nav',

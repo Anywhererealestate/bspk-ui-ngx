@@ -8,12 +8,12 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
-export type BadgeProps = {
+export interface BadgeProps {
     count?: number;
     size?: string;
     color?: string;
     surfaceBorder?: boolean;
-};
+}
 
 /**
  * Visual indicator for new items within a parent page represented with a numerical count of new items.
@@ -66,7 +66,16 @@ export class UIBadge implements AfterViewInit {
      *
      * @default false
      */
-    @Input() surfaceBorder: boolean = false;
+    @Input() surfaceBorder = false;
+
+    /**
+     * The context for which the badge is applied.
+     *
+     * Could be a button, link, or any other element that the badge is associated with.
+     *
+     * @type
+     */
+    @ViewChild('contentWrapper', { static: false }) contentWrapper!: ElementRef<HTMLSpanElement>;
 
     /**
      * Indicates whether the badge has projected (custom) content.
@@ -78,14 +87,6 @@ export class UIBadge implements AfterViewInit {
      * @internal
      */
     hasProjectedContent = false;
-    /**
-     * The context for which the badge is applied.
-     *
-     * Could be a button, link, or any other element that the badge is associated with.
-     *
-     * @type
-     */
-    @ViewChild('contentWrapper', { static: false }) contentWrapper!: ElementRef<HTMLSpanElement>;
 
     constructor(private cdr: ChangeDetectorRef) {}
 

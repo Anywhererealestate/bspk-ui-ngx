@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
     Component,
     Input,
@@ -6,15 +7,12 @@ import {
     TemplateRef,
     ViewChild,
     ElementRef,
-    OnInit,
     ChangeDetectionStrategy,
     ViewEncapsulation,
-    Type,
 } from '@angular/core';
 
 import { BspkIcon } from '../../types/bspk-icon';
 
-import { CommonModule } from '@angular/common';
 import { UIIcon } from '../icon';
 import { UITooltipDirective } from '../tooltip';
 
@@ -48,7 +46,7 @@ export type IconType = BspkIcon;
     imports: [CommonModule, UIIcon, UITooltipDirective],
     encapsulation: ViewEncapsulation.None,
 })
-export class UIButton implements OnInit {
+export class UIButton {
     @ViewChild('buttonElement', { static: true }) buttonElement!: ElementRef<HTMLButtonElement>;
 
     /**
@@ -76,14 +74,14 @@ export class UIButton implements OnInit {
      *
      * @default false
      */
-    @Input() iconOnly: boolean = false;
+    @Input() iconOnly = false;
 
     /**
      * The function of the button is destructive.
      *
      * @default false
      */
-    @Input() destructive: boolean = false;
+    @Input() destructive = false;
 
     /**
      * The size of the button.
@@ -114,7 +112,7 @@ export class UIButton implements OnInit {
      *
      * @default false
      */
-    @Input() disabled: boolean = false;
+    @Input() disabled = false;
 
     /**
      * The button type attribute.
@@ -162,13 +160,6 @@ export class UIButton implements OnInit {
         }
 
         return classes.join(' ');
-    }
-
-    ngOnInit(): void {
-        // Validate required inputs
-        if (!this.label) {
-            console.warn('Button component requires a label prop');
-        }
     }
 
     handleClick(event: MouseEvent): void {

@@ -10,19 +10,23 @@
             variant="tertiary"
             owner="pagination"></ui-button>
 
-        <ng-container *ngIf="numPages > INPUT_TYPE_THRESHOLD; else pageButtons">
-            <form data-input-form (submit)="submitManual($event)">
-                <ui-input
-                    label="Page number"
-                    [type]="'number'"
-                    [showClearButton]="false"
-                    [value]="inputValue"
-                    (valueChange)="inputValue = $event"
-                    (blur)="submitManual()"
-                    name="page-number"></ui-input>
-                <span>of {{ numPages }}</span>
-            </form>
-        </ng-container>
+        @if (numPages > INPUT_TYPE_THRESHOLD) {
+            <ng-container>
+                <form data-input-form (submit)="submitManual($event)">
+                    <ui-input
+                        label="Page number"
+                        [type]="'number'"
+                        [showClearButton]="false"
+                        [value]="inputValue"
+                        (valueChange)="inputValue = $event"
+                        (blur)="submitManual()"
+                        name="page-number"></ui-input>
+                    <span>of {{ numPages }}</span>
+                </form>
+            </ng-container>
+        } @else {
+            <ng-container *ngTemplateOutlet="pageButtons"></ng-container>
+        }
 
         <ng-template #pageButtons>
             @for (page of pages(); track $index) {
