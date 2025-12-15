@@ -24,7 +24,6 @@ import { UIRadio, RadioProps } from '../radio/radio';
             (checkedChange)="checkedChange.emit($event)">
         </ui-radio>
     </ui-list-item>`,
-    styleUrl: './radio-option.scss',
 })
 export class UIRadioOption {
     @Input() label?: string;
