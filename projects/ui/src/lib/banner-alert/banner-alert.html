@@ -10,8 +10,8 @@
     }
 </div>
 <div data-content>
-    @if (header || onClose) {
-        <header>
+    @if (header || onClose.observed) {
+        <div data-header>
             <span>{{ header }}</span>
             @if (onClose.observed) {
                 <ui-button
@@ -22,7 +22,7 @@
                     [variant]="'tertiary'"
                     [size]="'small'" />
             }
-        </header>
+        </div>
     }
     <div data-body>
         <span>{{ body }}</span>
