@@ -1,23 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BannerAlert } from './banner-alert';
+import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIBannerAlert } from './banner-alert';
 
-describe('BannerAlert', () => {
-  let component: BannerAlert;
-  let fixture: ComponentFixture<BannerAlert>;
+describe('UIBannerAlert', () => {
+    let fixture: ComponentFixture<UIBannerAlert>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [BannerAlert]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UIBannerAlert],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(BannerAlert);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(UIBannerAlert);
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
 });
