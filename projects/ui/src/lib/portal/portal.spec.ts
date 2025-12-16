@@ -1,19 +1,15 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { UIPortal } from './portal';
+import { UIPortalDirective } from './portal.directive';
 
 @Component({
     standalone: true,
-    imports: [UIPortal],
-    template: `
-        <ui-portal>
-            <span id="portaled">Hello Portal</span>
-        </ui-portal>
-    `,
+    imports: [UIPortalDirective],
+    template: ` <span ui-portal id="portaled">Hello Portal</span> `,
 })
 class HostCmp {}
 
-describe('UIPortal', () => {
+describe('UIPortalDirective', () => {
     let fixture: ComponentFixture<HostCmp>;
 
     beforeEach(async () => {

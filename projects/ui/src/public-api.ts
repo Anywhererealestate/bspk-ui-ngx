@@ -12,6 +12,7 @@ export * from './lib/card';
 export * from './lib/chip';
 export * from './lib/chip-group';
 export * from './lib/dialog';
+export * from './lib/modal';
 export * from './lib/icon';
 export * from './lib/icons';
 export * from './lib/input';

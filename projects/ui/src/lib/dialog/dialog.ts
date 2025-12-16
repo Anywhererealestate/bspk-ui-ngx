@@ -13,7 +13,7 @@ import {
     ViewEncapsulation,
     ChangeDetectorRef,
 } from '@angular/core';
-import { UIPortalDirective } from '../portal';
+import { PortalContainer, UIPortalDirective } from '../portal';
 import { UIScrim } from '../scrim/scrim';
 
 export type DialogPlacement = 'bottom' | 'center' | 'left' | 'right' | 'top';
@@ -35,7 +35,7 @@ export type DialogPlacement = 'bottom' | 'center' | 'left' | 'right' | 'top';
     template: `
         @if (open) {
             <div
-                [ui-portal]
+                [ui-portal]="container"
                 data-bspk="dialog"
                 [attr.data-bspk-owner]="owner || null"
                 [attr.data-placement]="placement"
@@ -100,7 +100,7 @@ export class UIDialog implements OnChanges, OnDestroy {
     /** Owner identifier for tracking/analytics. */
     @Input() owner?: string;
     /** Optional DOM container to render into (via Portal). Defaults to `document.body`. */
-    @Input() container?: HTMLElement | null;
+    @Input() container?: PortalContainer;
     /** Id for the dialog element. */
     @Input() id?: string;
 
@@ -117,37 +117,37 @@ export class UIDialog implements OnChanges, OnDestroy {
     ngOnChanges(changes: SimpleChanges) {
         this.changeDetector.detectChanges();
         if (changes['open']) {
-            this.attach();
-        } else {
-            this.detach();
+            this.openChange(changes['open'].currentValue);
         }
     }
 
-    attach() {
+    openChange(nextOpen: boolean) {
         if (typeof document === 'undefined') return;
-        document.documentElement.style.overflow = 'hidden';
-        document.addEventListener('keydown', this.handleKeydown);
 
-        // Focus trap setup
-        const el = this.boxRef?.nativeElement;
-        if (el && !this.disableFocusTrap) {
-            this.focusTrap = this.focusTrapFactory.create(el);
-            try {
-                this.focusTrap.focusInitialElementWhenReady();
-            } catch {
-                el.focus();
+        if (nextOpen) {
+            document.documentElement.style.overflow = 'hidden';
+            document.addEventListener('keydown', this.handleKeydown);
+
+            this.innerRef?.(this.dialogRoot?.nativeElement || null);
+
+            // Focus trap setup
+            const el = this.boxRef?.nativeElement;
+            if (el && !this.disableFocusTrap) {
+                this.focusTrap = this.focusTrapFactory.create(el);
+                try {
+                    this.focusTrap.focusInitialElementWhenReady();
+                } catch {
+                    el.focus();
+                }
             }
-        }
-    }
+        } else {
+            document.documentElement.style.overflow = '';
+            document.removeEventListener('keydown', this.handleKeydown);
 
-    detach() {
-        if (typeof document === 'undefined') return;
-        document.documentElement.style.overflow = '';
-        document.removeEventListener('keydown', this.handleKeydown);
-
-        if (this.focusTrap) {
-            this.focusTrap.destroy();
-            this.focusTrap = undefined;
+            if (this.focusTrap) {
+                this.focusTrap.destroy();
+                this.focusTrap = undefined;
+            }
         }
     }
 
@@ -156,7 +156,7 @@ export class UIDialog implements OnChanges, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.detach();
+        this.openChange(false);
     }
 
     handleKeydown = (event: KeyboardEvent) => {

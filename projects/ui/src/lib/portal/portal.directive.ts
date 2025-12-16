@@ -1,19 +1,35 @@
-import { AfterViewInit, Directive, ElementRef, Input, OnDestroy } from '@angular/core';
+import { Directive, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 
-export type PortalContainer = HTMLElement | null | undefined;
+export type PortalContainer = HTMLElement | (() => HTMLElement | null | undefined) | null | undefined;
 
 @Directive({ selector: '[ui-portal]' })
-export class UIPortalDirective implements AfterViewInit, OnDestroy {
+export class UIPortalDirective implements OnDestroy, OnChanges {
     /** The target element to render the portal into. Defaults to `document.body` in the browser. */
-    @Input('ui-portal') target?: PortalContainer;
+    @Input('ui-portal') container?: PortalContainer;
 
     constructor(private elRef: ElementRef) {}
 
-    ngAfterViewInit() {
-        // Ignore server-side rendering and missing element refs
-        if (typeof document === 'undefined' || !this.elRef || !this.elRef.nativeElement) return;
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['container']) {
+            if (typeof document === 'undefined' || !this.elRef?.nativeElement) return;
 
-        (this.target || document.body)?.appendChild(this.elRef.nativeElement);
+            this.elRef.nativeElement.parentNode.removeChild(this.elRef.nativeElement);
+            // Move the element to the new target
+
+            let targetElement: HTMLElement | null | undefined;
+
+            const target = changes['container'].currentValue;
+
+            if (typeof target === 'function') {
+                targetElement = target();
+                console.log({ fn: targetElement });
+            } else {
+                targetElement = target || document.body;
+                console.log({ element: targetElement });
+            }
+
+            targetElement?.appendChild(this.elRef.nativeElement);
+        }
     }
 
     ngOnDestroy() {
