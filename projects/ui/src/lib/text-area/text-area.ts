@@ -1,13 +1,12 @@
 import { Component, Input, input } from '@angular/core';
-import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
-import { provideNgxMask } from 'ngx-mask';
+import { provideValidator, provideValueAccessor, InputControlValueAccessor, randomString } from '../../utils';
 
 @Component({
     selector: 'ui-text-area',
     imports: [],
     templateUrl: './text-area.html',
     styleUrl: './text-area.scss',
-    providers: [provideValueAccessor(Input), provideValidator(Input), provideNgxMask()],
+    providers: [provideValueAccessor(Input), provideValidator(Input)],
     host: {
         '[attr.data-size]': 'size()',
         '[attr.aria-label]': 'label()',
@@ -15,7 +14,7 @@ import { provideNgxMask } from 'ngx-mask';
         '(blur)': 'handleBlur($event)',
     },
 })
-export class UITextArea extends TextInputControlValueAccessor {
+export class UITextArea extends InputControlValueAccessor {
     /**
      * The maximum number of characters that the field will accept.
      *

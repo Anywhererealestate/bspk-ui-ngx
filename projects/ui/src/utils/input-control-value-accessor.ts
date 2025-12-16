@@ -23,7 +23,7 @@ export const autoCompleteOptions = ['on', 'off'];
 export type AutoCompleteOptions = (typeof autoCompleteOptions)[number];
 
 @Directive()
-export class TextInputControlValueAccessor implements ControlValueAccessor, Validator, OnInit, DoCheck {
+export class InputControlValueAccessor implements ControlValueAccessor, Validator, OnInit, DoCheck {
     readonly label = input.required<string>();
     readonly value = model<string>('');
     readonly size = input<TextInputSize>('medium');

@@ -1,6 +1,6 @@
 import { Component, effect, inject, input, Input, viewChild, ViewEncapsulation } from '@angular/core';
 import { provideNgxMask, NgxMaskDirective, NgxMaskService } from 'ngx-mask';
-import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
+import { provideValidator, provideValueAccessor, InputControlValueAccessor, randomString } from '../../utils';
 import { Mask } from '../../utils/mask';
 import { UIButton, ButtonSize } from '../button/button';
 import { IconCancel } from '../icons/cancel';
@@ -19,7 +19,7 @@ import { IconCancel } from '../icons/cancel';
     },
     encapsulation: ViewEncapsulation.None,
 })
-export class UIInput extends TextInputControlValueAccessor {
+export class UIInput extends InputControlValueAccessor {
     /**
      * Specifies if the clear button should be shown. This should almost always be true, but can be set to false.
      *
