@@ -38,6 +38,7 @@ export * from './lib/switch';
 export * from './lib/switch-option';
 export * from './lib/tab-group';
 export * from './lib/tab-list';
+export * from './lib/textarea';
 export * from './lib/table';
 export * from './lib/tag';
 export * from './lib/tooltip';
