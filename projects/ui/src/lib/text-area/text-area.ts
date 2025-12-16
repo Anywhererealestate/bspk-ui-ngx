@@ -1,4 +1,4 @@
-import { Component, Input, input } from '@angular/core';
+import { Component, Input, input, ViewEncapsulation } from '@angular/core';
 import { provideValidator, provideValueAccessor, InputControlValueAccessor, randomString } from '../../utils';
 
 @Component({
@@ -8,11 +8,10 @@ import { provideValidator, provideValueAccessor, InputControlValueAccessor, rand
     styleUrl: './text-area.scss',
     providers: [provideValueAccessor(Input), provideValidator(Input)],
     host: {
-        '[attr.data-size]': 'size()',
-        '[attr.aria-label]': 'label()',
         '(input)': 'handleInput($event)',
         '(blur)': 'handleBlur($event)',
     },
+    encapsulation: ViewEncapsulation.None,
 })
 export class UITextArea extends InputControlValueAccessor {
     /**

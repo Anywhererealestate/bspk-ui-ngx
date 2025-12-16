@@ -22,6 +22,7 @@ export * from './lib/pagination';
 export * from './lib/radio';
 export * from './lib/table';
 export * from './lib/tag';
+export * from './lib/text-area';
 export * from './lib/tooltip';
 export * from './lib/truncated';
 export * from './lib/txt';

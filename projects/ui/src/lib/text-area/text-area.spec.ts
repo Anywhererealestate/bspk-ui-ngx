@@ -12,6 +12,7 @@ describe('UITextArea', () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(UITextArea);
+        fixture.componentRef.setInput('label', 'Test TextArea');
         fixture.detectChanges();
     });
 
