@@ -47,7 +47,6 @@
 
     font: var(--font);
     padding: var(--padding);
-    background: transparent;
     text-wrap: break-word;
 
     &::placeholder {
@@ -55,19 +54,22 @@
     }
 
     &:hover:not(:focus-within) {
-        background: linear-gradient(var(--interactions-hover-opacity), var(--interactions-hover-opacity)),
+        background:
+            linear-gradient(var(--interactions-hover-opacity), var(--interactions-hover-opacity)),
             linear-gradient(var(--surface-neutral-t1-base), var(--surface-neutral-t1-base));
     }
 
     &:active:not(:focus-within) {
-        background: linear-gradient(var(--interactions-press-opacity), var(--interactions-press-opacity)),
+        background:
+            linear-gradient(var(--interactions-press-opacity), var(--interactions-press-opacity)),
             linear-gradient(var(--surface-neutral-t1-base), var(--surface-neutral-t1-base));
     }
 
     &[readonly] {
         --border-color: var(--stroke-neutral-disabled-light);
 
-        background: linear-gradient(var(--interactions-disabled-opacity), var(--interactions-disabled-opacity)),
+        background:
+            linear-gradient(var(--interactions-disabled-opacity), var(--interactions-disabled-opacity)),
             linear-gradient(var(--surface-neutral-t1-base), var(--surface-neutral-t1-base));
     }
 
@@ -75,7 +77,8 @@
     &:has([data-main-input][disabled]) {
         --border-color: var(--stroke-neutral-disabled-light);
 
-        background: linear-gradient(var(--interactions-disabled-opacity), var(--interactions-disabled-opacity)),
+        background:
+            linear-gradient(var(--interactions-disabled-opacity), var(--interactions-disabled-opacity)),
             linear-gradient(var(--surface-neutral-t1-base), var(--surface-neutral-t1-base));
 
         & > * {
