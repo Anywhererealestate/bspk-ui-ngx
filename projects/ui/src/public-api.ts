@@ -20,6 +20,7 @@ export * from './lib/list-item';
 export * from './lib/modal';
 export * from './lib/pagination';
 export * from './lib/radio';
+export * from './lib/textarea';
 export * from './lib/table';
 export * from './lib/tag';
 export * from './lib/tooltip';
