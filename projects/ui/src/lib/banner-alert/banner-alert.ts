@@ -15,9 +15,6 @@ export interface BannerAlertCallToActionConfig {
     styleUrl: './banner-alert.scss',
     standalone: true,
     encapsulation: ViewEncapsulation.None,
-    host: {
-    ... host attrs here
-    }
 })
 export class UIBannerAlert {
     /**
