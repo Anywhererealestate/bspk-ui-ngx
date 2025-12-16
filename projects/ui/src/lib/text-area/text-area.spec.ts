@@ -1,19 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 
-import { TextArea } from './text-area';
+import { UITextArea } from './text-area';
 
-describe('TextArea', () => {
-    let component: TextArea;
-    let fixture: ComponentFixture<TextArea>;
+describe('UITextArea', () => {
+    let fixture: ComponentFixture<UITextArea>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [TextArea],
+            imports: [UITextArea],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(TextArea);
-        component = fixture.componentInstance;
+        fixture = TestBed.createComponent(UITextArea);
         fixture.detectChanges();
     });
 
