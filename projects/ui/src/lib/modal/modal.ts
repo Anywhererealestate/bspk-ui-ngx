@@ -1,23 +1,15 @@
-import { CommonModule } from '@angular/common';
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    Output,
-    SimpleChanges,
-    TemplateRef,
-    ViewChild,
-    Renderer2,
-    ViewEncapsulation,
-} from '@angular/core';
 import { PortalModule } from '@angular/cdk/portal';
-import { IconClose } from '../icons/close';
-import { UIDialog } from '../dialog/dialog';
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UIButton } from '../button/button';
+import { UIDialog } from '../dialog/dialog';
+import { IconClose } from '../icons/close';
 
-export type ModalCallToAction = { label: string; onClick?: () => void; destructive?: boolean };
+export interface ModalCallToAction {
+    label: string;
+    onClick?: () => void;
+    destructive?: boolean;
+}
 
 @Component({
     selector: 'ui-modal',
@@ -27,7 +19,7 @@ export type ModalCallToAction = { label: string; onClick?: () => void; destructi
     styleUrls: ['./modal.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class UIModal implements OnChanges, OnDestroy {
+export class UIModal {
     /**
      * Modal header.
      *
@@ -77,17 +69,11 @@ export class UIModal implements OnChanges, OnDestroy {
      *
      * @default false
      */
-    @Input() open: boolean = false;
+    @Input() open = false;
 
     @Output() onClose = new EventEmitter<void>();
 
     @ViewChild('modalTemplate', { static: true }) modalTemplate!: TemplateRef<any>;
-
-    constructor(private renderer: Renderer2) {}
-
-    ngOnChanges(changes: SimpleChanges) {
-        // Modal now delegates opening to the internal Dialog via template bindings.
-    }
 
     public emitClose() {
         this.onClose.emit();
@@ -100,10 +86,6 @@ export class UIModal implements OnChanges, OnDestroy {
 
     onCancelClick() {
         this.emitClose();
-    }
-
-    ngOnDestroy() {
-        // nothing to clean up; dialog handles its own overlay
     }
 }
 

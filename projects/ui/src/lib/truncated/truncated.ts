@@ -1,4 +1,12 @@
-import { Component, ViewEncapsulation, ElementRef, ViewChild, ChangeDetectorRef, AfterViewInit } from '@angular/core';
+import {
+    Component,
+    ViewEncapsulation,
+    ElementRef,
+    ViewChild,
+    ChangeDetectorRef,
+    AfterViewInit,
+    inject,
+} from '@angular/core';
 import { UITooltipDirective, TooltipProps } from '../tooltip/tooltip.directive';
 
 @Component({
@@ -9,7 +17,6 @@ import { UITooltipDirective, TooltipProps } from '../tooltip/tooltip.directive';
     encapsulation: ViewEncapsulation.None,
 })
 export class UITruncated implements AfterViewInit {
-    tooltip: TooltipProps | string = '';
     /**
      * The content to render.
      *
@@ -21,7 +28,9 @@ export class UITruncated implements AfterViewInit {
      */
     @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
 
-    constructor(private cdr: ChangeDetectorRef) {}
+    tooltip: TooltipProps | string = '';
+
+    private cdr = inject(ChangeDetectorRef);
 
     ngAfterViewInit() {
         const el = this.elRef?.nativeElement;

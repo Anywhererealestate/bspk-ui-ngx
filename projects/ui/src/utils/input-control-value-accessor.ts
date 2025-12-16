@@ -13,12 +13,12 @@ import {
 } from '@angular/core';
 import { AbstractControl, ControlValueAccessor, NgControl, ValidationErrors, Validator } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { noop } from './util';
 import { getErrors } from './error-formatter';
+import { noop } from './util';
 
 export const textInputSizes = ['small', 'medium', 'large'];
 export type TextInputSize = (typeof textInputSizes)[number];
-export type TextInputType = 'number' | 'text' | 'password';
+export type TextInputType = 'number' | 'password' | 'text';
 export const autoCompleteOptions = ['on', 'off'];
 export type AutoCompleteOptions = (typeof autoCompleteOptions)[number];
 
@@ -48,8 +48,8 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
     private readonly injector = inject(Injector);
     private readonly sanitizer = inject(DomSanitizer);
 
-    // Hook for subclasses
-    onInit() {}
+    private onChange: (value: string) => void = noop;
+    private onTouched: () => void = noop;
 
     constructor() {
         let first = true;
@@ -64,11 +64,15 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
         });
     }
 
+    // Hook for subclasses
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    onInit() {}
+
     ngOnInit() {
         this.ngControl = this.injector.get(NgControl, null, { self: true, optional: true });
 
         if (this.onInit) {
-            this.onInit;
+            this.onInit();
         }
     }
 
@@ -77,9 +81,6 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
             this.errorState.set(getErrors(this.ngControl.control, this.sanitizer));
         }
     }
-
-    onChange: (value: string) => void = noop;
-    private onTouched: () => void = noop;
 
     registerOnChange(fn: any): void {
         this.onChange = fn;
@@ -116,10 +117,6 @@ export class TextInputControlValueAccessor implements ControlValueAccessor, Vali
         }
 
         return errors;
-    }
-
-    registerOnValidatorChange(fn: () => void): void {
-        // noop
     }
 
     handleBlur(event: FocusEvent) {

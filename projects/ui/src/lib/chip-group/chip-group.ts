@@ -1,7 +1,7 @@
 import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { UIChip, ChipProps } from '../chip/chip';
 
-export type Overflow = 'wrap' | 'scroll';
+export type Overflow = 'scroll' | 'wrap';
 
 @Component({
     selector: 'ui-chip-group',

@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UITable } from './table';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UITable } from './table';
 
 describe('UITable', () => {
-    let component: UITable<any>;
     let fixture: ComponentFixture<UITable<any>>;
 
     beforeEach(async () => {
@@ -13,7 +12,6 @@ describe('UITable', () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(UITable);
-        component = fixture.componentInstance;
         fixture.detectChanges();
     });
 

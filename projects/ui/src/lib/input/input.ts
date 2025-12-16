@@ -1,10 +1,9 @@
 import { Component, effect, inject, input, Input, viewChild, ViewEncapsulation } from '@angular/core';
+import { provideNgxMask, NgxMaskDirective, NgxMaskService } from 'ngx-mask';
+import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
+import { Mask } from '../../utils/mask';
 import { UIButton, ButtonSize } from '../button/button';
 import { IconCancel } from '../icons/cancel';
-import { provideNgxMask } from 'ngx-mask';
-import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
-import { NgxMaskDirective, NgxMaskService } from 'ngx-mask';
-import { Mask } from '../../utils/mask';
 
 @Component({
     selector: 'ui-input',
@@ -30,15 +29,20 @@ export class UIInput extends TextInputControlValueAccessor {
 
     public IconCancel = IconCancel;
 
-    getShowClearButton(): boolean | null {
-        return (
-            !!(this.showClearButton !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
-            null
-        );
-    }
+    readonly controlId = input(randomString());
 
-    clearInput() {
-        this.value.set('');
+    readonly leading = input<string>();
+    readonly trailing = input<string>();
+    readonly mask = input<Mask>();
+    private readonly maskDirective = viewChild(NgxMaskDirective);
+    private readonly maskService = inject(NgxMaskService);
+
+    constructor() {
+        super();
+
+        effect(() => {
+            this.maskDirective()?.writeValue(this.value());
+        });
     }
 
     // this method to ensures the returned value is of type ButtonSize
@@ -92,29 +96,18 @@ export class UIInput extends TextInputControlValueAccessor {
         return this.value();
     }
 
-    readonly controlId = input(randomString());
-    readonly leading = input<string>();
-    readonly trailing = input<string>();
-    readonly mask = input<Mask>();
-    private readonly maskDirective = viewChild(NgxMaskDirective);
-    private readonly maskService = inject(NgxMaskService);
-
-    constructor() {
-        super();
-
-        effect(() => {
-            this.maskDirective()?.writeValue(this.value());
-        });
-    }
-
     override onInit() {
         this.maskDirective()?.writeValue(this.value());
     }
 
-    override handleInput(event: Event) {
-        const raw = (event.target as HTMLInputElement).value;
-        const out = this.mask()?.dropSpecialCharacters ? this.maskService.removeMask(raw) : raw;
-        this.value.set(out);
-        this.onChange(out);
+    getShowClearButton(): boolean | null {
+        return (
+            !!(this.showClearButton !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
+            null
+        );
+    }
+
+    clearInput() {
+        this.value.set('');
     }
 }

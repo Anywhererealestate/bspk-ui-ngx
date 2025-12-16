@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIPagination } from './pagination';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIPagination } from './pagination';
 
 describe('UIPagination', () => {
-    let component: UIPagination;
     let fixture: ComponentFixture<UIPagination>;
 
     beforeEach(async () => {
@@ -13,7 +12,6 @@ describe('UIPagination', () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(UIPagination);
-        component = fixture.componentInstance;
         fixture.detectChanges();
     });
 

@@ -83,7 +83,7 @@ export class UIRadio {
      *
      * @required
      */
-    @Output() change = new EventEmitter<Event>();
+    @Input() change = new EventEmitter<Event>();
 
     /** Emits the new checked state (true or false) */
     @Output() checkedChange = new EventEmitter<boolean>();
@@ -91,6 +91,5 @@ export class UIRadio {
     onInputChange(event: Event) {
         const input = event.target as HTMLInputElement;
         this.checkedChange.emit(input.checked);
-        this.change.emit(event);
     }
 }

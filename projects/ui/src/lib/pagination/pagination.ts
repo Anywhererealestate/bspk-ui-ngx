@@ -1,9 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
 import { UIButton } from '../button/button';
-import { UIInput } from '../input';
 import { IconChevronLeft, IconChevronRight } from '../icons';
-import { sendAriaLiveMessage } from '../../utils';
+import { UIInput } from '../input';
 
 // After this point the manual input renders. With equal or fewer pages
 // the individual page buttons render instead (matches React implementation).
@@ -41,19 +41,19 @@ export class UIPagination implements OnChanges {
      *
      * @default 2
      */
-    @Input() numPages: number = 2;
+    @Input() numPages = 2;
     /**
      * The current (1-based) page number.
      *
      * @default 1
      */
-    @Input() value: number = 1;
+    @Input() value = 1;
 
     /** Called when the page changes. */
     @Output() onChange = new EventEmitter<number>();
 
     // Internal string representation for the input field when large page counts.
-    inputValue: string = '1';
+    inputValue = '1';
 
     readonly INPUT_TYPE_THRESHOLD = INPUT_TYPE_THRESHOLD;
 
@@ -64,12 +64,6 @@ export class UIPagination implements OnChanges {
         if (changes['value']) {
             this.inputValue = String(this.value);
         }
-    }
-
-    private clamp(page: number): number {
-        if (page < 1) return 1;
-        if (page > this.numPages) return this.numPages;
-        return page;
     }
 
     emit(page: number) {
@@ -108,6 +102,12 @@ export class UIPagination implements OnChanges {
 
     label(): string {
         return `Go to page ${this.value}`;
+    }
+
+    private clamp(page: number): number {
+        if (page < 1) return 1;
+        if (page > this.numPages) return this.numPages;
+        return page;
     }
 }
 

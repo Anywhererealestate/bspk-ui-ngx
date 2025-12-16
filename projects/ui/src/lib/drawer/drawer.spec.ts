@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UIDrawer } from './drawer';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { UIDrawer } from './drawer';
 
 describe('UIDrawer', () => {
     let component: UIDrawer;
