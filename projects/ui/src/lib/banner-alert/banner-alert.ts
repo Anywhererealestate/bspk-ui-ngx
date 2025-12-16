@@ -15,6 +15,12 @@ export interface BannerAlertCallToActionConfig {
     styleUrl: './banner-alert.scss',
     standalone: true,
     encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk': 'banner-alert',
+        '[attr.data-elevated]': 'elevated || undefined',
+        '[attr.data-variant]': 'variant',
+        role: 'alert',
+    },
 })
 export class UIBannerAlert {
     /**

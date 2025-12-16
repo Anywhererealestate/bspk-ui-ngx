@@ -1,38 +1,37 @@
-<div data-bspk="banner-alert" [attr.data-elevated]="elevated || undefined" [attr.data-variant]="variant" role="alert">
-    <div data-icon-bar>
-        @if (variant === 'error') {
-            <icon-error-fill />
-        }
-        @else if (variant === 'informational') {
-            <icon-info-fill />
-        }
-        @else if (variant === 'success') {
-            <icon-check-circle-fill />
-        }
-        @else if (variant === 'warning') {
-            <icon-warning-fill />
-        }
-    </div>
-    <div data-content>
-        @if(header || onClose) {
-            <header>
-                <span>{{header}}</span>
-                @if(typeof onClose === 'function') {
-                    <ui-button (click)="emitClose()" label="Close" [icon]="IconClose" [iconOnly]="true" [variant]="'tertiary'" [size]="'small'" />
-                }
-            </header>
-        }
-        <div data-body>
-            <span>{{body}}</span>
-            @if (callToAction) {
+<div data-icon-bar>
+    @if (variant === 'error') {
+        <icon-error-fill />
+    } @else if (variant === 'informational') {
+        <icon-info-fill />
+    } @else if (variant === 'success') {
+        <icon-check-circle-fill />
+    } @else if (variant === 'warning') {
+        <icon-warning-fill />
+    }
+</div>
+<div data-content>
+    @if (header || onClose) {
+        <header>
+            <span>{{ header }}</span>
+            @if (typeof onClose === 'function') {
                 <ui-button
-                    [label]="callToAction.label"
-                    (click)="callToAction.onClick()"
-                    [size]="'small'"
+                    (click)="emitClose()"
+                    label="Close"
+                    [icon]="IconClose"
+                    [iconOnly]="true"
                     [variant]="'tertiary'"
-                />
-
+                    [size]="'small'" />
             }
-        </div>
+        </header>
+    }
+    <div data-body>
+        <span>{{ body }}</span>
+        @if (callToAction) {
+            <ui-button
+                [label]="callToAction.label"
+                (click)="callToAction.onClick()"
+                [size]="'small'"
+                [variant]="'tertiary'" />
+        }
     </div>
 </div>
