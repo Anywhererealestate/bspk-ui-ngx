@@ -1,11 +1,24 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
-import { UIButton } from '../button';
+import { ButtonSize, UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
 
 export type AlertVariant = 'error' | 'informational' | 'success' | 'warning';
-export interface BannerAlertCallToActionConfig {
+
+export interface CallToActionButton {
+    /**
+     * The label of the call to action button.
+     *
+     * @required
+     */
     label: string;
+    /**
+     * The callback function for the call to action button.
+     *
+     * @required
+     */
     onClick: () => void;
+    /** The size of the call to action button. */
+    size?: ButtonSize;
 }
 
 @Component({
@@ -44,7 +57,7 @@ export class UIBannerAlert {
     /**
      * The body of the banner alert.
      *
-     * @type multiline
+     * @exampleType multiline
      * @required
      */
     @Input() body = '';
@@ -53,11 +66,10 @@ export class UIBannerAlert {
      *
      * @type CallToActionButton
      */
-    @Input() callToAction?: BannerAlertCallToActionConfig;
+    @Input() callToAction?: CallToActionButton;
     /**
      * Function to call when the banner alert is closed.
      *
-     * @type () => void
      * @required
      */
     @Output() onClose = new EventEmitter<void>();
@@ -65,6 +77,6 @@ export class UIBannerAlert {
     IconClose = IconClose;
 
     emitClose() {
-        this.onClose.emit();
+        this.onClose?.emit();
     }
 }

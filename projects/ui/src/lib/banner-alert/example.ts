@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { sendSnackbar } from '../../utils/sendSnackbar';
 import { IconAdd } from '../icons/add';
 import { UIBannerAlert } from './banner-alert';
 
@@ -11,7 +12,11 @@ import { UIBannerAlert } from './banner-alert';
         <h2>BannerAlert</h2>
 
         <h3>Informational</h3>
-        <ui-banner-alert header="Example Header" body="Example body text" variant="informational"></ui-banner-alert>
+        <ui-banner-alert
+            header="Example Header"
+            body="Example body text"
+            variant="informational"
+            (onClose)="onClose()"></ui-banner-alert>
 
         <h3>Success</h3>
         <ui-banner-alert header="Example Header" body="Example body text" variant="success"></ui-banner-alert>
@@ -32,4 +37,8 @@ import { UIBannerAlert } from './banner-alert';
 })
 export class UIBannerAlertExample {
     protected readonly iconAdd = IconAdd;
+
+    onClose() {
+        sendSnackbar('Banner closed');
+    }
 }

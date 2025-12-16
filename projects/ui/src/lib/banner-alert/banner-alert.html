@@ -13,7 +13,7 @@
     @if (header || onClose) {
         <header>
             <span>{{ header }}</span>
-            @if (typeof onClose === 'function') {
+            @if (onClose.observed) {
                 <ui-button
                     (click)="emitClose()"
                     label="Close"
