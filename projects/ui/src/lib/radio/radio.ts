@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Output, EventEmitter, ViewEncapsulation, input, booleanAttribute } from '@angular/core';
 
 /**
  * A round control that allows user to choose one option from a set. This is the base element and if used directly you
@@ -31,38 +31,49 @@ export interface RadioProps {
     selector: 'ui-radio',
     standalone: true,
     imports: [],
-    template: `<span data-bspk="radio">
-        <input
-            [attr.name]="name"
-            [attr.id]="id"
-            [attr.aria-label]="ariaLabel"
+    template: `<input
+            [attr.name]="name()"
+            [attr.id]="id()"
+            [attr.aria-label]="ariaLabel()"
             type="radio"
-            [attr.value]="value"
-            [checked]="checked"
-            [attr.checked]="checked ? '' : null"
-            [required]="required"
-            [attr.data-invalid]="invalid ? true : null"
-            [disabled]="disabled"
+            [attr.value]="value()"
+            [checked]="checked()"
+            [attr.checked]="checked() ? '' : null"
+            [required]="required()"
+            [attr.data-invalid]="invalid() ? true : null"
+            [disabled]="disabled()"
             (change)="onInputChange($event)" />
-        <span aria-hidden="true"></span>
-    </span> `,
+        <span aria-hidden="true"></span>`,
     styleUrl: './radio.scss',
     encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk': 'radio',
+    },
 })
 export class UIRadio {
+    /** Emits the new checked state (true or false) */
+    @Output() checkedChange = new EventEmitter<boolean>();
+
+    /**
+     * The function to call when the radio is checked.
+     *
+     * @required
+     */
+    readonly change = input<((event: Event) => void) | undefined>(undefined);
+
     /**
      * The [name](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name) of the control.
      *
      * @required
      */
-    @Input() name?: string;
+    readonly name = input<string | undefined>(undefined);
 
     /**
      * The value of the field control.
      *
      * @required
      */
-    @Input() value?: string;
+    readonly value = input<string | undefined>(undefined);
 
     /**
      * The aria-label for the element.
@@ -71,24 +82,24 @@ export class UIRadio {
      *
      * Ensure this is provided when using the element in isolation to maintain accessibility.
      */
-    @Input() ariaLabel?: string;
+    readonly ariaLabel = input<string | undefined>(undefined);
 
     /**
      * Marks the radio as checked.
      *
      * @default false
      */
-    @Input() checked = false;
+    readonly checked = input(false, { transform: booleanAttribute });
 
     /**
      * Determines if the element is [disabled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled).
      *
      * @default false
      */
-    @Input() disabled?: boolean;
+    readonly disabled = input(false, { transform: booleanAttribute });
 
     /** The id of the element. If not provided one will be generated. */
-    @Input() id?: string;
+    readonly id = input<string | undefined>(undefined);
 
     /**
      * Indicates that the element is in an invalid state and displays the error theme.
@@ -97,27 +108,17 @@ export class UIRadio {
      *
      * @default false
      */
-    @Input() invalid?: boolean;
+    readonly invalid = input(false, { transform: booleanAttribute });
 
     /**
      * Determines if the element is [required](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required).
      *
      * @default false
      */
-    @Input() required?: boolean;
-
-    /**
-     * The function to call when the radio is checked.
-     *
-     * @required
-     */
-    @Input() change = new EventEmitter<Event>();
-
-    /** Emits the new checked state (true or false) */
-    @Output() checkedChange = new EventEmitter<boolean>();
+    readonly required = input(false, { transform: booleanAttribute });
 
     onInputChange(event: Event) {
-        const input = event.target as HTMLInputElement;
-        this.checkedChange.emit(input.checked);
+        const inputElement = event.target as HTMLInputElement;
+        this.checkedChange.emit(inputElement.checked);
     }
 }
