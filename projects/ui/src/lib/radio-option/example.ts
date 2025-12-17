@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { sendSnackbar } from '../../utils/sendSnackbar';
 import { RadioProps } from '../radio/radio';
 import { UIRadioOption } from './radio-option';
 
@@ -116,5 +117,6 @@ export class UIRadioOptionExample {
 
     onCheckedChange(idx: number, checked: boolean) {
         this.optionConfig[idx].checked = checked;
+        sendSnackbar(`Radio ${idx} checked: ${checked}`);
     }
 }
