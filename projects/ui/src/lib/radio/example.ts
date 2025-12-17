@@ -24,8 +24,14 @@ import { UIRadio } from './radio';
         <h3>checked = true, invalid = true</h3>
         <ui-radio name="radio-5" ariaLabel="Option 5" value="Option 5" [checked]="true" [invalid]="true"></ui-radio>
 
-        <h3>checked = false, invalid = true</h3>
-        <ui-radio name="radio-6" ariaLabel="Option 6" value="Option 6" [checked]="false" [invalid]="true"></ui-radio>
+        <h3>checked = false, invalid = true, with id</h3>
+        <ui-radio
+            id="test-id"
+            name="radio-6"
+            ariaLabel="Option 6"
+            value="Option 6"
+            [checked]="false"
+            [invalid]="true"></ui-radio>
     `,
 })
 export class UIRadioExample {}
