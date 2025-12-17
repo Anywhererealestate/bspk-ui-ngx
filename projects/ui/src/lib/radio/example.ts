@@ -18,15 +18,6 @@ import { UIRadio } from './radio';
         <h3>checked = false</h3>
         <ui-radio name="radio-2" ariaLabel="Option 2" value="Option 2" [checked]="false"></ui-radio>
 
-        <h3>with id</h3>
-        <ui-radio
-            id="test-id"
-            name="radio-6"
-            ariaLabel="Option 6"
-            value="Option 6"
-            [checked]="false"
-            [invalid]="true"></ui-radio>
-
         <h3>checked = true, disabled = true</h3>
         <ui-radio name="radio-3" ariaLabel="Option 3" value="Option 3" [checked]="true" [disabled]="true"></ui-radio>
 
