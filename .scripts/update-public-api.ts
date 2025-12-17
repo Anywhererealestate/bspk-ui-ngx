@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-function getPublicApiFileContent() {
+export function getPublicApiFileContent() {
     const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
     const libDir = path.join(__dirname, '../projects/ui/src/lib');
