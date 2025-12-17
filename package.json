@@ -16,8 +16,8 @@
         "dev": "npm run routes && run-p dev:serve routes:watch",
         "dev:serve": "ng serve",
         "prebuild": "npx tsx .scripts/pre-build.ts",
-        "gh-build": "npm run lint && npm run build:all && npm run test && cp -r ./dist/browser/index.html ./dist/browser/404.html",
-        "pr": "npm run lint && npm run build:all && npm run test && git push --set-upstream origin $(git symbolic-ref --short HEAD) && open \"https://github.com/Anywhererealestate/bspk-ui-ngx/compare/main...$(git symbolic-ref --short HEAD)\"",
+        "gh-build": "npm run lint && npm run build && npm run test && cp -r ./dist/browser/index.html ./dist/browser/404.html",
+        "pr": "npm run lint && npm run build && npm run test && git push --set-upstream origin $(git symbolic-ref --short HEAD) && open \"https://github.com/Anywhererealestate/bspk-ui-ngx/compare/main...$(git symbolic-ref --short HEAD)\"",
         "routes:watch": "npx tsx .scripts/generate-component-routes.ts --watch",
         "routes": "npx tsx .scripts/generate-component-routes.ts --write"
     },
