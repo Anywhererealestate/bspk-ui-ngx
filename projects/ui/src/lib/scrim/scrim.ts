@@ -16,8 +16,9 @@ import { Component, Input, ViewEncapsulation } from '@angular/core';
     host: {
         'aria-hidden': 'true',
         'data-bspk': 'scrim',
-        '[attr.data-bspk-owner]': 'owner || null',
-        '[attr.data-hidden]': '!visible ? true : null',
+        '[attr.data-bspk-owner]': 'owner || undefined',
+        '[attr.data-hidden]': '!visible || undefined',
+        '[attr.data-contained]': 'contained || undefined',
     },
 })
 export class UIScrim {
@@ -25,5 +26,6 @@ export class UIScrim {
     @Input() visible = true;
     /** Owner identifier for tracking/analytics. */
     @Input() owner?: string;
-    /** Function to call when the Scrim is clicked. */
+    /** Whether the scrim is contained within another element. */
+    @Input() contained?: boolean;
 }

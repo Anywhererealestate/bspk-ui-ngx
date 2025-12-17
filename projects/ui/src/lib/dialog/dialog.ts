@@ -1,173 +1,140 @@
-import { FocusTrapFactory, FocusTrap } from '@angular/cdk/a11y';
-import { CommonModule } from '@angular/common';
 import {
     Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnDestroy,
-    Output,
-    SimpleChanges,
     ElementRef,
+    EventEmitter,
+    Output,
     ViewChild,
     ViewEncapsulation,
-    ChangeDetectorRef,
+    input,
+    signal,
+    OnChanges,
+    OnDestroy,
 } from '@angular/core';
-import { PortalContainer, UIPortalDirective } from '../portal';
+import { UIPortalDirective } from '../portal';
 import { UIScrim } from '../scrim/scrim';
 
-export type DialogPlacement = 'bottom' | 'center' | 'left' | 'right' | 'top';
-
 /**
- * Dialogs display important information that users need to acknowledge. They appear over the interface and block
+ * Dialogs display important information that users need to acknowledge. They appear over the interface and may block
  * further interactions until an action is selected.
  *
- * This is a low-level component that provides the container and functionality for dialogs. You will typically want to
- * use a higher-level component that provides a consistent UI and behavior for dialogs such as Modal.
+ * The Modal component is a higher-level component built on top of Dialog that includes standard dialog UI and behavior.
+ *
+ * Also known as: Tray, Drawer, Flyout, Sheet
+ *
+ * @example
+ *     <ui-dialog [open]="open" (onClose)="open=false">
+ *     <div style="padding: var(--spacing-sizing-04)">
+ *     <h4>Dialog Title</h4>
+ *     <p>This is the content of the dialog.</p>
+ *     </div>
+ *     </ui-dialog>
  *
  * @name Dialog
- * @phase Utility
+ * @phase Stable
  */
 @Component({
     selector: 'ui-dialog',
     standalone: true,
-    imports: [CommonModule, UIPortalDirective, UIScrim],
+    imports: [UIPortalDirective, UIScrim],
     template: `
-        @if (open) {
+        @if (open()) {
             <div
-                [ui-portal]="container"
-                data-bspk="dialog"
-                [attr.data-bspk-owner]="owner || null"
-                [attr.data-placement]="placement"
-                [attr.id]="id || null"
-                role="presentation"
-                #dialogRoot>
-                <div data-dialog-box [attr.data-width-full]="widthFull ? 'true' : null" tabindex="-1" #boxRef>
+                [ui-portal]="container()"
+                [attr.data-bspk]="'dialog'"
+                [attr.data-bspk-owner]="owner() || null"
+                [attr.data-contained]="container() ? true : null"
+                [attr.data-placement]="placement()"
+                [attr.id]="id() || null"
+                [attr.aria-label]="ariaLabel() || null"
+                [attr.aria-description]="ariaDescription() || null"
+                role="presentation">
+                <div data-dialog-box [attr.data-width-full]="widthFull()" #box tabindex="-1">
                     <ng-content></ng-content>
                 </div>
             </div>
-            <ui-scrim [visible]="showScrim !== false" owner="dialog" (click)="handleScrimClick()"></ui-scrim>
+            <ui-scrim
+                [ui-portal]="container()"
+                [contained]="container() ? true : undefined"
+                owner="dialog"
+                [visible]="showScrim() !== false"
+                (click)="handleClose()" />
         }
     `,
-    styleUrls: ['./dialog.scss'],
+    styleUrl: './dialog.scss',
+    encapsulation: ViewEncapsulation.None,
     host: {
         style: 'display: contents;',
     },
-    encapsulation: ViewEncapsulation.None,
 })
 export class UIDialog implements OnChanges, OnDestroy {
-    /** The content of the dialog. */
-    // Content is projected via <ng-content>
+    /** Function to call when the dialog is closed. */
+    @Output() onClose = new EventEmitter<void>();
+
+    @ViewChild('box', { read: ElementRef }) box?: ElementRef<HTMLDivElement>;
 
     /** A ref to the dialog element. */
-    @Input() innerRef?: (el: HTMLDivElement | null) => void;
-    /**
-     * If the dialog should appear.
-     *
-     * @default false
-     */
-    @Input() open = false;
-    /**
-     * Function to call when the dialog is closed.
-     *
-     * @required
-     */
-    @Output() onClose = new EventEmitter<void>();
-    /**
-     * The placement of the dialog on the screen.
-     *
-     * @default center
-     */
-    @Input() placement: DialogPlacement = 'center';
-    /**
-     * Whether the dialog should have a scrim behind it.
-     *
-     * @default true
-     */
-    @Input() showScrim = true;
-    /**
-     * If the dialog should take the full width of the screen.
-     *
-     * @default false
-     */
-    @Input() widthFull = false;
-    /**
-     * If focus trapping should be disabled. Generally this should not be disabled as dialogs should always trap focus.
-     *
-     * @default false
-     */
-    @Input() disableFocusTrap = false;
-    /** Owner identifier for tracking/analytics. */
-    @Input() owner?: string;
-    /** Optional DOM container to render into (via Portal). Defaults to `document.body`. */
-    @Input() container?: PortalContainer;
-    /** Id for the dialog element. */
-    @Input() id?: string;
+    innerRef = input<(el: HTMLDivElement | null) => void>();
 
-    @ViewChild('boxRef', { static: false }) boxRef?: ElementRef<HTMLDivElement>;
-    @ViewChild('dialogRoot', { static: false }) dialogRoot?: ElementRef<HTMLDivElement>;
+    /** If the dialog should appear. */
+    open = input<boolean>(false);
 
-    private focusTrap?: FocusTrap;
+    /** The placement of the dialog on the screen. */
+    placement = input<'bottom' | 'center' | 'left' | 'right' | 'top'>('center');
 
-    constructor(
-        private focusTrapFactory: FocusTrapFactory,
-        private changeDetector: ChangeDetectorRef,
-    ) {}
+    /** Whether the dialog should have a scrim behind it. */
+    showScrim = input<boolean>(true);
 
-    ngOnChanges(changes: SimpleChanges) {
-        this.changeDetector.detectChanges();
-        if (changes['open']) {
-            this.openChange(changes['open'].currentValue);
+    /** If the dialog should take the full width of the screen. */
+    widthFull = input<boolean>(false);
+
+    /** Owner tag for theming/analytics parity. */
+    owner = input<string | undefined>(undefined);
+
+    /** Element id. */
+    id = input<string | undefined>(undefined);
+
+    /** Portal container element to contain dialog within. */
+    container = input<HTMLElement | undefined>(undefined);
+
+    /** Disable focus trap (not implemented here; Angular users can manage focus as needed). */
+    disableFocusTrap = input<boolean>(false);
+
+    /** Accessible label for the dialog container. */
+    ariaLabel = input<string | undefined>(undefined);
+
+    /** Accessible description for the dialog container. */
+    ariaDescription = input<string | undefined>(undefined);
+
+    private keydownBound = signal(false);
+
+    ngOnChanges() {
+        const isOpen = this.open();
+        // Lock page scroll when open (like React)
+        document.documentElement.style.overflow = isOpen ? 'hidden' : '';
+        if (isOpen && !this.keydownBound()) {
+            window.addEventListener('keydown', this._onKeydown);
+            this.keydownBound.set(true);
+        } else if (!isOpen && this.keydownBound()) {
+            window.removeEventListener('keydown', this._onKeydown);
+            this.keydownBound.set(false);
         }
-    }
-
-    openChange(nextOpen: boolean) {
-        if (typeof document === 'undefined') return;
-
-        if (nextOpen) {
-            document.documentElement.style.overflow = 'hidden';
-            document.addEventListener('keydown', this.handleKeydown);
-
-            this.innerRef?.(this.dialogRoot?.nativeElement || null);
-
-            // Focus trap setup
-            const el = this.boxRef?.nativeElement;
-            if (el && !this.disableFocusTrap) {
-                this.focusTrap = this.focusTrapFactory.create(el);
-                try {
-                    this.focusTrap.focusInitialElementWhenReady();
-                } catch {
-                    el.focus();
-                }
-            }
-        } else {
-            document.documentElement.style.overflow = '';
-            document.removeEventListener('keydown', this.handleKeydown);
-
-            if (this.focusTrap) {
-                this.focusTrap.destroy();
-                this.focusTrap = undefined;
-            }
-        }
-    }
-
-    emitClose() {
-        this.onClose.emit();
     }
 
     ngOnDestroy() {
-        this.openChange(false);
+        document.documentElement.style.overflow = '';
+        if (this.keydownBound()) {
+            window.removeEventListener('keydown', this._onKeydown);
+            this.keydownBound.set(false);
+        }
     }
 
-    handleKeydown = (event: KeyboardEvent) => {
-        if (event.key === 'Escape' && this.open) {
-            this.emitClose();
+    handleClose() {
+        this.onClose.emit();
+    }
+
+    private _onKeydown = (e: KeyboardEvent) => {
+        if (this.open() && e.key === 'Escape') {
+            this.handleClose();
         }
     };
-
-    handleScrimClick() {
-        this.emitClose();
-    }
 }
-
-/** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */

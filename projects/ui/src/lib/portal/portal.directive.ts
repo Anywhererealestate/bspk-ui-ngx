@@ -22,10 +22,8 @@ export class UIPortalDirective implements OnDestroy, OnChanges {
 
             if (typeof target === 'function') {
                 targetElement = target();
-                console.log({ fn: targetElement });
             } else {
                 targetElement = target || document.body;
-                console.log({ element: targetElement });
             }
 
             targetElement?.appendChild(this.elRef.nativeElement);

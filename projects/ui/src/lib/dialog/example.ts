@@ -1,101 +1,64 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
-import { sendSnackbar } from '../../utils/sendSnackbar';
-import { UIButton } from '../button';
-import { DialogPlacement, UIDialog } from './dialog';
-
-type Container = 'body' | 'testContainer';
+import { Component } from '@angular/core';
+import { UIButton } from '../button/button';
+import { UIFlexDirective } from '../flex/flex';
+import { IconClose } from '../icons';
+import { UIDialog } from './dialog';
 
 @Component({
     selector: 'ui-dialog-example',
     standalone: true,
-    imports: [CommonModule, UIDialog, UIButton],
+    imports: [CommonModule, UIDialog, UIButton, UIFlexDirective],
     template: `
         <h2>Dialog</h2>
 
-        <h3>Placement</h3>
-        @for (placement of placements; track placement) {
-            <p>
-                <ui-button
-                    [label]="'Open ' + placement + ' Dialog'"
-                    (click)="openDialog('body', placement)"></ui-button>
-            </p>
+        <ui-button label="Open Dialog" (click)="open = true"></ui-button>
 
-            <ui-dialog
-                [open]="open['body'][placement]"
-                (onClose)="closeDialog('body', placement)"
-                [placement]="placement">
-                <div style="padding: 20px">
-                    <p>This is {{ placement }} demo dialog content.</p>
-                    <div style="display: flex; gap: 10px">
-                        <ui-button label="Close" (click)="closeDialog('body', placement)"></ui-button>
-                        <ui-button variant="tertiary" label="Snackbar" (click)="snackbar()"></ui-button>
-                    </div>
+        <ui-dialog [open]="open" (onClose)="open = false" placement="center">
+            <div style="padding: var(--spacing-sizing-04)">
+                <div ui-flex direction="row" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                    <h4>Dialog Title</h4>
+                    <ui-button
+                        label="Close"
+                        variant="tertiary"
+                        (click)="open = false"
+                        [icon]="iconClose"
+                        [iconOnly]="true" />
                 </div>
-            </ui-dialog>
-        }
+                <p>This is the content of the dialog.</p>
+                <ui-button label="Cancel" variant="secondary" (click)="open = false"></ui-button>
+            </div>
+        </ui-dialog>
 
-        <h3>Container</h3>
-
+        <h3>Contained Dialog (Right, no Scrim)</h3>
         <div
-            #testContainer
-            style="margin: 40px 0; padding: 20px; border: 1px solid var(--stroke-neutral-base); min-height: 200px; position: relative;">
-            <p>This is a container for testing portal functionality.</p>
-        </div>
-
-        @for (placement of placements; track placement) {
-            <p>
-                <ui-button
-                    [label]="'Open ' + placement + ' Dialog'"
-                    (click)="openDialog('testContainer', placement)"></ui-button>
-            </p>
-
+            #container
+            style="border: 1px solid var(--stroke-neutral-base); padding: var(--spacing-sizing-04); min-height: 200px; position: relative; overflow: hidden;">
+            <ui-button label="Open Contained" (click)="openContained = true"></ui-button>
             <ui-dialog
-                [open]="open['testContainer'][placement]"
-                (onClose)="closeDialog('testContainer', placement)"
-                [placement]="placement"
-                [container]="testContainer">
-                <div style="padding: 20px">
-                    <p>This is {{ placement }} demo dialog content.</p>
-                    <div style="display: flex; gap: 10px">
-                        <ui-button label="Close" (click)="closeDialog('testContainer', placement)"></ui-button>
-                        <ui-button variant="tertiary" label="Snackbar" (click)="snackbar()"></ui-button>
+                [open]="openContained"
+                (onClose)="openContained = false"
+                [showScrim]="false"
+                [container]="container"
+                placement="right">
+                <div style="padding: var(--spacing-sizing-04)">
+                    <div ui-flex align="baseline" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                        <h4>Contained</h4>
+                        <ui-button
+                            label="Close"
+                            variant="tertiary"
+                            (click)="openContained = false"
+                            [icon]="iconClose"
+                            [iconOnly]="true" />
                     </div>
+                    <p>Hello, I am a contained dialog!</p>
                 </div>
             </ui-dialog>
-        }
+        </div>
     `,
-    encapsulation: ViewEncapsulation.None,
 })
 export class UIDialogExample {
-    placements: DialogPlacement[] = ['bottom', 'center', 'left', 'right', 'top'];
-
-    protected open: Record<Container, Record<DialogPlacement, boolean>> = {
-        body: {
-            bottom: false,
-            center: false,
-            left: false,
-            right: false,
-            top: false,
-        },
-        testContainer: {
-            bottom: false,
-            center: false,
-            left: false,
-            right: false,
-            top: false,
-        },
-    };
-
-    openDialog(container: Container, placement: DialogPlacement) {
-        this.open[container][placement] = true;
-    }
-
-    closeDialog(container: Container, placement: DialogPlacement) {
-        this.open[container][placement] = false;
-    }
-
-    snackbar() {
-        sendSnackbar('Dialog button clicked');
-    }
+    open = false;
+    openContained = false;
+    iconClose = IconClose;
 }

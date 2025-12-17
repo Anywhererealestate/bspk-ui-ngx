@@ -1,22 +1,7 @@
-import { CommonModule } from '@angular/common';
-import {
-    Component,
-    Input,
-    Output,
-    EventEmitter,
-    ChangeDetectionStrategy,
-    ViewEncapsulation,
-    OnChanges,
-    ChangeDetectorRef,
-    SimpleChanges,
-    ViewChild,
-    ElementRef,
-} from '@angular/core';
-import { UIButton } from '../button/button';
+import { Component, EventEmitter, Output, ViewEncapsulation, input, computed } from '@angular/core';
+import { UIButton, ButtonSize, ButtonWidth } from '../button/button';
 import { UIDialog } from '../dialog/dialog';
 import { IconClose } from '../icons/close';
-
-export type ButtonFormat = 'horizontal' | 'vertical';
 
 export interface ModalCallToAction {
     label: string;
@@ -24,19 +9,20 @@ export interface ModalCallToAction {
     destructive?: boolean;
 }
 
+export type ButtonFormat = 'horizontal' | 'vertical';
+
 /**
  * Modals display important information that users need to acknowledge. They appear over the interface and block further
  * interactions until an action is selected. Modal is a wrapper around the Dialog component that provides a header and
  * footer for the dialog.
  *
  * @example
- *     <!-- Angular example -->
+ *     <ui-button label="Open Modal" (onClick)="open = true"></ui-button>
  *     <ui-modal
- *     [description]="'Example description'"
- *     [header]="'Example header'"
- *     [open]="open"
+ *     description="Example description"
+ *     header="Example header"
  *     (onClose)="open = false"
- *     >
+ *     [open]="open">
  *     Example Modal
  *     </ui-modal>
  *
@@ -46,187 +32,99 @@ export interface ModalCallToAction {
 @Component({
     selector: 'ui-modal',
     standalone: true,
-    imports: [CommonModule, UIDialog, UIButton],
+    imports: [UIDialog, UIButton],
     template: `
-        <ui-dialog
-            [container]="container"
-            [disableFocusTrap]="!!disableFocusTrap"
-            [id]="id"
-            [open]="open"
-            [owner]="owner"
-            [showScrim]="true"
-            [placement]="'center'"
-            (onClose)="handleClose()"
-            [innerRef]="innerDialogRef">
-            <div
-                data-bspk="modal"
-                #modalRoot
-                style="visibility: hidden"
-                [attr.data-modal-root]="true"
-                [attr.data-screen-size]="'small'">
-                <div data-modal-header>
-                    <div data-dialog-title>{{ header }}</div>
-                    <ui-button
-                        [icon]="IconClose"
-                        [iconOnly]="true"
-                        label="close"
-                        variant="tertiary"
-                        (onClick)="handleClose()"></ui-button>
-                </div>
-                <div data-modal-main><ng-content>+</ng-content></div>
-                @if (callToAction || cancelButton) {
-                    <div [attr.data-button-format]="buttonFormat" data-modal-footer>
-                        @if (callToAction) {
-                            <ui-button
-                                [label]="callToAction.label"
-                                [variant]="'primary'"
-                                [size]="'medium'"
-                                [destructive]="callToAction.destructive || false"
-                                (onClick)="callToAction.onClick()"></ui-button>
-                        }
-                        @if (callToAction && cancelButton) {
-                            <ui-button
-                                [label]="cancelButtonLabel"
-                                [variant]="'tertiary'"
-                                [size]="'medium'"
-                                (onClick)="handleClose()"></ui-button>
-                        }
+        @if (open()) {
+            <ui-dialog
+                [open]="open()"
+                (onClose)="onClose.emit()"
+                [container]="container()"
+                [disableFocusTrap]="disableFocusTrap()"
+                [id]="id() || undefined"
+                [owner]="owner() || undefined"
+                [ariaLabel]="header()"
+                [ariaDescription]="description()"
+                placement="center"
+                [showScrim]="true">
+                <div data-bspk="modal" #innerRef>
+                    <div data-modal-header>
+                        <div data-modal-title>{{ header() }}</div>
+                        <ui-button
+                            label="close"
+                            variant="tertiary"
+                            (onClick)="onClose.emit()"
+                            [icon]="iconClose"
+                            [iconOnly]="true"></ui-button>
                     </div>
-                }
-            </div>
-        </ui-dialog>
+                    <div data-modal-main>
+                        <ng-content></ng-content>
+                    </div>
+                    @if (hasFooterButtons()) {
+                        <div data-modal-footer [attr.data-button-format]="buttonFormat()">
+                            @if (callToAction()) {
+                                <ui-button
+                                    [label]="callToAction()!.label"
+                                    [variant]="'primary'"
+                                    [size]="buttonSize()"
+                                    [width]="buttonWidth()"
+                                    [destructive]="callToAction()!.destructive ?? false"
+                                    (onClick)="callToAction()!.onClick()" />
+                            }
+                            @if (callToAction() && cancelButton()) {
+                                <ui-button
+                                    [label]="cancelLabel()"
+                                    [variant]="'tertiary'"
+                                    [size]="buttonSize()"
+                                    [width]="buttonWidth()"
+                                    (onClick)="onClose.emit()" />
+                            }
+                        </div>
+                    }
+                </div>
+            </ui-dialog>
+        }
     `,
-    styleUrls: ['./modal.scss'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrl: './modal.scss',
     encapsulation: ViewEncapsulation.None,
-    host: {
-        '[attr.aria-description]': 'description',
-        '[attr.aria-label]': 'header',
-        '[attr.data-bspk-owner]': 'owner || null',
-    },
 })
-export class UIModal implements OnChanges {
-    /**
-     * Modal header.
-     *
-     * @example
-     *     Change your email
-     *
-     * @required
-     */
-    @Input() header!: string;
-
-    /**
-     * Modal description. Used for the
-     * [aria-description](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-description)
-     * attribute.
-     *
-     * @example
-     *     Email change confirmation.
-     *
-     * @required
-     */
-    @Input() description!: string;
-
-    /**
-     * Whether to show the cancel button in the footer.
-     *
-     * Providing a string will set the label of the cancel button.
-     *
-     * @default false
-     */
-    @Input() cancelButton?: boolean | string;
-
-    /**
-     * The call to action button to display in the footer of the modal.
-     *
-     * @example
-     *     {
-     *     label: 'Confirm',
-     *     onClick: () => console.log('Confirm clicked'),
-     *     }
-     */
-    @Input() callToAction?: ModalCallToAction;
-
-    /**
-     * The format of the buttons in the footer. Vertical applies only on screen widths less than or equal to 640px.
-     *
-     * @default horizontal
-     */
-    @Input() buttonFormat: ButtonFormat = 'horizontal';
-
-    /** When true, the modal is visible. */
-    @Input() open = false;
-    /** Owner identifier for tracking/analytics. */
-    @Input() owner?: string;
-    /** Optional DOM container to render into (via Dialog->Portal). Defaults to `document.body`. */
-    @Input() container?: HTMLElement | null;
-    /** Disable focus trap inside the modal. */
-    @Input() disableFocusTrap?: boolean;
-    /** Id for the modal root element. */
-    @Input() id?: string;
-
-    /** Emitted when the modal requests to close. */
+export class UIModal {
+    /** Emits when modal requests to close. */
     @Output() onClose = new EventEmitter<void>();
 
-    @ViewChild('modalRoot', { static: false }) modalRoot?: ElementRef<HTMLDivElement>;
+    iconClose = IconClose;
 
-    IconClose = IconClose;
+    /** Modal header. */
+    header = input.required<string>();
 
-    modalRefs:
-        | {
-              dialogBox: HTMLElement;
-              modal: HTMLElement;
-          }
-        | undefined;
+    /** Modal description. Used for the aria-description attribute. */
+    description = input.required<string>();
 
-    constructor(private changeDetector: ChangeDetectorRef) {}
+    /** A ref to the modal element. */
+    innerRef = input<(el: HTMLDivElement | null) => void>();
 
-    get cancelButtonLabel(): string {
-        return typeof this.cancelButton === 'string' ? this.cancelButton : 'Cancel';
-    }
+    /** Whether to show the cancel button in the footer. Providing a string sets its label. */
+    cancelButton = input<boolean | string>(false);
 
-    innerDialogRef = (node: HTMLElement | null) => {
-        if (!node) return;
-        this.modalRefs = {
-            dialogBox: node.querySelector<HTMLDivElement>('[data-dialog-box]')!,
-            modal: node.querySelector<HTMLDivElement>('[data-bspk="modal"]')!,
-        };
-        this.onResize();
-    };
+    /** The call to action button to display in the footer of the modal. */
+    callToAction = input<ModalCallToAction | undefined>(undefined);
 
-    handleClose(): void {
-        this.onClose.emit();
-    }
+    /** The format of the buttons in the footer. Vertical only applies on <=640px. */
+    buttonFormat = input<ButtonFormat>('horizontal');
 
-    ngOnChanges(changes: SimpleChanges) {
-        this.changeDetector.detectChanges();
-        if (changes['open']) {
-            this.onOpenChange(changes['open'].currentValue);
-        }
-    }
+    // Dialog-proxy inputs
+    open = input<boolean>(false);
+    id = input<string | undefined>(undefined);
+    owner = input<string | undefined>(undefined);
+    container = input<HTMLElement | undefined>(undefined);
+    disableFocusTrap = input<boolean>(false);
 
-    onResize = () => {
-        if (!this.modalRefs) return;
-        const { dialogBox, modal } = this.modalRefs;
+    // Defaults: Angular app likely desktop; keep small; width depends on format
+    buttonSize = computed<ButtonSize>(() => 'small');
+    buttonWidth = computed<ButtonWidth>(() => (this.buttonFormat() === 'vertical' ? 'fill' : 'hug'));
 
-        if (!dialogBox || !modal) return;
-        modal.style.height = `${dialogBox.offsetHeight}px`;
-        modal.style.visibility = '';
-    };
+    cancelLabel = computed<string>(() =>
+        typeof this.cancelButton() === 'string' ? (this.cancelButton() as string) : 'Cancel',
+    );
 
-    onOpenChange(open: boolean) {
-        if (open) {
-            document.addEventListener('resize', this.onResize);
-            this.onResize();
-        } else {
-            document.removeEventListener('resize', this.onResize);
-        }
-    }
-
-    onDestroy() {
-        this.onOpenChange(false);
-    }
+    hasFooterButtons = computed<boolean>(() => !!this.callToAction());
 }
-
-/** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */
