@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, ViewEncapsulation } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { IconCheckCircleFill, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
 
 export type AlertVariant = 'error' | 'informational' | 'success' | 'warning';
@@ -11,6 +11,9 @@ export type AlertVariant = 'error' | 'informational' | 'success' | 'warning';
     host: {
         'data-bspk': 'inline-alert',
         role: 'alert',
+        '[attr.data-variant]': 'variant()',
+        '[attr.id]': 'id()',
+        '[attr.data-bspk-owner]': 'owner()',
     },
     encapsulation: ViewEncapsulation.None,
 })
@@ -27,15 +30,9 @@ export class UIInlineAlert {
      *
      * @default informational
      */
-    @Input() variant: AlertVariant = 'informational';
+    variant = input<AlertVariant>('informational');
     /** The id of the inline alert. */
-    id?: string;
-
-    @HostBinding('attr.data-variant') get dataVariant(): AlertVariant | undefined {
-        return this.variant;
-    }
-
-    @HostBinding('attr.data-bspk-owner') get dataBspkOwner(): string | undefined {
-        return undefined;
-    }
+    id = input<string | null>(null);
+    /** The owner of the inline alert. */
+    owner = input<string | null>(null);
 }
