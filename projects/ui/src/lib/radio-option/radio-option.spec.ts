@@ -1,23 +1,29 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 import { UIRadioOption } from './radio-option';
 
+@Component({
+    template: `<ui-radio-option label="Test Label"></ui-radio-option>`,
+    standalone: true,
+    imports: [UIRadioOption],
+})
+class TestHostComponent {}
+
 describe('UIRadioOption', () => {
-    let component: UIRadioOption;
-    let fixture: ComponentFixture<UIRadioOption>;
+    let fixture: ComponentFixture<TestHostComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [UIRadioOption],
+            imports: [TestHostComponent],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIRadioOption);
-        component = fixture.componentInstance;
+        fixture = TestBed.createComponent(TestHostComponent);
         fixture.detectChanges();
     });
 
     it('should create', () => {
-        expect(component).toBeTruthy();
+        expect(fixture.componentInstance).toBeTruthy();
     });
 
     it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
