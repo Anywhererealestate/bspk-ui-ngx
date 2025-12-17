@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
-import { UIBannerAlert } from './banner-alert';
+import { UIBannerAlertExample } from './example';
 
 describe('UIBannerAlert', () => {
-    let fixture: ComponentFixture<UIBannerAlert>;
+    let fixture: ComponentFixture<UIBannerAlertExample>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [UIBannerAlert],
+            imports: [UIBannerAlertExample],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIBannerAlert);
+        fixture = TestBed.createComponent(UIBannerAlertExample);
         fixture.detectChanges();
     });
 
