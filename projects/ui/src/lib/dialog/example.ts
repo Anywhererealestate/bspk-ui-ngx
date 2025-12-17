@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { UIButton } from '../button/button';
-import { UIFlexDirective } from '../flex/flex';
+import { UIFlexDirective } from '../flex/flex.directive';
 import { IconClose } from '../icons';
 import { UIDialog } from './dialog';
 
