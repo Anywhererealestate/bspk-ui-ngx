@@ -1,232 +1,181 @@
-import { Overlay, OverlayRef, ConnectedPosition } from '@angular/cdk/overlay';
-import { ComponentPortal } from '@angular/cdk/portal';
+import { DOCUMENT } from '@angular/common';
 import {
     ComponentRef,
     Directive,
     ElementRef,
+    EnvironmentInjector,
     HostListener,
-    Input,
+    Inject,
     OnDestroy,
     Renderer2,
-    OnChanges,
-    SimpleChanges,
+    createComponent,
+    input,
+    model,
 } from '@angular/core';
-import { UITooltip } from './tooltip';
+import { computePosition, offset, flip, shift, arrow } from '@floating-ui/dom';
+import { randomString } from '../../utils';
+import { TooltipProps, UITooltip } from './tooltip';
 
-export interface TooltipProps {
-    /** The tooltip content. */
-    label?: string;
-    /**
-     * The placement of the tooltip.
-     *
-     * @default top
-     */
-    placement?: 'bottom' | 'left' | 'right' | 'top';
-    /**
-     * Determines if the tooltip should hide the tail.
-     *
-     * @default true
-     */
-    showTail?: boolean;
-    /** Determines if the tooltip is disabled. */
-    disabled?: boolean;
-}
+export type TooltipConfig = TooltipProps | string | undefined;
 
-/** Directive to add a tooltip to any element. */
-@Directive({ selector: '[ui-tooltip]' })
-export class UITooltipDirective implements OnDestroy, OnChanges {
-    /**
-     * Accepts a string (tooltip label) or a config object { label, placement, showTail, disabled }
-     *
-     * @important This directive should be added to inline or inline-block elements otherwise positioning may be incorrect.
-     */
-    @Input('ui-tooltip') tooltip: TooltipProps | string = '';
+/**
+ * Brief message that provide additional guidance and helps users perform an action if needed.
+ *
+ * @example
+ *     <span [uiTooltip]="'I explain what this button does'" placement="top">Hover me</span>
+ *
+ * @name Tooltip
+ * @phase Stable
+ */
+@Directive({ selector: '[ui-tooltip]', standalone: true })
+export class UITooltipDirective implements OnDestroy {
+    value = model<TooltipConfig>(undefined, {
+        alias: 'ui-tooltip',
+    });
 
-    private overlayRef?: OverlayRef;
-    private attached?: ComponentRef<UITooltip>;
-    private posSub: any;
+    id = input<string>(`ui-tooltip-${randomString(6)}`);
+
+    private tooltipRef?: ComponentRef<UITooltip> | null;
 
     constructor(
-        private overlay: Overlay,
-        private elementRef: ElementRef,
+        private host: ElementRef<HTMLElement>,
         private renderer: Renderer2,
-    ) {
-        // Always set display: inline-block on the host element
-        this.renderer.setAttribute(this.elementRef.nativeElement, 'data-tooltip-directive', '');
+        private env: EnvironmentInjector,
+        @Inject(DOCUMENT) private document: Document,
+    ) {}
+
+    get props(): TooltipProps | undefined {
+        if (!this.value()) return undefined;
+
+        const next =
+            typeof this.value() === 'object'
+                ? (this.value() as TooltipProps)
+                : {
+                      label: this.value() as string,
+                  };
+
+        return {
+            // Defaults
+            placement: 'top',
+            showTail: true,
+            disabled: false,
+            ...next,
+        };
+    }
+
+    get referenceElement(): HTMLElement {
+        // return the element the directive is applied to, unless its display is 'contents' —in which case return its first child
+        return this.host.nativeElement.computedStyleMap?.().get('display')?.toString() === 'contents'
+            ? (this.host.nativeElement.firstElementChild as HTMLElement)
+            : this.host.nativeElement;
     }
 
     @HostListener('mouseenter')
-    @HostListener('focus')
-    show() {
-        const cfg = this.normalizedConfig();
-        if (cfg.disabled) return;
-        this.createOverlayForPlacement(cfg.placement);
-        const tooltipRef: ComponentRef<UITooltip> | undefined = this.overlayRef?.attach(new ComponentPortal(UITooltip));
-
-        if (tooltipRef) {
-            this.attached = tooltipRef;
-            tooltipRef.instance.label = cfg.label;
-            tooltipRef.instance.showTail = cfg.showTail;
-            this.setAttachedAttribute('data-show-tail', String(cfg.showTail));
-        }
+    @HostListener('focusin')
+    onShow() {
+        this.show();
     }
 
     @HostListener('mouseleave')
     @HostListener('blur')
-    hide() {
-        if (this.attached) {
-            this.attached.destroy();
-            this.attached = undefined;
-        }
-        this.overlayRef?.detach();
-        this.posSub?.unsubscribe();
-        this.posSub = undefined;
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes['tooltip'] && this.attached) {
-            const cfg = this.normalizedConfig();
-            this.attached.instance.label = cfg.label;
-            this.attached.instance.showTail = cfg.showTail;
-            this.setAttachedAttribute('data-show-tail', String(cfg.showTail));
-        }
+    onHide() {
+        this.hide();
     }
 
     ngOnDestroy(): void {
-        this.posSub?.unsubscribe?.();
-        this.overlayRef?.dispose();
+        this.hide(true);
     }
 
-    private normalizedConfig(): Required<TooltipProps> {
-        const base: TooltipProps = typeof this.tooltip === 'string' ? { label: this.tooltip } : this.tooltip || {};
+    private show() {
+        const props = this.props;
 
-        return {
-            label: base.label || '',
-            placement: (base.placement as any) ?? base.placement ?? 'top',
-            showTail: base.showTail ?? true,
-            disabled: !!base.disabled || !base.label,
-        };
+        if (!props || props.disabled || !props.label) return;
+
+        const tip = this.ensureTooltip(props);
+
+        if (!tip || !this.tooltipRef) return;
+
+        // Link host and tooltip for a11y
+        this.renderer.setAttribute(this.referenceElement, 'aria-labelledby', this.id());
+
+        Object.entries(props).forEach(([key, value]) => {
+            this.tooltipRef!.setInput(key, value);
+        });
+        this.tooltipRef.changeDetectorRef.detectChanges();
+
+        // Make visible
+        this.renderer.setStyle(tip, 'display', 'block');
+        this.position(props);
     }
 
-    private createOverlayForPlacement(placement: string) {
-        const positions: ConnectedPosition[] = this.positionsFor(placement);
-        const positionStrategy = this.overlay.position().flexibleConnectedTo(this.elementRef).withPositions(positions);
+    private ensureTooltip(props: TooltipProps): HTMLElement | null {
+        if (!this.document || !this.host?.nativeElement) return null;
+        if (this.tooltipRef) return this.tooltipRef.location.nativeElement as HTMLElement;
 
-        if (this.overlayRef) {
-            this.overlayRef.dispose();
-            this.posSub?.unsubscribe();
-            this.posSub = undefined;
-        }
+        const hostEl = this.document.createElement('ui-tooltip');
+        this.document.body.appendChild(hostEl);
 
-        this.overlayRef = this.overlay.create({
-            positionStrategy,
-            scrollStrategy: this.overlay.scrollStrategies.reposition(),
+        this.tooltipRef = createComponent(UITooltip, {
+            environmentInjector: this.env,
+            hostElement: hostEl,
         });
 
-        const strategy: any = positionStrategy;
-        if (strategy && strategy.positionChanges && typeof strategy.positionChanges.subscribe === 'function') {
-            this.posSub = strategy.positionChanges.subscribe((change: any) => {
-                const pair = change.connectionPair;
-                const placementResolved = this.mapPairToPlacement(pair);
-                this.setAttachedAttribute('data-placement', placementResolved);
-            });
-        }
+        Object.entries(props).forEach(([key, value]) => {
+            this.tooltipRef!.setInput(key, value);
+        });
+        this.tooltipRef!.setInput('id', this.id());
+
+        this.tooltipRef.changeDetectorRef.detectChanges();
+
+        return this.tooltipRef.location.nativeElement as HTMLElement;
     }
 
-    private setAttachedAttribute(name: string, value: string) {
-        try {
-            if (!this.attached) return;
-            const hostEl = this.attached.location.nativeElement as HTMLElement;
-            const root = hostEl.querySelector('[data-bspk="tooltip"]') as HTMLElement | null;
-            const target = root || hostEl;
-            target.setAttribute(name, value);
-        } catch {
-            // ignore
-        }
+    private async position(props: TooltipProps) {
+        if (!this.tooltipRef) return;
+        const reference = this.referenceElement;
+        const floating = this.tooltipRef.location.nativeElement as HTMLElement;
+        const arrowEl = this.tooltipRef.instance.getArrowEl();
+        if (!arrowEl) return;
+
+        const { x, y, placement, middlewareData } = await computePosition(reference, floating, {
+            placement: props.placement,
+            strategy: 'fixed',
+            middleware: [
+                offset(props.showTail !== false ? 8 : 4),
+                flip(),
+                shift({ padding: 8 }),
+                arrow({ element: arrowEl }),
+            ],
+        });
+
+        Object.assign(floating.style, {
+            left: `${x}px`,
+            top: `${y}px`,
+            position: 'fixed',
+        });
+
+        this.tooltipRef.setInput('placement', placement as any);
+        this.tooltipRef.changeDetectorRef.detectChanges();
+
+        const { x: ax, y: ay } = middlewareData.arrow || { x: null, y: null };
+        if (ax != null) arrowEl.style.left = `${ax}px`;
+        if (ay != null) arrowEl.style.top = `${ay}px`;
+
+        // Toggle tail visibility
+        arrowEl.style.opacity = props.showTail !== false ? '1' : '0';
     }
 
-    private positionsFor(placement: string): ConnectedPosition[] {
-        const offset = 8;
-        switch (placement) {
-            case 'top':
-                return [
-                    {
-                        originX: 'center',
-                        originY: 'top',
-                        overlayX: 'center',
-                        overlayY: 'bottom',
-                        offsetY: -offset,
-                    },
-                    {
-                        originX: 'center',
-                        originY: 'bottom',
-                        overlayX: 'center',
-                        overlayY: 'top',
-                        offsetY: offset,
-                    },
-                ];
-            case 'bottom':
-                return [
-                    {
-                        originX: 'center',
-                        originY: 'bottom',
-                        overlayX: 'center',
-                        overlayY: 'top',
-                        offsetY: offset,
-                    },
-                    {
-                        originX: 'center',
-                        originY: 'top',
-                        overlayX: 'center',
-                        overlayY: 'bottom',
-                        offsetY: -offset,
-                    },
-                ];
-            case 'left':
-                return [
-                    {
-                        originX: 'start',
-                        originY: 'center',
-                        overlayX: 'end',
-                        overlayY: 'center',
-                        offsetX: -offset,
-                    },
-                    {
-                        originX: 'end',
-                        originY: 'center',
-                        overlayX: 'start',
-                        overlayY: 'center',
-                        offsetX: offset,
-                    },
-                ];
-            case 'right':
-            default:
-                return [
-                    {
-                        originX: 'end',
-                        originY: 'center',
-                        overlayX: 'start',
-                        overlayY: 'center',
-                        offsetX: offset,
-                    },
-                    {
-                        originX: 'start',
-                        originY: 'center',
-                        overlayX: 'end',
-                        overlayY: 'center',
-                        offsetX: -offset,
-                    },
-                ];
+    private hide(force = false) {
+        this.renderer.removeAttribute(this.referenceElement, 'aria-labelledby');
+        const tipEl = this.tooltipRef?.location.nativeElement as HTMLElement | undefined;
+        if (!tipEl) return;
+        if (force && this.tooltipRef) {
+            const host = this.tooltipRef.location.nativeElement as HTMLElement;
+            host.remove();
+            this.tooltipRef.destroy();
+            this.tooltipRef = null;
+        } else {
+            this.renderer.setStyle(tipEl, 'display', 'none');
         }
-    }
-
-    private mapPairToPlacement(pair: any): 'bottom' | 'left' | 'right' | 'top' {
-        if (!pair) return 'top';
-        const { originX, originY, overlayX, overlayY } = pair;
-        if (originY === 'top' && overlayY === 'bottom') return 'top';
-        if (originY === 'bottom' && overlayY === 'top') return 'bottom';
-        if (originX === 'start' && overlayX === 'end') return 'left';
-        if (originX === 'end' && overlayX === 'start') return 'right';
-        return 'top';
     }
 }

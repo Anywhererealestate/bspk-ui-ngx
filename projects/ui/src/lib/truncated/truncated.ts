@@ -1,19 +1,11 @@
-import {
-    Component,
-    ViewEncapsulation,
-    ElementRef,
-    ViewChild,
-    ChangeDetectorRef,
-    AfterViewInit,
-    inject,
-} from '@angular/core';
-import { UITooltipDirective, TooltipProps } from '../tooltip/tooltip.directive';
+import { Component, ViewEncapsulation, ElementRef, ViewChild, AfterViewInit, model } from '@angular/core';
+import { TooltipConfig, UITooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
     selector: 'ui-truncated',
     imports: [UITooltipDirective],
     styleUrls: ['./truncated.scss'],
-    template: `<span data-truncated [ui-tooltip]="tooltip" #el>
+    template: `<span data-truncated [ui-tooltip]="tooltip()" #el>
         <ng-content></ng-content>
     </span> `,
     encapsulation: ViewEncapsulation.None,
@@ -30,16 +22,13 @@ export class UITruncated implements AfterViewInit {
      */
     @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
 
-    tooltip: TooltipProps | string = '';
-
-    private cdr = inject(ChangeDetectorRef);
+    protected tooltip = model<TooltipConfig>('');
 
     ngAfterViewInit() {
         const el = this.elRef?.nativeElement;
 
-        if (el && el.scrollWidth > el.clientWidth && this.tooltip === '') {
-            this.tooltip = { label: el.textContent?.trim() || '', showTail: true };
-            this.cdr.detectChanges();
+        if (el && el.scrollWidth > el.clientWidth) {
+            this.tooltip.set(el.textContent?.trim() || '');
         }
     }
 }

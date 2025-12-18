@@ -24,7 +24,7 @@ import { UITruncated } from './truncated';
 
         <h3>Truncated Component: when truncated tooltip shows</h3>
         <div>
-            <ui-truncated style="max-width: 200px" txt="body-large" tooltip>
+            <ui-truncated style="max-width: 200px" txt="body-large">
                 This sentence is deliberately longer than the container width. It helps verify that the truncated
                 component shows a tooltip only when the text is cut off and not fully visible to the user.
             </ui-truncated>
@@ -32,7 +32,7 @@ import { UITruncated } from './truncated';
 
         <h3>Truncated Component: no tooltip when no truncation is needed</h3>
         <div>
-            <ui-truncated style="max-width: 250px" txt="body-large" tooltip> No truncation here </ui-truncated>
+            <ui-truncated style="max-width: 250px" txt="body-large"> No truncation here </ui-truncated>
         </div>
     `,
 })
