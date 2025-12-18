@@ -63,11 +63,9 @@ export class UITooltipDirective implements OnDestroy {
         };
     }
 
-    get referenceElement(): HTMLElement {
-        // return the element the directive is applied to, unless its display is 'contents' —in which case return its first child
-        return this.host.nativeElement.computedStyleMap?.().get('display')?.toString() === 'contents'
-            ? (this.host.nativeElement.firstElementChild as HTMLElement)
-            : this.host.nativeElement;
+    get referenceElement(): HTMLElement | null {
+        const el = this.host.nativeElement;
+        return el.checkVisibility() ? el : (el.firstElementChild as HTMLElement) || null;
     }
 
     @HostListener('mouseenter')
@@ -89,7 +87,7 @@ export class UITooltipDirective implements OnDestroy {
     private show() {
         const props = this.props;
 
-        if (!props || props.disabled || !props.label) return;
+        if (!props || props.disabled || !props.label || !this.referenceElement) return;
 
         const tip = this.ensureTooltip(props);
 
@@ -131,7 +129,7 @@ export class UITooltipDirective implements OnDestroy {
     }
 
     private async position(props: TooltipProps) {
-        if (!this.tooltipRef) return;
+        if (!this.tooltipRef || !this.referenceElement) return;
         const reference = this.referenceElement;
         const floating = this.tooltipRef.location.nativeElement as HTMLElement;
         const arrowEl = this.tooltipRef.instance.getArrowEl();
@@ -166,6 +164,8 @@ export class UITooltipDirective implements OnDestroy {
     }
 
     private hide(force = false) {
+        if (!this.referenceElement) return;
+
         this.renderer.removeAttribute(this.referenceElement, 'aria-labelledby');
         const tipEl = this.tooltipRef?.location.nativeElement as HTMLElement | undefined;
         if (!tipEl) return;
