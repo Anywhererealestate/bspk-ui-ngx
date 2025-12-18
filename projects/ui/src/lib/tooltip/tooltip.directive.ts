@@ -16,7 +16,36 @@ import {
     model,
 } from '@angular/core';
 import { computePosition, offset, flip, shift, arrow, Placement } from '@floating-ui/dom';
+import { AsSignal } from '../../types/utils';
 import { randomString } from '../../utils';
+
+export type TooltipPlacement = Extract<Placement, 'bottom' | 'left' | 'right' | 'top'>;
+
+export interface TooltipProps {
+    /** The tooltip content. */
+    label?: string;
+
+    /**
+     * The placement of the tooltip.
+     *
+     * @default top
+     */
+    placement?: TooltipPlacement;
+
+    /**
+     * Whether to visually show the arrow (tail).
+     *
+     * @default true
+     */
+    showTail?: boolean;
+
+    /**
+     * Determines if the tooltip is disabled.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+}
 
 export type TooltipConfig = TooltipProps | string | undefined;
 
@@ -24,7 +53,10 @@ export type TooltipConfig = TooltipProps | string | undefined;
  * Brief message that provide additional guidance and helps users perform an action if needed.
  *
  * @example
- *     <span [uiTooltip]="'I explain what this button does'" placement="top">Hover me</span>
+ *     <span [ui-tooltip]="{
+ *     label: 'I explain what this button does',
+ *     placement: 'top',
+ *     }">Hover me</span>
  *
  * @name Tooltip
  * @phase Dev
@@ -182,40 +214,7 @@ export class UITooltipDirective implements OnDestroy {
     }
 }
 
-export type TooltipPlacement = Extract<Placement, 'bottom' | 'left' | 'right' | 'top'>;
-
-export interface TooltipProps {
-    /** The tooltip content. */
-    label?: string;
-
-    /**
-     * The placement of the tooltip.
-     *
-     * @default top
-     */
-    placement?: TooltipPlacement;
-
-    /**
-     * Whether to visually show the arrow (tail).
-     *
-     * @default true
-     */
-    showTail?: boolean;
-
-    /**
-     * Determines if the tooltip is disabled.
-     *
-     * @default false
-     */
-    disabled?: boolean;
-}
-
-/**
- * Brief message that provide additional guidance and helps users perform an action if needed.
- *
- * @example
- *     <ui-tooltip id="tip1" [label]="'Help text'" placement="top"></ui-tooltip>
- */
+/** Single use component to display tooltip content. */
 @Component({
     selector: 'ui-tooltip',
     standalone: true,
@@ -232,7 +231,7 @@ export interface TooltipProps {
         '[attr.id]': 'id() || null',
     },
 })
-class UITooltip {
+class UITooltip implements AsSignal<TooltipProps> {
     @ViewChild('arrow', { read: ElementRef }) arrow?: ElementRef<HTMLElement>;
 
     /** The tooltip content. */
