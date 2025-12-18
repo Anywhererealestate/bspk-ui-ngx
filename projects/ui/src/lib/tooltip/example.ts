@@ -14,8 +14,7 @@ import { UITooltipDirective } from './tooltip.directive';
             label="Hover me"
             [ui-tooltip]="{
                 label: 'I explain what this button does',
-            }"
-            placement="top"></ui-button>
+            }"></ui-button>
 
         <h3>Right</h3>
         <span [ui-tooltip]="{ label: 'Right side tooltip', placement: 'right' }">Hover me (right)</span>
