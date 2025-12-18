@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { UIListItem } from '../list-item';
-import { UIRadio, RadioProps } from '../radio/radio';
+import { UIRadio } from '../radio/radio';
 
 /**
  * A control that allows users to choose one or more items from a list or turn an feature on or off.
@@ -10,42 +10,44 @@ import { UIRadio, RadioProps } from '../radio/radio';
  * @name RadioOption
  * @phase Utility
  */
-
 @Component({
     selector: 'ui-radio-option',
     imports: [UIRadio, UIListItem],
     template: `<ui-list-item
-        [label]="label"
-        [subText]="description ?? ''"
-        [disabled]="radioInput?.disabled"
+        [label]="label() || ''"
+        [subText]="description()"
+        [disabled]="disabled()"
         data-bspk="radio-option"
-        [attr.aria-disabled]="radioInput?.disabled ?? null"
+        [attr.aria-disabled]="disabled() ? true : null"
         as="label">
         <ui-radio
             data-leading
-            [id]="radioInput?.id"
-            [name]="radioInput?.name ?? ''"
-            [value]="radioInput?.value"
-            [checked]="radioInput?.checked ?? false"
-            [disabled]="radioInput?.disabled"
-            [required]="radioInput?.required ?? false"
-            [invalid]="radioInput?.invalid ?? false"
-            [ariaLabel]="ariaLabel"
+            [id]="id()"
+            [name]="name()"
+            [value]="value()"
+            [checked]="checked()"
+            [disabled]="disabled()"
+            [required]="required()"
+            [invalid]="invalid()"
+            [ariaLabel]="ariaLabel()"
             (checkedChange)="checkedChange.emit($event)">
         </ui-radio>
     </ui-list-item>`,
+    host: {
+        'data-bspk': 'radio-option',
+    },
 })
-export class UIRadioOption {
+export class UIRadioOption extends UIRadio {
     /** The label of the option. Also used as the aria-label of the control. */
-    @Input() label!: string;
+    label = input<string>();
+
     /** The description of the option. */
-    @Input() description?: string;
-    /** The input properties for the radio control. */
-    @Input() radioInput?: RadioProps;
-    /** Emits the new checked state (true or false) */
-    @Output() checkedChange = new EventEmitter<boolean>();
+    description = input<string | undefined>(undefined);
     /** The aria-label for the radio element. Combines label and description if both are present. */
-    get ariaLabel(): string | undefined {
-        return this.description ? `${this.label} - ${this.description}` : this.label;
+
+    override ariaLabel = input<string | undefined>(this.computedAriaLabel());
+
+    computedAriaLabel(): string | undefined {
+        return this.description() ? `${this.label()} - ${this.description()}` : this.label();
     }
 }

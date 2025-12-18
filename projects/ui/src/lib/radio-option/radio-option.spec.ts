@@ -4,7 +4,7 @@ import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 import { UIRadioOption } from './radio-option';
 
 @Component({
-    template: `<ui-radio-option label="Test Label"></ui-radio-option>`,
+    template: `<ui-radio-option label="Test Label" name="test-name" value="test-value" />`,
     standalone: true,
     imports: [UIRadioOption],
 })
