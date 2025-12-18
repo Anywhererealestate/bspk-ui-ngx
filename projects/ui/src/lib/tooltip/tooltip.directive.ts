@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import {
+    Component,
     ComponentRef,
     Directive,
     ElementRef,
@@ -8,13 +9,14 @@ import {
     Inject,
     OnDestroy,
     Renderer2,
+    ViewChild,
+    ViewEncapsulation,
     createComponent,
     input,
     model,
 } from '@angular/core';
-import { computePosition, offset, flip, shift, arrow } from '@floating-ui/dom';
+import { computePosition, offset, flip, shift, arrow, Placement } from '@floating-ui/dom';
 import { randomString } from '../../utils';
-import { TooltipProps, UITooltip } from './tooltip';
 
 export type TooltipConfig = TooltipProps | string | undefined;
 
@@ -25,7 +27,7 @@ export type TooltipConfig = TooltipProps | string | undefined;
  *     <span [uiTooltip]="'I explain what this button does'" placement="top">Hover me</span>
  *
  * @name Tooltip
- * @phase Stable
+ * @phase Dev
  */
 @Directive({ selector: '[ui-tooltip]', standalone: true })
 export class UITooltipDirective implements OnDestroy {
@@ -65,7 +67,7 @@ export class UITooltipDirective implements OnDestroy {
 
     get referenceElement(): HTMLElement | null {
         const el = this.host.nativeElement;
-        return el.checkVisibility() ? el : (el.firstElementChild as HTMLElement) || null;
+        return el?.checkVisibility?.() ? el : (el.firstElementChild as HTMLElement) || null;
     }
 
     @HostListener('mouseenter')
@@ -177,5 +179,90 @@ export class UITooltipDirective implements OnDestroy {
         } else {
             this.renderer.setStyle(tipEl, 'display', 'none');
         }
+    }
+}
+
+export type TooltipPlacement = Extract<Placement, 'bottom' | 'left' | 'right' | 'top'>;
+
+export interface TooltipProps {
+    /** The tooltip content. */
+    label?: string;
+
+    /**
+     * The placement of the tooltip.
+     *
+     * @default top
+     */
+    placement?: TooltipPlacement;
+
+    /**
+     * Whether to visually show the arrow (tail).
+     *
+     * @default true
+     */
+    showTail?: boolean;
+
+    /**
+     * Determines if the tooltip is disabled.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+}
+
+/**
+ * Brief message that provide additional guidance and helps users perform an action if needed.
+ *
+ * @example
+ *     <ui-tooltip id="tip1" [label]="'Help text'" placement="top"></ui-tooltip>
+ */
+@Component({
+    selector: 'ui-tooltip',
+    standalone: true,
+    template: `
+        <span data-text>{{ label() }}</span>
+        <span aria-hidden="true" data-arrow #arrow></span>
+    `,
+    styleUrl: './tooltip.scss',
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk': 'tooltip',
+        role: 'tooltip',
+        '[attr.data-placement]': 'placement()',
+        '[attr.id]': 'id() || null',
+    },
+})
+class UITooltip {
+    @ViewChild('arrow', { read: ElementRef }) arrow?: ElementRef<HTMLElement>;
+
+    /** The tooltip content. */
+    label = input<string | undefined>('');
+
+    /**
+     * The placement of the tooltip.
+     *
+     * @default top
+     */
+    placement = input<TooltipPlacement | undefined>('top');
+
+    /**
+     * Whether to visually show the arrow (tail).
+     *
+     * @default true
+     */
+    showTail = input<boolean | undefined>(true);
+
+    /**
+     * Determines if the tooltip is disabled.
+     *
+     * @default false
+     */
+    disabled = input<boolean | undefined>(false);
+
+    /** Tooltip id for a11y labelling */
+    id = input<string>(randomString());
+
+    getArrowEl(): HTMLElement | null {
+        return this.arrow?.nativeElement ?? null;
     }
 }
