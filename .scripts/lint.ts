@@ -45,14 +45,16 @@ files.forEach((dirent) => {
             const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
             const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
 
-            const classNameMatch = content.match(/export class (\w+)[<|\s]/)?.[1];
+            const allClassNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map(
+                (match) => match[1],
+            );
 
-            if (!classNameMatch) {
+            if (!allClassNameMatches || allClassNameMatches.length === 0) {
                 errors.push(`No class found in file "${filePath}".`);
-            } else if (classNameMatch !== classNameExpected) {
+            } else if (!allClassNameMatches.some((match) => match === classNameExpected)) {
                 if (type === 'component')
                     errors.push(
-                        `Class name "${classNameMatch}" in file "${filePath}" does not follow the convention and should be ${classNameExpected}.`,
+                        `Class name(s) "${allClassNameMatches.join(', ')}" in file "${filePath}" does not follow the convention and should be ${classNameExpected}.`,
                     );
             }
 
