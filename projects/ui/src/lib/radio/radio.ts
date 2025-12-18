@@ -53,14 +53,14 @@ export class UIRadio {
      *
      * @required
      */
-    name = input<string>();
+    name = input.required<string | undefined>();
 
     /**
      * The value of the field control.
      *
      * @required
      */
-    value = input<string | undefined>(undefined);
+    value = input.required<string | undefined>();
 
     /**
      * The aria-label for the element.

@@ -16,7 +16,7 @@ import { UIRadioOption } from './radio-option';
                 [description]="'This is description for ' + ex.label"
                 [id]="ex.id"
                 [name]="ex.name || 'example-radio-group'"
-                [value]="ex.value || ex.label"
+                [value]="ex.value || ex.label || 'option' + $index"
                 [checked]="ex.checked"
                 [disabled]="ex.disabled"
                 [invalid]="ex.invalid"
