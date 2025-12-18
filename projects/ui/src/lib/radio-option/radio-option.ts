@@ -14,7 +14,7 @@ import { UIRadio } from '../radio/radio';
     selector: 'ui-radio-option',
     imports: [UIRadio, UIListItem],
     template: `<ui-list-item
-        [label]="label()"
+        [label]="label() || ''"
         [subText]="description()"
         [disabled]="disabled()"
         data-bspk="radio-option"
@@ -33,10 +33,14 @@ import { UIRadio } from '../radio/radio';
             (checkedChange)="checkedChange.emit($event)">
         </ui-radio>
     </ui-list-item>`,
+    host: {
+        'data-bspk': 'radio-option',
+    },
 })
 export class UIRadioOption extends UIRadio {
     /** The label of the option. Also used as the aria-label of the control. */
-    label = input.required<string>();
+    label = input<string>();
+
     /** The description of the option. */
     description = input<string | undefined>(undefined);
     /** The aria-label for the radio element. Combines label and description if both are present. */
