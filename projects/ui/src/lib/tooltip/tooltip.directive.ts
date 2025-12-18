@@ -47,8 +47,6 @@ export interface TooltipProps {
     disabled?: boolean;
 }
 
-export type TooltipConfig = TooltipProps | string | undefined;
-
 /**
  * Brief message that provide additional guidance and helps users perform an action if needed.
  *
@@ -63,7 +61,7 @@ export type TooltipConfig = TooltipProps | string | undefined;
  */
 @Directive({ selector: '[ui-tooltip]', standalone: true })
 export class UITooltipDirective implements OnDestroy {
-    value = model<TooltipConfig>(undefined, {
+    value = model<TooltipProps | string | undefined>(undefined, {
         alias: 'ui-tooltip',
     });
 

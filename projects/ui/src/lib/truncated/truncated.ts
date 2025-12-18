@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, ElementRef, ViewChild, AfterViewInit, model } from '@angular/core';
-import { TooltipConfig, UITooltipDirective } from '../tooltip/tooltip.directive';
+import { TooltipProps, UITooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
     selector: 'ui-truncated',
@@ -22,7 +22,7 @@ export class UITruncated implements AfterViewInit {
      */
     @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
 
-    protected tooltip = model<TooltipConfig>('');
+    protected tooltip = model<TooltipProps | string | undefined>('');
 
     ngAfterViewInit() {
         const el = this.elRef?.nativeElement;
