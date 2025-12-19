@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { UIButton } from '../button/button';
-import { UITooltipDirective } from './tooltip.directive';
+import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
 
 @Component({
     selector: 'ui-tooltip-example',
@@ -16,8 +16,12 @@ import { UITooltipDirective } from './tooltip.directive';
                 label: 'I explain what this button does',
             }"></ui-button>
 
-        <h3>Right</h3>
-        <span [ui-tooltip]="{ label: 'Right side tooltip', placement: 'right' }">Hover me (right)</span>
+        @for (placement of placements; track $index) {
+            <h3>{{ placement | titlecase }}</h3>
+            <span [ui-tooltip]="{ label: placement + ' side tooltip', placement: placement }"
+                >Hover me ({{ placement }})</span
+            >
+        }
 
         <h3>No tail</h3>
         <span
@@ -38,4 +42,6 @@ import { UITooltipDirective } from './tooltip.directive';
         >
     `,
 })
-export class UITooltipExample {}
+export class UITooltipExample {
+    placements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right'];
+}
