@@ -1,25 +1,47 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UITooltipDirective } from './tooltip.directive';
+import { UIButton } from '../button/button';
+import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
 
 @Component({
     selector: 'ui-tooltip-example',
     standalone: true,
-    imports: [CommonModule, UITooltipDirective],
+    imports: [CommonModule, UITooltipDirective, UIButton],
     template: `
-        <h2>Tooltip Directive</h2>
+        <h2>Tooltip</h2>
 
-        <p>
-            <span [ui-tooltip]="{ label: 'Told ya!', showTail: true, placement: 'bottom' }">Hover me for tooltip!</span>
-        </p>
+        <ui-button
+            label="Hover me"
+            [ui-tooltip]="{
+                label: 'I explain what this button does',
+            }"></ui-button>
 
-        <p [ui-tooltip]="{ label: '', showTail: true, placement: 'bottom' }">
-            Empty tooltip label (no tooltip should show)
-        </p>
+        @for (placement of placements; track $index) {
+            <h3>{{ placement | titlecase }}</h3>
+            <span [ui-tooltip]="{ label: placement + ' side tooltip', placement: placement }"
+                >Hover me ({{ placement }})</span
+            >
+        }
 
-        <p [ui-tooltip]="{ label: undefined, showTail: true, placement: 'bottom' }">
-            Undefined tooltip label (no tooltip should show)
-        </p>
+        <h3>No tail</h3>
+        <span
+            [ui-tooltip]="{
+                label: 'No tail',
+                showTail: false,
+            }"
+            >Hover me (no tail)</span
+        >
+
+        <h3>Disabled</h3>
+        <span
+            [ui-tooltip]="{
+                label: 'Disabled tooltip',
+                disabled: true,
+            }"
+            >Hover me (disabled)</span
+        >
     `,
 })
-export class UITooltipExample {}
+export class UITooltipExample {
+    placements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right'];
+}
