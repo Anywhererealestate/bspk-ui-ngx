@@ -40,13 +40,19 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
             >Hover me (disabled)</span
         >
 
-        <h3>Updated Live</h3>
-        <span
-            [ui-tooltip]="{
-                label: 'Updated tooltip' + counter(),
-            }"
-            >Hover me ({{ counter() }})</span
-        >
+        // hide every 10 seconds for 5 seconds to show dynamic updates
+        @if (counter() % 10 < 5) {
+            <h3>Updated Live</h3>
+            <span
+                [ui-tooltip]="{
+                    label: 'Updated tooltip' + counter(),
+                }"
+                >Hover me ({{ counter() }})</span
+            >
+        } @else {
+            <h3>Reference and Tooltip removed from DOM</h3>
+            <span>Will return in {{ 10 - (counter() % 10) }}</span>
+        }
     `,
     host: {
         // ensure the example tooltips are not cut off
