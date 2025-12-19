@@ -1,5 +1,5 @@
 import { Component, Output, EventEmitter, ViewEncapsulation, input, booleanAttribute } from '@angular/core';
-import { generateId } from '../../utils/generateId';
+import { randomString } from '../../utils/randomString';
 
 /**
  * A round control that allows user to choose one option from a set. This is the base element and if used directly you
@@ -86,7 +86,7 @@ export class UIRadio {
     disabled = input(false, { transform: booleanAttribute });
 
     /** The id of the element. If not provided one will be generated. */
-    id = input<string>(generateId());
+    id = input<string>(randomString(8));
 
     /**
      * Indicates that the element is in an invalid state and displays the error theme.
