@@ -43,7 +43,7 @@ export type SizeVariant =
     standalone: true,
     imports: [CommonModule, IconPerson, UITooltipDirective],
     template: `<span
-        [ui-tooltip]="{ label: name, showTail: true, disabled: hideTooltip }"
+        [ui-tooltip]="{ label: name, disabled: hideTooltip }"
         data-bspk="avatar"
         [attr.aria-label]="name"
         aria-roledescription="person"
