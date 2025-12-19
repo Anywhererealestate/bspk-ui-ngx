@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { AlertVariant } from '../../types/utils';
 import { ButtonSize, UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
-
-export type AlertVariant = 'error' | 'informational' | 'success' | 'warning';
 
 export interface CallToActionButton {
     /**
