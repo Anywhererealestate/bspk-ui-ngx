@@ -5,18 +5,19 @@ import {
     Directive,
     ElementRef,
     EnvironmentInjector,
-    HostListener,
-    Inject,
     OnDestroy,
+    OnInit,
     Renderer2,
-    ViewChild,
     ViewEncapsulation,
+    computed,
     createComponent,
-    input,
+    effect,
+    inject,
     model,
+    signal,
+    viewChild,
 } from '@angular/core';
 import { computePosition, offset, flip, shift, arrow, Placement } from '@floating-ui/dom';
-import { AsSignal } from '../../types/utils';
 import { randomString } from '../../utils';
 
 export type TooltipPlacement = Extract<Placement, 'bottom' | 'left' | 'right' | 'top'>;
@@ -59,24 +60,24 @@ export interface TooltipProps {
  * @name Tooltip
  * @phase Dev
  */
-@Directive({ selector: '[ui-tooltip]', standalone: true })
-export class UITooltipDirective implements OnDestroy {
+@Directive({
+    selector: '[ui-tooltip]',
+    standalone: true,
+    host: {
+        '(mouseenter)': 'mounted && handleOpenEvent($event)',
+        '(mouseleave)': 'mounted && handleCloseEvent($event)',
+        '(focusin)': 'mounted && handleOpenEvent($event)',
+        '(blur)': 'mounted && handleCloseEvent($event)',
+    },
+})
+export class UITooltipDirective implements OnDestroy, OnInit {
     value = model<TooltipProps | string | undefined>(undefined, {
         alias: 'ui-tooltip',
     });
 
-    id = input<string>(`ui-tooltip-${randomString(6)}`);
+    tooltipId = model<string | undefined>(undefined);
 
-    private tooltipRef?: ComponentRef<UITooltip> | null;
-
-    constructor(
-        private host: ElementRef<HTMLElement>,
-        private renderer: Renderer2,
-        private env: EnvironmentInjector,
-        @Inject(DOCUMENT) private document: Document,
-    ) {}
-
-    get props(): TooltipProps | undefined {
+    props = computed((): TooltipProps | undefined => {
         if (!this.value()) return undefined;
 
         const next =
@@ -93,81 +94,108 @@ export class UITooltipDirective implements OnDestroy {
             disabled: false,
             ...next,
         };
+    });
+
+    host = inject(ElementRef<HTMLElement>);
+    renderer = inject(Renderer2);
+    env = inject(EnvironmentInjector);
+    document = inject(DOCUMENT);
+
+    private tooltipComponent?: ComponentRef<UITooltip> | null;
+    private referenceEl?: HTMLElement | null;
+    private tooltipEl?: HTMLElement | null;
+
+    constructor() {
+        effect(() => {
+            this.updateTooltipProps(this.props() || {});
+            this.position(this.props());
+        });
     }
 
-    get referenceElement(): HTMLElement | null {
-        const el = this.host.nativeElement;
-        return el?.checkVisibility?.() ? el : (el.firstElementChild as HTMLElement) || null;
+    get mounted() {
+        return !!this.tooltipComponent;
     }
 
-    @HostListener('mouseenter')
-    @HostListener('focusin')
-    onShow() {
-        this.show();
+    updateTooltipProps(props: TooltipProps) {
+        if (!this.tooltipComponent) return;
+        this.tooltipComponent.instance.props.set(props);
+        this.tooltipComponent.changeDetectorRef.detectChanges();
     }
 
-    @HostListener('mouseleave')
-    @HostListener('blur')
-    onHide() {
-        this.hide();
+    handleOpenEvent(event: Event) {
+        if (!this.tooltipEl || event.target !== this.referenceEl) return;
+
+        this.renderer.setStyle(this.tooltipEl, 'display', 'block');
+
+        this.position(this.props());
+    }
+
+    handleCloseEvent(force: true): void;
+    handleCloseEvent(event: Event): void;
+    handleCloseEvent(event: Event | true) {
+        if (!this.tooltipEl || (event !== true && event.target !== this.referenceEl)) return;
+
+        if (this.tooltipEl) this.renderer.setStyle(this.tooltipEl, 'display', 'none');
     }
 
     ngOnDestroy(): void {
-        this.hide(true);
+        this.handleCloseEvent(true);
+        this.renderer.removeAttribute(this.referenceEl, 'aria-labelledby');
+        this.tooltipEl?.remove();
+        this.tooltipComponent?.destroy();
+        this.tooltipComponent = null;
     }
 
-    private show() {
-        const props = this.props;
+    ngOnInit(): void {
+        this.tooltipId.set(this.tooltipId() || `tooltip-${randomString()}`);
 
-        if (!props || props.disabled || !props.label || !this.referenceElement) return;
+        const tooltipId = this.tooltipId()!;
 
-        const tip = this.ensureTooltip(props);
+        const props = this.props();
 
-        if (!tip || !this.tooltipRef) return;
+        let referenceElement = this.host.nativeElement;
+
+        if (!referenceElement?.checkVisibility?.())
+            referenceElement = (referenceElement?.firstElementChild as HTMLElement) || null;
+
+        this.referenceEl = referenceElement;
+
+        if (
+            // if we can't render or already rendered or disabled or no label we can't show
+            !this.document ||
+            !this.referenceEl ||
+            !props ||
+            props.disabled ||
+            !props.label
+        ) {
+            return;
+        }
 
         // Link host and tooltip for a11y
-        this.renderer.setAttribute(this.referenceElement, 'aria-labelledby', this.id());
-
-        Object.entries(props).forEach(([key, value]) => {
-            this.tooltipRef!.setInput(key, value);
-        });
-        this.tooltipRef.changeDetectorRef.detectChanges();
-
-        // Make visible
-        this.renderer.setStyle(tip, 'display', 'block');
-        this.position(props);
-    }
-
-    private ensureTooltip(props: TooltipProps): HTMLElement | null {
-        if (!this.document || !this.host?.nativeElement) return null;
-        if (this.tooltipRef) return this.tooltipRef.location.nativeElement as HTMLElement;
-
+        this.renderer.setAttribute(referenceElement, 'aria-labelledby', tooltipId);
         const hostEl = this.document.createElement('ui-tooltip');
         this.document.body.appendChild(hostEl);
 
-        this.tooltipRef = createComponent(UITooltip, {
+        this.tooltipComponent = createComponent(UITooltip, {
             environmentInjector: this.env,
             hostElement: hostEl,
         });
 
-        Object.entries(props).forEach(([key, value]) => {
-            this.tooltipRef!.setInput(key, value);
-        });
-        this.tooltipRef!.setInput('id', this.id());
-
-        this.tooltipRef.changeDetectorRef.detectChanges();
-
-        return this.tooltipRef.location.nativeElement as HTMLElement;
+        this.tooltipEl = this.tooltipComponent.location.nativeElement as HTMLElement;
+        this.renderer.setStyle(this.tooltipEl, 'display', 'none');
+        this.tooltipComponent.instance.id.set(tooltipId);
+        this.updateTooltipProps(props);
     }
 
-    private async position(props: TooltipProps) {
-        if (!this.tooltipRef || !this.referenceElement) return;
-        const reference = this.referenceElement;
-        const floating = this.tooltipRef.location.nativeElement as HTMLElement;
-        const arrowEl = this.tooltipRef.instance.getArrowEl();
+    private async position(props: TooltipProps | undefined) {
+        if (!this.tooltipComponent || !this.referenceEl || !props) return;
+        const floatingEl = this.tooltipComponent.location.nativeElement as HTMLElement;
+        const referenceEl = this.referenceEl;
+        const arrowEl = this.tooltipComponent.instance.arrowElement;
+
         if (!arrowEl) return;
 
-        const { x, y, placement, middlewareData } = await computePosition(reference, floating, {
+        const { x, y, placement, middlewareData } = await computePosition(referenceEl, floatingEl, {
             placement: props.placement,
             strategy: 'fixed',
             middleware: [
@@ -178,14 +206,17 @@ export class UITooltipDirective implements OnDestroy {
             ],
         });
 
-        Object.assign(floating.style, {
+        Object.assign(floatingEl.style, {
             left: `${x}px`,
             top: `${y}px`,
             position: 'fixed',
         });
 
-        this.tooltipRef.setInput('placement', placement as any);
-        this.tooltipRef.changeDetectorRef.detectChanges();
+        this.tooltipComponent.instance.props.set({
+            ...props,
+            placement: placement as TooltipPlacement,
+        });
+        this.tooltipComponent.changeDetectorRef.detectChanges();
 
         const { x: ax, y: ay } = middlewareData.arrow || { x: null, y: null };
         if (ax != null) arrowEl.style.left = `${ax}px`;
@@ -194,22 +225,6 @@ export class UITooltipDirective implements OnDestroy {
         // Toggle tail visibility
         arrowEl.style.opacity = props.showTail !== false ? '1' : '0';
     }
-
-    private hide(force = false) {
-        if (!this.referenceElement) return;
-
-        this.renderer.removeAttribute(this.referenceElement, 'aria-labelledby');
-        const tipEl = this.tooltipRef?.location.nativeElement as HTMLElement | undefined;
-        if (!tipEl) return;
-        if (force && this.tooltipRef) {
-            const host = this.tooltipRef.location.nativeElement as HTMLElement;
-            host.remove();
-            this.tooltipRef.destroy();
-            this.tooltipRef = null;
-        } else {
-            this.renderer.setStyle(tipEl, 'display', 'none');
-        }
-    }
 }
 
 /** Single use component to display tooltip content. */
@@ -217,7 +232,7 @@ export class UITooltipDirective implements OnDestroy {
     selector: 'ui-tooltip',
     standalone: true,
     template: `
-        <span data-text>{{ label() }}</span>
+        <span data-text>{{ props().label }}</span>
         <span aria-hidden="true" data-arrow #arrow></span>
     `,
     styleUrl: './tooltip.scss',
@@ -225,41 +240,24 @@ export class UITooltipDirective implements OnDestroy {
     host: {
         'data-bspk': 'tooltip',
         role: 'tooltip',
-        '[attr.data-placement]': 'placement()',
+        '[attr.data-placement]': 'props().placement',
         '[attr.id]': 'id() || null',
     },
 })
-class UITooltip implements AsSignal<TooltipProps> {
-    @ViewChild('arrow', { read: ElementRef }) arrow?: ElementRef<HTMLElement>;
-
-    /** The tooltip content. */
-    label = input<string | undefined>('');
-
-    /**
-     * The placement of the tooltip.
-     *
-     * @default top
-     */
-    placement = input<TooltipPlacement | undefined>('top');
-
-    /**
-     * Whether to visually show the arrow (tail).
-     *
-     * @default true
-     */
-    showTail = input<boolean | undefined>(true);
-
-    /**
-     * Determines if the tooltip is disabled.
-     *
-     * @default false
-     */
-    disabled = input<boolean | undefined>(false);
+class UITooltip {
+    arrow = viewChild.required<ElementRef>('arrow');
 
     /** Tooltip id for a11y labelling */
-    id = input<string>(randomString());
+    id = signal<string | undefined>(undefined);
 
-    getArrowEl(): HTMLElement | null {
-        return this.arrow?.nativeElement ?? null;
+    props = model<TooltipProps>({
+        label: '',
+        placement: 'top',
+        showTail: true,
+        disabled: false,
+    });
+
+    get arrowElement(): HTMLElement | null {
+        return this.arrow()?.nativeElement || null;
     }
 }
