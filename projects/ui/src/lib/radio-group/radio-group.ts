@@ -1,5 +1,4 @@
-import { Component, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
-import { RadioProps } from '../radio/radio';
+import { Component, ViewEncapsulation, input, Output, EventEmitter } from '@angular/core';
 import { UIRadioOption } from '../radio-option/radio-option';
 
 export interface RadioGroupOption {
@@ -50,17 +49,22 @@ export interface RadioGroupOption {
     imports: [UIRadioOption],
     template: `
         <div
-            [attr.aria-describedby]="ariaDescribedBy"
-            [attr.aria-errormessage]="ariaErrorMessage"
-            [attr.id]="id"
+            [attr.aria-describedby]="ariaDescribedBy() || null"
+            [attr.aria-errormessage]="ariaErrorMessage() || null"
+            [attr.id]="id()"
             role="radiogroup"
             data-bspk="radio-group"
             style="display: flex; flex-direction: column; gap: 0; max-width: 100%; --list-item-height: auto;">
-            @for (option of options; track option.value) {
+            @for (option of options(); track option.value) {
                 <ui-radio-option
                     [label]="option.label"
                     [description]="option.description"
-                    [radioInput]="getRadioProps(option)"
+                    [name]="name()"
+                    [value]="option.value"
+                    [checked]="value() === option.value"
+                    [disabled]="disabled() || option.disabled"
+                    [required]="required()"
+                    [invalid]="invalid()"
                     (checkedChange)="onRadioChange(option.value, $event)">
                 </ui-radio-option>
             }
@@ -77,33 +81,12 @@ export interface RadioGroupOption {
     },
     encapsulation: ViewEncapsulation.None,
 })
-export class UIRadioGroup {
-    @Input() options: RadioGroupOption[] = [];
-    @Input() name!: string;
-    @Input() value?: string;
-    @Input() disabled = false;
-    @Input() invalid?: boolean;
-    @Input() required?: boolean;
-    @Input() id?: string;
-    @Input() ariaDescribedBy?: string;
-    @Input() ariaErrorMessage?: string;
-
+export class UIRadioGroup extends UIRadioOption {
     @Output() valueChange = new EventEmitter<string>();
 
-    getRadioProps(option: RadioGroupOption): RadioProps {
-        return {
-            name: this.name,
-            value: option.value,
-            checked: this.value === option.value,
-            disabled: this.disabled || option.disabled,
-            required: this.required,
-            invalid: this.invalid,
-            change: (event: Event) => {
-                // Optionally, you can extract the checked value from the event if needed
-                this.onRadioChange(option.value, (event.target as HTMLInputElement).checked);
-            },
-        };
-    }
+    options = input<RadioGroupOption[]>([]);
+    ariaDescribedBy = input<string | null>(null);
+    ariaErrorMessage = input<string | null>(null);
 
     onRadioChange(value: string, checked: boolean) {
         if (checked) {

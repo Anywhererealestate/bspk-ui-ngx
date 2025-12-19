@@ -38,7 +38,7 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
         <h3>Required Group</h3>
         <ui-radio-group
             name="group-required"
-            [options]="basicOptions"
+            [options]="altOptions"
             [value]="selectedRequired"
             [required]="true"
             (valueChange)="selectedRequired = $event"></ui-radio-group>
@@ -51,8 +51,8 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
             name="group-aria"
             [options]="basicOptions"
             [value]="selectedAria"
-            ariaDescribedBy="desc"
-            ariaErrorMessage="err"
+            [ariaDescribedBy]="'desc'"
+            [ariaErrorMessage]="'err'"
             (valueChange)="selectedAria = $event"></ui-radio-group>
         <p>Selected: {{ selectedAria }}</p>
 
@@ -70,6 +70,12 @@ export class UIRadioGroupExample {
         { value: '1', label: 'Option 1', description: 'First option' },
         { value: '2', label: 'Option 2' },
         { value: '3', label: 'Option 3' },
+    ];
+
+    altOptions: RadioGroupOption[] = [
+        { value: 'A', label: 'Option A', description: 'First option' },
+        { value: 'B', label: 'Option B', description: 'Second option' },
+        { value: 'C', label: 'Option C', description: 'Third option' },
     ];
 
     mixedOptions: RadioGroupOption[] = [
