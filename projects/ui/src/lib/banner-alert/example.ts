@@ -12,11 +12,8 @@ import { UIBannerAlert } from './banner-alert';
         <h2>BannerAlert</h2>
 
         <h3>Informational</h3>
-        <ui-banner-alert
-            header="Example Header"
-            body="Example body text"
-            variant="informational"
-            (onClose)="onClose()"></ui-banner-alert>
+        <ui-banner-alert header="Example Header" body="Example body text" variant="informational" (onClose)="onClose()">
+        </ui-banner-alert>
 
         <h3>Success</h3>
         <ui-banner-alert header="Example Header" body="Example body text" variant="success"></ui-banner-alert>
@@ -28,11 +25,16 @@ import { UIBannerAlert } from './banner-alert';
         <ui-banner-alert header="Example Header" body="Example body text" variant="warning"></ui-banner-alert>
 
         <h3>Elevated</h3>
+        <ui-banner-alert header="Example Header" body="Example body text" variant="informational" [elevated]="true">
+        </ui-banner-alert>
+
+        <h3>Call to action</h3>
         <ui-banner-alert
             header="Example Header"
             body="Example body text"
             variant="informational"
-            [elevated]="true"></ui-banner-alert>
+            [callToAction]="{ label: 'Click me', onClick: onCta }">
+        </ui-banner-alert>
     `,
 })
 export class UIBannerAlertExample {
@@ -40,5 +42,9 @@ export class UIBannerAlertExample {
 
     onClose() {
         sendSnackbar('Banner closed');
+    }
+
+    onCta() {
+        sendSnackbar('Call to action clicked');
     }
 }
