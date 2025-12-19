@@ -140,7 +140,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
 
     ngOnDestroy(): void {
         this.handleCloseEvent(true);
-        this.renderer.removeAttribute(this.referenceEl, 'aria-labelledby');
+        if (this.referenceEl) this.renderer.removeAttribute(this.referenceEl, 'aria-labelledby');
         this.tooltipEl?.remove();
         this.tooltipComponent?.destroy();
         this.tooltipComponent = null;
@@ -188,7 +188,16 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     }
 
     private async position(props: TooltipProps | undefined) {
-        if (!this.tooltipComponent || !this.referenceEl || !props) return;
+        if (
+            //
+            !this.tooltipComponent ||
+            !this.tooltipComponent.instance ||
+            !this.tooltipComponent.instance.props ||
+            !this.referenceEl ||
+            !props
+        )
+            return;
+
         const floatingEl = this.tooltipComponent.location.nativeElement as HTMLElement;
         const referenceEl = this.referenceEl;
         const arrowEl = this.tooltipComponent.instance.arrowElement;
@@ -205,6 +214,16 @@ export class UITooltipDirective implements OnDestroy, OnInit {
                 arrow({ element: arrowEl }),
             ],
         });
+
+        if (
+            //
+            !this.tooltipComponent ||
+            !this.tooltipComponent.instance ||
+            !this.tooltipComponent.instance.props ||
+            !this.referenceEl ||
+            !props
+        )
+            return;
 
         Object.assign(floatingEl.style, {
             left: `${x}px`,
