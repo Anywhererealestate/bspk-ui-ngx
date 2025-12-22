@@ -9,28 +9,6 @@ export interface RadioGroupOption {
     disabled?: boolean;
 }
 
-export interface RadioGroupProps {
-    /** The list of radio options to display. */
-    options: RadioGroupOption[];
-
-    /** The id for the radio group. */
-    id?: string;
-
-    /** The `aria-describedby` attribute for the radio group. */
-    ariaDescribedBy?: string | null;
-
-    /**
-     * The `aria-errormessage` attribute for the radio group.
-     *
-     * This should be set to the ID of an element that contains an error message describing the validation error for the
-     * group. When provided, assistive technologies will announce the referenced error message when the group is
-     * invalid.
-     *
-     * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage
-     */
-    ariaErrorMessage?: string | null;
-}
-
 /**
  * A group of radios that allows users to choose one or more items from a list or turn an feature on or off.
  *
@@ -86,11 +64,27 @@ export interface RadioGroupProps {
 })
 export class UIRadioGroup extends UIRadioOption {
     @Output() valueChange = new EventEmitter<string>();
-
+    /** Radio group options */
     options = input<RadioGroupOption[]>([]);
+    /**
+     * The `aria-describedby` attribute for the radio group.
+     *
+     * This should be set to the ID of an element that contains additional descriptive text for the group. When
+     * provided, assistive technologies will announce the referenced description to users, improving accessibility.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-describedby
+     */
     ariaDescribedBy = input<string | null>(null);
+    /**
+     * The `aria-errormessage` attribute for the radio group.
+     *
+     * This should be set to the ID of an element that contains an error message describing the validation error for the
+     * group. When provided, assistive technologies will announce the referenced error message when the group is
+     * invalid.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage
+     */
     ariaErrorMessage = input<string | null>(null);
-
     /** Handles changes to the radio button selection. */
     onRadioChange(value: string, checked: boolean) {
         if (checked) {
