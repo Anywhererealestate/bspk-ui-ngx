@@ -38,31 +38,35 @@ import { UIModal } from './modal';
         </ui-modal>
 
         <h3>Scrollable Content</h3>
-        <ui-button label="Open Modal" (onClick)="open = true"></ui-button>
+        <ui-button label="Open Modal" (onClick)="openScrolling = true"></ui-button>
         <ui-modal
-            [open]="open"
-            (onClose)="open = false"
+            [open]="openScrolling"
+            (onClose)="openScrolling = false"
             header="Example header"
             description="Example description"
             [callToAction]="cta"
             [cancelButton]="true">
-            <p>
-                This is sample content used to demonstrate a scrollable modal. It contains plain English sentences that
-                are easy to read and spell. The purpose is to provide enough text to force overflow so the container can
-                scroll. The modal opens with a button, closes with the close control, and traps focus while it is
-                active. When the text is longer than the view, a scrollbar appears and the header stays visible.
-            </p>
-            @for (num of arr; track $index) {
-                <ui-list-item as="label" [label]="'list item ' + ($index + 1)">
-                    <span data-trailing><ui-radio name="x" value="{{ $index + 1 }}" /></span>
-                </ui-list-item>
-            }
+            <div style="display: flex; flex-direction: column">
+                <p>
+                    This is sample content used to demonstrate a scrollable modal. It contains plain English sentences
+                    that are easy to read and spell. The purpose is to provide enough text to force overflow so the
+                    container can scroll. The modal opens with a button, closes with the close control, and traps focus
+                    while it is active. When the text is longer than the view, a scrollbar appears and the header stays
+                    visible.
+                </p>
+                @for (num of arr; track $index) {
+                    <ui-list-item as="label" [label]="'list item ' + ($index + 1)">
+                        <span data-trailing><ui-radio name="x" value="{{ $index + 1 }}" /></span>
+                    </ui-list-item>
+                }
+            </div>
         </ui-modal>
     `,
 })
 export class UIModalExample {
     open = false;
     openVertical = false;
+    openScrolling = false;
 
     arr = new Array(50);
 

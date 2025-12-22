@@ -54,6 +54,7 @@ export type ButtonFormat = 'horizontal' | 'vertical';
                         <ui-button
                             label="close"
                             variant="tertiary"
+                            [size]="buttonSize()"
                             (onClick)="onClose.emit()"
                             [icon]="iconClose"
                             [iconOnly]="true"></ui-button>
