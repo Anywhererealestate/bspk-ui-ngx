@@ -32,6 +32,7 @@ const reactFiles = execSync(`find ${reactDir} -type f -name "*.scss"`)
 
 const errorFiles: string[] = [];
 const successFiles: string[] = [];
+const missingFiles: string[] = [];
 
 ngxFiles.forEach((ngxFilePath: string) => {
     const fileName = path.basename(ngxFilePath);
@@ -39,7 +40,7 @@ ngxFiles.forEach((ngxFilePath: string) => {
     const reactFilePath = reactFiles.find((rf) => path.basename(rf) === fileName);
 
     if (!reactFilePath || !fs.existsSync(reactFilePath)) {
-        errorFiles.push(`Missing React SCSS file for: ${fileName}`);
+        missingFiles.push(`Missing React SCSS file for: ${fileName}`);
         return;
     }
 
@@ -61,6 +62,12 @@ if (successFiles.length > 0) {
 if (errorFiles.length > 0) {
     console.error('\n\nThe following SCSS files differ between Angular and React:');
     errorFiles.forEach((file) => console.error(` - ${file}`));
+    process.exit(1);
+}
+
+if (missingFiles.length > 0) {
+    console.error('\n\nThe following SCSS files are missing in React:');
+    missingFiles.forEach((file) => console.error(` - ${file}`));
     process.exit(1);
 }
 

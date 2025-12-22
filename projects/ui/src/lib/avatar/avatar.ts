@@ -72,6 +72,9 @@ export type SizeVariant =
     </span>`,
     styleUrls: ['./avatar.scss'],
     encapsulation: ViewEncapsulation.None,
+    host: {
+        style: `display: contents;`,
+    },
 })
 export class UIAvatar {
     /**
