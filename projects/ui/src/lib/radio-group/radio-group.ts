@@ -9,35 +9,39 @@ export interface RadioGroupOption {
     disabled?: boolean;
 }
 
+export interface RadioGroupProps {
+    /** The list of radio options to display. */
+    options: RadioGroupOption[];
+
+    /** The id for the radio group. */
+    id?: string;
+
+    /** The `aria-describedby` attribute for the radio group. */
+    ariaDescribedBy?: string | null;
+
+    /**
+     * The `aria-errormessage` attribute for the radio group.
+     *
+     * This should be set to the ID of an element that contains an error message describing the validation error for the
+     * group. When provided, assistive technologies will announce the referenced error message when the group is
+     * invalid.
+     *
+     * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage
+     */
+    ariaErrorMessage?: string | null;
+}
+
 /**
  * A group of radios that allows users to choose one or more items from a list or turn an feature on or off.
  *
  * For a more complete example with field usage, see the RadioGroupField component.
  *
  * @example
- *     import { useState } from 'react';
- *     import { RadioGroup } from '@bspk/ui/RadioGroup';
- *
- *     () => {
- *     const [selectedOption, setSelectedOption] = useState<string>('1');
- *
- *     return (
- *     <RadioGroup
- *     name="example-name"
- *     onChange={(nextValue) => setSelectedOption(nextValue)}
- *     options={[
- *     {
- *     value: '1',
- *     label: 'Option 1',
- *     description: 'Description here',
- *     },
- *     { value: '2', label: 'Option 2' },
- *     { value: '3', label: 'Option 3' },
- *     ]}
- *     value={selectedOption}
- *     />
- *     );
- *     };
+ *     <ui-radio-group
+ *     [options]="options"
+ *     [value]="selectedValue"
+ *     (valueChange)="onValueChange($event)">
+ *     </ui-radio-group>
  *
  * @name RadioGroup
  * @phase UXReview
@@ -70,7 +74,6 @@ export interface RadioGroupOption {
             }
         </div>
     `,
-    // styleUrl: './radio-group.scss',
     host: {
         'data-bspk': 'radio-group',
         'style.display': 'flex',
@@ -88,6 +91,7 @@ export class UIRadioGroup extends UIRadioOption {
     ariaDescribedBy = input<string | null>(null);
     ariaErrorMessage = input<string | null>(null);
 
+    /** Handles changes to the radio button selection. */
     onRadioChange(value: string, checked: boolean) {
         if (checked) {
             this.valueChange.emit(value);
