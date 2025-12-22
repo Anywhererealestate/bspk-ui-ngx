@@ -1,12 +1,4 @@
-import {
-    Component,
-    Input,
-    ViewChild,
-    ElementRef,
-    AfterViewInit,
-    ChangeDetectorRef,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, ElementRef, ViewEncapsulation, input, viewChild } from '@angular/core';
 
 export interface BadgeProps {
     count?: number;
@@ -32,11 +24,30 @@ export interface BadgeProps {
 @Component({
     selector: 'ui-badge',
     standalone: true,
-    templateUrl: './badge.html',
+    template: `<span #contentWrapper><ng-content></ng-content></span>
+        <sup
+            data-bspk="badge"
+            [attr.data-color]="color()"
+            [attr.data-size]="size()"
+            [attr.data-surface-border]="surfaceBorder() ? true : undefined"
+            [attr.data-attachment]="hasProjectedContent ? true : undefined">
+            {{ typeof count() === 'number' && count()! > 99 ? '99+' : count() }}
+        </sup>`,
     styleUrls: ['./badge.scss'],
     encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk': 'badge-wrapper',
+        'data-attachment-wrapper': '',
+    },
 })
-export class UIBadge implements AfterViewInit {
+export class UIBadge {
+    /**
+     * The context for which the badge is applied.
+     *
+     * Could be a button, link, or any other element that the badge is associated with.
+     */
+    contentWrapper = viewChild.required<ElementRef<HTMLElement>>('contentWrapper');
+
     /**
      * The content of the badge. If larger than 99, the badge will display '99+'.
      *
@@ -45,37 +56,28 @@ export class UIBadge implements AfterViewInit {
      *
      * @default 1
      */
-    @Input() count: number | undefined = 1;
+    count = input<number | undefined>(1);
 
     /**
      * The size of the badge.
      *
      * @default small
      */
-    @Input() size: 'small' | 'x-small' = 'small';
+    size = input<'small' | 'x-small'>('small');
 
     /**
      * The color variant of the badge.
      *
      * @default primary
      */
-    @Input() color: 'primary' | 'secondary' = 'primary';
+    color = input<'primary' | 'secondary'>('primary');
 
     /**
      * Whether the badge should have a border that matches the surface color.
      *
      * @default false
      */
-    @Input() surfaceBorder = false;
-
-    /**
-     * The context for which the badge is applied.
-     *
-     * Could be a button, link, or any other element that the badge is associated with.
-     *
-     * @type
-     */
-    @ViewChild('contentWrapper', { static: false }) contentWrapper!: ElementRef<HTMLSpanElement>;
+    surfaceBorder = input(false);
 
     /**
      * Indicates whether the badge has projected (custom) content.
@@ -86,16 +88,7 @@ export class UIBadge implements AfterViewInit {
      *
      * @internal
      */
-    hasProjectedContent = false;
-
-    constructor(private cdr: ChangeDetectorRef) {}
-
-    ngAfterViewInit() {
-        const nodes = this.contentWrapper.nativeElement.childNodes;
-        this.hasProjectedContent = Array.from(nodes).some(
-            (node) =>
-                node.nodeType === Node.ELEMENT_NODE || (node.nodeType === Node.TEXT_NODE && node.textContent?.trim()),
-        );
-        this.cdr.detectChanges();
+    get hasProjectedContent() {
+        return !!this.contentWrapper().nativeElement?.childNodes.length;
     }
 }

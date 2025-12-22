@@ -1,28 +1,22 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-
-export type ColorVariant =
-    | 'blue'
-    | 'green'
-    | 'grey'
-    | 'lime'
-    | 'magenta'
-    | 'orange'
-    | 'pink'
-    | 'primary'
-    | 'purple'
-    | 'red'
-    | 'secondary'
-    | 'teal'
-    | 'white'
-    | 'yellow';
+import { Component, ViewEncapsulation, input } from '@angular/core';
+import { ColorVariant } from '../../types/utils';
 
 @Component({
     selector: 'ui-tag',
     standalone: true,
     imports: [],
-    templateUrl: './tag.html',
+    template: `<span class="truncated">{{ label() }}</span>
+        @if (variant() === 'corner-wrap') {
+            <div data-triangle></div>
+        }`,
     styleUrls: ['./tag.scss'],
     encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk': 'tag',
+        '[attr.data-color]': 'color()',
+        '[attr.data-size]': 'size()',
+        '[attr.data-variant]': 'variant()',
+    },
 })
 export class UITag {
     /**
@@ -30,26 +24,26 @@ export class UITag {
      *
      * @required
      */
-    @Input() label!: string;
+    label = input.required<string>();
 
     /**
      * The size of the tag.
      *
      * @default small
      */
-    @Input() size: 'small' | 'x-small' = 'small';
+    size = input<'small' | 'x-small'>('small');
 
     /**
      * The color of the tag.
      *
      * @default grey
      */
-    @Input() color: ColorVariant = 'grey';
+    color = input<ColorVariant>('grey');
 
     /**
      * The display variant of the tag.
      *
      * @default flat
      */
-    @Input() variant: 'corner-wrap' | 'flat' | 'pill' = 'flat';
+    variant = input<'corner-wrap' | 'flat' | 'pill'>('flat');
 }
