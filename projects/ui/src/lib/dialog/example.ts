@@ -55,10 +55,130 @@ import { UIDialog } from './dialog';
                 </div>
             </ui-dialog>
         </div>
+
+        <h3>Dialog top</h3>
+        <ui-button label="Open Top Dialog" (click)="openTop = true"></ui-button>
+
+        <ui-dialog [open]="openTop" (onClose)="openTop = false" placement="top">
+            <div style="padding: var(--spacing-sizing-04)">
+                <div ui-flex align="baseline" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                    <h4>Dialog Title</h4>
+                    <ui-button
+                        label="Close"
+                        variant="tertiary"
+                        (click)="openTop = false"
+                        [icon]="iconClose"
+                        [iconOnly]="true" />
+                </div>
+                <p>This is the content of the top dialog.</p>
+                <ui-button label="Cancel" variant="secondary" (click)="openTop = false"></ui-button>
+            </div>
+        </ui-dialog>
+
+        <h3>Dialog right</h3>
+        <ui-button label="Open Right Dialog" (click)="openRight = true"></ui-button>
+
+        <ui-dialog [open]="openRight" (onClose)="openRight = false" placement="right">
+            <div style="padding: var(--spacing-sizing-04)">
+                <div ui-flex align="baseline" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                    <h4>Dialog Title</h4>
+                    <ui-button
+                        label="Close"
+                        variant="tertiary"
+                        (click)="openRight = false"
+                        [icon]="iconClose"
+                        [iconOnly]="true" />
+                </div>
+                <p>This is the content of the right dialog.</p>
+                <ui-button label="Cancel" variant="secondary" (click)="openRight = false"></ui-button>
+            </div>
+        </ui-dialog>
+
+        <h3>Dialog bottom</h3>
+        <ui-button label="Open Bottom Dialog" (click)="openBottom = true"></ui-button>
+
+        <ui-dialog [open]="openBottom" (onClose)="openBottom = false" placement="bottom">
+            <div style="padding: var(--spacing-sizing-04)">
+                <div ui-flex align="baseline" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                    <h4>Dialog Title</h4>
+                    <ui-button
+                        label="Close"
+                        variant="tertiary"
+                        (click)="openBottom = false"
+                        [icon]="iconClose"
+                        [iconOnly]="true" />
+                </div>
+                <p>This is the content of the bottom dialog.</p>
+                <ui-button label="Cancel" variant="secondary" (click)="openBottom = false"></ui-button>
+            </div>
+        </ui-dialog>
+
+        <h3>Dialog Left</h3>
+        <ui-button label="Open Left Dialog" (click)="openLeft = true"></ui-button>
+
+        <ui-dialog [open]="openLeft" (onClose)="openLeft = false" placement="left">
+            <div style="padding: var(--spacing-sizing-04)">
+                <div ui-flex align="baseline" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                    <h4>Dialog Title</h4>
+                    <ui-button
+                        label="Close"
+                        variant="tertiary"
+                        (click)="openLeft = false"
+                        [icon]="iconClose"
+                        [iconOnly]="true" />
+                </div>
+                <p>This is the content of the left dialog.</p>
+                <ui-button label="Cancel" variant="secondary" (click)="openLeft = false"></ui-button>
+            </div>
+        </ui-dialog>
+
+        <h3>Dialog no scrim</h3>
+        <ui-button label="Open Dialog No Scrim" (click)="openNoScrim = true"></ui-button>
+
+        <ui-dialog [open]="openNoScrim" (onClose)="openNoScrim = false" placement="center" [showScrim]="false">
+            <div style="padding: var(--spacing-sizing-04)">
+                <div ui-flex align="baseline" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                    <h4>Dialog Title</h4>
+                    <ui-button
+                        label="Close"
+                        variant="tertiary"
+                        (click)="openNoScrim = false"
+                        [icon]="iconClose"
+                        [iconOnly]="true" />
+                </div>
+                <p>This is the content of the dialog without a scrim.</p>
+                <ui-button label="Cancel" variant="secondary" (click)="openNoScrim = false"></ui-button>
+            </div>
+        </ui-dialog>
+
+        <h3>Dialog width full</h3>
+        <ui-button label="Open Full Width Dialog" (click)="openWidthFull = true"></ui-button>
+
+        <ui-dialog [open]="openWidthFull" (onClose)="openWidthFull = false" placement="center" [widthFull]="true">
+            <div style="padding: var(--spacing-sizing-04)">
+                <div ui-flex align="baseline" justify="between" style="margin-bottom: var(--spacing-sizing-04)">
+                    <h4>Dialog Title</h4>
+                    <ui-button
+                        label="Close"
+                        variant="tertiary"
+                        (click)="openWidthFull = false"
+                        [icon]="iconClose"
+                        [iconOnly]="true" />
+                </div>
+                <p>This is the content of the full width dialog.</p>
+                <ui-button label="Cancel" variant="secondary" (click)="openWidthFull = false"></ui-button>
+            </div>
+        </ui-dialog>
     `,
 })
 export class UIDialogExample {
     open = false;
     openContained = false;
+    openTop = false;
+    openRight = false;
+    openLeft = false;
+    openBottom = false;
+    openNoScrim = false;
+    openWidthFull = false;
     iconClose = IconClose;
 }
