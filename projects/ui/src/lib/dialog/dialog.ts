@@ -13,6 +13,8 @@ import {
 import { UIPortalDirective } from '../portal';
 import { UIScrim } from '../scrim/scrim';
 
+export type Placement = 'bottom' | 'center' | 'left' | 'right' | 'top';
+
 /**
  * Dialogs display important information that users need to acknowledge. They appear over the interface and may block
  * further interactions until an action is selected.
@@ -79,7 +81,7 @@ export class UIDialog implements OnChanges, OnDestroy {
     readonly open = input<boolean>(false);
 
     /** The placement of the dialog on the screen. */
-    readonly placement = input<'bottom' | 'center' | 'left' | 'right' | 'top'>('center');
+    readonly placement = input<Placement>('center');
 
     /** Whether the dialog should have a scrim behind it. */
     readonly showScrim = input<boolean>(true);
