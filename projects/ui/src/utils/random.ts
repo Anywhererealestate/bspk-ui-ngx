@@ -23,3 +23,7 @@ export function randomString(length = 8): string {
     for (let i = 0; i < length; i++) result += chars[rand[i] % chars.length];
     return result;
 }
+
+export function uniqueId(prefix: string): string {
+    return `${prefix}-${randomString(8)}`;
+}

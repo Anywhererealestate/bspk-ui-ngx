@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, input, computed } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
 import { BadgeProps, UIBadge } from '../badge';
 import { UIIcon } from '../icon';
@@ -31,23 +31,63 @@ export interface ChipProps {
     selector: 'ui-chip',
     standalone: true,
     imports: [UIBadge, UIIcon],
-    templateUrl: './chip.html',
+    template: `<button
+        data-bspk="chip"
+        [attr.data-disabled]="disabled() || undefined"
+        [attr.data-flat]="flat() || undefined"
+        [attr.data-selected]="selected() || undefined"
+        data-touch-target-parent
+        [disabled]="disabled()"
+        (click)="handleOnClick($event)">
+        @if (leadingIcon()) {
+            <span [attr.aria-hidden]="true" data-chip-icon>
+                <ui-icon [icon]="leadingIcon()!"></ui-icon>
+            </span>
+        }
+
+        <span>{{ label() }}</span>
+
+        @if (trailingIcon()) {
+            <span [attr.aria-hidden]="true" data-chip-icon>
+                <ui-icon [icon]="trailingIcon()!"></ui-icon>
+            </span>
+        }
+
+        @if (trailingBadge() && !trailingIcon()) {
+            <ui-badge
+                [count]="trailingBadge()!.count"
+                [size]="trailingBadgeSize()"
+                [surfaceBorder]="trailingBadge()!.surfaceBorder ?? false"></ui-badge>
+        }
+        <span data-touch-target></span>
+    </button>`,
     styleUrls: ['./chip.scss'],
+    host: {
+        style: 'display: contents;',
+    },
 })
 export class UIChip {
+    /** The function to call when the chip is clicked. */
+    @Output() onClick = new EventEmitter<Event>();
+
+    readonly trailingBadgeSize = computed(() => {
+        const size = this.trailingBadge()!.size!;
+        return size === 'small' || size === 'x-small' ? size : 'small';
+    });
+
     /**
      * Is the chip disabled.
      *
      * @default false
      */
-    @Input() disabled = false;
+    readonly disabled = input(false);
 
     /**
      * Is the chip elevated or flat. If flat the drop shadow is removed.
      *
      * @default false
      */
-    @Input() flat = false;
+    readonly flat = input(false);
 
     /**
      * The label of the chip.
@@ -57,21 +97,21 @@ export class UIChip {
      *
      * @required
      */
-    @Input() label!: string;
+    readonly label = input.required<string>();
 
     /**
      * Visual indication of whether the chip is currently selected.
      *
      * @default false
      */
-    @Input() selected = false;
+    readonly selected = input(false);
 
     /**
      * The leading icon of the chip.
      *
      * @type BspkIcon
      */
-    @Input() leadingIcon?: BspkIcon;
+    readonly leadingIcon = input<BspkIcon>();
 
     /**
      * The trailing icon of the chip.
@@ -81,20 +121,17 @@ export class UIChip {
      *
      * @type BspkIcon
      */
-    @Input() trailingIcon?: BspkIcon;
+    readonly trailingIcon = input<BspkIcon>();
 
     /**
      * The trailing Badge for use in the ChipFilter.
      *
      * If a trailingIcon is provided the Badge will **not** be visible.
      */
-    @Input() trailingBadge?: BadgeProps;
-
-    /** The function to call when the chip is clicked. */
-    @Output() onClick = new EventEmitter<Event>();
+    readonly trailingBadge = input<BadgeProps>();
 
     handleOnClick(event: MouseEvent) {
-        if (!this.disabled) {
+        if (!this.disabled()) {
             this.onClick.emit(event);
         }
     }

@@ -1,10 +1,11 @@
-ui-accordion {
-    display: contents;
-}
-
 [data-bspk='accordion'] {
+    display: block;
     width: 100%;
     padding: var(--spacing-sizing-02);
+
+    &:empty {
+        display: none;
+    }
 
     > section {
         --border-bottom-color: var(--stroke-neutral-base);
@@ -58,8 +59,10 @@ ui-accordion {
                 align-items: center;
                 justify-content: center;
                 margin-left: var(--spacing-sizing-02);
-                width: var(--spacing-sizing-06);
-                height: var(--spacing-sizing-06);
+
+                svg {
+                    width: var(--spacing-sizing-06);
+                }
             }
 
             &:not(:disabled) {

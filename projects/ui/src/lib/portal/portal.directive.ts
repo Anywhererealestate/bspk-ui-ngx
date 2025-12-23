@@ -1,11 +1,11 @@
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { Directive, ElementRef, OnChanges, OnDestroy, SimpleChanges, input } from '@angular/core';
 
 export type PortalContainer = HTMLElement | (() => HTMLElement | null | undefined) | null | undefined;
 
 @Directive({ selector: '[ui-portal]' })
 export class UIPortalDirective implements OnDestroy, OnChanges {
     /** The target element to render the portal into. Defaults to `document.body` in the browser. */
-    @Input('ui-portal') container?: PortalContainer;
+    readonly container = input<PortalContainer>(undefined, { alias: 'ui-portal' });
 
     constructor(private elRef: ElementRef) {}
 

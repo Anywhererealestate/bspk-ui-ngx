@@ -3,15 +3,17 @@ import {
     ElementRef,
     EventEmitter,
     Output,
-    ViewChild,
     ViewEncapsulation,
     input,
     signal,
     OnChanges,
     OnDestroy,
+    viewChild,
 } from '@angular/core';
 import { UIPortalDirective } from '../portal';
 import { UIScrim } from '../scrim/scrim';
+
+export type Placement = 'bottom' | 'center' | 'left' | 'right' | 'top';
 
 /**
  * Dialogs display important information that users need to acknowledge. They appear over the interface and may block
@@ -70,42 +72,42 @@ export class UIDialog implements OnChanges, OnDestroy {
     /** Function to call when the dialog is closed. */
     @Output() onClose = new EventEmitter<void>();
 
-    @ViewChild('box', { read: ElementRef }) box?: ElementRef<HTMLDivElement>;
+    readonly box = viewChild('box', { read: ElementRef });
 
     /** A ref to the dialog element. */
-    innerRef = input<(el: HTMLDivElement | null) => void>();
+    readonly innerRef = input<(el: HTMLDivElement | null) => void>();
 
     /** If the dialog should appear. */
-    open = input<boolean>(false);
+    readonly open = input<boolean>(false);
 
     /** The placement of the dialog on the screen. */
-    placement = input<'bottom' | 'center' | 'left' | 'right' | 'top'>('center');
+    readonly placement = input<Placement>('center');
 
     /** Whether the dialog should have a scrim behind it. */
-    showScrim = input<boolean>(true);
+    readonly showScrim = input<boolean>(true);
 
     /** If the dialog should take the full width of the screen. */
-    widthFull = input<boolean>(false);
+    readonly widthFull = input<boolean>(false);
 
     /** Owner tag for theming/analytics parity. */
-    owner = input<string | undefined>(undefined);
+    readonly owner = input<string | undefined>(undefined);
 
     /** Element id. */
-    id = input<string | undefined>(undefined);
+    readonly id = input<string | undefined>(undefined);
 
     /** Portal container element to contain dialog within. */
-    container = input<HTMLElement | undefined>(undefined);
+    readonly container = input<HTMLElement | undefined>(undefined);
 
     /** Disable focus trap (not implemented here; Angular users can manage focus as needed). */
-    disableFocusTrap = input<boolean>(false);
+    readonly disableFocusTrap = input<boolean>(false);
 
     /** Accessible label for the dialog container. */
-    ariaLabel = input<string | undefined>(undefined);
+    readonly ariaLabel = input<string | undefined>(undefined);
 
     /** Accessible description for the dialog container. */
-    ariaDescription = input<string | undefined>(undefined);
+    readonly ariaDescription = input<string | undefined>(undefined);
 
-    private keydownBound = signal(false);
+    private readonly keydownBound = signal(false);
 
     ngOnChanges() {
         const isOpen = this.open();

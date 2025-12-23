@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, inject, Input, ViewContainerRef, AfterViewInit } from '@angular/core';
+import { Component, ViewEncapsulation, inject, ViewContainerRef, AfterViewInit, input } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
 
 @Component({
@@ -9,16 +9,17 @@ import { BspkIcon } from '../../types/bspk-icon';
 })
 export class UIIcon implements AfterViewInit {
     /** @see https://bspk.anywhere.re/icons */
-    @Input() icon!: BspkIcon;
-    @Input() width?: string;
+    readonly icon = input.required<BspkIcon>();
+    readonly width = input<string>();
 
     viewContainerRef = inject(ViewContainerRef);
 
     ngAfterViewInit() {
-        if (typeof this.icon !== 'function') return;
+        const iconValue = this.icon();
+        if (typeof iconValue !== 'function') return;
 
-        const icon = this.viewContainerRef.createComponent(this.icon).instance;
+        const icon = this.viewContainerRef.createComponent(iconValue).instance;
 
-        icon.width = this.width;
+        icon.width = this.width();
     }
 }

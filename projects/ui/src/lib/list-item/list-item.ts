@@ -1,5 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Output, EventEmitter, ViewEncapsulation, input } from '@angular/core';
 
 /**
  * A hybrid interactive component that is used frequently to organize content and offers a wide range of control and
@@ -26,27 +26,27 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angu
         <ng-template #inner>
             <ng-content select="[data-leading]"></ng-content>
             <span data-item-label>
-                <span data-text>{{ label }}</span>
-                @if (subText) {
-                    <span data-sub-text>{{ subText }}</span>
+                <span data-text>{{ label() }}</span>
+                @if (subText()) {
+                    <span data-sub-text>{{ subText() }}</span>
                 }
             </span>
             <ng-content select="[data-trailing]"></ng-content>
         </ng-template>
         @if (As === 'a') {
             <a
-                [attr.aria-label]="ariaLabel || undefined"
-                [attr.aria-selected]="ariaSelected"
+                [attr.aria-label]="ariaLabel() || undefined"
+                [attr.aria-selected]="ariaSelected()"
                 [attr.role]="role"
-                [attr.tabindex]="tabIndex ?? (actionable ? 0 : -1)"
-                [attr.href]="href"
+                [attr.tabindex]="tabIndex() ?? (actionable ? 0 : -1)"
+                [attr.href]="href()"
                 [attr.data-action]="actionable || undefined"
-                [attr.data-active]="active || undefined"
+                [attr.data-active]="active() || undefined"
                 data-bspk="list-item"
-                [attr.data-bspk-owner]="owner || undefined"
+                [attr.data-bspk-owner]="owner() || undefined"
                 [attr.data-disabled]="isDisabled || undefined"
                 [attr.data-readonly]="isReadonly || undefined"
-                [attr.data-width]="width === 'hug' ? 'hug' : undefined"
+                [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id"
                 (click)="onClick($event)"
                 (keydown.enter)="onClick($event)">
@@ -55,53 +55,53 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angu
         } @else if (As === 'button') {
             <button
                 type="button"
-                [attr.aria-label]="ariaLabel || undefined"
-                [attr.aria-selected]="ariaSelected"
+                [attr.aria-label]="ariaLabel() || undefined"
+                [attr.aria-selected]="ariaSelected()"
                 [attr.role]="role"
-                [attr.tabindex]="tabIndex ?? (actionable ? 0 : -1)"
+                [attr.tabindex]="tabIndex() ?? (actionable ? 0 : -1)"
                 [attr.data-action]="actionable || undefined"
-                [attr.data-active]="active || undefined"
+                [attr.data-active]="active() || undefined"
                 data-bspk="list-item"
-                [attr.data-bspk-owner]="owner || undefined"
+                [attr.data-bspk-owner]="owner() || undefined"
                 [attr.data-disabled]="isDisabled || undefined"
                 [attr.data-readonly]="isReadonly || undefined"
-                [attr.data-width]="width === 'hug' ? 'hug' : undefined"
+                [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id"
                 (click)="onClick($event)">
                 <ng-container *ngTemplateOutlet="inner"></ng-container>
             </button>
         } @else if (As === 'label') {
             <label
-                [attr.aria-label]="ariaLabel || undefined"
-                [attr.aria-selected]="ariaSelected"
+                [attr.aria-label]="ariaLabel() || undefined"
+                [attr.aria-selected]="ariaSelected()"
                 [attr.role]="role"
-                [attr.tabindex]="tabIndex ?? (actionable ? 0 : -1)"
+                [attr.tabindex]="tabIndex() ?? (actionable ? 0 : -1)"
                 [attr.data-action]="actionable || undefined"
-                [attr.data-active]="active || undefined"
+                [attr.data-active]="active() || undefined"
                 data-bspk="list-item"
-                [attr.data-bspk-owner]="owner || undefined"
+                [attr.data-bspk-owner]="owner() || undefined"
                 [attr.data-disabled]="isDisabled || undefined"
                 [attr.data-readonly]="isReadonly || undefined"
-                [attr.data-width]="width === 'hug' ? 'hug' : undefined"
+                [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id"
-                [attr.for]="htmlFor"
+                [attr.for]="htmlFor()"
                 (click)="onClick($event)"
                 (keydown.enter)="onClick($event)">
                 <ng-container *ngTemplateOutlet="inner"></ng-container>
             </label>
         } @else {
             <div
-                [attr.aria-label]="ariaLabel || undefined"
-                [attr.aria-selected]="ariaSelected"
+                [attr.aria-label]="ariaLabel() || undefined"
+                [attr.aria-selected]="ariaSelected()"
                 [attr.role]="role"
-                [attr.tabindex]="tabIndex ?? (actionable ? 0 : -1)"
+                [attr.tabindex]="tabIndex() ?? (actionable ? 0 : -1)"
                 [attr.data-action]="actionable || undefined"
-                [attr.data-active]="active || undefined"
+                [attr.data-active]="active() || undefined"
                 data-bspk="list-item"
-                [attr.data-bspk-owner]="owner || undefined"
+                [attr.data-bspk-owner]="owner() || undefined"
                 [attr.data-disabled]="isDisabled || undefined"
                 [attr.data-readonly]="isReadonly || undefined"
-                [attr.data-width]="width === 'hug' ? 'hug' : undefined"
+                [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id"
                 (click)="onClick($event)"
                 (keydown.enter)="onClick($event)">
@@ -114,73 +114,74 @@ import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angu
     },
 })
 export class UIListItem {
+    @Output() clicked = new EventEmitter<Event>();
+
     /** Indicates the current active state of the item. */
-    @Input() active?: boolean;
+    readonly active = input<boolean>();
     /** Owner identifier for analytics or debugging; emitted as `data-bspk-owner`. */
-    @Input() owner?: string;
+    readonly owner = input<string>();
     /** The ARIA label for the list item. */
-    @Input() ariaLabel?: string | null;
+    readonly ariaLabel = input<string | null>();
     /** Indicates the current selected state of the list item in selectable contexts. */
-    @Input() ariaSelected?: boolean | null;
+    readonly ariaSelected = input<boolean | null>();
     /** ARIA disabled state; when set, the item is non-interactive. */
-    @Input() ariaDisabled?: boolean | null;
+    readonly ariaDisabled = input<boolean | null>();
     /** ARIA readonly state; when set, the item does not accept interaction. */
-    @Input() ariaReadonly?: boolean | null;
+    readonly ariaReadonly = input<boolean | null>();
     /** The `for` attribute target when rendering as a label. */
-    @Input() htmlFor?: string;
+    readonly htmlFor = input<string>();
     /** Native disabled state; when set, the item is non-interactive. */
-    @Input() disabled?: boolean;
+    readonly disabled = input<boolean>();
     /** Native readonly state; when set, the item does not accept interaction. */
-    @Input() readonly?: boolean;
+    readonly readonly = input<boolean>();
     /**
      * The element type to render as.
      *
      * @default div
      */
-    @Input() as: 'a' | 'button' | 'div' | 'label' = 'div';
+    readonly as = input<'a' | 'button' | 'div' | 'label'>('div');
     /** The href of the list item. If provided, renders as an anchor element. */
-    @Input() href?: string;
+    readonly href = input<string>();
     /**
      * The label to display in the ListItem.
      *
      * @required
      */
-    @Input() label!: string;
+    readonly label = input.required<string>();
     /** The subtext to display in the ListItem. */
-    @Input() subText?: string;
+    readonly subText = input<string>();
     /**
      * Determines how the ListItem uses horizontal space. If set to 'fill', options expand to fill the container's
      * width. If set to 'hug', options only take up as much space as the content requires.
      *
      * @default fill
      */
-    @Input() width?: 'fill' | 'hug';
+    readonly width = input<'fill' | 'hug'>();
     /** Explicit tabIndex; defaults to 0 when actionable, otherwise -1. */
-    @Input() tabIndex?: number | null;
-
-    @Output() clicked = new EventEmitter<Event>();
+    readonly tabIndex = input<number | null>();
 
     id = `${Math.random().toString(36).slice(2)}`;
 
     get isReadonly() {
-        return !!(this.readonly || this.ariaReadonly);
+        return !!(this.readonly() || this.ariaReadonly());
     }
     get isDisabled() {
-        return !!(this.disabled || this.ariaDisabled);
+        return !!(this.disabled() || this.ariaDisabled());
     }
     get actionable() {
-        return !!(this.href && !this.isReadonly && !this.isDisabled) || this.as === 'button';
+        return !!(this.href() && !this.isReadonly && !this.isDisabled) || this.as() === 'button';
     }
 
     get As() {
-        if (this.as) return this.as;
-        if (this.href) return 'a';
+        const as = this.as();
+        if (as) return as;
+        if (this.href()) return 'a';
         return 'div';
     }
 
     get role(): string | undefined {
         if (!this.actionable) return undefined;
-        if (this.as === 'button') return undefined;
+        if (this.as() === 'button') return undefined;
         return undefined;
     }
 

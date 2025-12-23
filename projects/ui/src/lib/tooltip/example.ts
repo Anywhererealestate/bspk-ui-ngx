@@ -1,25 +1,72 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { UITooltipDirective } from './tooltip.directive';
+import { Component, model, AfterViewInit } from '@angular/core';
+import { UIButton } from '../button/button';
+import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
 
 @Component({
     selector: 'ui-tooltip-example',
     standalone: true,
-    imports: [CommonModule, UITooltipDirective],
+    imports: [CommonModule, UITooltipDirective, UIButton],
     template: `
-        <h2>Tooltip Directive</h2>
+        <h2>Tooltip</h2>
 
-        <p>
-            <span [ui-tooltip]="{ label: 'Told ya!', showTail: true, placement: 'bottom' }">Hover me for tooltip!</span>
-        </p>
+        <div ngx-example>
+            <ui-button label="Hover me" tooltip="I explain what this button does" tooltipId="button"></ui-button>
+        </div>
+        <p>This is a button with a tooltip but not using the ui-tooltip directive directly.</p>
 
-        <p [ui-tooltip]="{ label: '', showTail: true, placement: 'bottom' }">
-            Empty tooltip label (no tooltip should show)
-        </p>
+        @for (placement of placements; track $index) {
+            <h3>{{ placement | titlecase }}</h3>
+            <span [ui-tooltip]="{ label: placement + ' side tooltip', placement: placement }"
+                >Hover me ({{ placement }})</span
+            >
+        }
 
-        <p [ui-tooltip]="{ label: undefined, showTail: true, placement: 'bottom' }">
-            Undefined tooltip label (no tooltip should show)
-        </p>
+        <h3>No tail</h3>
+        <span
+            [ui-tooltip]="{
+                label: 'No tail',
+                showTail: false,
+            }"
+            >Hover me (no tail)</span
+        >
+
+        <h3>Disabled</h3>
+        <span
+            [ui-tooltip]="{
+                label: 'Disabled tooltip',
+                disabled: true,
+            }"
+            >Hover me (disabled)</span
+        >
+
+        // hide every 10 seconds for 5 seconds to show dynamic updates
+        @if (counter() % 10 < 5) {
+            <h3>Updated Live</h3>
+            <span
+                [ui-tooltip]="{
+                    label: 'Updated tooltip' + counter(),
+                }"
+                >Hover me ({{ counter() }})</span
+            >
+        } @else {
+            <h3>Reference and Tooltip removed from DOM</h3>
+            <span>Will return in {{ 10 - (counter() % 10) }}</span>
+        }
     `,
+    host: {
+        // ensure the example tooltips are not cut off
+        style: `overflow: hidden;`,
+    },
 })
-export class UITooltipExample {}
+export class UITooltipExample implements AfterViewInit {
+    placements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right'];
+
+    readonly counter = model(0);
+
+    ngAfterViewInit() {
+        setInterval(() => {
+            this.counter.set(this.counter() + 1);
+        }, 1000);
+    }
+}

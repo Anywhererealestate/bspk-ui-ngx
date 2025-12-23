@@ -1,8 +1,5 @@
-ui-tooltip {
-    display: contents;
-}
-
 [data-bspk='tooltip'] {
+    position: fixed;
     pointer-events: none;
     z-index: var(--z-index-tooltip-popover);
 
@@ -33,14 +30,12 @@ ui-tooltip {
         width: 0;
         height: 0;
         border-style: solid;
-        border-width: var(--arrow-size);
+        border-width: var(--arrow-size) var(--arrow-size) var(--arrow-size) var(--arrow-size);
         border-color: transparent;
     }
 
     &[data-placement='bottom'] {
         [data-arrow] {
-            left: 50%;
-            transform: translateX(-50%);
             top: var(--arrow-offset);
             border-bottom-color: var(--arrow-color);
         }
@@ -48,18 +43,13 @@ ui-tooltip {
 
     &[data-placement='top'] {
         [data-arrow] {
-            bottom: var(--arrow-offset);
             border-top-color: var(--arrow-color);
-            left: 50%;
-            transform: translateX(-50%);
         }
     }
 
     &[data-placement='right'] {
         [data-arrow] {
-            left: var(--arrow-offset);
-            top: 50%;
-            transform: translateY(-50%);
+            margin-left: var(--arrow-offset);
             border-right-color: var(--arrow-color);
         }
     }
@@ -67,14 +57,8 @@ ui-tooltip {
     &[data-placement='left'] {
         [data-arrow] {
             right: var(--arrow-offset);
-            top: 50%;
-            transform: translateY(-50%);
             border-left-color: var(--arrow-color);
         }
-    }
-
-    [data-arrow][data-hide-tail] {
-        display: none;
     }
 }
 
