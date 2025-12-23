@@ -42,6 +42,7 @@ import { uniqueId } from '../../utils/random';
                 [attr.aria-describedby]="ariaDescribedBy() || undefined"
                 [attr.aria-errormessage]="ariaErrorMessage() || undefined"
                 [attr.aria-invalid]="invalid() || undefined"
+                [attr.aria-label]="ariaLabel()"
                 [checked]="checked()"
                 [attr.data-indeterminate]="indeterminate() || undefined"
                 [disabled]="disabled()"
@@ -116,9 +117,9 @@ export class UICheckbox implements AfterViewInit {
 
     ngAfterViewInit() {
         // Set indeterminate property on the native input
-        const input: HTMLInputElement | null = this.host.nativeElement.querySelector('input[type="checkbox"]');
-        if (input) {
-            input.indeterminate = this.indeterminate();
+        const nativeInput: HTMLInputElement | null = this.host.nativeElement.querySelector('input[type="checkbox"]');
+        if (nativeInput) {
+            nativeInput.indeterminate = this.indeterminate();
         }
     }
 
