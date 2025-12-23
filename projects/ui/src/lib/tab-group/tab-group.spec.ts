@@ -11,6 +11,7 @@ describe('TabGroup', () => {
             imports: [UITabGroup],
         }).compileComponents();
 
+        // make stuff
         fixture = TestBed.createComponent(
             UITabGroup,
             componentTestProps<UITabGroup>({
