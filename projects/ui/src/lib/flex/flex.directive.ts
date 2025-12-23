@@ -1,4 +1,19 @@
-import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { Directive, ElementRef, computed, input } from '@angular/core';
+
+export type UIFlexJustify =
+    | 'around'
+    | 'between'
+    | 'center'
+    | 'end'
+    | 'evenly'
+    | 'flex-end'
+    | 'flex-start'
+    | 'space-around'
+    | 'space-between'
+    | 'space-evenly'
+    | 'start';
+
+export type UIFlexAlign = 'baseline' | 'center' | 'end' | 'flex-end' | 'flex-start' | 'start' | 'stretch';
 
 /**
  * Apply flexbox layout to an element.
@@ -9,48 +24,38 @@ import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 @Directive({
     selector: '[ui-flex]',
     standalone: true,
+    host: {
+        '[style]': 'computedStyle()',
+    },
 })
-export class UIFlexDirective implements OnChanges {
+export class UIFlexDirective {
+    readonly computedStyle = computed(() => ({
+        display: 'flex',
+        flexDirection: this.direction(),
+        justifyContent: this.normalizeJustify(this.justify()),
+        alignItems: this.normalizeAlign(this.align()),
+        flexWrap: this.wrap(),
+        gap: this.gap() ?? null,
+    }));
+
     /** Flex-direction */
-    @Input() direction: 'column-reverse' | 'column' | 'row-reverse' | 'row' = 'row';
+    readonly direction = input<'column-reverse' | 'column' | 'row-reverse' | 'row'>('row');
 
     /** Justify-content Accepts CSS values or shorthands: start,end,center,between,around,evenly */
-    @Input() justify:
-        | 'around'
-        | 'between'
-        | 'center'
-        | 'end'
-        | 'evenly'
-        | 'flex-end'
-        | 'flex-start'
-        | 'space-around'
-        | 'space-between'
-        | 'space-evenly'
-        | 'start' = 'flex-start';
+    readonly justify = input<UIFlexJustify>('flex-start');
 
     /** Align-items Accepts CSS values or shorthands: start,end,center,stretch,baseline */
-    @Input() align: 'baseline' | 'center' | 'end' | 'flex-end' | 'flex-start' | 'start' | 'stretch' = 'stretch';
+    readonly align = input<UIFlexAlign>('stretch');
 
     /** Flex-wrap */
-    @Input() wrap: 'nowrap' | 'wrap-reverse' | 'wrap' = 'nowrap';
+    readonly wrap = input<'nowrap' | 'wrap-reverse' | 'wrap'>('nowrap');
 
     /** Gap (e.g., 8px, 1rem, var(--space-2)) */
-    @Input() gap?: string;
+    readonly gap = input<string>();
 
     constructor(private elementRef: ElementRef) {}
 
-    ngOnChanges(): void {
-        Object.assign(this.elementRef.nativeElement.style, {
-            display: 'flex',
-            flexDirection: this.direction,
-            justifyContent: this.normalizeJustify(this.justify),
-            alignItems: this.normalizeAlign(this.align),
-            flexWrap: this.wrap,
-            gap: this.gap ?? null,
-        });
-    }
-
-    private normalizeJustify(v: UIFlexDirective['justify']): string {
+    private normalizeJustify(v: UIFlexJustify): string {
         switch (v) {
             case 'start':
                 return 'flex-start';
@@ -67,7 +72,7 @@ export class UIFlexDirective implements OnChanges {
         }
     }
 
-    private normalizeAlign(v: UIFlexDirective['align']): string {
+    private normalizeAlign(v: UIFlexAlign): string {
         switch (v) {
             case 'start':
                 return 'flex-start';

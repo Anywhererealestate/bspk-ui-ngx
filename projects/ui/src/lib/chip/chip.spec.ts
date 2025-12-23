@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { componentTestProps } from '../../utils/componentTestProps';
 import { UIChip } from './chip';
 
 describe('UIChip', () => {
@@ -11,7 +12,13 @@ describe('UIChip', () => {
             imports: [UIChip],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIChip);
+        fixture = TestBed.createComponent(
+            UIChip,
+            componentTestProps<UIChip>({
+                label: 'Test Chip',
+                // Add any input properties here if needed
+            }),
+        );
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

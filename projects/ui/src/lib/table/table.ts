@@ -1,8 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { BspkIcon } from '../../types/bspk-icon';
+import { Component, ViewEncapsulation, computed, input, model } from '@angular/core';
 import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
-import { UIIcon } from '../icon';
 import { IconArrowDownward, IconArrowUpward } from '../icons';
 import { UIPagination } from '../pagination';
 
@@ -67,8 +65,81 @@ const BUILT_IN_COLUMN_SORTERS: Record<BuiltInColumnSorters, TableColumnSortingFn
 @Component({
     selector: 'ui-table',
     standalone: true,
-    imports: [CommonModule, UIPagination, UIIcon],
-    templateUrl: './table.html',
+    imports: [CommonModule, UIPagination, IconArrowUpward, IconArrowDownward],
+    template: `<div [attr.data-has-pagination]="hasPagination ? true : null" [attr.data-size]="size() || 'medium'">
+        <div data-scroll-container>
+            <table
+                [attr.aria-colcount]="totalColumns"
+                [attr.aria-rowcount]="data().length"
+                [style.gridTemplateColumns]="gridTemplateColumns()">
+                @if (title()) {
+                    <caption>
+                        {{
+                            title()
+                        }}
+                    </caption>
+                }
+                <thead>
+                    <tr>
+                        @for (column of normalizedColumns; track $index) {
+                            <th
+                                [attr.data-align]="column.align || null"
+                                [attr.data-sortable]="column.sort ? true : null"
+                                scope="col"
+                                [attr.aria-sort]="ariaSortForColumn(column.key)">
+                                @if (column.sort) {
+                                    <button type="button" (click)="toggleSorting(column.key)">
+                                        {{ column.label }}
+                                        <span aria-hidden="true" data-sort-icon>
+                                            @if (sortDir()[column.key] === 'asc') {
+                                                <icon-arrow-upward />
+                                            } @else if (sortDir()[column.key] === 'desc') {
+                                                <icon-arrow-downward />
+                                            } @else {
+                                                <!-- No sort icon when not sorted -->
+                                            }
+                                        </span>
+                                    </button>
+                                } @else {
+                                    {{ column.label }}
+                                }
+                            </th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (row of rows(); track row.id) {
+                        <tr>
+                            @for (column of normalizedColumns; track column.key) {
+                                <td
+                                    [attr.data-align]="column.align || 'left'"
+                                    [attr.data-cell]="column.key"
+                                    [attr.data-valign]="column.valign || 'center'">
+                                    {{
+                                        formatCell(
+                                            column.formatter ? column.formatter(row, size()) : $any(row)[column.key]
+                                        )
+                                    }}
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if (hasPagination) {
+                <div data-pagination role="group">
+                    <div data-pagination-label>
+                        Showing {{ startRow() }}-{{ endRow() }} of {{ data().length }} results
+                    </div>
+                    <ui-pagination
+                        [value]="pageIndex + 1"
+                        [numPages]="totalPages"
+                        (onChange)="setPageIndex($event - 1)"></ui-pagination>
+                </div>
+            }
+        </div>
+    </div>`,
     styleUrls: ['./table.scss'],
     encapsulation: ViewEncapsulation.None,
     host: {
@@ -76,62 +147,13 @@ const BUILT_IN_COLUMN_SORTERS: Record<BuiltInColumnSorters, TableColumnSortingFn
     },
 })
 export class UITable<R extends TableRow> {
-    /**
-     * The data of the table.
-     *
-     * Array<TableRow>
-     */
-    @Input() data: R[] = [];
-    /**
-     * The column definitions of the table.
-     *
-     * @type Array<TableColumn>
-     */
-    @Input() columns: (TableColumn<R> | boolean)[] = [];
-    /** The title of the table. */
-    @Input() title?: string;
-    /**
-     * The size of the table.
-     *
-     * @default medium
-     */
-    @Input() size: TableSize = 'medium';
-    /**
-     * The number of rows per page.
-     *
-     * If the number of rows exceeds the page size, pagination controls will be displayed.
-     *
-     * @default 10
-     */
-    @Input() pageSize = 10;
-
-    pageIndex = 0;
-    sorting: SortState = [];
-
-    get hasPagination(): boolean {
-        return (this.data?.length || 0) > this.pageSize;
-    }
-
-    get normalizedColumns(): TableColumn<R>[] {
-        return (this.columns || []).filter((c): c is TableColumn<R> => typeof c === 'object' && c !== null);
-    }
-
-    get totalColumns(): number {
-        return this.normalizedColumns.length;
-    }
-
-    get totalPages(): number {
-        const len = this.data?.length || 0;
-        return Math.ceil(len / this.pageSize) || 1;
-    }
-
-    get rows(): R[] {
+    readonly rows = computed<R[]>(() => {
         const cols = this.normalizedColumns;
-        const result = [...(this.data || [])];
+        const result = [...(this.data() || [])];
 
-        if (this.sorting.length) {
+        if (this.sorting().length) {
             result.sort((a, b) => {
-                for (const { key, order } of this.sorting) {
+                for (const { key, order } of this.sorting()) {
                     const aValue = (a as any)[key];
                     const bValue = (b as any)[key];
                     const colSort = cols.find((c) => c.key === key)?.sort;
@@ -144,23 +166,80 @@ export class UITable<R extends TableRow> {
             });
         }
 
-        const start = this.pageIndex * this.pageSize;
-        const end = start + this.pageSize;
+        const start = this.pageIndex * this.pageSize();
+        const end = start + this.pageSize();
         return result.slice(start, end);
+    });
+
+    readonly sortDir = computed<Record<string, 'asc' | 'desc' | null>>(() =>
+        this.sorting().reduce(
+            (acc, curr) => ({ ...acc, [curr.key]: curr.order }),
+            {} as Record<string, 'asc' | 'desc' | null>,
+        ),
+    );
+
+    readonly sorting = model<SortState>([]);
+
+    /**
+     * The data of the table.
+     *
+     * Array<TableRow>
+     */
+    readonly data = input<R[]>([]);
+    /**
+     * The column definitions of the table.
+     *
+     * @exampleType Array<TableColumn>
+     */
+    readonly columns = input<(TableColumn<R> | boolean)[]>([]);
+    /** The title of the table. */
+    readonly title = input<string | undefined>(undefined);
+    /**
+     * The size of the table.
+     *
+     * @default medium
+     */
+    readonly size = input<TableSize>('medium');
+    /**
+     * The number of rows per page.
+     *
+     * If the number of rows exceeds the page size, pagination controls will be displayed.
+     *
+     * @default 10
+     */
+    readonly pageSize = input(10);
+
+    pageIndex = 0;
+
+    get hasPagination(): boolean {
+        return (this.data()?.length || 0) > this.pageSize();
     }
 
+    get normalizedColumns(): TableColumn<R>[] {
+        return (this.columns() || []).filter((c): c is TableColumn<R> => typeof c === 'object' && c !== null);
+    }
+
+    get totalColumns(): number {
+        return this.normalizedColumns.length;
+    }
+
+    get totalPages(): number {
+        const len = this.data()?.length || 0;
+        return Math.ceil(len / this.pageSize()) || 1;
+    }
     toggleSorting(key: string) {
-        const exists = this.sorting.find((sort) => sort.key === key);
+        const exists = this.sorting().find((sort) => sort.key === key);
         const order: SortOrder | undefined = getNextOrder(exists?.order);
 
         // update to nextOrder
-        if (order && exists) this.sorting = this.sorting.map((sort) => (sort.key === key ? { ...sort, order } : sort));
+        if (order && exists)
+            this.sorting.set(this.sorting().map((sort) => (sort.key === key ? { ...sort, order } : sort)));
 
         // add nextOrder
-        if (order && !exists) this.sorting = [...this.sorting, { key, order }];
+        if (order && !exists) this.sorting.set([...this.sorting(), { key, order }]);
 
         // remove sorting
-        if (!order && exists) this.sorting = this.sorting.filter((sort) => sort.key !== key);
+        if (!order && exists) this.sorting.set(this.sorting().filter((sort) => sort.key !== key));
 
         const columnLabel = this.normalizedColumns.find((col) => col.key === key)?.label || key;
         sendAriaLiveMessage(`${order ? `Sorted ${order}ending` : 'Removed sorting'} by ${columnLabel}`);
@@ -175,13 +254,13 @@ export class UITable<R extends TableRow> {
     }
 
     startRow(): number {
-        const total = this.data.length;
-        return total === 0 ? 0 : this.pageIndex * this.pageSize + 1;
+        const total = this.data().length;
+        return total === 0 ? 0 : this.pageIndex * this.pageSize() + 1;
     }
 
     endRow(): number {
-        const end = this.pageIndex * this.pageSize + this.pageSize;
-        return Math.min(end, this.data.length);
+        const end = this.pageIndex * this.pageSize() + this.pageSize();
+        return Math.min(end, this.data().length);
     }
 
     formatCell(value: unknown): string | null {
@@ -200,16 +279,11 @@ export class UITable<R extends TableRow> {
     }
 
     ariaSortForColumn(columnKey: string) {
-        return this.sorting.find((s) => s.key === columnKey)?.order === 'asc'
+        return this.sorting().find((s) => s.key === columnKey)?.order === 'asc'
             ? 'ascending'
-            : this.sorting.find((s) => s.key === columnKey)?.order === 'desc'
+            : this.sorting().find((s) => s.key === columnKey)?.order === 'desc'
               ? 'descending'
               : 'none';
-    }
-
-    sortIcon(columnKey: string): BspkIcon | null {
-        const sortState = this.sorting.find((s) => s.key === columnKey);
-        return sortState ? (sortState.order === 'asc' ? IconArrowUpward : IconArrowDownward) : null;
     }
 }
 

@@ -97,43 +97,43 @@ export class UIModal {
     iconClose = IconClose;
 
     /** Modal header. */
-    header = input.required<string>();
+    readonly header = input.required<string>();
 
     /** Modal description. Used for the aria-description attribute. */
-    description = input.required<string>();
+    readonly description = input.required<string>();
 
     /** A ref to the modal element. */
-    innerRef = input<(el: HTMLDivElement | null) => void>();
+    readonly innerRef = input<(el: HTMLDivElement | null) => void>();
 
     /** Whether to show the cancel button in the footer. Providing a string sets its label. */
-    cancelButton = input<boolean | string>(false);
+    readonly cancelButton = input<boolean | string>(false);
 
     /** The call to action button to display in the footer of the modal. */
-    callToAction = input<ModalCallToAction | undefined>(undefined);
+    readonly callToAction = input<ModalCallToAction | undefined>(undefined);
 
     /** The format of the buttons in the footer. Vertical only applies on <=640px. */
-    buttonFormat = input<ButtonFormat>('horizontal');
+    readonly buttonFormat = input<ButtonFormat>('horizontal');
 
     // Dialog-proxy inputs
-    open = input<boolean>(false);
-    id = input<string | undefined>(undefined);
-    owner = input<string | undefined>(undefined);
-    container = input<HTMLElement | undefined>(undefined);
-    disableFocusTrap = input<boolean>(false);
+    readonly open = input<boolean>(false);
+    readonly id = input<string | undefined>(undefined);
+    readonly owner = input<string | undefined>(undefined);
+    readonly container = input<HTMLElement | undefined>(undefined);
+    readonly disableFocusTrap = input<boolean>(false);
 
     // Defaults: Angular app likely desktop; keep small; width depends on format
-    buttonSize = computed<ButtonSize>(() => (this.isMobile() ? 'medium' : 'small'));
-    buttonWidth = computed<ButtonWidth>(() => (this.buttonFormat() === 'vertical' ? 'fill' : 'hug'));
+    readonly buttonSize = computed<ButtonSize>(() => (this.isMobile() ? 'medium' : 'small'));
+    readonly buttonWidth = computed<ButtonWidth>(() => (this.buttonFormat() === 'vertical' ? 'fill' : 'hug'));
 
-    cancelLabel = computed<string>(() =>
+    readonly cancelLabel = computed<string>(() =>
         typeof this.cancelButton() === 'string' ? (this.cancelButton() as string) : 'Cancel',
     );
 
-    hasFooterButtons = computed<boolean>(() => !!this.callToAction());
+    readonly hasFooterButtons = computed<boolean>(() => !!this.callToAction());
 
     breakpointService = inject(UIBreakpointService);
 
-    isMobile = computed(
+    readonly isMobile = computed(
         () =>
             this.breakpointService.currentBreakpointSignal() === 'small' ||
             this.breakpointService.currentBreakpointSignal() === 'medium',

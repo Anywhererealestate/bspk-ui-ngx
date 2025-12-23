@@ -21,6 +21,7 @@ export default defineConfig([
         files: ['projects/ui/**/*.ts'],
         extends: configExtends,
         rules: {
+            '@angular-eslint/prefer-signals': 'error',
             '@angular-eslint/directive-selector': [
                 'error',
                 {

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnChanges, SimpleChanges, TemplateRef, ViewEncapsulation } from '@angular/core';
+import { Component, TemplateRef, ViewEncapsulation, computed, input, model } from '@angular/core';
 import { randomString } from '../../utils/randomString';
 import { IconKeyboardArrowDown } from '../icons/keyboard-arrow-down';
 import { IconKeyboardArrowUp } from '../icons/keyboard-arrow-up';
@@ -63,56 +63,126 @@ export interface AccordionSection {
     selector: 'ui-accordion',
     standalone: true,
     imports: [CommonModule, IconKeyboardArrowDown, IconKeyboardArrowUp],
-    templateUrl: './accordion.html',
+    template: `@for (item of itemsWithIds(); track item) {
+        <section [attr.data-disabled]="item.disabled ? true : null" [id]="item.id">
+            <button
+                type="button"
+                [attr.aria-controls]="item.id + '-content'"
+                [attr.aria-expanded]="isOpen(item)"
+                data-header
+                [disabled]="item.disabled ? true : null"
+                (click)="!item.disabled && toggleOpen(item.id!)">
+                @if (item.leading) {
+                    <span data-leading>
+                        @if (isTemplateRef(item.leading)) {
+                            <ng-container>
+                                <ng-container *ngTemplateOutlet="item.leading as TemplateRef"></ng-container>
+                            </ng-container>
+                        } @else {
+                            <ng-container
+                                *ngTemplateOutlet="leadingText; context: { $implicit: item.children }"></ng-container>
+                        }
+                        <ng-template #leadingText>{{ item.leading }}</ng-template>
+                    </span>
+                }
+
+                <span data-title-subtitle>
+                    <span data-title>{{ item.title }}</span>
+
+                    @if (item.subtitle) {
+                        <span data-subtitle>{{ item.subtitle }}</span>
+                    }
+                </span>
+
+                @if (item.trailing) {
+                    <span data-trailing>
+                        @if (isTemplateRef(item.trailing)) {
+                            <ng-container>
+                                <ng-container *ngTemplateOutlet="item.trailing as TemplateRef"></ng-container>
+                            </ng-container>
+                        } @else {
+                            <ng-container
+                                *ngTemplateOutlet="trailingText; context: { $implicit: item.children }"></ng-container>
+                        }
+                        <ng-template #trailingText>{{ item.trailing }}</ng-template>
+                    </span>
+                }
+
+                <span data-arrow>
+                    @if (isOpen(item)) {
+                        <icon-keyboard-arrow-up />
+                    } @else {
+                        <icon-keyboard-arrow-down />
+                    }
+                </span>
+            </button>
+
+            @if (isOpen(item)) {
+                <div data-content [attr.data-hidden]="!isOpen(item) ? true : null" [id]="item.id + '-content'">
+                    @if (isTemplateRef(item.children)) {
+                        <ng-container>
+                            <ng-container *ngTemplateOutlet="item.children as TemplateRef"></ng-container>
+                        </ng-container>
+                    } @else {
+                        <ng-container
+                            *ngTemplateOutlet="childrenText; context: { $implicit: item.children }"></ng-container>
+                    }
+                    <ng-template #childrenText let-content>{{ content }}</ng-template>
+                </div>
+            }
+            <span data-divider></span>
+        </section>
+    }`,
     styleUrls: ['./accordion.scss'],
     encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk': 'accordion',
+    },
 })
-export class UIAccordion implements OnChanges {
+export class UIAccordion {
     /**
      * Array of accordion sections
      *
-     * @type Array<AccordionSection>
+     * @exampleType Array<AccordionSection>
      * @required
      */
-    @Input() items: AccordionSection[] = [];
+    readonly items = input<AccordionSection[]>([]);
+
     /**
      * If true only one accordion section can be opened at a time
      *
      * @default true
      */
-    @Input() singleOpen = true;
+    readonly singleOpen = input(true);
 
-    openSections: string[] = [];
+    readonly itemsWithIds = computed(() =>
+        this.items().map((item): AccordionSection & { id: string } => ({
+            ...item,
+            id: item.id || `accordion-item-${randomString(8)}`,
+        })),
+    );
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes['items']) {
-            this.items = (this.items || []).map((item) => ({
-                ...item,
-                id: item.id || `accordion-item-${randomString(8)}`,
-            }));
-
-            this.openSections = this.items.filter((i) => i.isOpen).map((i) => i.id!);
-        }
-    }
+    readonly openSections = model(
+        this.itemsWithIds()
+            .filter((i) => i.isOpen)
+            .map((i) => i.id!),
+    );
 
     toggleOpen(itemId: string) {
-        const isOpen = this.openSections.includes(itemId);
+        const isOpen = this.openSections().includes(itemId);
 
-        if (this.singleOpen) {
-            this.openSections = isOpen ? [] : [itemId];
+        if (this.singleOpen()) {
+            this.openSections.set(isOpen ? [] : [itemId]);
             return;
         }
 
-        this.openSections = isOpen ? this.openSections.filter((id) => id !== itemId) : [...this.openSections, itemId];
+        this.openSections.set(
+            isOpen ? this.openSections().filter((id) => id !== itemId) : [...this.openSections(), itemId],
+        );
     }
 
-    isOpen(itemId: string | undefined) {
-        if (!itemId) return false;
-        return this.openSections.includes(itemId);
-    }
-
-    isSectionVisible(item: AccordionSection): boolean {
-        return this.isOpen(item.id) && !item.disabled;
+    isOpen(item: AccordionSection & { id: string }): boolean {
+        return !!item.id && this.openSections().includes(item.id) && !item.disabled;
     }
 
     isTemplateRef(value: any): value is TemplateRef<any> {

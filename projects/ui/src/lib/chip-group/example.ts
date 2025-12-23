@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { sendSnackbar } from '../../utils/sendSnackbar';
+import { ChipProps } from '../chip';
 import { IconAccessible } from '../icons/accessible';
 import { IconAdd } from '../icons/add';
 import { IconBakeryDining } from '../icons/bakery-dining';
@@ -26,15 +28,7 @@ import { UIChipGroup } from './chip-group';
 
         <h3>Basic</h3>
         <div style="width: 500px">
-            <ui-chip-group
-                [items]="[
-                    { label: 'Chip 1', leadingIcon: iconIcecream },
-                    { label: 'Chip 2', leadingIcon: iconAccessible },
-                    { label: 'Chip 3', leadingIcon: iconAdd, trailingBadge: { count: 2 } },
-                    { label: 'Chip 4', leadingIcon: iconGarage },
-                    { label: 'Chip 5 selected = true', leadingIcon: iconBakeryDining, selected: true },
-                    { label: 'Chip 6 disabled = true', leadingIcon: iconPets, disabled: true },
-                ]" />
+            <ui-chip-group [items]="basicChips" />
         </div>
 
         <h3>Scroll</h3>
@@ -69,6 +63,19 @@ import { UIChipGroup } from './chip-group';
     `,
 })
 export class UIChipGroupExample {
+    protected readonly basicChips: ChipProps[] = [
+        {
+            label: 'Chip 1',
+            leadingIcon: IconIcecream,
+            click: () => sendSnackbar('Chip 1 clicked'),
+        },
+        { label: 'Chip 2', leadingIcon: IconAccessible },
+        { label: 'Chip 3', leadingIcon: IconAdd, trailingBadge: { count: 2 } },
+        { label: 'Chip 4', leadingIcon: IconGarage },
+        { label: 'Chip 5 selected = true', leadingIcon: IconBakeryDining, selected: true },
+        { label: 'Chip 6 disabled = true', leadingIcon: IconPets, disabled: true },
+    ];
+
     protected readonly iconIcecream = IconIcecream;
     protected readonly iconAccessible = IconAccessible;
     protected readonly iconAdd = IconAdd;
