@@ -11,7 +11,7 @@ import {
     viewChild,
 } from '@angular/core';
 import { UIPortalDirective } from '../portal';
-import { UIScrim } from '../scrim/scrim';
+import { UIScrim } from '../scrim';
 
 export type Placement = 'bottom' | 'center' | 'left' | 'right' | 'top';
 
