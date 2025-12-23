@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, input } from '@angular/core';
 
 export type CardVariant = 'elevated' | 'outlined';
 
@@ -24,8 +24,12 @@ export type CardVariant = 'elevated' | 'outlined';
     selector: 'ui-card',
     standalone: true,
     imports: [],
-    templateUrl: './card.html',
+    template: `<ng-content></ng-content>`,
     styleUrl: './card.scss',
+    host: {
+        'data-bspk': 'card',
+        '[attr.data-variant]': 'variant()',
+    },
     encapsulation: ViewEncapsulation.None,
 })
 export class UICard {
@@ -34,5 +38,5 @@ export class UICard {
      *
      * @default elevated
      */
-    @Input() variant: CardVariant = 'elevated';
+    readonly variant = input<CardVariant>('elevated');
 }

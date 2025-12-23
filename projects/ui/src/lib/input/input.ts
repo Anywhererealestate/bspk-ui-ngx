@@ -1,4 +1,4 @@
-import { Component, input, Input, ViewEncapsulation } from '@angular/core';
+import { Component, input, ViewEncapsulation } from '@angular/core';
 import { provideNgxMask } from 'ngx-mask';
 import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
 import { UIButton, ButtonSize } from '../button/button';
@@ -7,7 +7,45 @@ import { IconCancel } from '../icons/cancel';
 @Component({
     selector: 'ui-input',
     imports: [UIButton],
-    templateUrl: './input.html',
+    template: `<ng-content select="[data-leading]">
+            @if (leading()) {
+                <span data-leading>{{ leading() }}</span>
+            }
+        </ng-content>
+
+        <input
+            data-main-input
+            [attr.aria-label]="inputAriaLabel"
+            [attr.aria-invalid]="inputInvalid"
+            [attr.data-invalid]="inputInvalid"
+            [disabled]="inputDisabled"
+            [id]="inputId"
+            [attr.placeholder]="inputPlaceholder"
+            [attr.name]="inputName"
+            [attr.autocomplete]="inputAutocomplete"
+            [readOnly]="inputReadOnly"
+            [required]="inputRequired"
+            [type]="inputType"
+            [value]="inputValue"
+            (blur)="handleBlur($event)"
+            (input)="handleInput($event)" />
+
+        <ng-content select="[data-trailing]">
+            @if (trailing()) {
+                <span data-trailing>{{ trailing() }}</span>
+            }
+        </ng-content>
+
+        @if (getShowClearButton()) {
+            <ui-button
+                data-clear-button
+                label="Clear input"
+                variant="tertiary"
+                [size]="buttonSize"
+                (click)="clearInput()"
+                [icon]="IconCancel"
+                [iconOnly]="true" />
+        }`,
     styleUrl: './input.scss',
     providers: [provideValueAccessor(UIInput), provideValidator(UIInput), provideNgxMask()],
     host: {
@@ -24,7 +62,7 @@ export class UIInput extends TextInputControlValueAccessor {
      *
      * @default true
      */
-    @Input() showClearButton?: boolean = true;
+    readonly showClearButton = input<boolean | undefined>(true);
 
     public IconCancel = IconCancel;
 
@@ -83,7 +121,7 @@ export class UIInput extends TextInputControlValueAccessor {
 
     getShowClearButton(): boolean | null {
         return (
-            !!(this.showClearButton !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
+            !!(this.showClearButton() !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
             null
         );
     }

@@ -39,13 +39,13 @@ import { UIRadio } from '../radio/radio';
 })
 export class UIRadioOption extends UIRadio {
     /** The label of the option. Also used as the aria-label of the control. */
-    label = input<string>();
+    readonly label = input<string>();
 
     /** The description of the option. */
-    description = input<string | undefined>(undefined);
+    readonly description = input<string | undefined>(undefined);
     /** The aria-label for the radio element. Combines label and description if both are present. */
 
-    override ariaLabel = input<string | undefined>(this.computedAriaLabel());
+    override readonly ariaLabel = input<string | undefined>(this.computedAriaLabel());
 
     computedAriaLabel(): string | undefined {
         return this.description() ? `${this.label()} - ${this.description()}` : this.label();

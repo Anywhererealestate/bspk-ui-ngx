@@ -30,6 +30,10 @@ import { UIAccordion } from './accordion';
                 { title: 'Bar', children: 'Bar Children' },
                 { title: 'Car', children: 'Car Children' },
             ]"></ui-accordion>
+
+        <h3>With No Items (hidden)</h3>
+
+        <ui-accordion [items]="[]"></ui-accordion>
     `,
 })
 export class UIAccordionExample {}

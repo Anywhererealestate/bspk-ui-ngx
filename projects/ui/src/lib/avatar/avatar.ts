@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, Output, EventEmitter, ViewEncapsulation, input } from '@angular/core';
 import { IconPerson } from '../icons/person';
 import { UITooltipDirective } from '../tooltip';
 
@@ -43,37 +43,39 @@ export type SizeVariant =
     standalone: true,
     imports: [CommonModule, IconPerson, UITooltipDirective],
     template: `<span
-        [ui-tooltip]="{ label: name, disabled: hideTooltip }"
+        [ui-tooltip]="{ label: name(), disabled: hideTooltip() }"
         data-bspk="avatar"
-        [attr.aria-label]="name"
+        [attr.aria-label]="name()"
         aria-roledescription="person"
-        [attr.aria-disabled]="disabled || undefined"
-        [attr.tabindex]="!disabled && onClick.observers.length ? 0 : undefined"
+        [attr.aria-disabled]="disabled() || undefined"
+        [attr.tabindex]="!disabled() && onClick.observers.length ? 0 : undefined"
         [attr.role]="onClick.observers.length ? 'button' : 'img'"
-        [attr.data-color]="color"
-        [attr.data-size]="size"
+        [attr.data-color]="color()"
+        [attr.data-size]="size()"
         (click)="handleOnClick($event)"
         (keydown)="handleKeyDown($event)">
-        @if (image) {
-            <img [src]="image" [alt]="name" aria-hidden="true" />
-        } @else {
-            @if (showIcon) {
-                <span aria-hidden="true" data-icon>
-                    <icon-person></icon-person>
-                </span>
-            } @else {
-                @if (computedInitials) {
-                    <span aria-hidden="true" data-initials>
-                        {{ computedInitials }}
-                    </span>
-                }
-            }
+        @if (image()) {
+            <img [src]="image()" [alt]="name()" aria-hidden="true" />
+        } @else if (showIcon()) {
+            <span aria-hidden="true" data-icon>
+                <icon-person></icon-person>
+            </span>
+        } @else if (computedInitials) {
+            <span aria-hidden="true" data-initials>
+                {{ computedInitials }}
+            </span>
         }
     </span>`,
     styleUrls: ['./avatar.scss'],
     encapsulation: ViewEncapsulation.None,
+    host: {
+        style: `display: contents;`,
+    },
 })
 export class UIAvatar {
+    /** The function to call when the avatar is clicked. */
+    @Output() onClick = new EventEmitter<MouseEvent>();
+
     /**
      * The name of the person or entity represented by the avatar. This is used for accessibility purposes.
      *
@@ -82,21 +84,21 @@ export class UIAvatar {
      *
      * @required
      */
-    @Input() name!: string;
+    readonly name = input.required<string>();
 
     /**
      * The size of the avatar.
      *
      * @default small
      */
-    @Input() size: SizeVariant = 'small';
+    readonly size = input<SizeVariant>('small');
 
     /**
      * The color of the avatar.
      *
      * @default grey
      */
-    @Input() color = 'grey';
+    readonly color = input('grey');
 
     /**
      * Customizable initials to display in the avatar limited to 2 characters.
@@ -107,7 +109,7 @@ export class UIAvatar {
      * @example
      *     AG;
      */
-    @Input() initials?: string;
+    readonly initials = input<string>();
 
     /**
      * Whether to show the icon in the avatar instead of the initials.
@@ -116,7 +118,7 @@ export class UIAvatar {
      *
      * @default false
      */
-    @Input() showIcon = false;
+    readonly showIcon = input(false);
 
     /**
      * The url to the image to display in the avatar.
@@ -126,28 +128,28 @@ export class UIAvatar {
      * @example
      *     /avatar-01.png
      */
-    @Input() image?: string;
+    readonly image = input<string | undefined>();
 
     /**
      * Whether to hide the represented user's name as a tooltip.
      *
      * @default false
      */
-    @Input() hideTooltip = false;
+    readonly hideTooltip = input(false);
 
     /**
      * Determines if the element is [disabled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled).
      *
      * @default false
      */
-    @Input() disabled = false;
-    /** The function to call when the avatar is clicked. */
-    @Output() onClick = new EventEmitter<MouseEvent>();
+    readonly disabled = input(false);
 
     get computedInitials(): string | undefined {
-        if (this.initials) return this.initials.slice(0, 2).toUpperCase();
-        if (this.name) {
-            const parts = this.name.split(' ').filter(Boolean);
+        const initials = this.initials();
+        if (initials) return initials.slice(0, 2).toUpperCase();
+        const name = this.name();
+        if (name) {
+            const parts = name.split(' ').filter(Boolean);
             return parts
                 .map((w) => w[0])
                 .slice(0, 2)
@@ -158,13 +160,13 @@ export class UIAvatar {
     }
 
     handleOnClick(event: MouseEvent) {
-        if (!this.disabled) {
+        if (!this.disabled()) {
             this.onClick.emit(event);
         }
     }
 
     handleKeyDown(event: KeyboardEvent) {
-        if (!this.disabled && event.key === 'Enter') {
+        if (!this.disabled() && event.key === 'Enter') {
             this.onClick.emit();
         }
     }

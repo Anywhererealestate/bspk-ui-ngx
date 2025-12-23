@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { componentTestProps } from '../../utils/componentTestProps';
 
 import { UITag } from './tag';
 
@@ -11,7 +12,12 @@ describe('UITag', () => {
             imports: [UITag],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UITag);
+        fixture = TestBed.createComponent(
+            UITag,
+            componentTestProps<UITag>({
+                label: 'Test Tag',
+            }),
+        );
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

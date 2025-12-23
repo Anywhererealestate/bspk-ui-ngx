@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { sendSnackbar } from '../../utils/sendSnackbar';
 import { IconAdd } from '../icons/add';
 import { IconBarn } from '../icons/barn';
 import { IconBox } from '../icons/box';
@@ -19,48 +19,63 @@ import { UIButton } from './button';
 
         <h3>Default</h3>
         <p>only click & the required label prop set</p>
-        <ui-button (click)="handleClick()" label="Default" />
+        <ui-button (click)="handleClick('Default')" label="Default" />
 
         <h3>Primary</h3>
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Primary')"
             label="Example Label"
             size="large"
             variant="primary"
             [icon]="iconGTranslate" />
 
         <h3>Secondary</h3>
-        <ui-button (click)="handleClick()" label="Example Label" size="medium" variant="secondary" [icon]="iconBrail" />
+        <ui-button
+            (click)="handleClick('Secondary')"
+            label="Example Label"
+            size="medium"
+            variant="secondary"
+            [icon]="iconBrail" />
 
         <h3>Tertiary</h3>
-        <ui-button (click)="handleClick()" label="Example Label" size="small" variant="tertiary" [icon]="iconBarn" />
+        <ui-button
+            (click)="handleClick('Tertiary')"
+            label="Example Label"
+            size="small"
+            variant="tertiary"
+            [icon]="iconBarn" />
 
         <h3>Primary with Tooltip</h3>
-        <ui-button (click)="handleClick()" label="Example Label" size="large" [icon]="iconCloud" tooltip="Hello" />
+        <ui-button
+            (click)="handleClick('Primary with Tooltip')"
+            label="Example Label"
+            size="large"
+            [icon]="iconCloud"
+            tooltip="Primary with Tooltip" />
 
         <h3>Destructive with Tooltip</h3>
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Destructive with Tooltip')"
             label="Destructive test"
             [icon]="iconWarningFill"
             [destructive]="true"
-            tooltip="Destructive" />
+            tooltip="Destructive with Tooltip" />
 
         <h3>Destructive iconOnly = true</h3>
 
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Destructive iconOnly = true')"
             label="Destructive test"
             [icon]="iconWarningFill"
             [iconOnly]="true"
             [destructive]="true" />
 
         <h3>Disabled</h3>
-        <ui-button (click)="handleClick()" label="Disabled test" [icon]="iconWarningFill" [disabled]="true" />
+        <ui-button (click)="handleClick('Disabled')" label="Disabled test" [icon]="iconWarningFill" [disabled]="true" />
 
         <h3>Disabled iconOnly = true</h3>
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Disabled iconOnly = true')"
             label="Destructive test"
             [icon]="iconWarningFill"
             [iconOnly]="true"
@@ -69,7 +84,7 @@ import { UIButton } from './button';
         <h3>Disabled & destructive = true</h3>
         <p>should visually see disabled and not destructive</p>
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Disabled & Destructive')"
             label="Disabled & Destructive Test"
             [icon]="iconWarningFill"
             [disabled]="true"
@@ -78,7 +93,7 @@ import { UIButton } from './button';
         <h3>Primary Disabled & destructive = true</h3>
         <p>should visually see disabled and not destructive</p>
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Primary Disabled & Destructive')"
             label="Disabled & Destructive Test"
             variant="primary"
             [icon]="iconWarningFill"
@@ -88,7 +103,7 @@ import { UIButton } from './button';
         <h3>Secondary Disabled & destructive = true</h3>
         <p>should visually see disabled and not destructive</p>
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Secondary Disabled & Destructive')"
             label="Disabled & Destructive Test"
             variant="secondary"
             [icon]="iconWarningFill"
@@ -98,7 +113,7 @@ import { UIButton } from './button';
         <h3>Tertiary Disabled & destructive = true</h3>
         <p>should visually see disabled and not destructive</p>
         <ui-button
-            (click)="handleClick()"
+            (click)="handleClick('Tertiary Disabled & Destructive')"
             label="Disabled & Destructive Test"
             variant="tertiary"
             [icon]="iconWarningFill"
@@ -108,14 +123,20 @@ import { UIButton } from './button';
         <h3>width = fill</h3>
         <p>should visually see button fill the width of 500px parent width</p>
         <div style="width: 500px">
-            <ui-button (click)="handleClick()" label="Example Label" [icon]="iconBox" width="fill" />
+            <ui-button (click)="handleClick('Example Label')" label="Example Label" [icon]="iconBox" width="fill" />
         </div>
 
         <h3>Custom Content</h3>
-        <ui-button (click)="handleClick()"><icon-add width="24" />Custom Content Example</ui-button>
+        <ui-button label="" (click)="handleClick('Custom Content')"
+            ><icon-add width="24" />Custom Content Example</ui-button
+        >
 
         <h3>Custom Icon</h3>
-        <ui-button (click)="handleClick()" tooltip="Hello world" ariaLabel="hello world example" variant="secondary">
+        <ui-button
+            (click)="handleClick('Custom Icon')"
+            tooltip="Hello world"
+            label="hello world example"
+            variant="secondary">
             <svg
                 focusable="false"
                 aria-hidden="true"
@@ -136,7 +157,7 @@ export class UIButtonExample {
     protected readonly iconWarningFill = IconWarningFill;
     protected readonly iconBox = IconBox;
 
-    protected handleClick(): void {
-        console.log('Button clicked');
+    protected handleClick(name: string): void {
+        sendSnackbar(`${name} Button clicked!`);
     }
 }

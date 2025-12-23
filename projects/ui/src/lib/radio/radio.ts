@@ -46,21 +46,21 @@ export class UIRadio {
      *
      * @required
      */
-    change = input<((event: Event) => void) | undefined>(undefined);
+    readonly change = input<((event: Event) => void) | undefined>(undefined);
 
     /**
      * The [name](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name) of the control.
      *
      * @required
      */
-    name = input.required<string | undefined>();
+    readonly name = input.required<string | undefined>();
 
     /**
      * The value of the field control.
      *
      * @required
      */
-    value = input.required<string | undefined>();
+    readonly value = input.required<string | undefined>();
 
     /**
      * The aria-label for the element.
@@ -69,24 +69,24 @@ export class UIRadio {
      *
      * Ensure this is provided when using the element in isolation to maintain accessibility.
      */
-    ariaLabel = input<string | undefined>(undefined);
+    readonly ariaLabel = input<string | undefined>(undefined);
 
     /**
      * Marks the radio as checked.
      *
      * @default false
      */
-    checked = input(false, { transform: booleanAttribute });
+    readonly checked = input(false, { transform: booleanAttribute });
 
     /**
      * Determines if the element is [disabled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled).
      *
      * @default false
      */
-    disabled = input(false, { transform: booleanAttribute });
+    readonly disabled = input(false, { transform: booleanAttribute });
 
     /** The id of the element. If not provided one will be generated. */
-    id = input<string>(randomString(8));
+    readonly id = input<string>(randomString(8));
 
     /**
      * Indicates that the element is in an invalid state and displays the error theme.
@@ -95,14 +95,14 @@ export class UIRadio {
      *
      * @default false
      */
-    invalid = input(false, { transform: booleanAttribute });
+    readonly invalid = input(false, { transform: booleanAttribute });
 
     /**
      * Determines if the element is [required](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required).
      *
      * @default false
      */
-    required = input(false, { transform: booleanAttribute });
+    readonly required = input(false, { transform: booleanAttribute });
 
     onInputChange(event: Event) {
         const inputElement = event.target as HTMLInputElement;
