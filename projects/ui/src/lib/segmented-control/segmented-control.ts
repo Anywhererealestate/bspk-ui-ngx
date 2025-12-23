@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { UITabList, UITabListBase } from '../tab-list/tab-list';
+import { UITabList } from '../tab-list/tab-list';
 
 /**
  * Navigation tool that organizes content across different screens and views.
@@ -26,7 +26,7 @@ import { UITabList, UITabListBase } from '../tab-list/tab-list';
     imports: [UITabList],
     template: `<ul
         ui-tab-list
-        component="segmented-control"
+        data-bspk="segmented-control"
         [options]="options()"
         [value]="value()"
         (valueChange)="valueChange.emit($event)"
@@ -41,4 +41,4 @@ import { UITabList, UITabListBase } from '../tab-list/tab-list';
         style: 'display: contents;',
     },
 })
-export class UISegmentedControl extends UITabListBase {}
+export class UISegmentedControl extends UITabList {}

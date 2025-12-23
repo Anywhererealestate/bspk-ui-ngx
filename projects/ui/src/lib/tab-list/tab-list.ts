@@ -62,10 +62,76 @@ const TAB_BADGE_SIZES: Record<TabSize, 'small' | 'x-small'> = {
     small: 'x-small',
 };
 
+/**
+ * Navigation tool that organizes content across different screens and views.
+ *
+ * See TabGroup or SegmentedControl for examples.
+ *
+ * @example
+ *     <!-- Angular example -->
+ *     <ui-tab-list
+ *     [label]="'Example Tabs'"
+ *     [options]="[
+ *     { value: '1', label: 'Option 1' },
+ *     { value: '2', label: 'Option 2' },
+ *     { value: '3', label: 'Option 3' },
+ *     ]"
+ *     [value]="selected"
+ *     (valueChange)="selected = $event">
+ *     </ui-tab-list>
+ *
+ * @name TabList
+ * @phase Utility
+ */
 @Component({
-    template: '',
+    // eslint-disable-next-line @angular-eslint/component-selector -- specified selector includes tag and attribute
+    selector: 'ul[ui-tab-list]',
+    standalone: true,
+    imports: [UIBadge, UIIcon, UITooltipDirective],
+    template: `
+        @if (optionsWithIds().length > 1) {
+            @for (item of optionsWithIds(); track item.id) {
+                <li
+                    [ui-tooltip]="shouldHideLabels() ? { label: item.label, placement: 'top' } : undefined"
+                    [attr.aria-controls]="componentId()"
+                    [attr.aria-disabled]="item.disabled ? true : null"
+                    [attr.aria-selected]="item.value === selectedValue() ? true : null"
+                    [attr.data-active]="activeId() === item.id ? true : null"
+                    [attr.data-value]="item.value"
+                    [attr.id]="item.id"
+                    (click)="onItemClick(item)"
+                    (keydown)="focusableId() === item.id ? handleKeyDown($event) : null"
+                    role="tab"
+                    [tabindex]="focusableId() === item.id ? 0 : -1">
+                    @if (currentIcon(item)) {
+                        <span aria-hidden="true" data-icon>
+                            <ui-icon [icon]="currentIcon(item)!"></ui-icon>
+                        </span>
+                    }
+                    @if (!shouldHideLabels()) {
+                        <span data-label>{{ item.label }}</span>
+                    }
+                    @if (item.badge && !item.disabled) {
+                        <ui-badge [count]="item.badge" [size]="badgeSizeFor(size())"></ui-badge>
+                    }
+                </li>
+            }
+        }
+    `,
+    styleUrl: './tab-list.scss',
+    encapsulation: ViewEncapsulation.None,
+    host: {
+        'data-bspk-utility': 'tab-list',
+        '[attr.aria-label]': 'label()',
+        '[attr.data-size]': 'size()',
+        '[attr.data-width]': 'width()',
+        '[attr.id]': 'componentId()',
+        tabindex: '-1',
+        role: 'tablist',
+        '(focusin.capture)': 'focusActive()',
+    },
 })
-export class UITabListBase {
+export class UITabList {
     /** The function to call when the tab is clicked. */
     @Output() valueChange = new EventEmitter<string>();
 
@@ -180,78 +246,4 @@ export class UITabListBase {
             if (active && !active.disabled) this.valueChange.emit(active.value);
         }
     }
-}
-
-/**
- * Navigation tool that organizes content across different screens and views.
- *
- * See TabGroup or SegmentedControl for examples.
- *
- * @example
- *     <!-- Angular example -->
- *     <ui-tab-list
- *     [label]="'Example Tabs'"
- *     [options]="[
- *     { value: '1', label: 'Option 1' },
- *     { value: '2', label: 'Option 2' },
- *     { value: '3', label: 'Option 3' },
- *     ]"
- *     [value]="selected"
- *     (valueChange)="selected = $event">
- *     </ui-tab-list>
- *
- * @name TabList
- * @phase Utility
- */
-@Component({
-    // eslint-disable-next-line @angular-eslint/component-selector -- specified selector includes tag and attribute
-    selector: 'ul[ui-tab-list]',
-    standalone: true,
-    imports: [UIBadge, UIIcon, UITooltipDirective],
-    template: `
-        @if (optionsWithIds().length > 1) {
-            @for (item of optionsWithIds(); track item.id) {
-                <li
-                    [ui-tooltip]="shouldHideLabels() ? { label: item.label, placement: 'top' } : undefined"
-                    [attr.aria-controls]="componentId()"
-                    [attr.aria-disabled]="item.disabled ? true : null"
-                    [attr.aria-selected]="item.value === selectedValue() ? true : null"
-                    [attr.data-active]="activeId() === item.id ? true : null"
-                    [attr.data-value]="item.value"
-                    [attr.id]="item.id"
-                    (click)="onItemClick(item)"
-                    (keydown)="focusableId() === item.id ? handleKeyDown($event) : null"
-                    role="tab"
-                    [tabindex]="focusableId() === item.id ? 0 : -1">
-                    @if (currentIcon(item)) {
-                        <span aria-hidden="true" data-icon>
-                            <ui-icon [icon]="currentIcon(item)!"></ui-icon>
-                        </span>
-                    }
-                    @if (!shouldHideLabels()) {
-                        <span data-label>{{ item.label }}</span>
-                    }
-                    @if (item.badge && !item.disabled) {
-                        <ui-badge [count]="item.badge" [size]="badgeSizeFor(size())"></ui-badge>
-                    }
-                </li>
-            }
-        }
-    `,
-    styleUrl: './tab-list.scss',
-    encapsulation: ViewEncapsulation.None,
-    host: {
-        'data-bspk-utility': 'tab-list',
-        '[attr.data-bspk]': 'component()',
-        '[attr.aria-label]': 'label()',
-        '[attr.data-size]': 'size()',
-        '[attr.data-width]': 'width()',
-        '[attr.id]': 'componentId()',
-        tabindex: '-1',
-        role: 'tablist',
-        '(focusin.capture)': 'focusActive()',
-    },
-})
-export class UITabList extends UITabListBase {
-    readonly component = input.required<string>();
 }

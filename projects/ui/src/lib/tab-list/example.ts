@@ -11,7 +11,7 @@ import { UITabList, TabOption } from './tab-list';
         <h3>TabList Basic</h3>
         <ul
             ui-tab-list
-            component="segmented-control"
+            data-bspk="segmented-control"
             [label]="'Navigation'"
             [options]="options"
             [value]="selected()"
@@ -21,7 +21,7 @@ import { UITabList, TabOption } from './tab-list';
         <h3>Icons Only (with tooltip)</h3>
         <ul
             ui-tab-list
-            component="tab-group"
+            data-bspk="tab-group"
             [label]="'Navigation Icons'"
             [options]="iconOptions"
             [value]="selectedIcon()"

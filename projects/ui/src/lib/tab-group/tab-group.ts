@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
-import { UITabList, UITabListBase } from '../tab-list/tab-list';
+import { UITabList } from '../tab-list/tab-list';
 
 export type TabGroupSize = 'large' | 'medium' | 'small';
 
@@ -30,7 +30,7 @@ export interface TabGroupProps {}
     imports: [UITabList],
     template: `<ul
         ui-tab-list
-        component="tab-group"
+        data-bspk="tab-group"
         [options]="options()"
         [value]="value()"
         (valueChange)="valueChange.emit($event)"
@@ -43,7 +43,7 @@ export interface TabGroupProps {}
     styleUrl: './tab-group.scss',
     encapsulation: ViewEncapsulation.None,
 })
-export class UITabGroup extends UITabListBase {
+export class UITabGroup extends UITabList {
     /**
      * When width is 'hug' this determines if the trailing underline should be showing. When width is 'fill' this
      * property isn't applicable.
