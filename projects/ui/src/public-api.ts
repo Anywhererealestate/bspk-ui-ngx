@@ -31,3 +31,6 @@ export * from './lib/tag';
 export * from './lib/tooltip';
 export * from './lib/truncated';
 export * from './lib/txt';
+export * from './lib/tab-list';
+export * from './lib/tab-group';
+export * from './lib/segmented-control';
