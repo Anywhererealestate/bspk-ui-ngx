@@ -45,14 +45,14 @@ files.forEach((dirent) => {
             const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
             const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
 
-            const classNameMatch = content.match(/export class (\w+)[<|\s]/)?.[1];
+            const classNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map((m) => m[1]);
 
-            if (!classNameMatch) {
+            if (!classNameMatches.length) {
                 errors.push(`No class found in file "${filePath}".`);
-            } else if (classNameMatch !== classNameExpected) {
+            } else if (!classNameMatches.some((name) => name === classNameExpected)) {
                 if (type === 'component')
                     errors.push(
-                        `Class name "${classNameMatch}" in file "${filePath}" does not follow the convention and should be ${classNameExpected}.`,
+                        `Class name(s) "${classNameMatches.join(', ')}" in file "${filePath}" does not follow the convention and should be ${classNameExpected}.`,
                     );
             }
 
@@ -60,7 +60,12 @@ files.forEach((dirent) => {
 
             if (!selectorMatch) {
                 errors.push(`No selector found in file "${filePath}".`);
-            } else if (selectorMatch !== selectorExpected) {
+            } else if (
+                // not a direct match
+                selectorMatch !== selectorExpected &&
+                // allow for selectors that include both tag and attribute
+                !selectorMatch.includes(`[ui-${dirent.name}]`)
+            ) {
                 const selectorMatch = content.match(/selector:\s*'([^']+)'/)?.[0];
 
                 errors.push(
