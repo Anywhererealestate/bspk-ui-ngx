@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, TemplateRef, ViewEncapsulation, computed, input, model } from '@angular/core';
-import { randomString } from '../../utils/randomString';
+import { uniqueId } from '../../utils/random';
 import { IconKeyboardArrowDown } from '../icons/keyboard-arrow-down';
 import { IconKeyboardArrowUp } from '../icons/keyboard-arrow-up';
 
@@ -158,7 +158,7 @@ export class UIAccordion {
     readonly itemsWithIds = computed(() =>
         this.items().map((item): AccordionSection & { id: string } => ({
             ...item,
-            id: item.id || `accordion-item-${randomString(8)}`,
+            id: item.id || uniqueId('accordion-item'),
         })),
     );
 
