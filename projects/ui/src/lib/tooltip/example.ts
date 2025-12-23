@@ -62,7 +62,7 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
 export class UITooltipExample implements AfterViewInit {
     placements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right'];
 
-    counter = model(0);
+    readonly counter = model(0);
 
     ngAfterViewInit() {
         setInterval(() => {

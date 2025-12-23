@@ -24,26 +24,26 @@ export class UITag {
      *
      * @required
      */
-    label = input.required<string>();
+    readonly label = input.required<string>();
 
     /**
      * The size of the tag.
      *
      * @default small
      */
-    size = input<'small' | 'x-small'>('small');
+    readonly size = input<'small' | 'x-small'>('small');
 
     /**
      * The color of the tag.
      *
      * @default grey
      */
-    color = input<ColorVariant>('grey');
+    readonly color = input<ColorVariant>('grey');
 
     /**
      * The display variant of the tag.
      *
      * @default flat
      */
-    variant = input<'corner-wrap' | 'flat' | 'pill'>('flat');
+    readonly variant = input<'corner-wrap' | 'flat' | 'pill'>('flat');
 }

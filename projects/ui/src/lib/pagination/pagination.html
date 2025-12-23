@@ -1,10 +1,10 @@
 @if (numPages > 1) {
     <ng-container>
         <ui-button
-            [disabled]="!inBounds(value - 1)"
+            [disabled]="!inBounds(value() - 1)"
             [icon]="ChevronLeft"
             [iconOnly]="true"
-            [label]="value === 1 ? 'First page' : 'Previous page (' + (value - 1) + ')'"
+            [label]="value() === 1 ? 'First page' : 'Previous page (' + (value() - 1) + ')'"
             (onClick)="previousPage()"
             size="small"
             variant="tertiary"
@@ -35,16 +35,16 @@
                     [label]="page.toString()"
                     (onClick)="emit(page)"
                     size="small"
-                    [variant]="value === page ? 'primary' : 'tertiary'"
+                    [variant]="value() === page ? 'primary' : 'tertiary'"
                     owner="pagination"></ui-button>
             }
         </ng-template>
 
         <ui-button
-            [disabled]="!inBounds(value + 1)"
+            [disabled]="!inBounds(value() + 1)"
             [icon]="ChevronRight"
             [iconOnly]="true"
-            [label]="value === numPages ? 'Last page' : 'Next page (' + (value + 1) + ')'"
+            [label]="value() === numPages ? 'Last page' : 'Next page (' + (value() + 1) + ')'"
             (onClick)="nextPage()"
             size="small"
             variant="tertiary"

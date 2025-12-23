@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, input } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
 import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
 import { UIIcon } from '../icon';
@@ -81,21 +81,21 @@ export class UITable<R extends TableRow> {
      *
      * Array<TableRow>
      */
-    @Input() data: R[] = [];
+    readonly data = input<R[]>([]);
     /**
      * The column definitions of the table.
      *
-     * @type Array<TableColumn>
+     * @exampleType Array<TableColumn>
      */
-    @Input() columns: (TableColumn<R> | boolean)[] = [];
+    readonly columns = input<(TableColumn<R> | boolean)[]>([]);
     /** The title of the table. */
-    @Input() title?: string;
+    readonly title = input<string | undefined>(undefined);
     /**
      * The size of the table.
      *
      * @default medium
      */
-    @Input() size: TableSize = 'medium';
+    readonly size = input<TableSize>('medium');
     /**
      * The number of rows per page.
      *
@@ -103,17 +103,17 @@ export class UITable<R extends TableRow> {
      *
      * @default 10
      */
-    @Input() pageSize = 10;
+    readonly pageSize = input(10);
 
     pageIndex = 0;
     sorting: SortState = [];
 
     get hasPagination(): boolean {
-        return (this.data?.length || 0) > this.pageSize;
+        return (this.data()?.length || 0) > this.pageSize();
     }
 
     get normalizedColumns(): TableColumn<R>[] {
-        return (this.columns || []).filter((c): c is TableColumn<R> => typeof c === 'object' && c !== null);
+        return (this.columns() || []).filter((c): c is TableColumn<R> => typeof c === 'object' && c !== null);
     }
 
     get totalColumns(): number {
@@ -121,13 +121,13 @@ export class UITable<R extends TableRow> {
     }
 
     get totalPages(): number {
-        const len = this.data?.length || 0;
-        return Math.ceil(len / this.pageSize) || 1;
+        const len = this.data()?.length || 0;
+        return Math.ceil(len / this.pageSize()) || 1;
     }
 
     get rows(): R[] {
         const cols = this.normalizedColumns;
-        const result = [...(this.data || [])];
+        const result = [...(this.data() || [])];
 
         if (this.sorting.length) {
             result.sort((a, b) => {
@@ -144,8 +144,8 @@ export class UITable<R extends TableRow> {
             });
         }
 
-        const start = this.pageIndex * this.pageSize;
-        const end = start + this.pageSize;
+        const start = this.pageIndex * this.pageSize();
+        const end = start + this.pageSize();
         return result.slice(start, end);
     }
 
@@ -175,13 +175,13 @@ export class UITable<R extends TableRow> {
     }
 
     startRow(): number {
-        const total = this.data.length;
-        return total === 0 ? 0 : this.pageIndex * this.pageSize + 1;
+        const total = this.data().length;
+        return total === 0 ? 0 : this.pageIndex * this.pageSize() + 1;
     }
 
     endRow(): number {
-        const end = this.pageIndex * this.pageSize + this.pageSize;
-        return Math.min(end, this.data.length);
+        const end = this.pageIndex * this.pageSize() + this.pageSize();
+        return Math.min(end, this.data().length);
     }
 
     formatCell(value: unknown): string | null {

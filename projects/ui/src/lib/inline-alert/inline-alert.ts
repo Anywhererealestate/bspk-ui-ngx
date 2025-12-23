@@ -29,9 +29,9 @@ export class UIInlineAlert {
      *
      * @default informational
      */
-    variant = input<AlertVariant>('informational');
+    readonly variant = input<AlertVariant>('informational');
     /** The id of the inline alert. */
-    id = input<string | null>(null);
+    readonly id = input<string | null>(null);
     /** The owner of the inline alert. */
-    owner = input<string | null>(null);
+    readonly owner = input<string | null>(null);
 }

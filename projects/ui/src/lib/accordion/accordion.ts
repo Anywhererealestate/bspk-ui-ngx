@@ -146,23 +146,23 @@ export class UIAccordion {
      * @exampleType Array<AccordionSection>
      * @required
      */
-    items = input<AccordionSection[]>([]);
+    readonly items = input<AccordionSection[]>([]);
 
     /**
      * If true only one accordion section can be opened at a time
      *
      * @default true
      */
-    singleOpen = input(true);
+    readonly singleOpen = input(true);
 
-    itemsWithIds = computed(() =>
+    readonly itemsWithIds = computed(() =>
         this.items().map((item): AccordionSection & { id: string } => ({
             ...item,
             id: item.id || `accordion-item-${randomString(8)}`,
         })),
     );
 
-    openSections = model(
+    readonly openSections = model(
         this.itemsWithIds()
             .filter((i) => i.isOpen)
             .map((i) => i.id!),

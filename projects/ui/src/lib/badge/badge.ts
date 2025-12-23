@@ -46,7 +46,7 @@ export class UIBadge {
      *
      * Could be a button, link, or any other element that the badge is associated with.
      */
-    contentWrapper = viewChild.required<ElementRef<HTMLElement>>('contentWrapper');
+    readonly contentWrapper = viewChild.required<ElementRef<HTMLElement>>('contentWrapper');
 
     /**
      * The content of the badge. If larger than 99, the badge will display '99+'.
@@ -56,28 +56,28 @@ export class UIBadge {
      *
      * @default 1
      */
-    count = input<number | undefined>(1);
+    readonly count = input<number | undefined>(1);
 
     /**
      * The size of the badge.
      *
      * @default small
      */
-    size = input<'small' | 'x-small'>('small');
+    readonly size = input<'small' | 'x-small'>('small');
 
     /**
      * The color variant of the badge.
      *
      * @default primary
      */
-    color = input<'primary' | 'secondary'>('primary');
+    readonly color = input<'primary' | 'secondary'>('primary');
 
     /**
      * Whether the badge should have a border that matches the surface color.
      *
      * @default false
      */
-    surfaceBorder = input(false);
+    readonly surfaceBorder = input(false);
 
     /**
      * Indicates whether the badge has projected (custom) content.

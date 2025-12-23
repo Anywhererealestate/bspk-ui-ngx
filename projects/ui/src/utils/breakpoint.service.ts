@@ -17,7 +17,7 @@ export const BREAKPOINTS: { label: BreakpointLabel; min: number; max: number }[]
 })
 export class UIBreakpointService {
     // use signals to track current breakpoint
-    currentBreakpointSignal = signal<BreakpointLabel>(this.currentBreakpoint);
+    readonly currentBreakpointSignal = signal<BreakpointLabel>(this.currentBreakpoint);
 
     // on service init, set up resize listener to update breakpoint signal
     constructor() {

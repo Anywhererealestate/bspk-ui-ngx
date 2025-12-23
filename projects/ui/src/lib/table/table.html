@@ -1,8 +1,8 @@
-<div [attr.data-has-pagination]="hasPagination ? true : null" [attr.data-size]="size || 'medium'">
+<div [attr.data-has-pagination]="hasPagination ? true : null" [attr.data-size]="size() || 'medium'">
     <div data-scroll-container>
         <table
             [attr.aria-colcount]="totalColumns"
-            [attr.aria-rowcount]="data.length"
+            [attr.aria-rowcount]="data().length"
             [style.gridTemplateColumns]="gridTemplateColumns()">
             @if (title) {
                 <caption>
@@ -43,7 +43,9 @@
                                 [attr.data-align]="column.align || 'left'"
                                 [attr.data-cell]="column.key"
                                 [attr.data-valign]="column.valign || 'center'">
-                                {{ formatCell(column.formatter ? column.formatter(row, size) : $any(row)[column.key]) }}
+                                {{
+                                    formatCell(column.formatter ? column.formatter(row, size()) : $any(row)[column.key])
+                                }}
                             </td>
                         }
                     </tr>
@@ -53,7 +55,7 @@
 
         @if (hasPagination) {
             <div data-pagination role="group">
-                <div data-pagination-label>Showing {{ startRow() }}-{{ endRow() }} of {{ data.length }} results</div>
+                <div data-pagination-label>Showing {{ startRow() }}-{{ endRow() }} of {{ data().length }} results</div>
                 <ui-pagination
                     [value]="pageIndex + 1"
                     [numPages]="totalPages"

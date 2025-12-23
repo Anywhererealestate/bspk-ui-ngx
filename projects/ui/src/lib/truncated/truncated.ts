@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, ElementRef, ViewChild, AfterViewInit, model } from '@angular/core';
+import { Component, ViewEncapsulation, ElementRef, AfterViewInit, model, viewChild } from '@angular/core';
 import { TooltipProps, UITooltipDirective } from '../tooltip/tooltip.directive';
 
 @Component({
@@ -17,15 +17,15 @@ export class UITruncated implements AfterViewInit {
      * @example
      *     Some really long text that might be truncated when displayed in a small container.
      *
-     * @type string
+     * @exampleType string
      * @required
      */
-    @ViewChild('el', { static: false }) elRef!: ElementRef<HTMLElement>;
+    readonly elRef = viewChild.required<ElementRef<HTMLElement>>('el');
 
-    protected tooltip = model<TooltipProps | string | undefined>('');
+    protected readonly tooltip = model<TooltipProps | string | undefined>('');
 
     ngAfterViewInit() {
-        const el = this.elRef?.nativeElement;
+        const el = this.elRef()?.nativeElement;
 
         if (el && el.scrollWidth > el.clientWidth) {
             this.tooltip.set(el.textContent?.trim() || '');

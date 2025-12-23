@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { componentTestProps } from '../../utils/componentTestProps';
 import { UIListItem } from './list-item';
 
 describe('UIListItem', () => {
@@ -10,7 +11,12 @@ describe('UIListItem', () => {
             imports: [UIListItem],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIListItem);
+        fixture = TestBed.createComponent(
+            UIListItem,
+            componentTestProps<UIListItem>({
+                label: 'Test List Item',
+            }),
+        );
         fixture.detectChanges();
     });
 

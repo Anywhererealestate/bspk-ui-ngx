@@ -71,13 +71,13 @@ export interface TooltipProps {
     },
 })
 export class UITooltipDirective implements OnDestroy, OnInit {
-    value = model<TooltipProps | string | undefined>(undefined, {
+    readonly value = model<TooltipProps | string | undefined>(undefined, {
         alias: 'ui-tooltip',
     });
 
-    tooltipId = model<string | undefined>(undefined);
+    readonly tooltipId = model<string | undefined>(undefined);
 
-    props = computed((): TooltipProps | undefined => {
+    readonly props = computed((): TooltipProps | undefined => {
         if (!this.value()) return undefined;
 
         const next =
@@ -264,12 +264,12 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     },
 })
 class UITooltip {
-    arrow = viewChild.required<ElementRef>('arrow');
+    readonly arrow = viewChild.required<ElementRef>('arrow');
 
     /** Tooltip id for a11y labelling */
-    id = signal<string | undefined>(undefined);
+    readonly id = signal<string | undefined>(undefined);
 
-    props = model<TooltipProps>({
+    readonly props = model<TooltipProps>({
         label: '',
         placement: 'top',
         showTail: true,

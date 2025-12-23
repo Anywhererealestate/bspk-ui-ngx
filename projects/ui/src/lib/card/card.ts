@@ -38,5 +38,5 @@ export class UICard {
      *
      * @default elevated
      */
-    variant = input<CardVariant>('elevated');
+    readonly variant = input<CardVariant>('elevated');
 }

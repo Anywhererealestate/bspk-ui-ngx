@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, Output, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation, input } from '@angular/core';
 import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
 import { UIButton } from '../button/button';
 import { IconChevronLeft, IconChevronRight } from '../icons';
@@ -34,6 +34,9 @@ const INPUT_TYPE_THRESHOLD = 7;
     },
 })
 export class UIPagination implements OnChanges {
+    /** Called when the page changes. */
+    @Output() onChange = new EventEmitter<number>();
+
     /**
      * The number of pages to display in the pagination component.
      *
@@ -41,16 +44,13 @@ export class UIPagination implements OnChanges {
      *
      * @default 2
      */
-    @Input() numPages = 2;
+    readonly numPages = input(2);
     /**
      * The current (1-based) page number.
      *
      * @default 1
      */
-    @Input() value = 1;
-
-    /** Called when the page changes. */
-    @Output() onChange = new EventEmitter<number>();
+    readonly value = input(1);
 
     // Internal string representation for the input field when large page counts.
     inputValue = '1';
@@ -62,29 +62,29 @@ export class UIPagination implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['value']) {
-            this.inputValue = String(this.value);
+            this.inputValue = String(this.value());
         }
     }
 
     emit(page: number) {
         const next = this.clamp(page);
         this.onChange.emit(next);
-        sendAriaLiveMessage(`Page ${page} of ${this.numPages}`);
+        sendAriaLiveMessage(`Page ${page} of ${this.numPages()}`);
     }
 
     previousPage() {
-        if (this.value > 1) this.emit(this.value - 1);
+        if (this.value() > 1) this.emit(this.value() - 1);
     }
 
     nextPage() {
-        if (this.value < this.numPages) this.emit(this.value + 1);
+        if (this.value() < this.numPages()) this.emit(this.value() + 1);
     }
 
     submitManual(event?: Event) {
         if (event) event.preventDefault();
         const parsedValue = parseInt(this.inputValue || '', 10);
         if (isNaN(parsedValue)) {
-            this.inputValue = String(this.value);
+            this.inputValue = String(this.value());
             return;
         }
         const next = this.clamp(parsedValue);
@@ -93,20 +93,20 @@ export class UIPagination implements OnChanges {
     }
 
     inBounds(n: number): boolean {
-        return n >= 1 && n <= this.numPages;
+        return n >= 1 && n <= this.numPages();
     }
 
     pages(): number[] {
-        return Array.from({ length: this.numPages }, (_, i) => i + 1);
+        return Array.from({ length: this.numPages() }, (_, i) => i + 1);
     }
 
     label(): string {
-        return `Go to page ${this.value}`;
+        return `Go to page ${this.value()}`;
     }
 
     private clamp(page: number): number {
         if (page < 1) return 1;
-        if (page > this.numPages) return this.numPages;
+        if (page > this.numPages()) return this.numPages();
         return page;
     }
 }

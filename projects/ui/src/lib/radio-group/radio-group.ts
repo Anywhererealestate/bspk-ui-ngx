@@ -65,7 +65,7 @@ export interface RadioGroupOption {
 export class UIRadioGroup extends UIRadioOption {
     @Output() valueChange = new EventEmitter<string>();
     /** Radio group options */
-    options = input<RadioGroupOption[]>([]);
+    readonly options = input<RadioGroupOption[]>([]);
     /**
      * The `aria-describedby` attribute for the radio group.
      *
@@ -74,7 +74,7 @@ export class UIRadioGroup extends UIRadioOption {
      *
      * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-describedby
      */
-    ariaDescribedBy = input<string | null>(null);
+    readonly ariaDescribedBy = input<string | null>(null);
     /**
      * The `aria-errormessage` attribute for the radio group.
      *
@@ -84,7 +84,7 @@ export class UIRadioGroup extends UIRadioOption {
      *
      * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-errormessage
      */
-    ariaErrorMessage = input<string | null>(null);
+    readonly ariaErrorMessage = input<string | null>(null);
     /** Handles changes to the radio button selection. */
     onRadioChange(value: string, checked: boolean) {
         if (checked) {

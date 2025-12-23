@@ -1,18 +1,18 @@
 <div data-icon-bar>
-    @if (variant === 'error') {
+    @if (variant() === 'error') {
         <icon-error-fill />
-    } @else if (variant === 'informational') {
+    } @else if (variant() === 'informational') {
         <icon-info-fill />
-    } @else if (variant === 'success') {
+    } @else if (variant() === 'success') {
         <icon-check-circle-fill />
-    } @else if (variant === 'warning') {
+    } @else if (variant() === 'warning') {
         <icon-warning-fill />
     }
 </div>
 <div data-content>
-    @if (header || onClose.observed) {
+    @if (header() || onClose.observed) {
         <div data-header>
-            <span>{{ header }}</span>
+            <span>{{ header() }}</span>
             @if (onClose.observed) {
                 <ui-button
                     (click)="emitClose()"
@@ -25,11 +25,11 @@
         </div>
     }
     <div data-body>
-        <span>{{ body }}</span>
-        @if (callToAction) {
+        <span>{{ body() }}</span>
+        @if (callToAction()) {
             <ui-button
-                [label]="callToAction.label"
-                (click)="callToAction.onClick()"
+                [label]="callToAction().label"
+                (click)="callToAction().onClick()"
                 [size]="'small'"
                 [variant]="'tertiary'" />
         }

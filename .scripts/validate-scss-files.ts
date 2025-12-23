@@ -37,10 +37,12 @@ const missingFiles: string[] = [];
 ngxFiles.forEach((ngxFilePath: string) => {
     const fileName = path.basename(ngxFilePath);
 
+    if (!fileName) return;
+
     const reactFilePath = reactFiles.find((rf) => path.basename(rf) === fileName);
 
     if (!reactFilePath || !fs.existsSync(reactFilePath)) {
-        missingFiles.push(`Missing React SCSS file for: ${fileName}`);
+        missingFiles.push(fileName);
         return;
     }
 

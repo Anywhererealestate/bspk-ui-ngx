@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { componentTestProps } from '../../utils/componentTestProps';
 import { UIAvatar } from './avatar';
 
 describe('UIAvatar', () => {
@@ -11,7 +11,12 @@ describe('UIAvatar', () => {
             imports: [UIAvatar],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIAvatar);
+        fixture = TestBed.createComponent(
+            UIAvatar,
+            componentTestProps<UIAvatar>({
+                name: 'Test User',
+            }),
+        );
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

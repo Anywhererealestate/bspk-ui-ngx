@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
 import { AlertVariant } from '../../types/utils';
 import { ButtonSize, UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
@@ -29,49 +29,49 @@ export interface CallToActionButton {
     encapsulation: ViewEncapsulation.None,
     host: {
         'data-bspk': 'banner-alert',
-        '[attr.data-elevated]': 'elevated || undefined',
-        '[attr.data-variant]': 'variant',
+        '[attr.data-elevated]': 'elevated() || undefined',
+        '[attr.data-variant]': 'variant()',
         role: 'alert',
     },
 })
 export class UIBannerAlert {
-    /**
-     * The color variant of the banner alert.
-     *
-     * @default informational
-     */
-    @Input() variant?: AlertVariant = 'informational';
-    /**
-     * Is the alert elevated. If true a drop shadow is added.
-     *
-     * @default false
-     */
-    @Input() elevated?: boolean = false;
-    /**
-     * The header of the banner alert.
-     *
-     * @required
-     */
-    @Input() header = '';
-    /**
-     * The body of the banner alert.
-     *
-     * @exampleType multiline
-     * @required
-     */
-    @Input() body = '';
-    /**
-     * This property may be undefined or an object containing required CallToActionButton properties.
-     *
-     * @type CallToActionButton
-     */
-    @Input() callToAction?: CallToActionButton;
     /**
      * Function to call when the banner alert is closed.
      *
      * @required
      */
     @Output() onClose = new EventEmitter<void>();
+    /**
+     * The color variant of the banner alert.
+     *
+     * @default informational
+     */
+    readonly variant = input<AlertVariant | undefined>('informational');
+    /**
+     * Is the alert elevated. If true a drop shadow is added.
+     *
+     * @default false
+     */
+    readonly elevated = input<boolean | undefined>(false);
+    /**
+     * The header of the banner alert.
+     *
+     * @required
+     */
+    readonly header = input('');
+    /**
+     * The body of the banner alert.
+     *
+     * @exampleType multiline
+     * @required
+     */
+    readonly body = input('');
+    /**
+     * This property may be undefined or an object containing required CallToActionButton properties.
+     *
+     * @type CallToActionButton
+     */
+    readonly callToAction = input<CallToActionButton>();
 
     IconClose = IconClose;
 
