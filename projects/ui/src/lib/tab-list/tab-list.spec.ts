@@ -20,6 +20,7 @@ describe('TabList', () => {
                     { value: '2', label: 'Two' },
                 ],
                 value: '1',
+                component: 'tab-list',
             }),
         );
         component = fixture.componentInstance;

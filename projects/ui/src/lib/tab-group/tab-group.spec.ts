@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { componentTestProps } from '../../utils/componentTestProps';
 import { UITabGroup } from './tab-group';
 
 describe('TabGroup', () => {
@@ -10,14 +11,19 @@ describe('TabGroup', () => {
             imports: [UITabGroup],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UITabGroup);
+        fixture = TestBed.createComponent(
+            UITabGroup,
+            componentTestProps<UITabGroup>({
+                label: 'Example',
+                options: [
+                    { value: '1', label: 'One' },
+                    { value: '2', label: 'Two' },
+                ],
+                value: '1',
+            }),
+        );
         component = fixture.componentInstance;
-        component.label.set('Example');
-        component.options.set([
-            { value: '1', label: 'One' },
-            { value: '2', label: 'Two' },
-        ]);
-        component.value.set('1');
+
         fixture.detectChanges();
     });
 
