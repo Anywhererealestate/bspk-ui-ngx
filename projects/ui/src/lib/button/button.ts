@@ -40,7 +40,41 @@ export type IconType = BspkIcon;
  */
 @Component({
     selector: 'ui-button',
-    templateUrl: './button.html',
+    template: `<button
+        [ui-tooltip]="tooltipLabel"
+        #buttonElement
+        [type]="type()"
+        [attr.aria-label]="ariaLabel() || label()"
+        [attr.data-bspk]="'button'"
+        [attr.data-bspk-owner]="owner() || null"
+        [attr.data-destructive]="destructive() || null"
+        [attr.data-size]="size()"
+        [attr.data-touch-target-parent]="true"
+        [attr.data-variant]="variant()"
+        [attr.data-width]="width()"
+        [disabled]="disabled() || null"
+        [class]="buttonClasses"
+        (click)="handleClick($event)"
+        (focus)="handleFocus($event)"
+        (blur)="handleBlur($event)"
+        (mouseover)="handleMouseOver($event)"
+        (mouseleave)="handleMouseLeave($event)">
+        @if (!label()) {
+            <ng-content></ng-content>
+        } @else {
+            @if (icon()) {
+                <span [attr.aria-hidden]="true" [attr.data-button-icon]="true">
+                    <ui-icon [icon]="icon()!"></ui-icon>
+                </span>
+            }
+            @if (shouldShowLabel) {
+                <span [attr.data-button-label]="true">
+                    {{ label() }}
+                </span>
+            }
+        }
+        <span [attr.data-touch-target]="true"></span>
+    </button>`,
     styleUrls: ['./button.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, UIIcon, UITooltipDirective],

@@ -25,7 +25,59 @@ const INPUT_TYPE_THRESHOLD = 7;
     selector: 'ui-pagination',
     standalone: true,
     imports: [CommonModule, UIButton, UIInput],
-    templateUrl: './pagination.html',
+    template: `@if (numPages() > 1) {
+        <ng-container>
+            <ui-button
+                [disabled]="!inBounds(value() - 1)"
+                [icon]="ChevronLeft"
+                [iconOnly]="true"
+                [label]="value() === 1 ? 'First page' : 'Previous page (' + (value() - 1) + ')'"
+                (onClick)="previousPage()"
+                size="small"
+                variant="tertiary"
+                owner="pagination"></ui-button>
+
+            @if (numPages() > INPUT_TYPE_THRESHOLD) {
+                <ng-container>
+                    <form data-input-form (submit)="submitManual($event)">
+                        <ui-input
+                            label="Page number"
+                            [type]="'number'"
+                            [showClearButton]="false"
+                            [value]="inputValue"
+                            (valueChange)="inputValue = $event"
+                            (blur)="submitManual()"
+                            name="page-number"></ui-input>
+                        <span>of {{ numPages() }}</span>
+                    </form>
+                </ng-container>
+            } @else {
+                <ng-container *ngTemplateOutlet="pageButtons"></ng-container>
+            }
+
+            <ng-template #pageButtons>
+                @for (page of pages(); track $index) {
+                    <ui-button
+                        [attr.aria-label]="'Page ' + page"
+                        [label]="page.toString()"
+                        (onClick)="emit(page)"
+                        size="small"
+                        [variant]="value() === page ? 'primary' : 'tertiary'"
+                        owner="pagination"></ui-button>
+                }
+            </ng-template>
+
+            <ui-button
+                [disabled]="!inBounds(value() + 1)"
+                [icon]="ChevronRight"
+                [iconOnly]="true"
+                [label]="value() === numPages() ? 'Last page' : 'Next page (' + (value() + 1) + ')'"
+                (onClick)="nextPage()"
+                size="small"
+                variant="tertiary"
+                owner="pagination"></ui-button>
+        </ng-container>
+    }`,
     styleUrls: ['./pagination.scss'],
     encapsulation: ViewEncapsulation.None,
     host: {

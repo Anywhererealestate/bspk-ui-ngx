@@ -16,7 +16,7 @@ export type Overflow = 'scroll' | 'wrap';
             [leadingIcon]="item.leadingIcon"
             [trailingIcon]="item.trailingIcon"
             [trailingBadge]="item.trailingBadge"
-            (chipClick)="item.click?.($event)" />
+            (click)="item.click?.($event)" />
     }`,
     styleUrl: './chip-group.scss',
     encapsulation: ViewEncapsulation.None,

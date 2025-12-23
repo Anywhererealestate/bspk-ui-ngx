@@ -23,7 +23,43 @@ export interface CallToActionButton {
 @Component({
     selector: 'ui-banner-alert',
     imports: [UIButton, IconErrorFill, IconInfoFill, IconCheckCircleFill, IconWarningFill],
-    templateUrl: './banner-alert.html',
+    template: `<div data-icon-bar>
+            @if (variant() === 'error') {
+                <icon-error-fill />
+            } @else if (variant() === 'informational') {
+                <icon-info-fill />
+            } @else if (variant() === 'success') {
+                <icon-check-circle-fill />
+            } @else if (variant() === 'warning') {
+                <icon-warning-fill />
+            }
+        </div>
+        <div data-content>
+            @if (header() || onClose.observed) {
+                <div data-header>
+                    <span>{{ header() }}</span>
+                    @if (onClose.observed) {
+                        <ui-button
+                            (click)="emitClose()"
+                            label="Close"
+                            [icon]="IconClose"
+                            [iconOnly]="true"
+                            [variant]="'tertiary'"
+                            [size]="'small'" />
+                    }
+                </div>
+            }
+            <div data-body>
+                <span>{{ body() }}</span>
+                @if (callToAction()) {
+                    <ui-button
+                        [label]="callToAction()!.label"
+                        (click)="callToAction()!.onClick()"
+                        [size]="'small'"
+                        [variant]="'tertiary'" />
+                }
+            </div>
+        </div>`,
     styleUrl: './banner-alert.scss',
     standalone: true,
     encapsulation: ViewEncapsulation.None,
