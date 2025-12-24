@@ -15,7 +15,9 @@ import { UIFocusTrapDirective } from './focus-trap.directive';
         <label style="display: block; margin: var(--spacing-sizing-08) 0;">
             <input type="checkbox" [checked]="enabled" (change)="enabled = $event.target.checked" /> Enable focus trap
             <br />
-            <span style="font-size: smaller">This will trap keyboard focus within the box below.</span>
+            <span style="font-size: smaller"
+                >While enabled, you can only tab through elements inside the box below.</span
+            >
         </label>
 
         <div [ui-focus-trap]="enabled">
