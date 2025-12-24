@@ -1,20 +1,16 @@
 import { DOCUMENT } from '@angular/common';
-import { ElementRef, OnChanges, OnDestroy, input, signal, inject, model, Directive } from '@angular/core';
+import { ElementRef, OnChanges, OnDestroy, input, signal, inject, Directive } from '@angular/core';
 
-export interface FocusTrapProps {
-    /** Enables the focus trap. */
-    enabled?: boolean;
-    /** When enabled, automatically focus the first focusable child. @default true */
-    autoFocus?: boolean;
-    /** Restore focus to previously focused element on disable. @default true */
-    restoreFocus?: boolean;
+/** Safely focus an element if it exists and has a focus method. */
+function safeFocus(el: HTMLElement | null | undefined) {
+    if (el && 'focus' in el && typeof el.focus === 'function') el.focus();
 }
 
 /**
  * Utility that traps keyboard focus within its projected content when enabled.
  *
  * @example
- *     <ui-focus-trap [enabled]="true">
+ *     <ui-focus-trap>
  *     <!-- interactive content -->
  *     <button>One</button>
  *     <button>Two</button>
@@ -29,7 +25,7 @@ export interface FocusTrapProps {
 })
 export class UIFocusTrapDirective implements OnChanges, OnDestroy {
     /** Enables the focus trap. */
-    readonly enabled = model<boolean>(false, {
+    readonly enabled = input<boolean>(true, {
         alias: 'ui-focus-trap',
     });
     /** Auto-focus first focusable child on enable. @default true */
@@ -74,14 +70,7 @@ export class UIFocusTrapDirective implements OnChanges, OnDestroy {
 
     private restorePreviousFocus() {
         if (!this.restoreFocus()) return;
-        const prev = this.prevFocused();
-        if (prev && typeof prev.focus === 'function') {
-            try {
-                prev.focus();
-            } catch {
-                // ignore focus errors
-            }
-        }
+        safeFocus(this.prevFocused());
         this.prevFocused.set(null);
     }
 
@@ -104,11 +93,8 @@ export class UIFocusTrapDirective implements OnChanges, OnDestroy {
                 ? (index - 1 + focusables.length) % focusables.length
                 : (index + 1) % focusables.length;
             e.preventDefault();
-            try {
-                focusables[nextIndex].focus();
-            } catch {
-                // ignore focus errors
-            }
+
+            safeFocus(focusables[nextIndex]);
         }
     };
 
@@ -119,24 +105,14 @@ export class UIFocusTrapDirective implements OnChanges, OnDestroy {
         if (!root || !target) return;
         if (!root.contains(target)) {
             const focusables = this.getFocusableElements();
-            const toFocus = focusables[0] || root;
-            try {
-                toFocus.focus();
-            } catch {
-                // ignore focus errors
-            }
+            safeFocus(focusables[0] || root);
         }
     };
 
     private focusInitial() {
         const root = this.container.nativeElement;
         const focusables = this.getFocusableElements();
-        const toFocus = focusables[0] || root;
-        try {
-            toFocus.focus();
-        } catch {
-            // ignore focus errors
-        }
+        safeFocus(focusables[0] || root);
     }
 
     private getFocusableElements(): HTMLElement[] {
