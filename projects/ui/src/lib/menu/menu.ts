@@ -21,13 +21,17 @@ export interface MenuProps {
      * @exampleType string
      */
     width?: string;
-    /** Common props */
+    /** The id of the element. If not provided one will be generated. */
     id?: string;
-    /** Owner tag for theming/analytics parity. */
+    /** Identifies the parent component. Helps with styling, debugging, and/or testing purposes. */
     owner?: string;
-    /** Optional ARIA role. */
+    /** The ARIA role of the element. */
     role?: string;
-    /** Optional style object (not applied directly; width is mapped). */
+    /**
+     * Inline styles to apply to the element.
+     *
+     * Allows for CSS variables to be passed in as well. (not applied directly; width is mapped).
+     */
     style?: string;
 }
 
