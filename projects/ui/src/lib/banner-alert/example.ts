@@ -11,28 +11,39 @@ import { UIBannerAlert } from './banner-alert';
     template: `
         <h2>BannerAlert</h2>
 
-        <h3>Informational</h3>
-        <ui-banner-alert header="Example Header" body="Example body text" variant="informational" (onClose)="onClose()">
-        </ui-banner-alert>
+        <h3>Default</h3>
+        <ui-banner-alert header="Example Header" body="Example body text"> </ui-banner-alert>
 
-        <h3>Success</h3>
+        <h3>variant="informational"</h3>
+        <ui-banner-alert header="Example Header" body="Example body text" variant="informational"> </ui-banner-alert>
+
+        <h3>variant="success"</h3>
         <ui-banner-alert header="Example Header" body="Example body text" variant="success"></ui-banner-alert>
 
-        <h3>Error</h3>
+        <h3>variant="error"</h3>
         <ui-banner-alert header="Example Header" body="Example body text" variant="error"></ui-banner-alert>
 
-        <h3>Warning</h3>
+        <h3>variant="warning"</h3>
         <ui-banner-alert header="Example Header" body="Example body text" variant="warning"></ui-banner-alert>
 
         <h3>Elevated</h3>
-        <ui-banner-alert header="Example Header" body="Example body text" variant="informational" [elevated]="true">
-        </ui-banner-alert>
+        <ui-banner-alert header="Example Header" body="Example body text" [elevated]="true"> </ui-banner-alert>
 
-        <h3>Call to action</h3>
+        <h3>onClose</h3>
+        <ui-banner-alert header="Example Header" body="Example body text" (onClose)="onClose()"> </ui-banner-alert>
+
+        <h3>callToAction</h3>
         <ui-banner-alert
             header="Example Header"
             body="Example body text"
-            variant="informational"
+            [callToAction]="{ label: 'Click me', onClick: onCta }">
+        </ui-banner-alert>
+
+        <h3>onClose + callToAction</h3>
+        <ui-banner-alert
+            header="Example Header"
+            body="Example body text"
+            (onClose)="onClose()"
             [callToAction]="{ label: 'Click me', onClick: onCta }">
         </ui-banner-alert>
     `,
