@@ -62,16 +62,10 @@ export interface MenuProps {
     },
 })
 export class UIMenu implements AsInputSignal<MenuProps> {
-    /** A label for the menu for screen readers. This is required if the role is set to "menu" or "listbox". */
     readonly label = input<MenuProps['label']>(undefined);
-    /** The width of the menu. */
     readonly width = input<MenuProps['width']>(undefined);
-    /** Owner tag for theming/analytics parity. */
     readonly owner = input<MenuProps['owner']>(undefined);
-    /** Element id. */
     readonly id = input<MenuProps['id']>(undefined);
-    /** Optional ARIA role. */
     readonly role = input<MenuProps['role']>(undefined);
-    /** Optional style object (not applied directly; width is mapped). */
     readonly style = input<MenuProps['style']>(undefined);
 }

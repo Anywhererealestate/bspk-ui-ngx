@@ -70,29 +70,9 @@ const insetToVariable = (insetProp: number | string) => {
     },
 })
 export class UIDivider implements AsInputSignal<DividerProps> {
-    /**
-     * The orientation of the divider.
-     *
-     * @default horizontal
-     */
     readonly orientation = input<DividerProps['orientation']>('horizontal');
-    /**
-     * The thickness of the divider.
-     *
-     * @default light
-     */
     readonly thickness = input<DividerProps['thickness']>('light');
-    /**
-     * If the divider padding is shown.
-     *
-     * @default true
-     */
     readonly padding = input<DividerProps['padding']>(true);
-    /**
-     * The inset (margin) applied to the divider.
-     *
-     * @default 0
-     */
     readonly inset = input<DividerProps['inset']>(0);
 
     insetStyle() {
