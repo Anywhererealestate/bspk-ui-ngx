@@ -17,7 +17,7 @@ import { Directive, ElementRef, OnDestroy, AfterViewInit, Renderer2, inject } fr
     standalone: true,
 })
 export class UIMatchParentHeightDirective implements AfterViewInit, OnDestroy {
-    el = inject(ElementRef<HTMLElement>);
+    el = inject<ElementRef<HTMLElement>>(ElementRef);
     renderer = inject(Renderer2);
 
     private removeResize?: () => void;
