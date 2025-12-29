@@ -4,9 +4,9 @@ import {
     input,
     booleanAttribute,
     ElementRef,
-    AfterViewInit,
     output,
     viewChild,
+    effect,
 } from '@angular/core';
 import { uniqueId } from '../../utils/random';
 
@@ -75,7 +75,7 @@ import { uniqueId } from '../../utils/random';
         style: `display: contents;`,
     },
 })
-export class UICheckbox implements AfterViewInit {
+export class UICheckbox {
     /** Emits the new checked state (true or false) */
     checkedChange = output<boolean>();
 
@@ -114,10 +114,12 @@ export class UICheckbox implements AfterViewInit {
 
     private readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
-    ngAfterViewInit() {
-        // Set indeterminate property on the native input
-        const nativeInput: HTMLInputElement | null = this.inputEl().nativeElement;
-        if (nativeInput) nativeInput.indeterminate = this.indeterminate();
+    constructor() {
+        effect(() => {
+            // Update indeterminate property on the native input
+            const nativeInput: HTMLInputElement | null = this.inputEl().nativeElement;
+            if (nativeInput) nativeInput.indeterminate = this.indeterminate();
+        });
     }
 
     onInputChange() {

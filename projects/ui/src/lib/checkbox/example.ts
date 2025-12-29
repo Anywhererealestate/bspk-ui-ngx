@@ -94,7 +94,7 @@ import { UICheckbox } from './checkbox';
                 style="font: inherit; border: none; padding: 0; cursor: pointer;"
                 (click)="toggleIndeterminate('checkbox-9')">
                 {{ indeterminate['checkbox-9'] }}</button
-            >, checked = ({{ checked['checkbox-9'] }})
+            >, checked = {{ checked['checkbox-9'] }}
         </h3>
         <ui-checkbox
             name="checkbox-9"
@@ -168,8 +168,8 @@ export class UICheckboxExample {
     };
 
     indeterminate: Record<string, boolean> = {
-        'checkbox-10': true,
         'checkbox-9': true,
+        'checkbox-10': true,
         'checkbox-11': true,
     };
 
