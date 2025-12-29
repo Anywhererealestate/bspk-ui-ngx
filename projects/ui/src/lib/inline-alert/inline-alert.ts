@@ -24,7 +24,9 @@ import { UIWarningTwoTone } from './warning-two-tone';
         } @else if (variant() === 'warning') {
             <ui-warning-two-tone />
         }
-        <p ui-txt="body-small">{{ label() }}</p>`,
+        <div ui-txt="body-small">
+            {{ label() }}
+        </div>`,
     styleUrl: './inline-alert.scss',
     host: {
         'data-bspk': 'inline-alert',
