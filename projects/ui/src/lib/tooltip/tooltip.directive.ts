@@ -96,10 +96,10 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         };
     });
 
-    host = inject(ElementRef<HTMLElement>);
+    host = inject<ElementRef<HTMLElement>>(ElementRef);
     renderer = inject(Renderer2);
     env = inject(EnvironmentInjector);
-    document = inject(DOCUMENT);
+    document = inject<Document>(DOCUMENT);
 
     private tooltipComponent?: ComponentRef<UITooltip> | null;
     private referenceEl?: HTMLElement | null;

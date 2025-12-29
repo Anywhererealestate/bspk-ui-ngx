@@ -14,6 +14,7 @@ export * from './lib/chip';
 export * from './lib/chip-group';
 export * from './lib/dialog';
 export * from './lib/flex';
+export * from './lib/focus-trap';
 export * from './lib/icon';
 export * from './lib/icons';
 export * from './lib/inline-alert';

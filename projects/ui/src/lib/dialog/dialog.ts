@@ -10,6 +10,7 @@ import {
     OnDestroy,
     viewChild,
 } from '@angular/core';
+import { UIFocusTrapDirective } from '../focus-trap';
 import { UIPortalDirective } from '../portal';
 import { UIScrim } from '../scrim/scrim';
 
@@ -37,7 +38,7 @@ export type Placement = 'bottom' | 'center' | 'left' | 'right' | 'top';
 @Component({
     selector: 'ui-dialog',
     standalone: true,
-    imports: [UIPortalDirective, UIScrim],
+    imports: [UIPortalDirective, UIScrim, UIFocusTrapDirective],
     template: `
         @if (open()) {
             <div
@@ -50,7 +51,12 @@ export type Placement = 'bottom' | 'center' | 'left' | 'right' | 'top';
                 [attr.aria-label]="ariaLabel() || null"
                 [attr.aria-description]="ariaDescription() || null"
                 role="presentation">
-                <div data-dialog-box [attr.data-width-full]="widthFull()" #box tabindex="-1">
+                <div
+                    data-dialog-box
+                    [ui-focus-trap]="!disableFocusTrap()"
+                    [attr.data-width-full]="widthFull()"
+                    #box
+                    tabindex="-1">
                     <ng-content></ng-content>
                 </div>
             </div>

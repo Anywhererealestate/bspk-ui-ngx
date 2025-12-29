@@ -58,7 +58,7 @@ import { Placement, UIDialog } from './dialog';
 
         @for (placement of placements; track placement) {
             <h3>Dialog {{ placement }}</h3>
-            <ui-button label="Open Top Dialog" (click)="openPlacement[placement] = true"></ui-button>
+            <ui-button label="Open {{ placement }} Dialog" (click)="openPlacement[placement] = true"></ui-button>
 
             <ui-dialog
                 [open]="openPlacement[placement]"
