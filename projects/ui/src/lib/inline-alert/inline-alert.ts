@@ -24,7 +24,7 @@ import { UIWarningTwoTone } from './warning-two-tone';
         } @else if (variant() === 'warning') {
             <ui-warning-two-tone />
         }
-        <p ui-txt="body-small">{{ children() }}</p>`,
+        <p ui-txt="body-small">{{ label() }}</p>`,
     styleUrl: './inline-alert.scss',
     host: {
         'data-bspk': 'inline-alert',
@@ -41,7 +41,7 @@ export class UIInlineAlert {
      *
      * @required
      */
-    readonly children = input<string>('');
+    readonly label = input<string>('');
     /**
      * The color variant of the inline alert.
      *
