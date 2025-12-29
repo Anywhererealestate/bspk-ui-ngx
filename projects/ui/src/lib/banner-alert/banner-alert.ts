@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
 import { AlertVariant } from '../../types/utils';
-import { ButtonSize, UIButton } from '../button';
+import { UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
 
 export interface CallToActionButton {
@@ -16,8 +16,6 @@ export interface CallToActionButton {
      * @required
      */
     onClick: () => void;
-    /** The size of the call to action button. */
-    size?: ButtonSize;
 }
 
 @Component({
@@ -71,11 +69,7 @@ export interface CallToActionButton {
     },
 })
 export class UIBannerAlert {
-    /**
-     * Function to call when the banner alert is closed.
-     *
-     * @required
-     */
+    /** Function to call when the banner alert is closed. */
     @Output() onClose = new EventEmitter<void>();
     /**
      * The color variant of the banner alert.
