@@ -1,11 +1,20 @@
 import { Component, input, ViewEncapsulation } from '@angular/core';
 import { AlertVariant } from '../../types/common';
 import { IconCheckCircleFill, IconErrorFill, IconInfoFill } from '../icons';
+import { UITxtDirective } from '../txt/txt.directive';
 import { UIWarningTwoTone } from './warning-two-tone';
+
+/**
+ * Inline alerts provide contextual feedback messages for typical user actions with a handful of available and flexible
+ * alert messages.
+ *
+ * @name InlineAlert
+ * @phase Dev
+ */
 
 @Component({
     selector: 'ui-inline-alert',
-    imports: [IconCheckCircleFill, IconErrorFill, IconInfoFill, UIWarningTwoTone],
+    imports: [IconCheckCircleFill, IconErrorFill, IconInfoFill, UITxtDirective, UIWarningTwoTone],
     template: `@if (variant() === 'error') {
             <icon-error-fill />
         } @else if (variant() === 'informational') {
@@ -15,7 +24,7 @@ import { UIWarningTwoTone } from './warning-two-tone';
         } @else if (variant() === 'warning') {
             <ui-warning-two-tone />
         }
-        <p variant="body-small"><ng-content /></p>`,
+        <p ui-txt="body-small">{{ children() }}</p>`,
     styleUrl: './inline-alert.scss',
     host: {
         'data-bspk': 'inline-alert',
@@ -26,14 +35,13 @@ import { UIWarningTwoTone } from './warning-two-tone';
     },
     encapsulation: ViewEncapsulation.None,
 })
-/**
- * Inline alerts provide contextual feedback messages for typical user actions with a handful of available and flexible
- * alert messages.
- *
- * @name InlineAlert
- * @phase Dev
- */
 export class UIInlineAlert {
+    /**
+     * The alert message content.
+     *
+     * @required
+     */
+    readonly children = input<string>('');
     /**
      * The color variant of the inline alert.
      *
@@ -42,6 +50,6 @@ export class UIInlineAlert {
     readonly variant = input<AlertVariant>('informational');
     /** The id of the inline alert. */
     readonly id = input<string | null>(null);
-    /** The owner of the inline alert. */
+    /** Identifies the parent component. Helps with styling, debugging, and/or testing purposes. */
     readonly owner = input<string | null>(null);
 }
