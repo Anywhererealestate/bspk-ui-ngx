@@ -80,7 +80,7 @@ export class UICheckbox implements AfterViewInit {
     checkedChange = output<boolean>();
 
     /** The [name](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name) of the control. */
-    readonly name = input<string | undefined>(undefined);
+    readonly name = input.required<string>();
 
     /** The value of the field control. */
     readonly value = input<string | undefined>(undefined);
@@ -112,15 +112,15 @@ export class UICheckbox implements AfterViewInit {
     /** The `aria-errormessage` attribute for the checkbox. */
     readonly ariaErrorMessage = input<string | undefined>(undefined);
 
-    private readonly input = viewChild.required<ElementRef<HTMLInputElement>>('input');
+    private readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
     ngAfterViewInit() {
         // Set indeterminate property on the native input
-        const nativeInput: HTMLInputElement | null = this.input().nativeElement;
+        const nativeInput: HTMLInputElement | null = this.inputEl().nativeElement;
         if (nativeInput) nativeInput.indeterminate = this.indeterminate();
     }
 
     onInputChange() {
-        this.checkedChange.emit(this.input().nativeElement.checked);
+        this.checkedChange.emit(this.inputEl().nativeElement.checked);
     }
 }
