@@ -1,13 +1,12 @@
 import {
     Component,
-    Output,
-    EventEmitter,
     ViewEncapsulation,
     input,
     booleanAttribute,
     ElementRef,
-    inject,
-    AfterViewInit,
+    output,
+    viewChild,
+    effect,
 } from '@angular/core';
 import { uniqueId } from '../../utils/random';
 
@@ -51,19 +50,19 @@ import { uniqueId } from '../../utils/random';
                 [required]="required()"
                 [value]="value()"
                 type="checkbox"
-                (change)="onInputChange($event)" />
+                (change)="onInputChange()"
+                #input />
             <span aria-hidden="true">
-                @if (checked() && !indeterminate()) {
-                    <svg data-checked fill="none" viewBox="0 0 14 11" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                            d="M5.485 10.182a1 1 0 0 1-1.414 0l-3.03-3.03a1 1 0 0 1 0-1.415l.14-.141a1 1 0 0 1 1.415 0l2.182 2.182 6.626-6.627a1 1 0 0 1 1.414 0l.142.142a1 1 0 0 1 0 1.414l-7.475 7.475Z"
-                            fill="currentColor" />
-                    </svg>
-                }
                 @if (indeterminate()) {
                     <svg data-indeterminate fill="none" viewBox="0 0 12 4" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M1.44444 3.11089C0.892158 3.11089 0.444443 2.66318 0.444443 2.11089V1.88867C0.444443 1.33639 0.892158 0.888672 1.44444 0.888672H10.5556C11.1078 0.888672 11.5556 1.33639 11.5556 1.88867V2.11089C11.5556 2.66318 11.1078 3.11089 10.5556 3.11089H1.44444Z"
+                            fill="currentColor" />
+                    </svg>
+                } @else if (checked()) {
+                    <svg data-checked fill="none" viewBox="0 0 14 11" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M5.485 10.182a1 1 0 0 1-1.414 0l-3.03-3.03a1 1 0 0 1 0-1.415l.14-.141a1 1 0 0 1 1.415 0l2.182 2.182 6.626-6.627a1 1 0 0 1 1.414 0l.142.142a1 1 0 0 1 0 1.414l-7.475 7.475Z"
                             fill="currentColor" />
                     </svg>
                 }
@@ -76,12 +75,12 @@ import { uniqueId } from '../../utils/random';
         style: `display: contents;`,
     },
 })
-export class UICheckbox implements AfterViewInit {
+export class UICheckbox {
     /** Emits the new checked state (true or false) */
-    @Output() checkedChange = new EventEmitter<boolean>();
+    checkedChange = output<boolean>();
 
     /** The [name](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name) of the control. */
-    readonly name = input<string | undefined>(undefined);
+    readonly name = input.required<string>();
 
     /** The value of the field control. */
     readonly value = input<string | undefined>(undefined);
@@ -113,18 +112,17 @@ export class UICheckbox implements AfterViewInit {
     /** The `aria-errormessage` attribute for the checkbox. */
     readonly ariaErrorMessage = input<string | undefined>(undefined);
 
-    private host = inject<ElementRef<HTMLSpanElement>>(ElementRef);
+    private readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('input');
 
-    ngAfterViewInit() {
-        // Set indeterminate property on the native input
-        const nativeInput: HTMLInputElement | null = this.host.nativeElement.querySelector('input[type="checkbox"]');
-        if (nativeInput) {
-            nativeInput.indeterminate = this.indeterminate();
-        }
+    constructor() {
+        effect(() => {
+            // Update indeterminate property on the native input
+            const nativeInput: HTMLInputElement | null = this.inputEl().nativeElement;
+            if (nativeInput) nativeInput.indeterminate = this.indeterminate();
+        });
     }
 
-    onInputChange(event: Event) {
-        const inputElement = event.target as HTMLInputElement;
-        this.checkedChange.emit(inputElement.checked);
+    onInputChange() {
+        this.checkedChange.emit(this.inputEl().nativeElement.checked);
     }
 }
