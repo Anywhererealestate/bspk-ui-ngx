@@ -11,7 +11,6 @@ import { UIWarningTwoTone } from './warning-two-tone';
  * @name InlineAlert
  * @phase Dev
  */
-
 @Component({
     selector: 'ui-inline-alert',
     imports: [IconCheckCircleFill, IconErrorFill, IconInfoFill, UITxtDirective, UIWarningTwoTone],
