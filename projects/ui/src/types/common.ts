@@ -1,6 +1,8 @@
 import { InputSignal, Signal } from '@angular/core';
 
-export type AsInputSignal<T> = { [K in keyof T]: InputSignal<T[K] | undefined> };
+export type AsInputSignal<T> = {
+    [K in keyof T]: undefined extends T[K] ? InputSignal<T[K] | undefined> : InputSignal<NonNullable<T[K]>>;
+};
 
 export type AsSignal<T> = { [K in keyof T]: Signal<T[K] | undefined> };
 
