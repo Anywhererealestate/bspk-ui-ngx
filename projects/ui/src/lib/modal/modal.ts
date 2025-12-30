@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output, ViewEncapsulation, input, computed, inject } from '@angular/core';
+import { ButtonSize } from '../../types/common';
 import { UIBreakpointService } from '../../utils/breakpoint.service';
-import { UIButton, ButtonSize, ButtonWidth } from '../button/button';
+import { UIButton, ButtonWidth } from '../button/button';
 import { UIDialog } from '../dialog/dialog';
 import { IconClose } from '../icons/close';
 import { UIMatchParentHeightDirective } from '../match-parent-height';
