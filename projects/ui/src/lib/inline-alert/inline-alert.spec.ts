@@ -1,17 +1,22 @@
+import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
-
 import { UIInlineAlert } from './inline-alert';
 
+@Component({
+    template: `<ui-inline-alert [label]="'Test alert content'"></ui-inline-alert>`,
+})
+class TestHostComponent {}
+
 describe('InlineAlert', () => {
-    let fixture: ComponentFixture<UIInlineAlert>;
+    let fixture: ComponentFixture<TestHostComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             imports: [UIInlineAlert],
         }).compileComponents();
 
-        fixture = TestBed.createComponent(UIInlineAlert);
+        fixture = TestBed.createComponent(TestHostComponent);
         fixture.detectChanges();
     });
 
