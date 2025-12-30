@@ -43,7 +43,7 @@ export class UIInlineAlert {
      *
      * @required
      */
-    readonly label = input<string>('');
+    readonly label = input.required<string>();
     /**
      * The color variant of the inline alert.
      *
