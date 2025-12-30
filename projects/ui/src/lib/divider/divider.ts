@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
-import { AsInputSignal } from '../../types/utils';
+import { AsInputSignal } from '../../types/common';
 
 export interface DividerProps {
     /**

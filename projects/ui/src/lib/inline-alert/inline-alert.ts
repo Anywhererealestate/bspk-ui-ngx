@@ -1,5 +1,5 @@
 import { Component, input, ViewEncapsulation } from '@angular/core';
-import { AlertVariant } from '../../types/utils';
+import { AlertVariant } from '../../types/common';
 import { IconCheckCircleFill, IconErrorFill, IconInfoFill } from '../icons';
 import { UIWarningTwoTone } from './warning-two-tone';
 

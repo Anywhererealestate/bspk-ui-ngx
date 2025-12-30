@@ -1,13 +1,7 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
-import { AsInputSignal } from '../../types/utils';
+import { CommonProps, AsInputSignal } from '../../types/common';
 
-export interface MenuProps {
-    /**
-     * The items to display in the menu. These should be ListItem and Divider components.
-     *
-     * @required
-     */
-    // children are projected via Angular's content projection
+export type MenuProps = CommonProps<'id' | 'owner' | 'role' | 'style'> & {
     /**
      * A label for the menu for screen readers.
      *
@@ -20,16 +14,8 @@ export interface MenuProps {
      * @type HTMLElement.style.width
      * @exampleType string
      */
-    width?: string;
-    /** Common props */
-    id?: string;
-    /** Owner tag for theming/analytics parity. */
-    owner?: string;
-    /** Optional ARIA role. */
-    role?: string;
-    /** Optional style object (not applied directly; width is mapped). */
-    style?: string;
-}
+    width?: HTMLElement['style']['width'];
+};
 
 /**
  * A container housing a simple list of options presented to the customer to select one option at a time.
