@@ -13,11 +13,11 @@ import {
 
 import { BspkIcon } from '../../types/bspk-icon';
 
+import { ButtonSize } from '../../types/common';
 import { UIIcon } from '../icon';
 import { UITooltipDirective } from '../tooltip';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
-export type ButtonSize = 'large' | 'medium' | 'small' | 'x-small';
 export type ButtonWidth = 'fill' | 'hug';
 export type IconType = BspkIcon;
 
