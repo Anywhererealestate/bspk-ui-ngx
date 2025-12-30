@@ -36,7 +36,7 @@ export type IconType = BspkIcon;
  *     ```;
  *
  * @name Button
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-button',

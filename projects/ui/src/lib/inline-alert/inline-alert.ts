@@ -31,7 +31,7 @@ import { UIWarningTwoTone } from './warning-two-tone';
  * alert messages.
  *
  * @name InlineAlert
- * @phase Stable
+ * @phase Dev
  */
 export class UIInlineAlert {
     /**

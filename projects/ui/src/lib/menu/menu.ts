@@ -28,7 +28,7 @@ export type MenuProps = CommonProps<'id' | 'owner' | 'role'> & {
  *     </ui-menu>
  *
  * @name Menu
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-menu',

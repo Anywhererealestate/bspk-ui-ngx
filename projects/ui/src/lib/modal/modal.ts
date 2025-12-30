@@ -30,7 +30,7 @@ export type ButtonFormat = 'horizontal' | 'vertical';
  *     </ui-modal>
  *
  * @name Modal
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-modal',

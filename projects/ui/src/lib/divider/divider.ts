@@ -50,7 +50,7 @@ const insetToVariable = (insetProp: number | string) => {
  *     </div>
  *
  * @name Divider
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-divider',
