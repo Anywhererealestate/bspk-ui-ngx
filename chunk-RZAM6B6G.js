@@ -1,0 +1,1 @@
+function u(r=8){let t="abcdefghijklmnopqrstuvwxyz0123456789",o="",e=new Uint32Array(r);window.crypto.getRandomValues(e);for(let n=0;n<r;n++)o+=t[e[n]%t.length];return o}function a(r){return`${r}-${u(8)}`}export{u as a,a as b};

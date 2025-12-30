@@ -1,0 +1,1 @@
+function r(e,a="polite"){document.querySelectorAll("[data-bspk-aria-live]").forEach(i=>i.remove()),document.body.insertAdjacentHTML("beforeend",`<div data-bspk-aria-live aria-live=${a||"polite"} data-sr-only role="alert">${e}</div>`)}export{r as a};
