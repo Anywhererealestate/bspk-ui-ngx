@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
 import { CommonProps, AsInputSignal } from '../../types/common';
 
-export type MenuProps = CommonProps<'id' | 'owner' | 'role' | 'style'> & {
+export type MenuProps = CommonProps<'id' | 'owner' | 'role'> & {
     /**
      * A label for the menu for screen readers.
      *
@@ -44,7 +44,6 @@ export type MenuProps = CommonProps<'id' | 'owner' | 'role' | 'style'> & {
         '[attr.id]': 'id() || null',
         '[attr.role]': 'role() || null',
         '[style.width]': 'width() || null',
-        '[style]': 'style()',
     },
 })
 export class UIMenu implements AsInputSignal<MenuProps> {
@@ -53,5 +52,4 @@ export class UIMenu implements AsInputSignal<MenuProps> {
     readonly owner = input<MenuProps['owner']>(undefined);
     readonly id = input<MenuProps['id']>(undefined);
     readonly role = input<MenuProps['role']>(undefined);
-    readonly style = input<MenuProps['style']>(undefined);
 }
