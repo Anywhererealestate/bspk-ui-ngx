@@ -26,6 +26,8 @@ const getExamples = () =>
 // store examples to compare during watch
 let examples = getExamples();
 
+const importPath = (slug: string) => `../../../../../projects/ui/src/lib/${slug}/example`;
+
 export function generateComponentRoutes() {
     examples = getExamples();
 
@@ -38,16 +40,18 @@ export function generateComponentRoutes() {
 import { NavRoute } from '../types';
 
 export const componentItems: NavRoute[] = [
-    { title: 'Components', section: true },${ex(
-        // add an entry for each example
-        (slug, name) => `
+    { title: 'Components', section: true },${examples
+        .map(
+            // add an entry for each example
+            ({ slug, name }) => `
     {
         path: '${slug}',
         loadComponent: () =>
-            import('../../../../../projects/ui/src/lib/${slug}/example').then((m) => m.UI${name}Example),
+            import('${importPath(slug)}').then((m) => m.UI${name}Example),
         title: '${name}',
     },`,
-    )}
+        )
+        .join('')}
 ];
 `,
     );
@@ -55,10 +59,6 @@ export const componentItems: NavRoute[] = [
     pretty(path.join(__dirname, '..', generatedRoutesPath));
 
     console.log(`\n\x1b[32m✅ Generated component routes at projects/demo/src/app/routes/generated.ts 📄\x1b[0m\n`);
-
-    function ex(cb: (slug: string, name: string) => string): string {
-        return examples.map(({ slug, name }) => cb(slug, name)).join('');
-    }
 }
 
 // if --write is provided, generate the routes once
@@ -71,12 +71,14 @@ if (process.argv.includes('--write')) {
 if (process.argv.includes('--watch')) {
     console.log(`\x1b[33m👀 Watching for changes to example.ts files...\x1b[0m\n`);
 
-    fs.watch(uiLibPath, { recursive: true }, (_, filename) => {
-        if (filename?.endsWith('example.ts')) {
-            if (getExamples().length !== examples.length) {
-                console.log(`\n\x1b[33m🔄 Detected change to ${filename}, regenerating component routes...\x1b[0m`);
-                generateComponentRoutes();
-            }
+    fs.watch(uiLibPath, { recursive: true }, () => {
+        const examplesNow = getExamples();
+        // we don't care about individual file changes, just whether the number of examples has changed
+        if (examplesNow.length !== examples.length) {
+            console.log(
+                `\n\x1b[33m🔄 Detected change to examples (${examples.length} => ${examplesNow.length}), regenerating component routes...\x1b[0m`,
+            );
+            generateComponentRoutes();
         }
     });
 }
