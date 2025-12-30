@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
-import { AlertVariant } from '../../types/utils';
+import { AlertVariant } from '../../types/common';
 import { ButtonSize, UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
 
