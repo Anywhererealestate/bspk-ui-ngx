@@ -1,13 +1,7 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
 import { CommonProps, AsInputSignal } from '../../types/common';
 
-export type MenuProps = CommonProps<'id' | 'owner' | 'role'> & {
-    /**
-     * A label for the menu for screen readers.
-     *
-     * This is required if the role is set to "menu" or "listbox".
-     */
-    label?: string;
+export type MenuProps = CommonProps<'aria-label' | 'id' | 'owner' | 'role'> & {
     /**
      * The width of the menu.
      *
@@ -38,7 +32,7 @@ export type MenuProps = CommonProps<'id' | 'owner' | 'role'> & {
     styleUrl: './menu.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
-        '[attr.aria-label]': 'label() || null',
+        '[attr.aria-label]': 'ariaLabel() || null',
         '[attr.data-bspk-owner]': 'owner() || null',
         'data-bspk-utility': 'menu',
         '[attr.id]': 'id() || null',
@@ -47,7 +41,9 @@ export type MenuProps = CommonProps<'id' | 'owner' | 'role'> & {
     },
 })
 export class UIMenu implements AsInputSignal<MenuProps> {
-    readonly label = input<MenuProps['label']>(undefined);
+    readonly ariaLabel = input<MenuProps['aria-label']>(undefined, {
+        alias: 'aria-label',
+    });
     readonly width = input<MenuProps['width']>(undefined);
     readonly owner = input<MenuProps['owner']>(undefined);
     readonly id = input<MenuProps['id']>(undefined);

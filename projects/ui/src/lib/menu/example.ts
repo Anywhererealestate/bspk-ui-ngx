@@ -38,29 +38,24 @@ import { UIMenu } from './menu';
     ],
     template: `
         <h3>Menu</h3>
-        <ui-menu
-            [label]="'User menu'"
-            role="menu"
-            [width]="'332px'"
-            [owner]="'menu'"
-            [style]="'padding: var(--spacing-sizing-02);'">
-            <ui-list-item role="menuitem" [label]="'Michael Scott'" subText="michael.scott@email.com">
+        <ui-menu [width]="'332px'" [owner]="'menu'" [style]="'padding: var(--spacing-sizing-02);'">
+            <ui-list-item [label]="'Michael Scott'" subText="michael.scott@email.com">
                 <span data-leading>
                     <ui-avatar [image]="'/avatar-01.png'" [name]="'Michael Scott'"></ui-avatar>
                 </span>
             </ui-list-item>
             <ui-divider [inset]="2" [padding]="true"></ui-divider>
-            <ui-list-item role="menuitem" as="a" href="/menu#/my-profile" label="My profile">
+            <ui-list-item as="a" href="/menu#/my-profile" label="My profile">
                 <span data-leading>
                     <icon-account-circle></icon-account-circle>
                 </span>
             </ui-list-item>
-            <ui-list-item role="menuitem" [label]="'Settings'" as="a" href="/menu#/settings">
+            <ui-list-item [label]="'Settings'" as="a" href="/menu#/settings">
                 <span data-leading>
                     <icon-settings />
                 </span>
             </ui-list-item>
-            <ui-list-item role="menuitem" as="label" [label]="'Dark mode'">
+            <ui-list-item as="label" [label]="'Dark mode'">
                 <span data-leading>
                     @if (themeService.value() === 'light') {
                         <icon-dark-mode></icon-dark-mode>
@@ -76,23 +71,23 @@ import { UIMenu } from './menu';
                 </span>
             </ui-list-item>
             <ui-divider [inset]="2" [padding]="false"></ui-divider>
-            <ui-list-item role="menuitem" [label]="'Guide and tutorial'" as="a" href="/menu#/guide-and-tutorial">
+            <ui-list-item [label]="'Guide and tutorial'" as="a" href="/menu#/guide-and-tutorial">
                 <span data-leading>
                     <icon-menu-book></icon-menu-book>
                 </span>
             </ui-list-item>
-            <ui-list-item role="menuitem" [label]="'Help center'" as="a" href="/menu#/help-center">
+            <ui-list-item [label]="'Help center'" as="a" href="/menu#/help-center">
                 <span data-leading>
                     <icon-help></icon-help>
                 </span>
             </ui-list-item>
             <ui-divider [inset]="2" [padding]="true"></ui-divider>
-            <ui-list-item role="menuitem" [label]="'Go premium'" as="a" href="/menu#/go-premium">
+            <ui-list-item [label]="'Go premium'" as="a" href="/menu#/go-premium">
                 <span data-leading>
                     <icon-license></icon-license>
                 </span>
             </ui-list-item>
-            <ui-list-item role="menuitem" [label]="'Log out'" as="a" href="/menu#/log-out">
+            <ui-list-item [label]="'Log out'" as="a" href="/menu#/log-out">
                 <span data-leading>
                     <icon-logout></icon-logout>
                 </span>
