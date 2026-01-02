@@ -27,6 +27,7 @@ import { UIListItem } from '../list-item';
             [name]="name()"
             [value]="value()"
             [checked]="checked()"
+            [indeterminate]="indeterminate()"
             [disabled]="disabled()"
             [required]="required()"
             [invalid]="invalid()"
