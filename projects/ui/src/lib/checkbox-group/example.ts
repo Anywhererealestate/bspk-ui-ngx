@@ -1,0 +1,43 @@
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { UICheckboxGroup } from './checkbox-group';
+
+@Component({
+    selector: 'ui-checkbox-group-example',
+    standalone: true,
+    imports: [CommonModule, UICheckboxGroup],
+    template: `
+        <h2>Checkbox Group Example</h2>
+        <ui-checkbox-group [options]="options" [value]="selectedBasic" (valueChange)="onBasicValueChange($event)">
+        </ui-checkbox-group>
+        <div>Selected: {{ selectedBasic | json }}</div>
+
+        <h2>Checkbox Group Example with Select All</h2>
+        <ui-checkbox-group
+            [options]="options"
+            [value]="selectedAll"
+            (valueChange)="onAllValueChange($event)"
+            [selectAll]="true"
+            [selectAllProps]="{ label: 'Select All', description: 'Select all options' }">
+        </ui-checkbox-group>
+        <div>Selected: {{ selectedAll | json }}</div>
+    `,
+})
+export class UICheckboxGroupExample {
+    options = [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' },
+        { label: 'Option 3', value: 'option3' },
+    ];
+
+    selectedBasic: string[] = [];
+    selectedAll: string[] = [];
+
+    onBasicValueChange(newValue: string[]) {
+        this.selectedBasic = newValue;
+    }
+
+    onAllValueChange(newValue: string[]) {
+        this.selectedAll = newValue;
+    }
+}
