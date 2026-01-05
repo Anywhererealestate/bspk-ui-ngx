@@ -39,8 +39,8 @@ export class UISwitchOption extends UISwitch {
 
     /** The description of the option. */
     readonly description = input<string | undefined>(undefined);
-    /** The aria-label for the switch element. Combines label and description if both are present. */
 
+    /** The aria-label for the switch element. Combines label and description if both are present. */
     override readonly ariaLabel = input<string | undefined>(this.computedAriaLabel());
 
     computedAriaLabel(): string | undefined {
