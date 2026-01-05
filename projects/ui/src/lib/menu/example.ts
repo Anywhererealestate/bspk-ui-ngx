@@ -38,11 +38,7 @@ import { UIMenu } from './menu';
     ],
     template: `
         <h3>Menu</h3>
-        <ui-menu
-            [label]="'User menu'"
-            [width]="'332px'"
-            [owner]="'menu'"
-            [style]="'padding: var(--spacing-sizing-02);'">
+        <ui-menu [width]="'332px'" [owner]="'menu'" [style]="'padding: var(--spacing-sizing-02);'">
             <ui-list-item [label]="'Michael Scott'" subText="michael.scott@email.com">
                 <span data-leading>
                     <ui-avatar [image]="'/avatar-01.png'" [name]="'Michael Scott'"></ui-avatar>
@@ -70,7 +66,6 @@ import { UIMenu } from './menu';
                 <span data-trailing>
                     <ui-checkbox
                         name="dark-mode"
-                        aria-label="Toggle dark mode"
                         [checked]="themeService.value() === 'dark'"
                         (checkedChange)="themeService.toggle()"></ui-checkbox>
                 </span>
