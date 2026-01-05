@@ -9,26 +9,15 @@ import { UIInlineAlert } from '../inline-alert/inline-alert';
  * TimePicker.
  *
  * @example
- *     import { Input } from '@bspk/ui/Input';
- *     import { Field } from '@bspk/ui/Field';
- *
- *     () => {
- *     const [state, setState] = useState<string | undefined>(undefined);
- *
- *     return (
- *     <Field controlId="example-control-id" helperText="This is an example description." label="Example label">
- *     <Input
+ *     <ui-field
+ *     controlId="example-control-id"
+ *     helperText="This is an example description."
+ *     label="Example label">
+ *     <input
  *     aria-label="example aria-label"
  *     id="example-control-id"
- *     name="example-text"
- *     onChange={(next) => {
- *     setState(next);
- *     }}
- *     value={state}
- *     />
- *     </Field>
- *     );
- *     };
+ *     name="example-text" />
+ *     </ui-field>
  *
  * @name Field
  * @phase Utility

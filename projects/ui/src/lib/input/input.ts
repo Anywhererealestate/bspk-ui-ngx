@@ -31,6 +31,21 @@ export type InputProps = CommonProps<'owner' | 'size'> &
         showClearButton?: boolean;
     };
 
+/**
+ * An input that allows users to enter text, numbers or symbols in a singular line. This is a utility element and is not
+ * intended to be used directly but rather through the Input, and other components.
+ *
+ * @example
+ *     <ui-input
+ *     [value]="values()['default']"
+ *     (onChange)="update('default', $event)"
+ *     id="default-input"
+ *     name="default-input"
+ *     ariaLabel="Input Label"></ui-input>
+ *
+ * @name Input
+ * @phase UXReview
+ */
 @Component({
     selector: 'ui-input',
     imports: [UIButton],
