@@ -48,7 +48,6 @@ export class UICheckboxOption extends UICheckbox {
     readonly description = input<string | undefined>(undefined);
 
     /** The aria-label for the radio element. Combines label and description if both are present. */
-
     override readonly ariaLabel = input<string | undefined>(this.computedAriaLabel());
 
     computedAriaLabel(): string | undefined {
