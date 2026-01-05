@@ -12,7 +12,8 @@ describe('UIInput', () => {
         }).compileComponents();
 
         fixture = TestBed.createComponent(UIInput);
-        fixture.componentRef.setInput('label', 'Test Input');
+        fixture.componentRef.setInput('name', 'test-input');
+        fixture.componentRef.setInput('ariaLabel', 'Test Input');
 
         fixture.detectChanges();
     });

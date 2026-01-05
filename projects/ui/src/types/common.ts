@@ -92,7 +92,7 @@ export interface CommonPropsLibrary {
      *
      * Ensure this is provided when using the element in isolation to maintain accessibility.
      */
-    'aria-label'?: string;
+    ariaLabel?: string;
     /** Identifies the parent component. Helps with styling, debugging, and/or testing purposes. */
     owner?: string;
     /**
@@ -114,7 +114,7 @@ export type CommonProps<K extends keyof CommonPropsLibrary> = Pick<CommonPropsLi
 export type RequiredCommonProps<K extends keyof CommonPropsLibrary> = Required<Pick<CommonPropsLibrary, K>>;
 
 export type FieldControlProps<ValueType = string> = CommonProps<
-    'aria-label' | 'disabled' | 'invalid' | 'name' | 'readOnly' | 'required'
+    'ariaLabel' | 'disabled' | 'id' | 'invalid' | 'name' | 'readOnly' | 'required'
 > & {
     /**
      * The value of the field control.
@@ -122,18 +122,14 @@ export type FieldControlProps<ValueType = string> = CommonProps<
      * @required
      */
     value: ValueType | undefined;
-    /**
-     * The unique id of the control element.
-     *
-     * Used to link the control with its label and description for accessibility.
+    /*
+     * The aria-describedby attribute for the field control.
      */
-    controlId?: string;
-    /** The aria-describedby attribute value that should be applied to the field input element. */
     ariaDescribedBy?: string;
-    /** The aria-errormessage attribute value that should be applied to the field input element. */
+    /*
+     * The aria-errormessage attribute for the field control.
+     */
     ariaErrorMessage?: string;
-    /** The aria-labelledby attribute value that should be applied to the field input element. */
-    ariaLabelledBy?: string;
 };
 
 export type Brand =

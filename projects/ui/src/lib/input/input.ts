@@ -1,9 +1,35 @@
-import { Component, input, ViewEncapsulation } from '@angular/core';
-import { provideNgxMask } from 'ngx-mask';
-import { ButtonSize } from '../../types/common';
-import { provideValidator, provideValueAccessor, TextInputControlValueAccessor, randomString } from '../../utils';
+import { Component, computed, ElementRef, input, output, signal, viewChild, ViewEncapsulation } from '@angular/core';
+import { AsInputSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
+
+export type InputProps = CommonProps<'owner' | 'size'> &
+    FieldControlProps & {
+        /** The trailing element to display in the field. */
+        trailing?: string;
+        /** The leading element to display in the field. */
+        leading?: string;
+        /** The placeholder of the field. */
+        placeholder?: string;
+        /**
+         * The type of the input.
+         *
+         * @default text
+         */
+        type?: 'number' | 'password' | 'text';
+        /**
+         * Specifies if user agent has any permission to provide automated assistance in filling out form field values
+         *
+         * @default off
+         */
+        autoComplete?: 'off' | 'on';
+        /**
+         * Specifies if the clear button should be shown. This should almost always be true, but can be set to false.
+         *
+         * @default true
+         */
+        showClearButton?: boolean;
+    };
 
 @Component({
     selector: 'ui-input',
@@ -16,118 +42,102 @@ import { IconCancel } from '../icons/cancel';
 
         <input
             data-main-input
-            [attr.aria-label]="inputAriaLabel"
-            [attr.aria-invalid]="inputInvalid"
-            [attr.data-invalid]="inputInvalid"
-            [disabled]="inputDisabled"
-            [id]="inputId"
-            [attr.placeholder]="inputPlaceholder"
-            [attr.name]="inputName"
-            [attr.autocomplete]="inputAutocomplete"
-            [readOnly]="inputReadOnly"
-            [required]="inputRequired"
-            [type]="inputType"
-            [value]="inputValue"
-            (blur)="handleBlur($event)"
-            (input)="handleInput($event)" />
-
+            [attr.aria-label]="ariaLabel() || null"
+            [attr.aria-invalid]="invalid() || null"
+            [attr.data-invalid]="invalid() || null"
+            [disabled]="this.disabled()"
+            [attr.id]="id() || null"
+            [attr.placeholder]="placeholder() || null"
+            [attr.name]="name() || null"
+            [attr.autocomplete]="autoComplete() || null"
+            [readOnly]="readOnly() || null"
+            [required]="required() || null"
+            [type]="type()"
+            [value]="internalValue() || null"
+            (input)="handleChange($event)"
+            #inputEl />
         <ng-content select="[data-trailing]">
             @if (trailing()) {
                 <span data-trailing>{{ trailing() }}</span>
             }
         </ng-content>
-
-        @if (getShowClearButton()) {
+        @if (displayClearButton()) {
             <ui-button
                 data-clear-button
                 label="Clear input"
                 variant="tertiary"
-                [size]="buttonSize"
+                [size]="buttonSize()"
                 (click)="clearInput()"
                 [icon]="IconCancel"
                 [iconOnly]="true" />
         }`,
     styleUrl: './input.scss',
-    providers: [provideValueAccessor(UIInput), provideValidator(UIInput), provideNgxMask()],
+    providers: [],
     host: {
         'data-bspk': 'input',
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
-        '[attr.data-show-clear-button]': 'getShowClearButton()',
+        '[attr.data-show-clear-button]': 'displayClearButton()',
     },
     encapsulation: ViewEncapsulation.None,
 })
-export class UIInput extends TextInputControlValueAccessor {
-    /**
-     * Specifies if the clear button should be shown. This should almost always be true, but can be set to false.
-     *
-     * @default true
-     */
-    readonly showClearButton = input<boolean | undefined>(true);
-
+export class UIInput implements AsInputSignal<InputProps> {
     public IconCancel = IconCancel;
 
-    readonly controlId = input(randomString());
+    readonly onChange = output<string>();
+
+    readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
+
+    readonly displayClearButton = computed<boolean | null>((): boolean | null => {
+        return (
+            this.showClearButton() !== false && !this.readOnly() && !this.disabled() && !!this.internalValue().length
+        );
+    });
 
     // this method to ensures the returned value is of type ButtonSize
-    get buttonSize(): ButtonSize {
+    readonly buttonSize = computed<ButtonSize>(() => {
         const validSizes: ButtonSize[] = ['small', 'medium', 'large'];
         const sizeValue = this.size();
         return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
+    });
+
+    readonly internalValue = signal<string>('');
+    readonly showClearButton = input<InputProps['showClearButton']>(true);
+    readonly disabled = input<InputProps['disabled']>(false);
+    readonly invalid = input<InputProps['invalid']>(false);
+    readonly name = input.required<InputProps['name']>();
+    readonly placeholder = input<InputProps['placeholder']>(undefined);
+    readonly readOnly = input<InputProps['readOnly']>(false);
+    readonly required = input<InputProps['required']>(false);
+    readonly type = input<InputProps['type']>('text');
+    readonly value = input<InputProps['value']>(undefined);
+    readonly size = input<InputProps['size']>('medium');
+    readonly leading = input<InputProps['leading']>(undefined);
+    readonly trailing = input<InputProps['trailing']>(undefined);
+    readonly autoComplete = input<InputProps['autoComplete']>(undefined);
+    readonly id = input<InputProps['id']>(undefined);
+    readonly owner = input<InputProps['owner']>(undefined);
+    readonly ariaLabel = input<InputProps['ariaLabel']>(undefined);
+
+    constructor() {
+        // Initialize internalValue with the value input if provided
+        if (this.value() !== undefined) {
+            this.internalValue.set(this.value() as string);
+        }
     }
 
-    get inputAriaLabel(): string | undefined {
-        return this.ariaLabel() || this.label();
-    }
-
-    get inputInvalid(): boolean | null {
-        return this.invalid() || null;
-    }
-
-    get inputDisabled(): boolean {
-        return this.disabled() || this.disabledState();
-    }
-
-    get inputId(): string {
-        return this.id() || this.controlId();
-    }
-
-    get inputPlaceholder(): string | null {
-        return this.placeholder() || null;
-    }
-
-    get inputName(): string | null {
-        return this.name() || null;
-    }
-
-    get inputAutocomplete(): string | null {
-        return this.autoComplete() || null;
-    }
-
-    get inputReadOnly(): boolean | null {
-        return this.readOnly() || null;
-    }
-
-    get inputRequired(): boolean | null {
-        return this.required() || null;
-    }
-
-    get inputType(): string {
-        return this.type();
-    }
-
-    get inputValue(): string | undefined {
-        return this.value();
-    }
-
-    getShowClearButton(): boolean | null {
-        return (
-            !!(this.showClearButton() !== false && !this.readOnly() && !this.disabled() && this.value()?.length > 0) ||
-            null
-        );
+    handleChange(event: Event) {
+        const target = event.target as HTMLInputElement;
+        this.onChange.emit(target.value);
+        this.internalValue.set(target.value);
     }
 
     clearInput() {
-        this.value.set('');
+        event?.stopPropagation();
+        event?.preventDefault();
+        this.onChange.emit('');
+        this.internalValue.set('');
+
+        this.inputEl().nativeElement.focus();
     }
 }
