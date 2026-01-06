@@ -145,8 +145,10 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     ngOnDestroy(): void {
         this.handleCloseEvent(true);
         if (this.referenceEl) this.renderer.removeAttribute(this.referenceEl, 'aria-labelledby');
-        this.renderer.removeChild(this.tooltipEl?.parentNode, this.tooltipEl);
-        this.tooltipComponent?.destroy();
+
+        if (this.tooltipEl) this.renderer.removeChild(this.tooltipEl.parentNode, this.tooltipEl);
+
+        if (this.tooltipComponent) this.tooltipComponent.destroy();
         this.tooltipComponent = null;
     }
 
