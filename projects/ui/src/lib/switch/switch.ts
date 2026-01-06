@@ -27,7 +27,6 @@ import { Component, Output, EventEmitter, ViewEncapsulation, input, booleanAttri
     encapsulation: ViewEncapsulation.None,
     host: {
         'data-bspk': 'switch',
-        display: 'contents',
     },
 })
 export class UISwitch {
