@@ -1,30 +1,33 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
-import { UICheckbox } from '../checkbox/checkbox';
+import { UIInput } from '../input';
 import { UIField } from './field';
 
 @Component({
+    imports: [UIField, UIInput],
     template: `
-        <ui-field controlId="test-checkbox" label="Test label" helperText="Helper text">
+        <ui-field controlId="test-input" label="Test label" helperText="Helper text">
             <ui-input
                 id="example-input"
                 name="example-input"
                 [value]="value"
-                (onChange)="onChange($event)"
+                (valueChange)="value = $event"
                 ariaLabel="Example input"
-                placeholder="Type here"></ui-input>
+                placeholder="Type here" />
         </ui-field>
     `,
 })
-class TestHostComponent {}
+class TestHostComponent {
+    value = '';
+}
 
 describe('Field', () => {
     let fixture: ComponentFixture<TestHostComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [UIField, UICheckbox],
+            imports: [UIField, UIInput],
         }).compileComponents();
 
         fixture = TestBed.createComponent(TestHostComponent);

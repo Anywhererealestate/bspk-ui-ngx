@@ -12,7 +12,7 @@ describe('Menu', () => {
 
         fixture = TestBed.createComponent(UIMenu);
         component = fixture.componentInstance;
-        fixture.componentRef.setInput('label', 'User menu');
+        fixture.componentRef.setInput('ariaLabel', 'User menu');
         fixture.detectChanges();
     });
 

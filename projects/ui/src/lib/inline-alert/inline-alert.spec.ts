@@ -4,6 +4,7 @@ import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
 import { UIInlineAlert } from './inline-alert';
 
 @Component({
+    imports: [UIInlineAlert],
     template: `<ui-inline-alert [label]="'Test alert content'"></ui-inline-alert>`,
 })
 class TestHostComponent {}
