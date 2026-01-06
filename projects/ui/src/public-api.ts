@@ -34,6 +34,8 @@ export * from './lib/radio-group';
 export * from './lib/radio-option';
 export * from './lib/scrim';
 export * from './lib/segmented-control';
+export * from './lib/switch';
+export * from './lib/switch-option';
 export * from './lib/tab-group';
 export * from './lib/tab-list';
 export * from './lib/table';
