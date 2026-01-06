@@ -108,7 +108,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     private tooltipEl?: HTMLElement | null;
 
     constructor() {
-        effect(async () => {
+        effect(() => {
             this.updateTooltipProps(this.props() || {});
         });
     }
