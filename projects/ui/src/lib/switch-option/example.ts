@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UISwitchOption } from './switch-option';
 
 @Component({
@@ -20,6 +21,7 @@ import { UISwitchOption } from './switch-option';
                 [disabled]="ex.disabled"
                 [ariaLabel]="ex.ariaLabel"
                 (checkedChange)="onCheckedChange($index, $event)" />
+            <div>Demo checked: {{ ex.checked }}</div>
         }
     `,
 })
@@ -35,7 +37,7 @@ export class UISwitchOptionExample {
         required: boolean;
         ariaLabel: string;
     }> & { id: string })[] = [
-        { label: 'basic' },
+        { label: 'basic', checked: false },
         { label: 'checked = true', checked: true },
         { label: 'checked = true, disabled = true', checked: true, disabled: true },
         { label: 'disabled = true', disabled: true },
@@ -55,6 +57,6 @@ export class UISwitchOptionExample {
     onCheckedChange(idx: number, checked: boolean) {
         this.examples[idx].checked = checked;
         // Optionally, show a snackbar or log for feedback
-        // sendSnackbar(`Switch ${idx} checked: ${checked}`);
+        sendSnackbar(`Switch ${idx} checked: ${checked}`);
     }
 }
