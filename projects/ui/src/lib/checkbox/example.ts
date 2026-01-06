@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UICheckbox } from './checkbox';
 
 @Component({
@@ -175,6 +176,7 @@ export class UICheckboxExample {
 
     setChecked(name: string, checked: boolean) {
         this.checked[name] = checked;
+        sendSnackbar(`Checkbox "${name}" checked: ${checked}`);
     }
 
     toggleIndeterminate(name: string) {
