@@ -65,10 +65,10 @@ export interface TooltipProps {
     selector: '[ui-tooltip]',
     standalone: true,
     host: {
-        '(mouseenter)': 'mounted && handleOpenEvent($event)',
-        '(mouseleave)': 'mounted && handleCloseEvent($event)',
-        '(focusin)': 'mounted && handleOpenEvent($event)',
-        '(blur)': 'mounted && handleCloseEvent($event)',
+        '(mouseenter)': 'handleOpenEvent($event)',
+        '(mouseleave)': 'handleCloseEvent($event)',
+        '(focusin)': 'handleOpenEvent($event)',
+        '(blur)': 'handleCloseEvent($event)',
     },
 })
 export class UITooltipDirective implements OnDestroy, OnInit {
@@ -113,10 +113,6 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         });
     }
 
-    get mounted() {
-        return !!this.tooltipComponent;
-    }
-
     updateTooltipProps(props: TooltipProps) {
         if (!this.tooltipComponent) return;
         this.tooltipComponent.instance.props.set(props);
@@ -137,7 +133,16 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     handleCloseEvent(force: true): void;
     handleCloseEvent(event: Event): void;
     handleCloseEvent(event: Event | true) {
-        if (!this.tooltipEl || (event !== true && event.target !== this.referenceEl)) return;
+        if (
+            // if there is no tooltip or reference element
+            !this.tooltipComponent ||
+            !this.tooltipEl ||
+            !this.referenceEl ||
+            // if not forced to try to close or event target is not the reference element
+            (event !== true && event.target !== this.referenceEl)
+        )
+            // nothing to do
+            return;
 
         if (this.tooltipEl) this.renderer.setStyle(this.tooltipEl, 'display', 'none');
     }
@@ -168,9 +173,8 @@ export class UITooltipDirective implements OnDestroy, OnInit {
             // if we can't render or already rendered or disabled or no label we can't show
             !this.document ||
             !this.referenceEl ||
-            !props ||
-            props.disabled ||
-            !props.label
+            props?.disabled ||
+            !props?.label
         ) {
             return;
         }
@@ -196,8 +200,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
                 floating: this.tooltipEl,
                 arrow: this.tooltipComponent?.instance.arrowElement || null,
             },
-            placement: this.props()?.placement,
-            showTail: this.props()?.showTail,
+            ...this.props(),
         };
     }
 }
