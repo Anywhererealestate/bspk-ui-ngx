@@ -12,23 +12,22 @@ import { Component, Output, EventEmitter, ViewEncapsulation, input, booleanAttri
     standalone: true,
     imports: [],
     template: `
-        <span data-bspk="switch">
-            <input
-                type="checkbox"
-                [attr.aria-label]="ariaLabel()"
-                [checked]="checked()"
-                [disabled]="disabled()"
-                [attr.name]="name()"
-                [attr.id]="id()"
-                [attr.value]="value()"
-                (change)="onInputChange($event)" />
-            <span aria-hidden="true"></span>
-        </span>
+        <input
+            type="checkbox"
+            [attr.aria-label]="ariaLabel()"
+            [checked]="checked()"
+            [disabled]="disabled()"
+            [attr.name]="name()"
+            [attr.id]="id()"
+            [attr.value]="value()"
+            (change)="onInputChange($event)" />
+        <span aria-hidden="true"></span>
     `,
     styleUrl: './switch.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
-        style: `display: contents;`,
+        'data-bspk': 'switch',
+        display: 'contents',
     },
 })
 export class UISwitch {
