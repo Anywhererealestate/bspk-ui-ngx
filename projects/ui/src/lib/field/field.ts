@@ -5,8 +5,8 @@ import { UIInlineAlert } from '../inline-alert/inline-alert';
 /**
  * Wrapper component for form controls.
  *
- * Children should be one of the following: DatePicker, Input, InputNumber, InputPhone, Password, Select, Textarea, or
- * TimePicker.
+ * Children should be one of the following: DatePicker, Input, InputNumber, InputPhone, Password, Select, Textarea,
+ * RadioGroup, CheckboxGroup, or TimePicker.
  *
  * @example
  *     <ui-field

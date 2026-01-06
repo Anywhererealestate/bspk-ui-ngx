@@ -45,7 +45,7 @@ const INPUT_TYPE_THRESHOLD = 7;
                             [type]="'number'"
                             [showClearButton]="false"
                             [value]="inputValue"
-                            (onChange)="inputValue = $event"
+                            (valueChange)="inputValue = $event!"
                             (blur)="submitManual()"
                             name="page-number"></ui-input>
                         <span>of {{ numPages() }}</span>

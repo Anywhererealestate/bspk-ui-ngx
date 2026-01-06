@@ -1,4 +1,4 @@
-import { Component, computed, ElementRef, input, output, signal, viewChild, ViewEncapsulation } from '@angular/core';
+import { Component, computed, ElementRef, input, model, viewChild, ViewEncapsulation } from '@angular/core';
 import { AsInputSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
@@ -68,8 +68,8 @@ export type InputProps = CommonProps<'owner' | 'size'> &
             [readOnly]="readOnly() || null"
             [required]="required() || null"
             [type]="type()"
-            [value]="internalValue() || null"
-            (input)="handleChange($event)"
+            [value]="value()"
+            (input)="value.set($event.target.value)"
             #inputEl />
         <ng-content select="[data-trailing]">
             @if (trailing()) {
@@ -92,22 +92,14 @@ export type InputProps = CommonProps<'owner' | 'size'> &
         'data-bspk': 'input',
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
-        '[attr.data-show-clear-button]': 'displayClearButton()',
+        '[attr.data-show-clear-button]': 'displayClearButton() || null',
     },
     encapsulation: ViewEncapsulation.None,
 })
 export class UIInput implements AsInputSignal<InputProps> {
     public IconCancel = IconCancel;
 
-    readonly onChange = output<string>();
-
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
-
-    readonly displayClearButton = computed<boolean | null>((): boolean | null => {
-        return (
-            this.showClearButton() !== false && !this.readOnly() && !this.disabled() && !!this.internalValue().length
-        );
-    });
 
     // this method to ensures the returned value is of type ButtonSize
     readonly buttonSize = computed<ButtonSize>(() => {
@@ -116,7 +108,8 @@ export class UIInput implements AsInputSignal<InputProps> {
         return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
     });
 
-    readonly internalValue = signal<string>('');
+    readonly value = model<InputProps['value']>('');
+
     readonly showClearButton = input<InputProps['showClearButton']>(true);
     readonly disabled = input<InputProps['disabled']>(false);
     readonly invalid = input<InputProps['invalid']>(false);
@@ -125,7 +118,6 @@ export class UIInput implements AsInputSignal<InputProps> {
     readonly readOnly = input<InputProps['readOnly']>(false);
     readonly required = input<InputProps['required']>(false);
     readonly type = input<InputProps['type']>('text');
-    readonly value = input<InputProps['value']>(undefined);
     readonly size = input<InputProps['size']>('medium');
     readonly leading = input<InputProps['leading']>(undefined);
     readonly trailing = input<InputProps['trailing']>(undefined);
@@ -134,25 +126,12 @@ export class UIInput implements AsInputSignal<InputProps> {
     readonly owner = input<InputProps['owner']>(undefined);
     readonly ariaLabel = input<InputProps['ariaLabel']>(undefined);
 
-    constructor() {
-        // Initialize internalValue with the value input if provided
-        if (this.value() !== undefined) {
-            this.internalValue.set(this.value() as string);
-        }
-    }
-
-    handleChange(event: Event) {
-        const target = event.target as HTMLInputElement;
-        this.onChange.emit(target.value);
-        this.internalValue.set(target.value);
-    }
+    readonly displayClearButton = computed<boolean>(() => {
+        return this.showClearButton() !== false && !this.readOnly() && !this.disabled() && !!this.value();
+    });
 
     clearInput() {
-        event?.stopPropagation();
-        event?.preventDefault();
-        this.onChange.emit('');
-        this.internalValue.set('');
-
+        this.value.set('');
         this.inputEl().nativeElement.focus();
     }
 }

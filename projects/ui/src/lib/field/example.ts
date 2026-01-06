@@ -15,18 +15,22 @@ import { UIField } from './field';
                 id="example-input"
                 name="example-input"
                 [value]="value"
-                (onChange)="onChange($event)"
+                (valueChange)="onChange($event)"
                 ariaLabel="Example input"
                 placeholder="Type here"></ui-input>
         </ui-field>
 
-        <h3>Input with error message</h3>
-        <ui-field controlId="error-input" label="Error label" [errorMessage]="'This is an error message.'">
+        <h3>Input with error message and helper text</h3>
+        <ui-field
+            controlId="error-input"
+            label="Error label"
+            [errorMessage]="'This is an error message.'"
+            helperText="This is an example description which should not be displayed when there is an error message.">
             <ui-input
                 id="error-input"
                 name="error-input"
                 [value]="value"
-                (onChange)="onChange($event)"
+                (valueChange)="onChange($event)"
                 ariaLabel="Error input"
                 placeholder="Type here"
                 [invalid]="true"></ui-input>
@@ -38,7 +42,7 @@ import { UIField } from './field';
                 id="req-input"
                 name="req-input"
                 [value]="value"
-                (onChange)="onChange($event)"
+                (valueChange)="onChange($event)"
                 ariaLabel="Required input"
                 placeholder="Type here"></ui-input>
         </ui-field>

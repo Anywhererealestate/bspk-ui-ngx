@@ -12,7 +12,7 @@ import { UIInput } from './input';
         <h3>Default</h3>
         <ui-input
             [value]="values()['default']"
-            (onChange)="update('default', $event)"
+            (valueChange)="update('default', $event)"
             id="default-input"
             name="default-input"
             ariaLabel="Input Label"></ui-input>
@@ -52,13 +52,14 @@ import { UIInput } from './input';
         <ui-input name="name-example" ariaLabel="Input Label" name="I am an example name"></ui-input>
 
         <h3>value</h3>
-        <ui-input name="value-example" ariaLabel="Input Label" value="I am an example value"></ui-input>
+        <ui-input
+            [value]="values()['value-example']"
+            (valueChange)="update('value-example', $event)"
+            name="value-example"
+            ariaLabel="Input Label"></ui-input>
 
         <h3>ariaLabel</h3>
         <ui-input name="aria-label-example" ariaLabel="Input Label" ariaLabel="Input Label + aria-label"></ui-input>
-
-        <h3>autoComplete</h3>
-        <ui-input name="auto-complete-example" ariaLabel="Input Label" autoComplete="on"></ui-input>
 
         <h3>id</h3>
         <ui-input name="id-example" ariaLabel="Input Label" id="hello, I am an id"></ui-input>
@@ -79,11 +80,21 @@ import { UIInput } from './input';
         <ui-input name="leading-example" ariaLabel="Input Label" leading="$"></ui-input>
 
         <h3>trailing</h3>
-        <ui-input name="trailing-example" ariaLabel="Input Label" trailing="%"></ui-input>
+        <ui-input
+            [value]="values()['trailing-example']"
+            (valueChange)="update('trailing-example', $event)"
+            name="trailing-example"
+            ariaLabel="Input Label"
+            trailing="%"></ui-input>
     `,
 })
 export class UIInputExample {
-    readonly values = signal<Record<string, string | undefined>>({});
+    readonly values = signal<Record<string, string | undefined>>({
+        default: 'Default value example',
+        'value-example': 'I am an example value',
+    });
+
+    readonly defaultValue = signal<string | undefined>('Default value example');
 
     update = (key: string, next: string | undefined) => {
         this.values.update((current) => ({
