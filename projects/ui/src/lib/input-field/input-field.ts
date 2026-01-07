@@ -4,6 +4,21 @@ import { uniqueId } from '../../utils';
 import { FieldProps, UIField, describedById, errorMessageId, labelledById } from '../field';
 import { UIInput } from '../input';
 
+/**
+ * An input that allows users to enter text, numbers or symbols in a singular line. This is a utility element and is not
+ * intended to be used directly but rather through the Input, and other components.
+ *
+ * @example
+ *     <ui-input-field
+ *     [value]="inputValue()"
+ *     (valueChange)="updateInput($event)"
+ *     id="default-input"
+ *     name="default-input"
+ *     label="Input Label "/>
+ *
+ * @name InputField
+ * @phase UXReview
+ */
 @Component({
     selector: 'ui-input-field',
     standalone: true,

@@ -37,11 +37,11 @@ export type InputProps = CommonProps<'owner' | 'size'> &
  *
  * @example
  *     <ui-input
- *     [value]="values()['default']"
- *     (onChange)="update('default', $event)"
+ *     [value]="inputValue()"
+ *     (valueChange)="updateInput($event)"
  *     id="default-input"
  *     name="default-input"
- *     ariaLabel="Input Label"/>
+ *     ariaLabel="Input Label "/>
  *
  * @name Input
  * @phase UXReview

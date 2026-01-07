@@ -4,6 +4,28 @@ import { uniqueId } from '../../utils';
 import { describedById, errorMessageId, FieldProps, labelledById, UIField } from '../field';
 import { UITextarea } from '../textarea';
 
+/**
+ * A component that allows users to input large amounts of text that could span multiple lines.
+ *
+ * This component gives you a textarea HTML element that automatically adjusts its height to match the length of the
+ * content within maximum and minimum rows. A character counter when a maxLength is set to show the number of characters
+ * remaining below the limit.
+ *
+ * For a more complete example with field usage, see the TextareaField component.
+ *
+ * @example
+ *     <ui-textarea-field
+ *     [value]="textareaValue()"
+ *     (valueChange)="updateTextarea($event)"
+ *     id="default-textarea"
+ *     name="default-textarea"
+ *     label="Textarea Label "/>
+ *
+ * @element
+ *
+ * @name TextareaField
+ * @phase UXReview
+ */
 @Component({
     selector: 'ui-textarea-field',
     standalone: true,
