@@ -226,7 +226,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     },
 })
 class UITooltip {
-    readonly arrow = viewChild.required<ElementRef>('arrow');
+    readonly arrow = viewChild<ElementRef>('arrow');
 
     /** Tooltip id for a11y labelling */
     readonly id = signal<string | undefined>(undefined);
