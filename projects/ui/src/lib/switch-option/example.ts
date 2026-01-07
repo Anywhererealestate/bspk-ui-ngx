@@ -37,7 +37,7 @@ export class UISwitchOptionExample {
         required: boolean;
         ariaLabel: string;
     }> & { id: string })[] = [
-        { label: 'basic', checked: false },
+        { label: 'basic' },
         { label: 'checked = true', checked: true },
         { label: 'checked = true, disabled = true', checked: true, disabled: true },
         { label: 'disabled = true', disabled: true },
