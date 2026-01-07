@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
+import { UITxtDirective } from '../txt';
 import { LinkProps, UILinkDirective } from './link.directive';
 
 @Component({
     selector: 'ui-link-example',
     standalone: true,
-    imports: [UILinkDirective],
+    imports: [UILinkDirective, UITxtDirective],
     template: `
         <h2>Link</h2>
 
@@ -27,24 +28,20 @@ import { LinkProps, UILinkDirective } from './link.directive';
         <br />
         <a ui-link href="#" size="large">Large Link</a>
 
+        <h3>Disabled</h3>
+        <a ui-link href="#" [disabled]="true">Disabled Link</a>
+
         <h3>Variants</h3>
-        <a ui-link href="#" variant="default">Default Variant</a>
-        <br />
-        <a ui-link href="#" variant="subtle">Subtle Variant</a>
-        <br />
-        <a ui-link href="#" variant="subtle-inverse">Subtle Inverse Variant</a>
-
-        @for (kind of this.kinds; track kind) {
-            <h3>{{ kind.charAt(0).toUpperCase() + kind.slice(1) }} Variant with Pseudo States</h3>
-            <div data-links-grid>
-                <div></div>
-                <span>Default</span>
-                <span>Hover</span>
-                <span>Active</span>
-                <span>Disabled</span>
-                <span>Visited</span>
-                <span>Focus</span>
-
+        <div data-links-grid>
+            <div></div>
+            <span ui-txt="labels-large">Default</span>
+            <span ui-txt="labels-large">Hover</span>
+            <span ui-txt="labels-large">Active</span>
+            <span ui-txt="labels-large">Disabled</span>
+            <span ui-txt="labels-large">Visited</span>
+            <span ui-txt="labels-large">Focus</span>
+            @for (kind of this.kinds; track kind) {
+                <div ui-txt="labels-large">{{ kind }}</div>
                 @for (state of ['default', 'hover', 'active', 'disabled', 'visited', 'focus']; track state) {
                     <div [attr.data-kind]="kind">
                         @if (state === 'disabled') {
@@ -53,7 +50,7 @@ import { LinkProps, UILinkDirective } from './link.directive';
                                 href="https://bspk.dev/fake-link/{{ kind }}+{{ state }}"
                                 [variant]="kind"
                                 [disabled]="true"
-                                >Link Text</a
+                                >Link</a
                             >
                         } @else {
                             <a
@@ -61,16 +58,13 @@ import { LinkProps, UILinkDirective } from './link.directive';
                                 href="https://bspk.dev/fake-link/{{ kind }}+{{ state }}"
                                 [variant]="kind"
                                 [attr.data-pseudo]="state !== 'default' ? state : null">
-                                Link Text
+                                Link
                             </a>
                         }
                     </div>
                 }
-            </div>
-        }
-
-        <h3>Disabled</h3>
-        <a ui-link href="#" [disabled]="true">Disabled Link</a>
+            }
+        </div>
     `,
 })
 export class UILinkExample {
