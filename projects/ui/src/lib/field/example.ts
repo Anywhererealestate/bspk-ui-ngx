@@ -17,7 +17,7 @@ import { UIField } from './field';
                 [value]="value"
                 (valueChange)="onChange($event)"
                 ariaLabel="Example input"
-                placeholder="Type here"></ui-input>
+                placeholder="Type here" />
         </ui-field>
 
         <h3>Input with error message and helper text</h3>
@@ -33,7 +33,7 @@ import { UIField } from './field';
                 (valueChange)="onChange($event)"
                 ariaLabel="Error input"
                 placeholder="Type here"
-                [invalid]="true"></ui-input>
+                [invalid]="true" />
         </ui-field>
 
         <h3>Required with trailing</h3>
@@ -44,7 +44,7 @@ import { UIField } from './field';
                 [value]="value"
                 (valueChange)="onChange($event)"
                 ariaLabel="Required input"
-                placeholder="Type here"></ui-input>
+                placeholder="Type here" />
         </ui-field>
     `,
 })
