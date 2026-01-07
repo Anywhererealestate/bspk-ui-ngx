@@ -47,7 +47,7 @@ const INPUT_TYPE_THRESHOLD = 7;
                             [value]="inputValue"
                             (valueChange)="inputValue = $event!"
                             (blur)="submitManual()"
-                            name="page-number"></ui-input>
+                            name="page-number" />
                         <span>of {{ numPages() }}</span>
                     </form>
                 </ng-container>
