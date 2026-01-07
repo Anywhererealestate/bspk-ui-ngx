@@ -1,11 +1,41 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, input, computed } from '@angular/core';
 
+import { AsInputSignal, CommonProps } from '../../types/common';
+import { uniqueId } from '../../utils';
+import { ScrollListItemsStyleProps } from '../../utils/scrollListItemsStyle';
 import { UIIcon } from '../icon';
 import { IconChevronRight } from '../icons/chevron-right';
 import { UITruncated } from '../truncated/truncated';
 import { UITxtDirective } from '../txt';
 import { UIBreadcrumbDropdown } from './breadcrumb-dropdown';
+
+export type BreadcrumbProps = CommonProps<'id'> &
+    ScrollListItemsStyleProps & {
+        /**
+         * The array of breadcrumb items.
+         *
+         * If **less than 2** items are provided, the component will not render.
+         *
+         * @example
+         *     [
+         *         { label: 'Level 1', href: '#level-1' },
+         *         { label: 'Level 2', href: '#level-2' },
+         *         { label: 'Level 3', href: '#level-3' },
+         *         { label: 'Level 4', href: '#level-4' },
+         *         { label: 'Level 5', href: '#level-5' },
+         *         { label: 'Level 6', href: '#level-6' },
+         *         { label: 'Level 7', href: '#level-7' },
+         *         { label: 'Level 8', href: '#level-8' },
+         *         { label: 'Level 9', href: '#level-9' },
+         *         { label: 'Level 10', href: '#level-10' },
+         *     ];
+         *
+         * @type Array<BreadcrumbItem>
+         * @required
+         */
+        items: BreadcrumbItem[];
+    };
 
 export interface BreadcrumbItem {
     /**
@@ -66,7 +96,7 @@ export interface BreadcrumbItem {
                     <ui-icon [icon]="iconChevronRight" [attr.aria-hidden]="true" />
                 </li>
                 @if (items().length > 5) {
-                    <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()" [scrollLimit]="scrollLimit()" />
+                    <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
                 } @else {
                     @for (item of middleItems(); track item.href) {
                         <li>
@@ -88,59 +118,16 @@ export interface BreadcrumbItem {
     imports: [CommonModule, UIIcon, UITxtDirective, UIBreadcrumbDropdown, UITruncated],
     encapsulation: ViewEncapsulation.None,
 })
-export class UIBreadcrumb {
-    /**
-     * The array of breadcrumb items.
-     *
-     * If **less than 2** items are provided, the component will not render.
-     *
-     * @example
-     *     [
-     *         { label: 'Level 1', href: '#level-1' },
-     *         { label: 'Level 2', href: '#level-2' },
-     *         { label: 'Level 3', href: '#level-3' },
-     *         { label: 'Level 4', href: '#level-4' },
-     *         { label: 'Level 5', href: '#level-5' },
-     *         { label: 'Level 6', href: '#level-6' },
-     *         { label: 'Level 7', href: '#level-7' },
-     *         { label: 'Level 8', href: '#level-8' },
-     *         { label: 'Level 9', href: '#level-9' },
-     *         { label: 'Level 10', href: '#level-10' },
-     *     ];
-     *
-     * @required
-     */
-    readonly items = input.required<BreadcrumbItem[]>();
-
-    /**
-     * An optional unique identifier for the breadcrumb element.
-     *
-     * @example
-     *     'example-breadcrumb';
-     */
-    readonly id = input<string>(`breadcrumb-${Math.random().toString(36).substring(2, 9)}`);
-
-    /**
-     * The maximum number of items to display before collapsing into a dropdown. Items between the first and last will
-     * be collapsed if the total exceeds this limit.
-     *
-     * @example
-     *     5;
-     */
-    readonly scrollLimit = input<number | undefined>();
-
+export class UIBreadcrumb implements AsInputSignal<BreadcrumbProps> {
     readonly iconChevronRight = IconChevronRight;
 
-    /** Whether the component should render (checks if at least 2 items are provided) */
+    readonly items = input.required<BreadcrumbProps['items']>();
+    readonly id = input<BreadcrumbProps['id']>(uniqueId('breadcrumb-'));
+    readonly scrollLimit = input<BreadcrumbProps['scrollLimit']>();
+
     readonly shouldRender = computed(() => this.items().length >= 2);
-
-    /** The first breadcrumb item */
     readonly firstItem = computed(() => this.items()[0]);
-
-    /** The last breadcrumb item */
     readonly lastItem = computed(() => this.items()[this.items().length - 1]);
-
-    /** The middle items (between first and last) */
     readonly middleItems = computed(() =>
         this.items().length > 2 ? this.items().slice(1, this.items().length - 1) : [],
     );
