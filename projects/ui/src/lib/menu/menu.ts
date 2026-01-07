@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
 import { CommonProps, AsInputSignal } from '../../types/common';
 
-export type MenuProps = CommonProps<'aria-label' | 'id' | 'owner' | 'role'> & {
+export type MenuProps = CommonProps<'ariaLabel' | 'id' | 'owner' | 'role'> & {
     /**
      * The width of the menu.
      *
@@ -41,9 +41,7 @@ export type MenuProps = CommonProps<'aria-label' | 'id' | 'owner' | 'role'> & {
     },
 })
 export class UIMenu implements AsInputSignal<MenuProps> {
-    readonly ariaLabel = input<MenuProps['aria-label']>(undefined, {
-        alias: 'aria-label',
-    });
+    readonly ariaLabel = input<MenuProps['ariaLabel']>(undefined);
     readonly width = input<MenuProps['width']>(undefined);
     readonly owner = input<MenuProps['owner']>(undefined);
     readonly id = input<MenuProps['id']>(undefined);
