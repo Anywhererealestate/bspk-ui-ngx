@@ -194,14 +194,14 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         this.tooltipComponent.instance.id.set(tooltipId);
         this.updateTooltipProps(props);
 
-        this.floating.props = {
-            elements: {
-                reference: this.referenceEl,
-                floating: this.tooltipEl,
-                arrow: this.tooltipComponent?.instance.arrowElement || null,
-            },
-            ...this.props(),
-        };
+        this.floating.setProps({
+            placement: props.placement,
+            reference: this.referenceEl,
+            floating: this.tooltipEl,
+            arrow: (this.props()?.showTail && this.tooltipComponent?.instance.arrowElement) || null,
+            offsetOptions: this.props()?.showTail ? 8 : 4,
+            refWidth: false,
+        });
     }
 }
 
@@ -211,7 +211,9 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     standalone: true,
     template: `
         <span data-text>{{ props().label }}</span>
-        <span aria-hidden="true" data-arrow #arrow></span>
+        @if (props().showTail) {
+            <span aria-hidden="true" data-arrow #arrow></span>
+        }
     `,
     styleUrl: './tooltip.scss',
     encapsulation: ViewEncapsulation.None,
