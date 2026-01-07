@@ -16,6 +16,7 @@ export * from './lib/chip';
 export * from './lib/chip-group';
 export * from './lib/dialog';
 export * from './lib/divider';
+export * from './lib/field';
 export * from './lib/flex';
 export * from './lib/focus-trap';
 export * from './lib/icon';
