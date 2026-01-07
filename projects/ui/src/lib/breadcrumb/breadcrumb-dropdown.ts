@@ -120,8 +120,7 @@ export class UIBreadcrumbDropdown {
         let maxHeight = 'auto';
 
         if (scrollLimit && itemCount > scrollLimit) {
-            // Assume ~40px per item height
-            maxHeight = `${scrollLimit * 40}px`;
+            maxHeight = `calc(var(--list-item-height) * ${scrollLimit})`;
         }
 
         return {
