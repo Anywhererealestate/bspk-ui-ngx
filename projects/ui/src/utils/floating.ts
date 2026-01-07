@@ -80,6 +80,10 @@ export class Floating {
 
         const { floating, reference, arrow: arrowEl } = this.props;
 
+        this.render.setStyle(floating, 'position', this.props?.strategy || 'fixed');
+        this.render.setStyle(floating, 'opacity', '0');
+        this.render.setStyle(floating, 'pointerEvents', 'none');
+
         const returnValue = await computePosition(reference, floating, {
             placement: this.props.placement || 'bottom-start',
             strategy: 'fixed',
@@ -106,15 +110,10 @@ export class Floating {
 
         this.render.setStyle(floating, 'left', `${x}px`);
         this.render.setStyle(floating, 'top', `${y}px`);
-        this.render.setStyle(floating, 'position', 'fixed');
-        this.render.setStyle(floating, 'opacity', '0');
-        this.render.setStyle(floating, 'pointerEvents', 'none');
-        this.render.removeStyle(floating, 'display');
 
         setTimeout(() => {
             this.render.setStyle(floating, 'opacity', '1');
             this.render.setStyle(floating, 'pointerEvents', 'auto');
-            this.render.removeStyle(floating, 'display');
         }, 10);
 
         if (arrowEl) {

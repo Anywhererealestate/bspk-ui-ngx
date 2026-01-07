@@ -66,9 +66,9 @@ export interface TooltipProps {
     standalone: true,
     host: {
         '(mouseenter)': 'handleOpenEvent($event)',
-        '(mouseleave)': 'handleCloseEvent($event)',
+        '(mouseleave)': 'handleCloseEvent()',
         '(focusin)': 'handleOpenEvent($event)',
-        '(blur)': 'handleCloseEvent($event)',
+        '(blur)': 'handleCloseEvent()',
     },
 })
 export class UITooltipDirective implements OnDestroy, OnInit {
@@ -90,7 +90,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
 
         return {
             // Defaults
-            placement: 'top',
+            placement: this.computedPlacement || 'top',
             showTail: true,
             disabled: false,
             ...next,
@@ -103,6 +103,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     document = inject<Document>(DOCUMENT);
     floating = new Floating(this.renderer);
 
+    private computedPlacement: TooltipPlacement = 'top';
     private tooltipComponent?: ComponentRef<UITooltip> | null;
     private referenceEl?: HTMLElement | null;
     private tooltipEl?: HTMLElement | null;
@@ -119,36 +120,24 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         this.tooltipComponent.changeDetectorRef.detectChanges();
     }
 
-    async handleOpenEvent(event: Event) {
+    handleOpenEvent(event: Event) {
         if (!this.tooltipEl || event.target !== this.referenceEl) return;
 
         this.renderer.setStyle(this.tooltipEl, 'display', 'block');
 
-        const { placement } = await this.floating.compute();
-
-        if (this.tooltipEl && placement !== this.props()?.placement)
-            this.updateTooltipProps({ ...this.props(), placement: placement as TooltipPlacement });
+        this.floating.compute().then(({ placement }) => {
+            this.computedPlacement = placement as TooltipPlacement;
+            if (this.tooltipEl && placement !== this.props()?.placement)
+                this.updateTooltipProps({ ...this.props(), placement: placement as TooltipPlacement });
+        });
     }
 
-    handleCloseEvent(force: true): void;
-    handleCloseEvent(event: Event): void;
-    handleCloseEvent(event: Event | true) {
-        if (
-            // if there is no tooltip or reference element
-            !this.tooltipComponent ||
-            !this.tooltipEl ||
-            !this.referenceEl ||
-            // if not forced to try to close or event target is not the reference element
-            (event !== true && event.target !== this.referenceEl)
-        )
-            // nothing to do
-            return;
-
+    handleCloseEvent() {
         if (this.tooltipEl) this.renderer.setStyle(this.tooltipEl, 'display', 'none');
     }
 
     ngOnDestroy(): void {
-        this.handleCloseEvent(true);
+        this.handleCloseEvent();
         if (this.referenceEl) this.renderer.removeAttribute(this.referenceEl, 'aria-labelledby');
 
         if (this.tooltipEl) this.renderer.removeChild(this.tooltipEl.parentNode, this.tooltipEl);
