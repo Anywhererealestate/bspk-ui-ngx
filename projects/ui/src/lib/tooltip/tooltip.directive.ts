@@ -193,13 +193,14 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         this.renderer.setStyle(this.tooltipEl, 'display', 'none');
         this.tooltipComponent.instance.id.set(tooltipId);
         this.updateTooltipProps(props);
+        const arrowEl = this.tooltipComponent.instance.arrowElement;
 
         this.floating.setProps({
             placement: props.placement,
             reference: this.referenceEl,
             floating: this.tooltipEl,
-            arrow: (this.props()?.showTail && this.tooltipComponent?.instance.arrowElement) || null,
-            offsetOptions: this.props()?.showTail ? 8 : 4,
+            arrow: arrowEl,
+            offsetOptions: arrowEl ? 8 : 4,
             refWidth: false,
         });
     }
