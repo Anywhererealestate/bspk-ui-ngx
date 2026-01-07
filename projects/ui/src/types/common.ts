@@ -128,6 +128,8 @@ export type FieldControlProps<ValueType = string> = CommonProps<
      * The aria-errormessage attribute for the field control.
      */
     ariaErrorMessage?: string;
+    /** The aria-labelledby attribute for the field control. */
+    ariaLabelledBy?: string;
 };
 
 export type Brand =

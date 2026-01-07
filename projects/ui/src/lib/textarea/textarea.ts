@@ -1,17 +1,35 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    Output,
-    ViewChild,
-    ViewEncapsulation,
-    signal,
-    input,
-    OnInit,
-    AfterViewInit,
-} from '@angular/core';
-import { randomString } from '../../utils/randomString';
+import { Component, ViewEncapsulation, computed, input, model } from '@angular/core';
+import { CommonProps, FieldControlProps, AsInputSignal } from '../../types/common';
+
+export type TextareaProps = CommonProps<'size'> &
+    FieldControlProps & {
+        /** The placeholder of the field. */
+        placeholder?: string;
+        /**
+         * The maximum number of characters that the field will accept.
+         *
+         * @minimum 1
+         */
+        maxLength?: number;
+        /**
+         * The minimum number of rows that the textarea will show.
+         *
+         * @default 3
+         * @minimum 3
+         * @maximum 10
+         */
+        minRows?: number;
+        /**
+         * The maximum number of rows that the textarea will show.
+         *
+         * When set the textarea will automatically adjust its height to fit the content up to this limit.
+         *
+         * @default 10
+         * @minimum 3
+         * @maximum 10
+         */
+        maxRows?: number;
+    };
 
 /**
  * A component that allows users to input large amounts of text that could span multiple lines.
@@ -43,7 +61,7 @@ import { randomString } from '../../utils/randomString';
  * @element
  *
  * @name Textarea
- * @phase Stable
+ * @phase UXReview
  */
 @Component({
     selector: 'ui-textarea',
@@ -52,10 +70,13 @@ import { randomString } from '../../utils/randomString';
         <textarea
             #el
             data-main-input
+            [attr.aria-labelledby]="ariaLabelledBy() || null"
+            [attr.aria-describedby]="ariaDescribedBy() || null"
+            [attr.ariaErrorMessage]="ariaErrorMessage() || null"
             [attr.aria-label]="ariaLabel() || null"
             [attr.aria-invalid]="invalid() || null"
             [disabled]="disabled()"
-            [id]="computedId()"
+            [id]="id()"
             [attr.name]="name() || null"
             [attr.placeholder]="placeholder() || null"
             [attr.maxLength]="maxLength() ?? null"
@@ -65,88 +86,44 @@ import { randomString } from '../../utils/randomString';
             (blur)="handleBlur($event)"
             (input)="handleInput($event)"
             wrap="hard"></textarea>
-        <div aria-hidden="true" data-replicated-value>{{ replicated() }}</div>
+        <div aria-hidden="true" data-replicated-value>
+            {{ value() }}
+        </div>
     `,
     styleUrl: './textarea.scss',
     host: {
         'data-bspk': 'textarea',
-        '[attr.data-disabled]': 'disabled() ? true : null',
-        '[attr.data-invalid]': 'invalid() ? true : null',
-        '[attr.data-readonly]': 'readOnly() ? true : null',
-        '[attr.data-size]': 'size()',
-        '[style.--min-rows]': 'minRows()',
-        '[style.--max-rows]': 'maxRows()',
+        '[attr.data-disabled]': 'disabled() || null',
+        '[attr.data-invalid]': 'invalid() || null',
+        '[attr.data-readonly]': 'readOnly() || null',
+        '[attr.data-size]': 'size() || "medium"',
+        '[style.--min-rows]': 'minRowsValid()',
+        '[style.--max-rows]': 'maxRowsValid()',
     },
     encapsulation: ViewEncapsulation.None,
 })
-export class UITextarea implements OnInit, AfterViewInit {
-    /** Emits the current value when the user types. */
-    @Output() valueChange = new EventEmitter<string>();
-    /** React-style change event: emits [value, event]. */
-    @Output() onChange = new EventEmitter<[string, Event]>();
-    @ViewChild('el') el?: ElementRef<HTMLTextAreaElement>;
+export class UITextarea implements AsInputSignal<TextareaProps> {
+    readonly name = input.required<TextareaProps['name']>();
+    readonly value = model<string | undefined>('');
 
-    @Input() innerRef?: (el: HTMLTextAreaElement | null) => void;
+    readonly ariaLabel = input<TextareaProps['ariaLabel']>(undefined);
+    readonly disabled = input<TextareaProps['disabled']>(false);
+    readonly id = input<TextareaProps['id']>(undefined);
+    readonly invalid = input<TextareaProps['invalid']>(false);
+    readonly maxLength = input<TextareaProps['maxLength']>(undefined);
+    readonly maxRows = input<TextareaProps['maxRows']>(10);
+    readonly minRows = input<TextareaProps['minRows']>(3);
+    readonly placeholder = input<TextareaProps['placeholder']>(undefined);
+    readonly readOnly = input<TextareaProps['readOnly']>(false);
+    readonly required = input<TextareaProps['required']>(false);
+    readonly size = input<TextareaProps['size']>('medium');
 
-    /** The placeholder of the field. */
-    readonly placeholder = input<string | undefined>(undefined);
+    readonly ariaLabelledBy = input<TextareaProps['ariaLabelledBy']>(undefined);
+    readonly ariaDescribedBy = input<TextareaProps['ariaDescribedBy']>(undefined);
+    readonly ariaErrorMessage = input<TextareaProps['ariaErrorMessage']>(undefined);
 
-    /** The ref of the field. */
-
-    /**
-     * The maximum number of characters that the field will accept.
-     *
-     * @minimum 1
-     */
-    readonly maxLength = input<number | undefined>(undefined);
-
-    /**
-     * The minimum number of rows that the textarea will show.
-     *
-     * @default 3
-     * @minimum 3
-     * @maximum 10
-     */
-    readonly minRows = input<number>(4);
-
-    /**
-     * The maximum number of rows that the textarea will show.
-     *
-     * When set the textarea will automatically adjust its height to fit the content up to this limit.
-     *
-     * @default 10
-     * @minimum 3
-     * @maximum 10
-     */
-    readonly maxRows = input<number>(10);
-
-    // CommonProps<'size'>
-    readonly size = input<'large' | 'medium' | 'small'>('medium');
-
-    // FieldControlProps<string, ChangeEvent<HTMLTextAreaElement>>
-    readonly value = input<string | undefined>('');
-    readonly name = input<string | undefined>(undefined);
-    readonly id = input<string | undefined>(undefined);
-    readonly invalid = input<boolean>(false);
-    readonly required = input<boolean>(false);
-    readonly readOnly = input<boolean>(false);
-    readonly disabled = input<boolean>(false);
-    readonly ariaLabel = input<string | undefined>(undefined);
-    readonly replicated = signal<string>('');
-
-    private readonly _autoId = signal<string>(randomString());
-
-    computedId() {
-        return this.id() || this._autoId();
-    }
-
-    ngOnInit() {
-        this.replicated.set(`${this.value() ?? ''}\n`);
-    }
-
-    ngAfterViewInit() {
-        this.innerRef?.(this.el?.nativeElement ?? null);
-    }
+    readonly minRowsValid = computed(() => Math.min(10, Math.max(3, this.minRows() || 3)));
+    readonly maxRowsValid = computed(() => Math.min(10, Math.max(3, this.maxRows() || 10)));
 
     handleBlur(event: FocusEvent) {
         const target = event.target as HTMLTextAreaElement;
@@ -154,10 +131,6 @@ export class UITextarea implements OnInit, AfterViewInit {
     }
 
     handleInput(event: Event) {
-        const target = event.target as HTMLTextAreaElement;
-        const val = target.value;
-        this.replicated.set(`${val}\n`);
-        this.valueChange.emit(val);
-        this.onChange.emit([val, event]);
+        this.value.set((event.target as HTMLTextAreaElement).value);
     }
 }

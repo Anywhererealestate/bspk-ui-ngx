@@ -80,7 +80,6 @@ export interface FieldProps extends CommonProps<'style'> {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIField implements AsInputSignal<FieldProps> {
-    // Inputs (no JSDoc on class inputs per requirements)
     readonly errorMessage = input<string | undefined>(undefined);
     readonly label = input.required<string>();
     readonly helperText = input<string | undefined>(undefined);
@@ -89,15 +88,27 @@ export class UIField implements AsInputSignal<FieldProps> {
     readonly controlId = input.required<string>();
     readonly style = input<string | undefined>(undefined);
 
-    labelledById(): string {
-        return `${this.controlId()}-label`;
-    }
-
     errorMessageId(): string {
-        return `${this.controlId()}-field-error`;
+        return errorMessageId(this.controlId());
     }
 
     describedById(): string {
-        return `${this.controlId()}-description`;
+        return describedById(this.controlId());
     }
+
+    labelledById(): string {
+        return labelledById(this.controlId());
+    }
+}
+
+export function labelledById(controlId: string): string {
+    return `${controlId}-label`;
+}
+
+export function errorMessageId(controlId: string): string {
+    return `${controlId}-field-error`;
+}
+
+export function describedById(controlId: string): string {
+    return `${controlId}-description`;
 }

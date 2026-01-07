@@ -10,50 +10,46 @@ import { UITextarea } from './textarea';
         <h2>Textarea</h2>
 
         <h3>Default</h3>
-        <ui-textarea ariaLabel="Textarea"></ui-textarea>
+        <ui-textarea name="default" ariaLabel="Textarea" />
 
         <h3>Disabled</h3>
-        <ui-textarea ariaLabel="Textarea" [disabled]="true"></ui-textarea>
+        <ui-textarea name="disabled" ariaLabel="Textarea" [disabled]="true" />
 
         <h3>Invalid</h3>
-        <ui-textarea ariaLabel="Textarea" [invalid]="true"></ui-textarea>
+        <ui-textarea name="invalid" ariaLabel="Textarea" [invalid]="true" />
 
         <h3>Required</h3>
-        <ui-textarea ariaLabel="Textarea" [required]="true"></ui-textarea>
+        <ui-textarea name="required" ariaLabel="Textarea" [required]="true" />
 
         <h3>Read Only</h3>
-        <ui-textarea ariaLabel="Textarea" [readOnly]="true"></ui-textarea>
+        <ui-textarea name="readonly" ariaLabel="Textarea" [readOnly]="true" />
 
         <h3>Placeholder</h3>
-        <ui-textarea ariaLabel="Textarea" placeholder="Type here..."></ui-textarea>
+        <ui-textarea name="placeholder" ariaLabel="Textarea" placeholder="Type here..." />
 
         <h3>size = small</h3>
-        <ui-textarea ariaLabel="Textarea" size="small"></ui-textarea>
+        <ui-textarea name="small" ariaLabel="Textarea" size="small" />
 
         <h3>size = medium</h3>
-        <ui-textarea ariaLabel="Textarea" size="medium"></ui-textarea>
+        <ui-textarea name="medium" ariaLabel="Textarea" size="medium" />
 
         <h3>size = large</h3>
-        <ui-textarea ariaLabel="Textarea" size="large"></ui-textarea>
-
-        <h3>name</h3>
-        <ui-textarea ariaLabel="Textarea" name="example-name"></ui-textarea>
-
-        <h3>value</h3>
-        <ui-textarea ariaLabel="Textarea" value="Initial value"></ui-textarea>
+        <ui-textarea name="large" ariaLabel="Textarea" size="large" />
 
         <h3>maxLength</h3>
-        <ui-textarea ariaLabel="Textarea" [maxLength]="120" placeholder="Max 120 chars"></ui-textarea>
+        <ui-textarea name="maxlength" ariaLabel="Textarea" [maxLength]="120" placeholder="Max 120 chars" />
 
-        <h3>minRows (3) / maxRows (6)</h3>
+        <h3>minRows (2) / maxRows (4)</h3>
         <ui-textarea
+            name="minmaxrows"
             ariaLabel="Textarea"
-            [minRows]="3"
-            [maxRows]="6"
+            [minRows]="2"
+            [maxRows]="4"
             value="Line 1
 Line 2
 Line 3
-Line 4"></ui-textarea>
+Line 4" />
+        <p>The minimum value for minRows is 3 so setting it to 2 will default to 3.</p>
     `,
 })
 export class UITextareaExample {}

@@ -41,7 +41,7 @@ export type InputProps = CommonProps<'owner' | 'size'> &
  *     (onChange)="update('default', $event)"
  *     id="default-input"
  *     name="default-input"
- *     ariaLabel="Input Label"></ui-input>
+ *     ariaLabel="Input Label"/>
  *
  * @name Input
  * @phase UXReview
@@ -57,6 +57,9 @@ export type InputProps = CommonProps<'owner' | 'size'> &
 
         <input
             data-main-input
+            [attr.aria-labelledby]="ariaLabelledBy() || null"
+            [attr.aria-describedby]="ariaDescribedBy() || null"
+            [attr.ariaErrorMessage]="ariaErrorMessage() || null"
             [attr.aria-label]="ariaLabel() || null"
             [attr.aria-invalid]="invalid() || null"
             [attr.data-invalid]="invalid() || null"
@@ -69,7 +72,7 @@ export type InputProps = CommonProps<'owner' | 'size'> &
             [required]="required() || null"
             [type]="type()"
             [value]="value()"
-            (input)="value.set($event.target.value)"
+            (input)="handleInput($event)"
             #inputEl />
         <ng-content select="[data-trailing]">
             @if (trailing()) {
@@ -109,11 +112,11 @@ export class UIInput implements AsInputSignal<InputProps> {
     });
 
     readonly value = model<InputProps['value']>('');
+    readonly name = input.required<InputProps['name']>();
 
     readonly showClearButton = input<InputProps['showClearButton']>(true);
     readonly disabled = input<InputProps['disabled']>(false);
     readonly invalid = input<InputProps['invalid']>(false);
-    readonly name = input.required<InputProps['name']>();
     readonly placeholder = input<InputProps['placeholder']>(undefined);
     readonly readOnly = input<InputProps['readOnly']>(false);
     readonly required = input<InputProps['required']>(false);
@@ -126,6 +129,10 @@ export class UIInput implements AsInputSignal<InputProps> {
     readonly owner = input<InputProps['owner']>(undefined);
     readonly ariaLabel = input<InputProps['ariaLabel']>(undefined);
 
+    readonly ariaLabelledBy = input<InputProps['ariaLabelledBy']>(undefined);
+    readonly ariaDescribedBy = input<InputProps['ariaDescribedBy']>(undefined);
+    readonly ariaErrorMessage = input<InputProps['ariaErrorMessage']>(undefined);
+
     readonly displayClearButton = computed<boolean>(() => {
         return this.showClearButton() !== false && !this.readOnly() && !this.disabled() && !!this.value();
     });
@@ -133,5 +140,9 @@ export class UIInput implements AsInputSignal<InputProps> {
     clearInput() {
         this.value.set('');
         this.inputEl().nativeElement.focus();
+    }
+
+    handleInput(event: Event) {
+        this.value.set((event.target as HTMLInputElement).value);
     }
 }
