@@ -28,12 +28,12 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
             is fully visible, no tooltip will appear.
         </p>
         <div style="width: 200px; border: 1px solid #ccc; padding: 8px; margin-bottom: 16px;">
-            <span [ui-tooltip]="'truncatedOnly'"
+            <span [ui-tooltip]="{ truncated: true }"
                 >This is some really long text that might be truncated when displayed in a small container.</span
             >
             <br />
             <br />
-            <span [ui-tooltip]="'truncatedOnly'">This is some text.</span>
+            <span [ui-tooltip]="{ truncated: true }">This is some text.</span>
         </div>
 
         <h3>Dynamic Placement</h3>

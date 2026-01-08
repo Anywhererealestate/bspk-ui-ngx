@@ -72,42 +72,43 @@ export interface TooltipProps {
     },
 })
 export class UITooltipDirective implements OnDestroy, OnInit {
-    readonly value = model<TooltipProps | string | 'truncatedOnly' | undefined>(undefined, {
+    readonly value = model<TooltipProps | string | { truncated: true } | undefined>(undefined, {
         alias: 'ui-tooltip',
     });
 
     readonly tooltipId = model<string | undefined>(undefined);
 
     readonly props = computed((): TooltipProps | undefined => {
-        if (!this.value()) return undefined;
+        const value = this.value();
 
-        const defaults: TooltipProps = {
-            label: '',
+        if (!value) return undefined;
+
+        let next: TooltipProps = {
+            // Defaults
             placement: this.computedPlacement || 'top',
             showTail: true,
             disabled: false,
         };
 
-        if (this.value() === 'truncatedOnly') {
-            const el = this.host.nativeElement;
+        if (typeof value === 'string') {
+            next = { ...next, label: value };
+        } else {
+            next = { ...next, ...value };
 
-            this.renderer.setAttribute(el, 'data-truncated', 'true');
-
-            return {
-                ...defaults,
-                label: el?.textContent || '',
-                disabled: !(el.scrollWidth > el.clientWidth),
-            };
+            if ('truncated' in value && value.truncated) {
+                this.renderer.setAttribute(this.referenceEl, 'data-truncated', 'true');
+                next.label = this.referenceEl?.textContent || '';
+                next.disabled = this.referenceEl?.scrollWidth <= this.referenceEl?.clientWidth;
+            }
         }
-        if (typeof this.value() === 'string')
-            return {
-                ...defaults,
-                label: this.value() as string,
-            };
 
-        if (typeof this.value() === 'object') return { ...defaults, ...(this.value() as TooltipProps) };
-
-        return defaults;
+        return {
+            // Defaults
+            placement: this.computedPlacement || 'top',
+            showTail: true,
+            disabled: false,
+            ...next,
+        };
     });
 
     host = inject<ElementRef<HTMLElement>>(ElementRef);
@@ -118,13 +119,18 @@ export class UITooltipDirective implements OnDestroy, OnInit {
 
     private computedPlacement: TooltipPlacement = 'top';
     private tooltipComponent?: ComponentRef<UITooltip> | null;
-    private referenceEl?: HTMLElement | null;
     private tooltipEl?: HTMLElement | null;
 
     constructor() {
         effect(() => {
             this.updateTooltipProps(this.props() || {});
         });
+    }
+
+    get referenceEl() {
+        let el = this.host.nativeElement;
+        if (!el?.checkVisibility?.()) el = (el?.firstElementChild as HTMLElement) || null;
+        return el;
     }
 
     updateTooltipProps(props: TooltipProps) {
@@ -164,12 +170,6 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         this.tooltipId.set(tooltipId);
 
         const props = this.props();
-        let referenceElement = this.host.nativeElement;
-
-        if (!referenceElement?.checkVisibility?.())
-            referenceElement = (referenceElement?.firstElementChild as HTMLElement) || null;
-
-        this.referenceEl = referenceElement;
 
         if (
             // if we can't render or already rendered or disabled or no label we can't show
@@ -182,7 +182,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         }
 
         // Link host and tooltip for a11y
-        this.renderer.setAttribute(referenceElement, 'aria-labelledby', tooltipId);
+        this.renderer.setAttribute(this.referenceEl, 'aria-labelledby', tooltipId);
         const hostEl = this.document.createElement('ui-tooltip');
         this.document.body.appendChild(hostEl);
 
