@@ -186,10 +186,9 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
         this.arrowNavigation.handleKeydown(event);
 
         const SpaceEnter = () => {
-            console.log('clicking', this.arrowNavigation.activeElementId());
-
             document.querySelector<HTMLElement>(`[id="${this.arrowNavigation.activeElementId()}"]`)?.click();
         };
+
         keydownHandler({
             Escape: () => this.closeMenu(),
             Enter: SpaceEnter,
