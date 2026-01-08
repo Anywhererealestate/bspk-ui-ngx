@@ -197,6 +197,8 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
+        if (!this.referenceEl) return;
+
         if (this.props().truncated) {
             this.renderer.setAttribute(this.referenceEl, 'data-truncated', 'true');
         } else {
