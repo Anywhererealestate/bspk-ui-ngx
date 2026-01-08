@@ -4,7 +4,6 @@ import { Component, ChangeDetectionStrategy, ViewEncapsulation, input, computed 
 import { AsInputSignal, CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils';
 import { ScrollListItemsStyleProps } from '../../utils/scrollListItemsStyle';
-import { UIIcon } from '../icon';
 import { IconChevronRight } from '../icons/chevron-right';
 import { UITruncated } from '../truncated/truncated';
 import { UITxtDirective } from '../txt';
@@ -93,7 +92,7 @@ export interface BreadcrumbItem {
                     <a [href]="firstItem().href"
                         ><ui-truncated>{{ firstItem().label }}</ui-truncated></a
                     >
-                    <ui-icon [icon]="iconChevronRight" [attr.aria-hidden]="true" />
+                    <icon-chevron-right aria-hidden="true" width="24" />
                 </li>
                 @if (items().length > 5) {
                     <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
@@ -103,7 +102,7 @@ export interface BreadcrumbItem {
                             <a [href]="item.href"
                                 ><ui-truncated>{{ item.label }}</ui-truncated></a
                             >
-                            <ui-icon [icon]="iconChevronRight" [attr.aria-hidden]="true" />
+                            <icon-chevron-right aria-hidden="true" width="24" />
                         </li>
                     }
                 }
@@ -115,12 +114,10 @@ export interface BreadcrumbItem {
     }`,
     styleUrls: ['./breadcrumb.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, UIIcon, UITxtDirective, UIBreadcrumbDropdown, UITruncated],
+    imports: [CommonModule, UITxtDirective, UIBreadcrumbDropdown, UITruncated, IconChevronRight],
     encapsulation: ViewEncapsulation.None,
 })
 export class UIBreadcrumb implements AsInputSignal<BreadcrumbProps> {
-    readonly iconChevronRight = IconChevronRight;
-
     readonly items = input.required<BreadcrumbProps['items']>();
     readonly id = input<BreadcrumbProps['id']>(uniqueId('breadcrumb-'));
     readonly scrollLimit = input<BreadcrumbProps['scrollLimit']>();

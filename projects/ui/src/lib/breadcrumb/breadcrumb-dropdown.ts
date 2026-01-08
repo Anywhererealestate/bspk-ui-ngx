@@ -79,7 +79,7 @@ export type BreadcrumbDropdownProps = ScrollListItemsStyleProps & {
                 <ui-list-item [label]="item.label" [href]="item.href" />
             }
         </ui-menu>
-        <icon-chevron-right aria-hidden="true" />
+        <icon-chevron-right aria-hidden="true" width="24" />
     </li> `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, UIButton, UIListItem, UIMenu, IconChevronRight],
