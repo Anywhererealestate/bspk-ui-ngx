@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, model, AfterViewInit } from '@angular/core';
+import { Component, model, AfterViewInit, OnDestroy } from '@angular/core';
 import { UIButton } from '../button/button';
 import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
 
@@ -79,14 +79,21 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
         style: `overflow: hidden;`,
     },
 })
-export class UITooltipExample implements AfterViewInit {
+export class UITooltipExample implements AfterViewInit, OnDestroy {
     placements: TooltipPlacement[] = ['top', 'bottom', 'left', 'right'];
 
     readonly counter = model(0);
 
+    interval: ReturnType<typeof setInterval> | undefined;
+
     ngAfterViewInit() {
-        setInterval(() => {
+        this.interval = setInterval(() => {
             this.counter.set(this.counter() + 1);
         }, 1000);
+    }
+
+    ngOnDestroy() {
+        // make sure to clear interval on destroy
+        if (this.interval) clearInterval(this.interval);
     }
 }

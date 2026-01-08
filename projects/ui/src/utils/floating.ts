@@ -43,8 +43,6 @@ export interface FloatingProps {
      * @default false
      */
     refWidth?: boolean;
-    /** Whether to hide the floating element. */
-    hide?: boolean;
     /** The reference element for positioning. */
     reference?: HTMLElement | null;
     /** The floating element to be positioned. */
@@ -53,17 +51,14 @@ export interface FloatingProps {
     arrow?: HTMLElement | null;
 }
 
-export class Floating {
+export class FloatingUtility {
     private props: FloatingProps | null = null;
 
-    constructor(
-        private render: Renderer2,
-        defaultProps?: FloatingProps,
-    ) {
-        this.props = defaultProps || null;
-    }
+    constructor(private render: Renderer2) {}
 
-    setProps(props: FloatingProps) {
+    init(
+        props: Omit<FloatingProps, 'floating' | 'reference'> & Required<Pick<FloatingProps, 'floating' | 'reference'>>,
+    ) {
         this.props = {
             ...this.props,
             ...props,

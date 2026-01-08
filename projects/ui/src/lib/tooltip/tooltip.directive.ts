@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { Placement } from '@floating-ui/dom';
 import { randomString } from '../../utils';
-import { Floating } from '../../utils/floating';
+import { FloatingUtility } from '../../utils/floating';
 
 export type TooltipPlacement = Extract<Placement, 'bottom' | 'left' | 'right' | 'top'>;
 
@@ -101,7 +101,8 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     renderer = inject(Renderer2);
     env = inject(EnvironmentInjector);
     document = inject<Document>(DOCUMENT);
-    floating = new Floating(this.renderer);
+
+    floating = new FloatingUtility(this.renderer);
 
     private computedPlacement: TooltipPlacement = 'top';
     private tooltipComponent?: ComponentRef<UITooltip> | null;
@@ -184,7 +185,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         this.updateTooltipProps(props);
         const arrowEl = this.tooltipComponent.instance.arrowElement;
 
-        this.floating.setProps({
+        this.floating.init({
             placement: props.placement,
             reference: this.referenceEl,
             floating: this.tooltipEl,
