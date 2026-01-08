@@ -53,7 +53,7 @@ export type SizeVariant =
         [attr.data-color]="color()"
         [attr.data-size]="size()"
         (click)="handleOnClick($event)"
-        (keydown)="handleKeyDown($event)">
+        (keydown)="handleKeydown($event)">
         @if (image()) {
             <img [src]="image()" [alt]="name()" aria-hidden="true" />
         } @else if (showIcon()) {
@@ -165,7 +165,7 @@ export class UIAvatar {
         }
     }
 
-    handleKeyDown(event: KeyboardEvent) {
+    handleKeydown(event: KeyboardEvent) {
         if (!this.disabled() && event.key === 'Enter') {
             this.onClick.emit();
         }

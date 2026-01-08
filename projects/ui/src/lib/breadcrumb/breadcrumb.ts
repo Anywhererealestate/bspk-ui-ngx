@@ -3,14 +3,14 @@ import { Component, ChangeDetectionStrategy, ViewEncapsulation, input, computed 
 
 import { AsInputSignal, CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils';
-import { ScrollListItemsStyleProps } from '../../utils/scrollListItemsStyle';
+import { ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { IconChevronRight } from '../icons/chevron-right';
 import { UITruncated } from '../truncated/truncated';
 import { UITxtDirective } from '../txt';
 import { UIBreadcrumbDropdown } from './breadcrumb-dropdown';
 
 export type BreadcrumbProps = CommonProps<'id'> &
-    ScrollListItemsStyleProps & {
+    ScrollLimitStyleProps & {
         /**
          * The array of breadcrumb items.
          *

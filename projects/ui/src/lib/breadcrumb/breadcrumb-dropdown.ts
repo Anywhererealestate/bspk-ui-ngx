@@ -5,18 +5,21 @@ import {
     ViewEncapsulation,
     input,
     computed,
-    signal,
-    Renderer2,
     inject,
     OnInit,
     viewChild,
     ElementRef,
+    Renderer2,
+    effect,
+    signal,
 } from '@angular/core';
 
 import { AsInputSignal } from '../../types/common';
-import { Floating } from '../../utils/floating';
-import { OutsideClick } from '../../utils/outsideClick';
-import { scrollListItemsStyle, ScrollListItemsStyleProps } from '../../utils/scrollListItemsStyle';
+import { ArrowNavigationUtility } from '../../utils/arrow-navigation';
+import { FloatingUtility } from '../../utils/floating';
+import { keydownHandler } from '../../utils/keydownHandler';
+import { OutsideClickUtility } from '../../utils/outside-click';
+import { scrollLimitStyle, ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { UIButton } from '../button';
 import { IconChevronRight } from '../icons/chevron-right';
 import { IconMoreHoriz } from '../icons/more-horiz';
@@ -44,7 +47,7 @@ export interface BreadcrumbItem {
     href: string;
 }
 
-export type BreadcrumbDropdownProps = ScrollListItemsStyleProps & {
+export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
     items: BreadcrumbItem[];
     id: string;
 };
@@ -64,11 +67,12 @@ export type BreadcrumbDropdownProps = ScrollListItemsStyleProps & {
             [iconOnly]="true"
             variant="tertiary"
             size="small"
-            [attr.aria-expanded]="open()"
+            [attr.aria-expanded]="!!open()"
             [attr.aria-haspopup]="'listbox'"
             [attr.aria-controls]="open() ? menuId() : null"
             (onClick)="toggleDropdown()"
-            #reference />
+            #reference
+            (keydown)="handleKeydown($event)" />
         <ui-menu
             #floating
             [id]="menuId()"
@@ -76,8 +80,14 @@ export type BreadcrumbDropdownProps = ScrollListItemsStyleProps & {
             owner="Breadcrumb"
             role="listbox"
             [ngStyle]="menuStyle()">
-            @for (item of items(); track item.href) {
-                <ui-list-item [label]="item.label" [href]="item.href" />
+            @for (item of itemsWithIds(); track item.href) {
+                <ui-list-item
+                    as="a"
+                    [tabIndex]="-1"
+                    [id]="item.id"
+                    [label]="item.label"
+                    [href]="item.href"
+                    [active]="arrowNavigation.activeElementId() === item.id" />
             }
         </ui-menu>
         <icon-chevron-right aria-hidden="true" width="24" />
@@ -90,38 +100,73 @@ export type BreadcrumbDropdownProps = ScrollListItemsStyleProps & {
     },
 })
 export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownProps>, OnInit {
-    renderer = inject(Renderer2);
+    render = inject(Renderer2);
+
+    outsideClick = new OutsideClickUtility();
+    floating = new FloatingUtility(this.render);
+    arrowNavigation = new ArrowNavigationUtility();
+
     readonly menu = viewChild('floating', { read: ElementRef });
     readonly reference = viewChild('reference', { read: ElementRef });
 
-    outsideClick = inject(OutsideClick);
-
-    floating = new Floating(this.renderer);
-    scrollListItemsStyle = scrollListItemsStyle;
+    readonly open = signal<boolean>(false);
 
     readonly items = input.required<BreadcrumbItem[]>();
     readonly id = input.required<string>();
     readonly scrollLimit = input<number | undefined>();
     readonly iconChevronRight = IconChevronRight;
     readonly iconMoreHoriz = IconMoreHoriz;
-
     readonly menuId = computed(() => `${this.id()}-menu`);
+    readonly itemsWithIds = computed(() => this.items().map((item, index) => ({ ...item, id: this.itemId(index) })));
 
     readonly menuStyle = computed(() => {
         return {
-            ...this.scrollListItemsStyle(this.scrollLimit(), this.items().length),
+            ...scrollLimitStyle(this.scrollLimit(), this.items().length),
             width: 'fit-content',
             maxWidth: '300px',
             minWidth: '150px',
+            display: this.open() ? 'block' : 'none',
         };
     });
 
+    constructor() {
+        effect(() => {
+            this.outsideClick.setProps({
+                disabled: !this.open(),
+            });
+
+            if (this.open()) this.floating.compute();
+        });
+    }
+
+    get itemId(): (index: number) => string {
+        return (index: number) => `${this.id()}-item-${index}`;
+    }
+
+    openMenu(): void {
+        this.open.set(true);
+        this.arrowNavigation.setActiveElementId(this.itemsWithIds()[0]?.id || null);
+    }
+
+    closeMenu(): void {
+        this.open.set(false);
+        this.arrowNavigation.setActiveElementId(null);
+    }
+
     ngOnInit(): void {
-        this.outsideClick.onInit([this.menu()?.nativeElement, this.reference()?.nativeElement], () => {
-            this.open.set(false);
+        this.outsideClick.init({
+            elements: [this.menu()?.nativeElement, this.reference()?.nativeElement],
+            disabled: !this.open(),
+            handleTabs: true,
+            callback: () => this.closeMenu(),
         });
 
-        this.floating.setProps({
+        this.arrowNavigation.init({
+            ids: this.itemsWithIds().map((i) => i.id),
+            defaultActiveId: null,
+        });
+
+        this.floating.init({
             offsetOptions: 4,
             refWidth: false,
             reference: this.reference()?.nativeElement,
@@ -130,10 +175,25 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
     }
 
     toggleDropdown(): void {
-        const next = !this.open();
+        if (this.open()) {
+            this.closeMenu();
+        } else {
+            this.openMenu();
+        }
+    }
 
-        this.open.set(next);
+    handleKeydown(event: KeyboardEvent): void {
+        this.arrowNavigation.handleKeydown(event);
 
-        if (next) this.floating.compute();
+        const SpaceEnter = () => {
+            console.log('clicking', this.arrowNavigation.activeElementId());
+
+            document.querySelector<HTMLElement>(`[id="${this.arrowNavigation.activeElementId()}"]`)?.click();
+        };
+        keydownHandler({
+            Escape: () => this.closeMenu(),
+            Enter: SpaceEnter,
+            Space: SpaceEnter,
+        })(event);
     }
 }
