@@ -15,7 +15,7 @@ import { SelectOption, UISelect } from './select';
             <ui-select
                 [id]="'example-select'"
                 [name]="'example-select'"
-                [options]="OPTIONS"
+                [items]="OPTIONS"
                 [placeholder]="'Select an option'"
                 [scrollLimit]="5"
                 [size]="'medium'"
