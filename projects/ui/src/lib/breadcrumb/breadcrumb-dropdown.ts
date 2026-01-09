@@ -10,14 +10,13 @@ import {
     viewChild,
     ElementRef,
     Renderer2,
-    effect,
     signal,
 } from '@angular/core';
 
 import { AsInputSignal } from '../../types/common';
 import { ArrowNavigationUtility } from '../../utils/arrow-navigation';
 import { FloatingUtility } from '../../utils/floating';
-import { keydownHandler } from '../../utils/keydownHandler';
+import { keydownHandler } from '../../utils/keydown-handler';
 import { OutsideClickUtility } from '../../utils/outside-click';
 import { scrollLimitStyle, ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { UIButton } from '../button';
@@ -67,7 +66,7 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
                     [id]="item.id"
                     [label]="item.label"
                     [href]="item.href"
-                    [active]="arrowNavigation.activeElementId() === item.id" />
+                    [active]="arrowNavigation.activeElementId === item.id" />
             }
         </ui-menu>
         <icon-chevron-right aria-hidden="true" width="24" />
@@ -109,16 +108,6 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
         };
     });
 
-    constructor() {
-        effect(() => {
-            this.outsideClick.setProps({
-                disabled: !this.open(),
-            });
-
-            if (this.open()) this.floating.compute();
-        });
-    }
-
     get itemId(): (index: number) => string {
         return (index: number) => `${this.id()}-item-${index}`;
     }
@@ -126,11 +115,14 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
     openMenu(): void {
         this.open.set(true);
         this.arrowNavigation.setActiveElementId(this.itemsWithIds()[0]?.id || null);
+        this.outsideClick.updateProps({ disabled: false });
+        this.floating.compute();
     }
 
     closeMenu(): void {
         this.open.set(false);
         this.arrowNavigation.setActiveElementId(null);
+        this.outsideClick.updateProps({ disabled: true });
     }
 
     ngOnInit(): void {
@@ -143,7 +135,7 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
 
         this.arrowNavigation.init({
             ids: this.itemsWithIds().map((i) => i.id),
-            defaultActiveId: null,
+            defaultActiveId: undefined,
         });
 
         this.floating.init({
@@ -166,7 +158,7 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
         this.arrowNavigation.handleKeydown(event);
 
         const SpaceEnter = () => {
-            document.querySelector<HTMLElement>(`[id="${this.arrowNavigation.activeElementId()}"]`)?.click();
+            document.querySelector<HTMLElement>(`[id="${this.arrowNavigation.activeElementId}"]`)?.click();
         };
 
         keydownHandler({
