@@ -15,15 +15,15 @@ import { UIBreadcrumb, BreadcrumbItem } from './';
 
         <h3>5 Items</h3>
         <p>Standard breadcrumb with 5 items</p>
-        <ui-breadcrumb [items]="fiveItems" />
+        <ui-breadcrumb ariaLabel="Breadcrumb with 5 items" [items]="fiveItems" />
 
         <h3>With Dropdown (6+ Items)</h3>
         <p>When more than 5 items are provided, the middle items collapse into a dropdown menu</p>
-        <ui-breadcrumb [items]="manyItems" [scrollLimit]="5" />
+        <ui-breadcrumb ariaLabel="Breadcrumb with many items" [items]="manyItems" [scrollLimit]="5" />
 
         <h3>15 Items with Dropdown and Scroll</h3>
         <p>The dropdown menu becomes scrollable when there are many items</p>
-        <ui-breadcrumb [items]="manyItemsExtended" [scrollLimit]="5" />
+        <ui-breadcrumb ariaLabel="Breadcrumb with many items extended" [items]="manyItemsExtended" [scrollLimit]="5" />
     `,
 })
 export class UIBreadcrumbExample {

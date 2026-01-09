@@ -39,7 +39,7 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
  */
 @Component({
     selector: 'ui-breadcrumb-dropdown',
-    template: `<li>
+    template: `
         <ui-button
             [icon]="iconMoreHoriz"
             [label]="'Access to ' + items().length + ' pages'"
@@ -70,7 +70,7 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
             }
         </ui-menu>
         <icon-chevron-right aria-hidden="true" width="24" />
-    </li> `,
+    `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, UIButton, UIListItem, UIMenu, IconChevronRight],
     encapsulation: ViewEncapsulation.None,

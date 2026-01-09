@@ -10,7 +10,7 @@ import { UITxtDirective } from '../txt';
 import { UIBreadcrumbDropdown } from './breadcrumb-dropdown';
 import { BreadcrumbItem } from './utils';
 
-export type BreadcrumbProps = CommonProps<'id'> &
+export type BreadcrumbProps = CommonProps<'ariaLabel' | 'id'> &
     ScrollLimitStyleProps & {
         /**
          * The array of breadcrumb items.
@@ -66,14 +66,16 @@ export type BreadcrumbProps = CommonProps<'id'> &
 @Component({
     selector: 'ui-breadcrumb',
     template: `@if (shouldRender()) {
-        <nav aria-label="Breadcrumb" [attr.data-bspk]="'breadcrumb'" [attr.id]="id()">
+        <nav [attr.aria-label]="ariaLabel()" [attr.data-bspk]="'breadcrumb'" [attr.id]="id()">
             <ol>
                 <li>
                     <a ui-link [href]="firstItem().href">{{ firstItem().label }}</a>
                     <icon-chevron-right aria-hidden="true" width="24" />
                 </li>
                 @if (items().length > 5) {
-                    <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
+                    <li>
+                        <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
+                    </li>
                 } @else {
                     @for (item of middleItems(); track item.href) {
                         <li>
@@ -95,6 +97,7 @@ export type BreadcrumbProps = CommonProps<'id'> &
 })
 export class UIBreadcrumb implements AsInputSignal<BreadcrumbProps> {
     readonly items = input.required<BreadcrumbProps['items']>();
+    readonly ariaLabel = input<BreadcrumbProps['ariaLabel']>('Breadcrumb');
     readonly id = input<BreadcrumbProps['id']>(uniqueId('breadcrumb-'));
     readonly scrollLimit = input<BreadcrumbProps['scrollLimit']>();
 
