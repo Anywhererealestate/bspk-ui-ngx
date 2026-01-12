@@ -1,8 +1,23 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, input, model, signal } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    ViewEncapsulation,
+    computed,
+    input,
+    model,
+    signal,
+    viewChild,
+    AfterViewInit,
+    OnDestroy,
+} from '@angular/core';
 import { AsInputSignal, CommonProps, FieldControlProps } from '../../types/common';
-import { DropdownMenuUtility } from '../../utils/dropdown-menu';
+import { uniqueId } from '../../utils';
+import { keydownHandler } from '../../utils/keydown-handler';
+import { scrollLimitStyle } from '../../utils/scroll-limit-style';
+import { UIFloatingDirective } from '../floating';
 import { IconKeyboardArrowDown } from '../icons/keyboard-arrow-down';
+import { KeyNavigationUtility } from '../key-navigation';
 import { UIListItem } from '../list-item/list-item';
 import { UIMenu } from '../menu/menu';
 
@@ -76,7 +91,7 @@ export type SelectProps = CommonProps<'size'> &
 @Component({
     selector: 'ui-select',
     standalone: true,
-    imports: [CommonModule, UIListItem, UIMenu, IconKeyboardArrowDown],
+    imports: [CommonModule, UIListItem, UIMenu, IconKeyboardArrowDown, UIFloatingDirective],
     encapsulation: ViewEncapsulation.None,
     styleUrl: './select.scss',
     template: `
@@ -86,7 +101,7 @@ export type SelectProps = CommonProps<'size'> &
             [attr.aria-label]="
                 (ariaLabel() ? ariaLabel() + ' ' : '') + (selectedItem?.label || placeholder() || 'Select one')
             "
-            [attr.aria-activedescendant]="open() ? activeElementId() : null"
+            [attr.aria-activedescendant]="open() ? keyNavigation.activeElementId : null"
             aria-autocomplete="list"
             [attr.aria-controls]="open() ? menuId() : null"
             [attr.aria-describedby]="ariaDescribedBy() || null"
@@ -101,7 +116,7 @@ export type SelectProps = CommonProps<'size'> &
             [attr.data-open]="open() || null"
             [attr.data-size]="size() || 'medium'"
             [id]="safeId() + '-reference'"
-            (click)="toggleDropdown()"
+            (click)="toggleMenu()"
             (keydown)="handleKeydown($event)"
             #reference>
             <ui-list-item
@@ -116,23 +131,33 @@ export type SelectProps = CommonProps<'size'> &
                 #selected></ui-list-item>
             <icon-keyboard-arrow-down [width]="'20px'"></icon-keyboard-arrow-down>
         </button>
-        <ui-menu #floating [id]="menuId()" [owner]="'select'" role="listbox" [ngStyle]="ngMenuStyle()">
-            @for (item of menuItems(); track item.id) {
-                <ui-list-item
-                    [owner]="'select'"
-                    [attr.aria-selected]="value() === item.value"
-                    [as]="'div'"
-                    [active]="activeElementId() === item.id"
-                    [label]="item.label"
-                    [tabIndex]="-1"
-                    (clicked)="onItemClick(item)"
-                    [id]="item.id"
-                    [active]="arrowNavigation.activeElementId === item.id"></ui-list-item>
-            }
-        </ui-menu>
+        @if (open()) {
+            <ui-menu
+                #floating
+                [ui-floating]="{ reference: referenceEl }"
+                [id]="menuId()"
+                [owner]="'select'"
+                role="listbox"
+                [ngStyle]="ngMenuStyle()">
+                @for (item of menuItems(); track item.id) {
+                    <ui-list-item
+                        [owner]="'select'"
+                        [attr.aria-selected]="value() === item.value"
+                        [as]="'div'"
+                        [active]="keyNavigation.activeElementId === item.id"
+                        [label]="item.label"
+                        [tabIndex]="-1"
+                        (onClick)="onItemClick(item)"
+                        [id]="item.id"
+                        [active]="keyNavigation.activeElementId === item.id"></ui-list-item>
+                }
+            </ui-menu>
+        }
     `,
 })
-export class UISelect extends DropdownMenuUtility<SelectOption> implements AsInputSignal<SelectProps> {
+export class UISelect implements AsInputSignal<SelectProps>, AfterViewInit, OnDestroy {
+    keyNavigation = new KeyNavigationUtility();
+
     readonly value = model<SelectProps['value']>('');
     readonly name = input.required<SelectProps['name']>();
 
@@ -146,18 +171,82 @@ export class UISelect extends DropdownMenuUtility<SelectOption> implements AsInp
     readonly menuWidth = input<SelectProps['menuWidth']>(undefined);
     readonly ariaDescribedBy = input<SelectProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<SelectProps['ariaErrorMessage']>(undefined);
+    readonly items = input.required<SelectProps['items']>();
 
-    readonly activeElementId = signal<string | null>(null);
+    readonly reference = viewChild('reference', { read: ElementRef });
 
-    override refWidth = true;
+    readonly id = input<SelectProps['id']>(uniqueId('dropdown'));
+    readonly safeId = computed(() => this.id() || uniqueId('dropdown'));
+    readonly menuId = computed(() => `${this.safeId()}-menu`);
+    readonly scrollLimit = input<SelectProps['scrollLimit']>();
+    readonly ids = computed(() => this.menuItems().map((item) => item.id));
+
+    readonly open = signal<boolean>(false);
+
+    readonly menuItems = computed<SelectItem[]>(() =>
+        this.items().map((item, index) => ({
+            ...item,
+            id: `${this.safeId()}-item-${index}`,
+        })),
+    );
+
+    readonly ngMenuStyle = computed(() => {
+        return {
+            ...scrollLimitStyle(this.scrollLimit(), this.items().length),
+        };
+    });
 
     get selectedItem(): SelectItem | undefined {
         return this.menuItems().find((item) => item.value === this.value());
     }
 
+    get referenceEl() {
+        return this.reference()!.nativeElement as HTMLElement;
+    }
+
+    toggleMenu(force?: boolean) {
+        if (force !== undefined) {
+            this.open.set(force);
+            return;
+        }
+        this.open.update((o) => !o);
+    }
+
     onItemClick(item: SelectItem) {
         if (item.disabled) return;
         this.value.set(item.value);
-        this.closeMenu();
+        this.toggleMenu(false);
+    }
+
+    handleKeydown(event: KeyboardEvent): void {
+        if (!this.open()) {
+            keydownHandler({
+                ArrowDown: () => this.toggleMenu(true),
+                'Ctrl+Option+Space': () => this.toggleMenu(true),
+                Space: () => this.toggleMenu(true),
+                Enter: () => this.toggleMenu(true),
+            })(event);
+            return;
+        }
+
+        const SpaceEnter = () => this.keyNavigation.activeElement?.click();
+
+        // all key events run through keyNavigation utility when menu is open
+        this.keyNavigation.handleKeydown(event, {
+            'Ctrl+Option+Space': SpaceEnter,
+            Space: SpaceEnter,
+            Enter: SpaceEnter,
+            Escape: () => {
+                if (this.open()) this.toggleMenu(false);
+            },
+        });
+    }
+
+    ngAfterViewInit(): void {
+        this.keyNavigation.init({ ids: this.ids() });
+    }
+
+    ngOnDestroy(): void {
+        this.keyNavigation.destroy();
     }
 }

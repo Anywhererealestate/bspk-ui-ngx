@@ -1,7 +1,7 @@
 import { computed, effect, signal } from '@angular/core';
-import { UtilityBase } from '../types/common';
-import { KeyboardEventCode } from './keyboard';
-import { keydownHandler, KeysCallback } from './keydown-handler';
+import { UtilityBase } from '../../types/common';
+import { KeyboardEventCode } from '../../utils/keyboard';
+import { keydownHandler, KeysCallback } from '../../utils/keydown-handler';
 
 export type ArrowKeyNames = Extract<KeyboardEventCode, `Arrow${string}`>;
 
@@ -14,7 +14,7 @@ const DEFAULT_INCREMENTS: Record<ArrowKeyNames, number> = {
     ArrowDown: 1,
 };
 
-export interface ArrowNavigationProps {
+export interface KeyNavigationUtilityProps {
     /**
      * An array of string IDs representing the navigable elements. These IDs should correspond to the `id` attributes of
      * the elements in the DOM. Ensure the elements are not disabled.
@@ -37,7 +37,7 @@ export interface ArrowNavigationProps {
     activeElementId: string | null;
 }
 
-export type ArrowKeyNavigationCallbackParams = Pick<ArrowNavigationProps, 'activeElementId'> & {
+export type ArrowKeyNavigationCallbackParams = Pick<KeyNavigationUtilityProps, 'activeElementId'> & {
     increment: number;
     key: ArrowKeyNames;
     event: KeyboardEvent;
@@ -46,17 +46,10 @@ export type ArrowKeyNavigationCallbackParams = Pick<ArrowNavigationProps, 'activ
 /**
  * A hook to manage arrow key navigation for a list of elements.
  *
- * @example
- *     const { activeElementId, setActiveElementId, arrowKeyCallbacks } = useArrowNavigation(['id1', 'id2', 'id3']);
- *
- * @returns An object containing:
- *
- *   - `activeElementId`: The ID of the currently active element.
- *   - `setActiveElementId`: A function to manually set the active element ID.
- *   - `arrowKeyCallbacks`: An object with callback functions for arrow key navigation.
+ * Should be used in components that require keyboard navigation via arrow keys.
  */
-export class ArrowNavigationUtility implements UtilityBase<ArrowNavigationProps> {
-    readonly props = signal<ArrowNavigationProps>({
+export class KeyNavigationUtility implements UtilityBase<KeyNavigationUtilityProps> {
+    readonly props = signal<KeyNavigationUtilityProps>({
         ids: [],
         activeElementId: null,
         defaultActiveId: undefined,
@@ -111,6 +104,15 @@ export class ArrowNavigationUtility implements UtilityBase<ArrowNavigationProps>
         return this.props().activeElementId;
     }
 
+    get activeElement(): HTMLElement | null {
+        return (this.activeElementId && document.querySelector(`[id="${this.activeElementId}"]`)) || null;
+    }
+
+    /**
+     * Cleans up the utility by resetting its properties.
+     *
+     * Should be called in ngOnDestroy.
+     */
     destroy() {
         this.props.set({
             ids: [],
@@ -131,19 +133,31 @@ export class ArrowNavigationUtility implements UtilityBase<ArrowNavigationProps>
             });
     }
 
-    updateProps(props: Partial<ArrowNavigationProps>) {
+    updateProps(props: Partial<KeyNavigationUtilityProps>) {
         this.props.set({
             ...this.props(),
             ...props,
         });
     }
 
-    init(props: Partial<ArrowNavigationProps>) {
+    /**
+     * Initializes the key navigation utility with the provided properties.
+     *
+     * Should be called in ngAfterViewInit.
+     */
+    init(props: Partial<KeyNavigationUtilityProps>) {
         this.updateProps(props);
     }
 
-    handleKeydown(event: KeyboardEvent) {
-        keydownHandler(this.arrowKeyCallbacks(), {
+    /**
+     * Handles keyboard events for arrow key navigation.
+     *
+     * Should be called within a keyboard event listener.
+     *
+     * Additional callbacks for specific keys can be provided via the `callbacks` parameter.
+     */
+    handleKeydown(event: KeyboardEvent, callbacks?: KeysCallback) {
+        keydownHandler([this.arrowKeyCallbacks(), callbacks || {}], {
             preventDefault: true,
             stopPropagation: true,
         })(event);

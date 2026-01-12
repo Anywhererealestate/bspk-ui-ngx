@@ -19,7 +19,7 @@ import {
 import { Placement } from '@floating-ui/dom';
 import { uniqueId } from '../../utils';
 import { addComponent } from '../../utils/add-component';
-import { FloatingUtility } from '../../utils/floating';
+import { FloatingUtility } from '../floating/floating';
 
 export type TooltipPlacement = Extract<Placement, 'bottom' | 'left' | 'right' | 'top'>;
 
@@ -143,7 +143,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
 
         if (props.truncated) this.addComponent({ label: this.referenceEl.textContent || '' });
 
-        this.renderer.setStyle(this.tooltipEl, 'display', 'block');
+        if (this.tooltipEl) this.renderer.setStyle(this.tooltipEl, 'display', 'block');
 
         this.floating
             .compute({
@@ -192,7 +192,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
 
         this.tooltipComponent = addComponent(this.env, UITooltip, 'ui-tooltip')!;
 
-        this.renderer.setStyle(this.tooltipEl, 'display', 'none');
+        if (this.tooltipEl) this.renderer.setStyle(this.tooltipEl, 'display', 'none');
         this.tooltipComponent.instance.id.set(this.tooltipId);
         this.updateTooltipProps(props);
         return true;

@@ -99,8 +99,8 @@ export type ListItemProps = CommonProps<
                 [attr.data-readonly]="isReadonly || undefined"
                 [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id()"
-                (click)="onClick($event)"
-                (keydown.enter)="onClick($event)">
+                (click)="handleClick($event)"
+                (keydown.enter)="handleClick($event)">
                 <ng-container *ngTemplateOutlet="inner"></ng-container>
             </a>
         } @else if (As === 'button') {
@@ -118,7 +118,7 @@ export type ListItemProps = CommonProps<
                 [attr.data-readonly]="isReadonly || undefined"
                 [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id()"
-                (click)="onClick($event)">
+                (click)="handleClick($event)">
                 <ng-container *ngTemplateOutlet="inner"></ng-container>
             </button>
         } @else if (As === 'label') {
@@ -136,8 +136,8 @@ export type ListItemProps = CommonProps<
                 [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id()"
                 [attr.for]="htmlFor()"
-                (click)="onClick($event)"
-                (keydown.enter)="onClick($event)">
+                (click)="handleClick($event)"
+                (keydown.enter)="handleClick($event)">
                 <ng-container *ngTemplateOutlet="inner"></ng-container>
             </label>
         } @else {
@@ -154,8 +154,8 @@ export type ListItemProps = CommonProps<
                 [attr.data-readonly]="isReadonly || undefined"
                 [attr.data-width]="width() === 'hug' ? 'hug' : undefined"
                 [id]="id()"
-                (click)="onClick($event)"
-                (keydown.enter)="onClick($event)">
+                (click)="handleClick($event)"
+                (keydown.enter)="handleClick($event)">
                 <ng-container *ngTemplateOutlet="inner"></ng-container>
             </div>
         }
@@ -166,7 +166,7 @@ export type ListItemProps = CommonProps<
     },
 })
 export class UIListItem implements AsInputSignal<ListItemProps> {
-    @Output() clicked = new EventEmitter<Event>();
+    @Output() onClick = new EventEmitter<Event>();
 
     readonly active = input<ListItemProps['active']>();
     readonly owner = input<ListItemProps['owner']>();
@@ -185,10 +185,17 @@ export class UIListItem implements AsInputSignal<ListItemProps> {
     readonly tabIndex = input<ListItemProps['tabIndex']>();
     readonly id = input<ListItemProps['id']>();
     readonly listItemId = computed(() => (this.id() ? `list-item-${this.id()}` : undefined));
+    readonly actionable = computed(() => {
+        return (
+            !!(this.href() || this.as() === 'button' || this.onClick.observed || this.onClick.observed) &&
+            !this.isReadonly &&
+            !this.isDisabled
+        );
+    });
 
     get tabindex() {
         // allow explicit tabIndex to override actionable state
-        return this.tabIndex() !== undefined ? this.tabIndex() : this.actionable ? 0 : -1;
+        return this.tabIndex() !== undefined ? this.tabIndex() : this.actionable() ? 0 : -1;
     }
 
     get isReadonly() {
@@ -196,11 +203,6 @@ export class UIListItem implements AsInputSignal<ListItemProps> {
     }
     get isDisabled() {
         return !!(this.disabled() || this.ariaDisabled());
-    }
-    get actionable() {
-        return (
-            !!(this.href() || this.as() === 'button' || this.clicked.observed) && !this.isReadonly && !this.isDisabled
-        );
     }
 
     get As() {
@@ -211,13 +213,13 @@ export class UIListItem implements AsInputSignal<ListItemProps> {
     }
 
     get role(): string | undefined {
-        if (!this.actionable) return undefined;
+        if (!this.actionable()) return undefined;
         if (this.as() === 'button') return undefined;
         return undefined;
     }
 
-    onClick(event: Event) {
+    handleClick(event: Event) {
         if (this.isReadonly || this.isDisabled) return;
-        this.clicked.emit(event);
+        this.onClick.emit(event);
     }
 }

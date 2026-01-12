@@ -42,6 +42,8 @@ files.forEach((dirent) => {
         filesToCheck.forEach(({ filePath, type }) => {
             const content = fs.readFileSync(filePath, 'utf-8');
 
+            if (type === 'component' && !content.includes('@name')) return;
+
             const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
             const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
 

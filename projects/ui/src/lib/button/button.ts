@@ -79,6 +79,9 @@ export type IconType = BspkIcon;
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, UIIcon, UITooltipDirective],
     encapsulation: ViewEncapsulation.None,
+    host: {
+        style: 'display: contents;',
+    },
 })
 export class UIButton {
     /** Event emitted when the button is clicked. */
@@ -177,6 +180,10 @@ export class UIButton {
     readonly class = input<string>();
     /** Custom content template to override default button content. Not recommended - use for special cases only. */
     readonly customContent = input<TemplateRef<any>>();
+
+    get nativeElement(): HTMLButtonElement {
+        return this.buttonElement().nativeElement!;
+    }
 
     get shouldShowLabel(): boolean {
         return !this.iconOnly();
