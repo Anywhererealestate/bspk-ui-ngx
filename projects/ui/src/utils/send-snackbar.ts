@@ -1,4 +1,4 @@
-import { sendAriaLiveMessage } from './sendAriaLiveMessage';
+import { sendAriaLiveMessage } from './send-aria-live-message';
 
 const snackbarContainer = () => {
     return document.getElementById('bspk-snackbar-container') as HTMLDivElement | null;

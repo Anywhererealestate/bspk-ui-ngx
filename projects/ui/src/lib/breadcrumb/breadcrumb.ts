@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, input, computed } from '@angular/core';
 
 import { AsInputSignal, CommonProps } from '../../types/common';
-import { uniqueId } from '../../utils';
+import { uniqueId } from '../../utils/random';
 import { ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { IconChevronRight } from '../icons/chevron-right';
 import { UILinkDirective } from '../link';

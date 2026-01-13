@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, computed, input, model } from '@angular/core';
-import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
+import { sendAriaLiveMessage } from '../../utils/send-aria-live-message';
 import { IconArrowDownward, IconArrowUpward } from '../icons';
 import { UIPagination } from '../pagination';
 

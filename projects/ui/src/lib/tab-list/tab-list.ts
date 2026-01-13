@@ -11,8 +11,8 @@ import {
     ElementRef,
 } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
-import { randomString } from '../../utils';
 import { keydownHandler } from '../../utils/keydown-handler';
+import { randomString } from '../../utils/random';
 import { UIBadge } from '../badge';
 import { UIIcon } from '../icon';
 import { UITooltipDirective } from '../tooltip/tooltip.directive';

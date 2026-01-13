@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation, input } from '@angular/core';
-import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
+import { sendAriaLiveMessage } from '../../utils/send-aria-live-message';
 import { UIButton } from '../button/button';
 import { IconChevronLeft, IconChevronRight } from '../icons';
 import { UIInput } from '../input';

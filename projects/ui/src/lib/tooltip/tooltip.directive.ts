@@ -17,8 +17,8 @@ import {
     viewChild,
 } from '@angular/core';
 import { Placement } from '@floating-ui/dom';
-import { uniqueId } from '../../utils';
 import { addComponent } from '../../utils/add-component';
+import { uniqueId } from '../../utils/random';
 import { FloatingUtility } from '../floating/floating';
 
 export type TooltipPlacement = Extract<Placement, 'bottom' | 'left' | 'right' | 'top'>;

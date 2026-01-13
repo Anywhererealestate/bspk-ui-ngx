@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { componentTestProps } from '../../utils/componentTestProps';
+import { componentTestProps } from '../../utils/test-props';
 import { UIChip } from './chip';
 
 describe('UIChip', () => {

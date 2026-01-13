@@ -11,8 +11,8 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { AsInputSignal } from '../../types/common';
-import { uniqueId } from '../../utils';
 import { keydownHandler } from '../../utils/keydown-handler';
+import { uniqueId } from '../../utils/random';
 import { scrollLimitStyle, ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { UIButton } from '../button';
 import { UIFloatingDirective } from '../floating';
