@@ -1,0 +1,1 @@
+function t(r,i){let e=Number(r);return Number.isNaN(e)||e<=0||typeof i!="number"||e>i?{}:{display:"flex",flexDirection:"column",maxHeight:`calc(var(--list-item-height) * ${e})`,overflow:"hidden auto"}}export{t as a};
