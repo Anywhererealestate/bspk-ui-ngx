@@ -1,6 +1,6 @@
 import { Component, computed, input, output, ViewEncapsulation } from '@angular/core';
 import { AsInputSignal } from '../../types/common';
-import { uniqueId } from '../../utils';
+import { uniqueId } from '../../utils/random';
 import { describedById, errorMessageId, FieldProps, labelledById, UIField } from '../field';
 import { UITextarea } from '../textarea';
 

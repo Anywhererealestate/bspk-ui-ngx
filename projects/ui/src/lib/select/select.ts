@@ -12,8 +12,8 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { AsInputSignal, CommonProps, FieldControlProps } from '../../types/common';
-import { uniqueId } from '../../utils';
 import { keydownHandler } from '../../utils/keydown-handler';
+import { uniqueId } from '../../utils/random';
 import { scrollLimitStyle } from '../../utils/scroll-limit-style';
 import { UIFloatingDirective } from '../floating';
 import { IconKeyboardArrowDown } from '../icons/keyboard-arrow-down';

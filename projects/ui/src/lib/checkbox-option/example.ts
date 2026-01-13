@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { sendSnackbar } from '../../utils/sendSnackbar';
+import { sendSnackbar } from '../../utils/send-snackbar';
 import { UICheckboxOption } from './checkbox-option';
 
 @Component({

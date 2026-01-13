@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { sendSnackbar } from '../../utils/sendSnackbar';
+import { sendSnackbar } from '../../utils/send-snackbar';
 import { UIListItem } from '../list-item';
 import { KeyNavigationUtilityProps, UIKeyNavigationDirective } from './';
 

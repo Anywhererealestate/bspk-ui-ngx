@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal, viewChild } from '@angular/core';
-import { sendSnackbar } from '../../utils/sendSnackbar';
+import { sendSnackbar } from '../../utils/send-snackbar';
 import { UIButton } from '../button';
 import { UIFloatingDirective, FloatingDirectiveProps } from './floating.directive';
 
