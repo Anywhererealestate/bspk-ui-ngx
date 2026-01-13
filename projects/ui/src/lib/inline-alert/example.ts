@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { IconAdd } from '../icons/add';
 import { UIInlineAlert } from './inline-alert';
@@ -6,7 +6,7 @@ import { UIInlineAlert } from './inline-alert';
 @Component({
     selector: 'ui-badge-example',
     standalone: true,
-    imports: [CommonModule, UIInlineAlert],
+    imports: [UIInlineAlert],
     template: `
         <h2>InlineAlert</h2>
         <h3>Default</h3>

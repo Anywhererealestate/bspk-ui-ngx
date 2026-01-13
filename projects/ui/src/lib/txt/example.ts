@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UITxtDirective } from './txt.directive';
 
 @Component({
     selector: 'ui-txt-example',
     standalone: true,
-    imports: [CommonModule, UITxtDirective],
+    imports: [UITxtDirective],
     template: `
         <h2>Txt Directive</h2>
 

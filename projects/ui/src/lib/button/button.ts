@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import {
     Component,
     Output,
@@ -77,7 +77,7 @@ export type IconType = BspkIcon;
     </button>`,
     styleUrls: ['./button.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, UIIcon, UITooltipDirective],
+    imports: [UIIcon, UITooltipDirective],
     encapsulation: ViewEncapsulation.None,
     host: {
         style: 'display: contents;',

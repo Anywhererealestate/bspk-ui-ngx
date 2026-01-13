@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, signal } from '@angular/core';
 import { UIInput } from './input';
 
 @Component({
     selector: 'ui-input-example',
     standalone: true,
-    imports: [CommonModule, UIInput],
+    imports: [UIInput],
     template: `
         <h2>Input</h2>
 

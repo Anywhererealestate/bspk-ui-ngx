@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, NgZone } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIButton } from '../button';
@@ -6,7 +6,7 @@ import { UIScrim } from './scrim';
 
 @Component({
     selector: 'ui-scrim-example',
-    imports: [CommonModule, UIScrim, UIButton],
+    imports: [UIScrim, UIButton],
     template: `
         <ui-button [label]="open ? 'Close scrim' : 'Open scrim'" (click)="openScrim()" />
 

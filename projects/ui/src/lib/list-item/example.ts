@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIAvatar } from '../avatar';
@@ -12,7 +12,7 @@ import { UIListItem } from './list-item';
 @Component({
     selector: 'ui-list-item-example',
     standalone: true,
-    imports: [CommonModule, UIListItem, IconFolder, IconChevronRight, UIButton, IconMoreVert, UIAvatar],
+    imports: [UIListItem, IconFolder, IconChevronRight, UIButton, IconMoreVert, UIAvatar],
     template: `
         <h2>List Item</h2>
 

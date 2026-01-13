@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { IconAdd } from '../icons/add';
@@ -8,7 +8,7 @@ import { UIChip } from './chip';
 @Component({
     selector: 'ui-chip-example',
     standalone: true,
-    imports: [CommonModule, UIChip],
+    imports: [UIChip],
     template: `
         <h2>Chip</h2>
 

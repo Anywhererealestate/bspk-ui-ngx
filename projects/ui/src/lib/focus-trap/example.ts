@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ViewEncapsulation } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIButton } from '../button';
@@ -7,7 +7,7 @@ import { UIFocusTrapDirective } from './focus-trap.directive';
 @Component({
     selector: 'ui-focus-trap-example',
     standalone: true,
-    imports: [CommonModule, UIFocusTrapDirective, UIButton],
+    imports: [UIFocusTrapDirective, UIButton],
     encapsulation: ViewEncapsulation.None,
     template: `
         <h3>Focus Trap</h3>

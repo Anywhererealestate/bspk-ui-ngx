@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, signal, viewChild } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIButton } from '../button';
@@ -7,7 +7,7 @@ import { UIFloatingDirective, FloatingDirectiveProps } from './floating.directiv
 @Component({
     selector: 'ui-floating-example',
     standalone: true,
-    imports: [CommonModule, UIFloatingDirective, UIButton],
+    imports: [UIFloatingDirective, UIButton],
     template: `
         <h2>Floating (Directive)</h2>
 

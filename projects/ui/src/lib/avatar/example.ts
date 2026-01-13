@@ -1,12 +1,12 @@
 /* eslint-disable no-console */
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIAvatar } from './avatar';
 
 @Component({
     selector: 'ui-avatar-example',
     standalone: true,
-    imports: [CommonModule, UIAvatar],
+    imports: [UIAvatar],
     template: `
         <h2>Avatar</h2>
 

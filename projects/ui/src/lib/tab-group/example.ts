@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UITabGroup } from './tab-group';
 
 @Component({
     selector: 'ui-tab-group-example',
     standalone: true,
-    imports: [CommonModule, UITabGroup],
+    imports: [UITabGroup],
     template: `
         <h3>TabGroup Basic</h3>
         <ui-tab-group [label]="'Group'" [options]="options" [value]="selected" (valueChange)="selected = $event" />

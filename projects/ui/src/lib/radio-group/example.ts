@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIRadioGroup, RadioGroupOption } from './radio-group';
 
 @Component({
     selector: 'ui-radio-group-example',
     standalone: true,
-    imports: [CommonModule, UIRadioGroup],
+    imports: [UIRadioGroup],
     template: `
         <h2>Radio Group Examples</h2>
 

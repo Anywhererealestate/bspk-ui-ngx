@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ViewEncapsulation, computed, input, model } from '@angular/core';
 import { sendAriaLiveMessage } from '../../utils/sendAriaLiveMessage';
 import { IconArrowDownward, IconArrowUpward } from '../icons';
@@ -65,7 +65,7 @@ const BUILT_IN_COLUMN_SORTERS: Record<BuiltInColumnSorters, TableColumnSortingFn
 @Component({
     selector: 'ui-table',
     standalone: true,
-    imports: [CommonModule, UIPagination, IconArrowUpward, IconArrowDownward],
+    imports: [UIPagination, IconArrowUpward, IconArrowDownward],
     template: `<div [attr.data-has-pagination]="hasPagination ? true : null" [attr.data-size]="size() || 'medium'">
         <div data-scroll-container>
             <table

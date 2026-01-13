@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UICard } from './card';
 
 @Component({
     selector: 'ui-card-example',
     standalone: true,
-    imports: [CommonModule, UICard],
+    imports: [UICard],
     template: `
         <h2>Card</h2>
 

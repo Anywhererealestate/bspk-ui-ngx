@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { IconAdd } from '../icons/add';
@@ -7,7 +7,7 @@ import { UIBannerAlert } from './banner-alert';
 @Component({
     selector: 'ui-badge-example',
     standalone: true,
-    imports: [CommonModule, UIBannerAlert],
+    imports: [UIBannerAlert],
     template: `
         <h2>BannerAlert</h2>
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UILinkDirective } from '../../../../ui/src/lib/link';
@@ -7,7 +7,7 @@ import { navigationItems } from '../app.routes';
 @Component({
     selector: 'app-nav',
     standalone: true,
-    imports: [CommonModule, RouterLink, RouterLinkActive, UILinkDirective],
+    imports: [RouterLink, RouterLinkActive, UILinkDirective],
     template: `
         <div role="menu">
             @for (route of navigationItems; track route.path) {

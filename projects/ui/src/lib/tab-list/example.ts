@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, model } from '@angular/core';
 import { IconAccountCircle, IconHome, IconSearch } from '../icons';
 import { UITabList, TabOption } from './tab-list';
@@ -6,7 +6,7 @@ import { UITabList, TabOption } from './tab-list';
 @Component({
     selector: 'ui-tab-list-example',
     standalone: true,
-    imports: [CommonModule, UITabList],
+    imports: [UITabList],
     template: `
         <h3>TabList Basic</h3>
         <ul

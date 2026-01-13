@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIButton } from '../button';
@@ -7,7 +7,7 @@ import { UIOutsideClickDirective } from './outside-click.directive';
 @Component({
     selector: 'ui-outside-click-example',
     standalone: true,
-    imports: [CommonModule, UIOutsideClickDirective, UIButton],
+    imports: [UIOutsideClickDirective, UIButton],
     template: `
         <h2>Outside Click (Directive)</h2>
 

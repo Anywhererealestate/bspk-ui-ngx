@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { ChipProps } from '../chip';
@@ -22,7 +22,7 @@ import { UIChipGroup } from './chip-group';
 @Component({
     selector: 'ui-chip-group-example',
     standalone: true,
-    imports: [CommonModule, UIChipGroup],
+    imports: [UIChipGroup],
     template: `
         <h2>Chip Group</h2>
 

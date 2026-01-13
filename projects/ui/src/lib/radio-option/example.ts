@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIRadioOption } from './radio-option';
@@ -6,7 +6,7 @@ import { UIRadioOption } from './radio-option';
 @Component({
     selector: 'ui-radio-option-example',
     standalone: true,
-    imports: [CommonModule, UIRadioOption],
+    imports: [UIRadioOption],
     template: `
         <h2>Radio Option</h2>
         @for (ex of examples; track $index) {

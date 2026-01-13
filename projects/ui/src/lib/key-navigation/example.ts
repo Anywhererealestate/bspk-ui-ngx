@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, signal } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIListItem } from '../list-item';
@@ -7,7 +7,7 @@ import { KeyNavigationUtilityProps, UIKeyNavigationDirective } from './';
 @Component({
     selector: 'ui-outside-click-example',
     standalone: true,
-    imports: [CommonModule, UIKeyNavigationDirective, UIListItem],
+    imports: [UIKeyNavigationDirective, UIListItem],
     template: `
         <h2>Key Navigation (Directive)</h2>
 

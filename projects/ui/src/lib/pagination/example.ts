@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, model } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIPagination } from './pagination';
@@ -6,7 +6,7 @@ import { UIPagination } from './pagination';
 @Component({
     selector: 'ui-pagination-example',
     standalone: true,
-    imports: [CommonModule, UIPagination],
+    imports: [UIPagination],
     template: `
         <h2>Pagination</h2>
 

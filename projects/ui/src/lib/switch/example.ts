@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UISwitch } from './switch';
@@ -6,7 +6,7 @@ import { UISwitch } from './switch';
 @Component({
     selector: 'ui-switch-example',
     standalone: true,
-    imports: [CommonModule, UISwitch],
+    imports: [UISwitch],
     template: `
         <h2>Switch</h2>
         @for (ex of examples; track $index) {

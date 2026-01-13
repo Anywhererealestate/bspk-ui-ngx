@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIButton } from '../button/button';
 import { UIListItem } from '../list-item';
@@ -8,7 +8,7 @@ import { UIModal } from './modal';
 @Component({
     selector: 'ui-modal-example',
     standalone: true,
-    imports: [CommonModule, UIModal, UIButton, UIListItem, UIRadio],
+    imports: [UIModal, UIButton, UIListItem, UIRadio],
     template: `
         <h2>Modal</h2>
 

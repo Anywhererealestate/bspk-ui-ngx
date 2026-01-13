@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UITag } from './tag';
 
 @Component({
     selector: 'ui-tag-example',
     standalone: true,
-    imports: [CommonModule, UITag],
+    imports: [UITag],
     template: `
         <h2>Tag</h2>
 

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, inject } from '@angular/core';
 import { ThemeService } from '../../services/theme';
 import { UIAvatar } from '../avatar/avatar';
@@ -21,21 +21,20 @@ import { UIMenu } from './menu';
     selector: 'ui-menu-example',
     standalone: true,
     imports: [
-        CommonModule,
-        UIMenu,
-        UIListItem,
-        UIDivider,
-        UIAvatar,
-        IconAccountCircle,
-        IconSettings,
-        IconDarkModeFill,
-        IconDarkMode,
-        UICheckbox,
-        IconMenuBook,
-        IconHelp,
-        IconLicense,
-        IconLogout,
-    ],
+    UIMenu,
+    UIListItem,
+    UIDivider,
+    UIAvatar,
+    IconAccountCircle,
+    IconSettings,
+    IconDarkModeFill,
+    IconDarkMode,
+    UICheckbox,
+    IconMenuBook,
+    IconHelp,
+    IconLicense,
+    IconLogout
+],
     template: `
         <h3>Menu</h3>
         <ui-menu [width]="'332px'" [owner]="'menu'" [style]="'padding: var(--spacing-sizing-02);'">

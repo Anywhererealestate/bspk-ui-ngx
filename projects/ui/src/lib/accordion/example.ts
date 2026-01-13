@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIAccordion } from './accordion';
 
 @Component({
     selector: 'ui-accordion-example',
     standalone: true,
-    imports: [CommonModule, UIAccordion],
+    imports: [UIAccordion],
     template: `
         <h2>Accordion</h2>
 

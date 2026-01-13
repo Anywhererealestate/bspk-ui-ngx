@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { IconIcecream } from '../icons/icecream';
 import { UIIcon } from './icon';
@@ -6,7 +6,7 @@ import { UIIcon } from './icon';
 @Component({
     selector: 'ui-icon-example',
     standalone: true,
-    imports: [CommonModule, UIIcon],
+    imports: [UIIcon],
     template: `
         <h2>Icon</h2>
 

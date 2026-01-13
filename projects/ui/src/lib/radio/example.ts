@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIRadio } from './radio';
 
 @Component({
     selector: 'ui-radio-example',
     standalone: true,
-    imports: [CommonModule, UIRadio],
+    imports: [UIRadio],
     template: `
         <h2>Radio</h2>
 

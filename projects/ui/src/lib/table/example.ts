@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { TableColumn, TableRow, UITable } from './table';
 
 @Component({
     selector: 'ui-table-example',
     standalone: true,
-    imports: [CommonModule, UITable],
+    imports: [UITable],
     template: `
         <h2>Table</h2>
 

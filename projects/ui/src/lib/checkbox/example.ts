@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UICheckbox } from './checkbox';
@@ -6,7 +6,7 @@ import { UICheckbox } from './checkbox';
 @Component({
     selector: 'ui-checkbox-example',
     standalone: true,
-    imports: [CommonModule, UICheckbox],
+    imports: [UICheckbox],
     template: `
         <h2>Checkbox</h2>
 

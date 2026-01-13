@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIButton } from '../button/button';
 import { UIFlexDirective } from '../flex/flex.directive';
@@ -8,7 +8,7 @@ import { Placement, UIDialog } from './dialog';
 @Component({
     selector: 'ui-dialog-example',
     standalone: true,
-    imports: [CommonModule, UIDialog, UIButton, UIFlexDirective],
+    imports: [UIDialog, UIButton, UIFlexDirective],
     template: `
         <h2>Dialog</h2>
 

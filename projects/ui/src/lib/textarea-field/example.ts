@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UITextareaField } from './textarea-field';
 
 @Component({
     selector: 'ui-textarea-example',
     standalone: true,
-    imports: [CommonModule, UITextareaField],
+    imports: [UITextareaField],
     template: `
         <h2>Textarea</h2>
 

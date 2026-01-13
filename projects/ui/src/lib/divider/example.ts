@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIExample } from '../../demo';
 import { UIListItem } from '../list-item/list-item';
@@ -7,7 +7,7 @@ import { UIDivider } from './divider';
 @Component({
     selector: 'ui-divider-example',
     standalone: true,
-    imports: [CommonModule, UIDivider, UIListItem, UIExample],
+    imports: [UIDivider, UIListItem, UIExample],
     template: `
         <h3>Divider</h3>
 

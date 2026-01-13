@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { IconAccountCircle, IconHome, IconSearch } from '../icons';
 import { UISegmentedControl } from './segmented-control';
@@ -6,7 +6,7 @@ import { UISegmentedControl } from './segmented-control';
 @Component({
     selector: 'ui-segmented-control-example',
     standalone: true,
-    imports: [CommonModule, UISegmentedControl],
+    imports: [UISegmentedControl],
     template: `
         <h3>SegmentedControl</h3>
         <ui-segmented-control

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, input, computed } from '@angular/core';
 
 import { AsInputSignal, CommonProps } from '../../types/common';
@@ -92,7 +92,7 @@ export type BreadcrumbProps = CommonProps<'id'> &
     }`,
     styleUrls: ['./breadcrumb.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [CommonModule, UITxtDirective, UIBreadcrumbDropdown, IconChevronRight, UILinkDirective],
+    imports: [UITxtDirective, UIBreadcrumbDropdown, IconChevronRight, UILinkDirective],
     encapsulation: ViewEncapsulation.None,
 })
 export class UIBreadcrumb implements AsInputSignal<BreadcrumbProps> {

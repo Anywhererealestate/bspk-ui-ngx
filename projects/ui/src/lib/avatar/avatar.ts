@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, Output, EventEmitter, ViewEncapsulation, input } from '@angular/core';
 import { IconPerson } from '../icons/person';
 import { UITooltipDirective } from '../tooltip';
@@ -41,7 +41,7 @@ export type SizeVariant =
 @Component({
     selector: 'ui-avatar',
     standalone: true,
-    imports: [CommonModule, IconPerson, UITooltipDirective],
+    imports: [IconPerson, UITooltipDirective],
     template: `<span
         [ui-tooltip]="{ label: name(), disabled: hideTooltip() }"
         data-bspk="avatar"

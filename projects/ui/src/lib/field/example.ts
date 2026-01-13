@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component } from '@angular/core';
 import { UIInput } from '../input/input';
 import { UIField } from './field';
@@ -6,7 +6,7 @@ import { UIField } from './field';
 @Component({
     selector: 'ui-field-example',
     standalone: true,
-    imports: [CommonModule, UIField, UIInput],
+    imports: [UIField, UIInput],
     template: `
         <h2>Field</h2>
         <h3>Input with helper text</h3>
