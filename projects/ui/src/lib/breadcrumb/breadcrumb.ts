@@ -73,7 +73,9 @@ export type BreadcrumbProps = CommonProps<'id'> &
                     <icon-chevron-right aria-hidden="true" width="24" />
                 </li>
                 @if (items().length > 5) {
-                    <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
+                    <li>
+                        <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
+                    </li>
                 } @else {
                     @for (item of middleItems(); track item.href) {
                         <li>

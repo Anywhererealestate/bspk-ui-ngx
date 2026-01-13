@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
 import { CommonProps, AsInputSignal } from '../../types/common';
 
-export type MenuProps = CommonProps<'ariaLabel' | 'id' | 'owner' | 'role'> & {
+export type MenuProps = CommonProps<'ariaLabel' | 'ariaRole' | 'id' | 'owner'> & {
     /**
      * The width of the menu.
      *
@@ -36,7 +36,7 @@ export type MenuProps = CommonProps<'ariaLabel' | 'id' | 'owner' | 'role'> & {
         '[attr.data-bspk-owner]': 'owner() || null',
         'data-bspk-utility': 'menu',
         '[attr.id]': 'id() || null',
-        '[attr.role]': 'role() || null',
+        '[attr.role]': 'ariaRole() || null',
         '[style.width]': 'width() || null',
         tabindex: '-1',
     },
@@ -46,5 +46,5 @@ export class UIMenu implements AsInputSignal<MenuProps> {
     readonly width = input<MenuProps['width']>(undefined);
     readonly owner = input<MenuProps['owner']>(undefined);
     readonly id = input<MenuProps['id']>(undefined);
-    readonly role = input<MenuProps['role']>(undefined);
+    readonly ariaRole = input<MenuProps['ariaRole']>(undefined);
 }

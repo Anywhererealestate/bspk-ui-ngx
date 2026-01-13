@@ -21,17 +21,13 @@ import { UIListItem } from './list-item';
             <ui-list-item
                 label="Death Star Plans"
                 subText="Last modified: May 25, 1977"
-                (clicked)="onClick('Downloading blueprints...')">
+                (onClick)="onClick('Downloading blueprints...')">
             </ui-list-item>
         </div>
 
         <h3>Leading avatar and trailing delete (as="div")</h3>
         <div style="width: 360px; display: grid; gap: 16px">
-            <ui-list-item
-                as="div"
-                label="File 13 nice"
-                subText="Last modified: Jan 21, 2024"
-                (clicked)="onClick('Clicked Open Folder button')">
+            <ui-list-item as="div" label="File 13 nice" subText="Last modified: Jan 21, 2024">
                 <span data-leading>
                     <ui-avatar name="John Doe" />
                 </span>

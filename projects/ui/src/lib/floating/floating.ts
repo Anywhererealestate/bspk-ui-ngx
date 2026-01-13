@@ -11,7 +11,7 @@ import {
     size,
     Strategy,
 } from '@floating-ui/dom';
-import { UtilityBase } from '../types/common';
+import { UtilityBase } from '../../types/common';
 
 export interface FloatingProps {
     /**
@@ -52,12 +52,17 @@ export interface FloatingProps {
     arrow?: HTMLElement | null;
 }
 
+/**
+ * A utility to position an element relative to a reference element using floating UI logic.
+ *
+ * Should be used in components that require floating element positioning.
+ */
 export class FloatingUtility implements UtilityBase<FloatingProps> {
     readonly props = signal<FloatingProps>({});
 
     constructor(private render: Renderer2) {}
     destroy(): void {
-        throw new Error('Method not implemented.');
+        // No-op
     }
 
     updateProps(props: Partial<FloatingProps>) {

@@ -17,9 +17,45 @@ export const getEventCode = (event: KeyboardEvent) => {
  * @returns A function that can be used as an event handler for keydown events.
  */
 export function keydownHandler(
-    keysCallback: KeysCallback = {},
-    { stopPropagation = false, preventDefault = false }: { stopPropagation?: boolean; preventDefault?: boolean } = {},
-) {
+    keysCallback: KeysCallback,
+    overrides?: { stopPropagation?: boolean; preventDefault?: boolean },
+): (event: KeyboardEvent) => KeyboardEventCode | null;
+export function keydownHandler(
+    keysCallback: KeysCallback[],
+    overrides?: { stopPropagation?: boolean; preventDefault?: boolean },
+): (event: KeyboardEvent) => KeyboardEventCode | null;
+export function keydownHandler(
+    keysCallbackProp: KeysCallback | KeysCallback[] = {},
+    overrides: { stopPropagation?: boolean; preventDefault?: boolean } = {},
+): (event: KeyboardEvent) => KeyboardEventCode | null {
+    const { stopPropagation = false, preventDefault = false } = overrides;
+
+    const keysCallback = Array.isArray(keysCallbackProp)
+        ? keysCallbackProp.reduce((acc, curr) => {
+              // Merge multiple KeysCallback objects into one merging individual callbacks
+              return {
+                  ...acc,
+                  ...Object.fromEntries(
+                      Object.entries(curr).map(([key, callback]) => {
+                          const existingCallback = acc[key as keyof KeysCallback];
+
+                          if (callback && existingCallback) {
+                              // If there's already a callback for this key, chain them
+                              return [
+                                  key,
+                                  (event: KeyboardEvent) => {
+                                      existingCallback(event);
+                                      callback(event);
+                                  },
+                              ];
+                          }
+                          return [key, callback];
+                      }),
+                  ),
+              };
+          }, {})
+        : keysCallbackProp;
+
     return (event: KeyboardEvent) => {
         const eventCode = getEventCode(event);
         const callback = keysCallback[eventCode];
