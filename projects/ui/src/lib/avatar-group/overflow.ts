@@ -3,13 +3,14 @@ import { Component, input, viewChild, ElementRef, ViewEncapsulation, model } fro
 
 // Assume these are your Angular equivalents:
 import { UIAvatar, UIAvatarProps } from '../avatar/avatar';
+import { UIFloatingDirective } from '../floating';
 import { UIListItem } from '../list-item/list-item';
 import { UIMenu } from '../menu/menu';
 
 @Component({
     selector: 'ui-avatar-group-overflow',
     standalone: true,
-    imports: [CommonModule, UIAvatar, UIListItem, UIMenu],
+    imports: [CommonModule, UIAvatar, UIListItem, UIMenu, UIFloatingDirective],
     template: `
         @if (open()) {
             <ng-container>
