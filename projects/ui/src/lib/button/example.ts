@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
-import { IconAdd } from '../icons/add';
 import { IconBarn } from '../icons/barn';
 import { IconBox } from '../icons/box';
 import { IconBrail } from '../icons/brail';
@@ -13,7 +12,7 @@ import { UIButton } from './button';
 @Component({
     selector: 'ui-button-example',
     standalone: true,
-    imports: [CommonModule, UIButton, IconAdd],
+    imports: [CommonModule, UIButton],
     template: `
         <h2>Button</h2>
 

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { UIBreadcrumb, BreadcrumbLink } from './';
+import { UIBreadcrumb, BreadcrumbItem } from './';
 
 @Component({
     selector: 'ui-breadcrumb-example',
@@ -27,12 +27,12 @@ import { UIBreadcrumb, BreadcrumbLink } from './';
     `,
 })
 export class UIBreadcrumbExample {
-    readonly minimumItems: BreadcrumbLink[] = [
+    readonly minimumItems: BreadcrumbItem[] = [
         { label: 'Item 1', href: 'breadcrumb/#link-1' },
         { label: 'Item 2', href: 'breadcrumb/#link-2' },
     ];
 
-    readonly fiveItems: BreadcrumbLink[] = [
+    readonly fiveItems: BreadcrumbItem[] = [
         { label: 'Item 1', href: 'breadcrumb/#link-1' },
         { label: 'Item 2', href: 'breadcrumb/#link-2' },
         { label: 'Item 3', href: 'breadcrumb/#link-3' },
@@ -40,7 +40,7 @@ export class UIBreadcrumbExample {
         { label: 'Item 5', href: 'breadcrumb/#link-5' },
     ];
 
-    readonly manyItems: BreadcrumbLink[] = [
+    readonly manyItems: BreadcrumbItem[] = [
         { label: 'Item 1', href: 'breadcrumb/#link-1' },
         { label: 'Item 2', href: 'breadcrumb/#link-2' },
         { label: 'Item 3', href: 'breadcrumb/#link-3' },
@@ -49,7 +49,7 @@ export class UIBreadcrumbExample {
         { label: 'Item 6', href: 'breadcrumb/#link-6' },
     ];
 
-    readonly manyItemsExtended: BreadcrumbLink[] = [
+    readonly manyItemsExtended: BreadcrumbItem[] = [
         { label: 'Brioche', href: 'breadcrumb/#brioche' },
         { label: 'Whole Wheat', href: 'breadcrumb/#whole-wheat' },
         { label: 'Sourdough', href: 'breadcrumb/#sourdough' },

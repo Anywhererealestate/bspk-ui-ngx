@@ -8,7 +8,7 @@ import { IconChevronRight } from '../icons/chevron-right';
 import { UILinkDirective } from '../link';
 import { UITxtDirective } from '../txt';
 import { UIBreadcrumbDropdown } from './breadcrumb-dropdown';
-import { BreadcrumbLink } from './utils';
+import { BreadcrumbItem } from './utils';
 
 export type BreadcrumbProps = CommonProps<'id'> &
     ScrollLimitStyleProps & {
@@ -31,10 +31,10 @@ export type BreadcrumbProps = CommonProps<'id'> &
          *         { label: 'Level 10', href: '#level-10' },
          *     ];
          *
-         * @type Array<BreadcrumbLink>
+         * @type Array<BreadcrumbItem>
          * @required
          */
-        items: BreadcrumbLink[];
+        items: BreadcrumbItem[];
     };
 
 /**

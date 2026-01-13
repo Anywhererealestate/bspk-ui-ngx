@@ -1,6 +1,6 @@
 import { ListItemProps } from '../list-item/list-item';
 
-export interface BreadcrumbLink extends ListItemProps {
+export interface BreadcrumbItem extends ListItemProps {
     /**
      * The label of the breadcrumb item.
      *

@@ -22,10 +22,10 @@ import { KeyNavigationUtility } from '../key-navigation';
 import { UIListItem } from '../list-item';
 import { UIMenu } from '../menu';
 import { UIOutsideClickDirective } from '../outside-click';
-import { BreadcrumbLink } from './utils';
+import { BreadcrumbItem } from './utils';
 
 export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
-    items: BreadcrumbLink[];
+    items: BreadcrumbItem[];
     id?: string;
 };
 
@@ -67,7 +67,7 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
                 [id]="menuId()"
                 label="Expanded breadcrumb"
                 owner="Breadcrumb"
-                role="listbox"
+                ariaRole="listbox"
                 [ngStyle]="ngMenuStyle()">
                 @for (item of menuItems(); track item.href) {
                     <ui-list-item
