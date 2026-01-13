@@ -1,13 +1,13 @@
-
 import { Component, signal } from '@angular/core';
+import { UIMenu } from '../..';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIListItem } from '../list-item';
 import { KeyNavigationUtilityProps, UIKeyNavigationDirective } from './';
 
 @Component({
-    selector: 'ui-outside-click-example',
+    selector: 'ui-key-navigation-example',
     standalone: true,
-    imports: [UIKeyNavigationDirective, UIListItem],
+    imports: [UIListItem, UIMenu, UIKeyNavigationDirective],
     template: `
         <h2>Key Navigation (Directive)</h2>
 

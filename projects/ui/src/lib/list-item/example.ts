@@ -1,4 +1,3 @@
-
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIAvatar } from '../avatar';

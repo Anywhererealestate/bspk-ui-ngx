@@ -1,4 +1,3 @@
-
 import { Component, signal, viewChild } from '@angular/core';
 import { sendSnackbar } from '../../utils/sendSnackbar';
 import { UIButton } from '../button';
