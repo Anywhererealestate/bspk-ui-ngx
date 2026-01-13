@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, signal, ViewEncapsulation } from '@angular/core';
-import { uniqueId } from '../../utils';
+import { uniqueId } from '../../utils/random';
 import { UIAvatar, UIAvatarProps, SizeVariant } from '../avatar/avatar';
 import { UIAvatarGroupOverflow } from './overflow';
 
