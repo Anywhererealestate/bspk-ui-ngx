@@ -14,18 +14,22 @@ export type InputProps = CommonProps<'owner' | 'size'> &
     };
 
 /**
- * An input that allows users to enter text, numbers or symbols in a singular line. This is a utility element and is not
- * intended to be used directly but rather through the Input, and other components.
+ * A input element that allows users to either input a numerical value or singularly increase or decrease the values by
+ * pressing the (+) or (-).
+ *
+ * The value of the input is a number. The value is clamped to the min and max values if they are provided.
+ *
+ * For a more complete example with field usage, see the InputNumberField component.
  *
  * @example
- *     <ui-input
+ *     <ui-input-number
  *     [value]="inputValue()"
  *     (valueChange)="updateInput($event)"
- *     id="default-input"
- *     name="default-input"
- *     ariaLabel="Input Label "/>
+ *     id="default-input-number"
+ *     name="default-input-number"
+ *     ariaLabel="Input Number Label "/>
  *
- * @name Input
+ * @name InputNumber
  * @phase UXReview
  */
 @Component({
