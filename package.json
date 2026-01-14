@@ -22,7 +22,8 @@
         "routes:watch": "npx tsx .scripts/generate-component-routes.ts --watch",
         "start": "npm run prebuild && ng serve",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-        "publish:test": "ng build ui && npm pack ./dist/ui"
+        "publish:test": "ng build ui && npm pack ./dist/ui",
+        "semantic-release": "semantic-release"
     },
     "overrides": {
         "glob": "^11.0.1"
