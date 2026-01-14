@@ -3,5 +3,7 @@
     "dest": "../../dist/ui",
     "lib": {
         "entryFile": "src/index.ts"
-    }
+    },
+    "allowedNonPeerDependencies": ["@floating-ui/dom"],
+    "assets": [{ "input": "src/styles", "glob": "**/*.scss", "output": "styles" }]
 }
