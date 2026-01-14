@@ -21,7 +21,8 @@
         "routes": "npx tsx .scripts/generate-component-routes.ts --write",
         "routes:watch": "npx tsx .scripts/generate-component-routes.ts --watch",
         "start": "npm run prebuild && ng serve",
-        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+        "publish:test": "ng build ui && npm pack ./dist/ui"
     },
     "overrides": {
         "glob": "^11.0.1"
@@ -32,7 +33,6 @@
         "@angular/core": "^20.3.0",
         "@angular/platform-browser": "^20.3.0",
         "@angular/router": "^20.3.0",
-        "@floating-ui/dom": "^1.6.11",
         "rxjs": "~7.8.0",
         "zone.js": "~0.15.0"
     },
@@ -48,7 +48,6 @@
         "@types/jest": "^30.0.0",
         "@types/jest-axe": "^3.5.9",
         "angular-eslint": "21.0.1",
-        "depcheck": "^1.4.7",
         "eslint": "^9.39.1",
         "eslint-plugin-import": "^2.32.0",
         "jest": "^29.7.0",
@@ -71,6 +70,7 @@
         "watch": "^0.13.0"
     },
     "peerDependencies": {
-        "@bspk/styles": "^1.0.2"
+        "@bspk/styles": "^1.0.2",
+        "@floating-ui/dom": "^1.7.4"
     }
 }

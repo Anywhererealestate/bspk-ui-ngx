@@ -4,10 +4,19 @@
     "peerDependencies": {
         "@angular/common": "^20.3.0",
         "@angular/core": "^20.3.0",
-        "@bspk/styles": "^1.0.2"
+        "@bspk/styles": "^1.0.2",
+        "@floating-ui/dom": "^1.6.11"
     },
     "dependencies": {
         "tslib": "^2.3.0"
     },
-    "sideEffects": false
+    "sideEffects": false,
+    "exports": {
+        "./styles/base": {
+            "sass": "./styles/base.scss"
+        },
+        "./styles/colors": {
+            "sass": "./styles/colors.scss"
+        }
+    }
 }
