@@ -2,6 +2,8 @@
     "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
     "dest": "../../dist/ui",
     "lib": {
-        "entryFile": "src/public-api.ts"
-    }
+        "entryFile": "src/index.ts"
+    },
+    "allowedNonPeerDependencies": ["@floating-ui/dom"],
+    "assets": [{ "input": "src/styles", "glob": "**/*.scss", "output": "styles" }]
 }

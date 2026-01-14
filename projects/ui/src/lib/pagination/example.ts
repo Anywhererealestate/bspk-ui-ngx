@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, model } from '@angular/core';
-import { sendSnackbar } from '../../utils/sendSnackbar';
+import { sendSnackbar } from '../../utils/send-snackbar';
 import { UIPagination } from './pagination';
 
 @Component({

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
-import { componentTestProps } from '../../utils/componentTestProps';
+import { componentTestProps } from '../../utils/test-props';
 import { UIListItem } from './list-item';
 
 describe('UIListItem', () => {

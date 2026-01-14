@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
-import { ColorVariant } from '../../utils/colorVariants';
+import { ColorVariant } from '../../utils/color-variants';
 
 @Component({
     selector: 'ui-tag',

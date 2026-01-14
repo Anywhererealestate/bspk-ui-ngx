@@ -3,7 +3,6 @@ import {
     Component,
     Output,
     EventEmitter,
-    TemplateRef,
     ElementRef,
     ChangeDetectionStrategy,
     ViewEncapsulation,
@@ -58,7 +57,8 @@ export type IconType = BspkIcon;
         (focus)="handleFocus($event)"
         (blur)="handleBlur($event)"
         (mouseover)="handleMouseOver($event)"
-        (mouseleave)="handleMouseLeave($event)">
+        (mouseleave)="handleMouseLeave($event)"
+        [style]="style()">
         @if (!label()) {
             <ng-content></ng-content>
         } @else {
@@ -68,9 +68,7 @@ export type IconType = BspkIcon;
                 </span>
             }
             @if (shouldShowLabel) {
-                <span [attr.data-button-label]="true">
-                    {{ label() }}
-                </span>
+                <span [attr.data-button-label]="true">{{ label() }}</span>
             }
         }
         <span [attr.data-touch-target]="true"></span>
@@ -79,6 +77,9 @@ export type IconType = BspkIcon;
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, UIIcon, UITooltipDirective],
     encapsulation: ViewEncapsulation.None,
+    host: {
+        style: 'display: contents;',
+    },
 })
 export class UIButton {
     /** Event emitted when the button is clicked. */
@@ -97,6 +98,8 @@ export class UIButton {
     @Output() onMouseLeave = new EventEmitter<MouseEvent>();
 
     readonly buttonElement = viewChild.required<ElementRef<HTMLButtonElement>>('buttonElement');
+
+    readonly style = input<string>();
 
     /**
      * The label of the button.
@@ -176,7 +179,10 @@ export class UIButton {
     /** Additional CSS classes to apply. */
     readonly class = input<string>();
     /** Custom content template to override default button content. Not recommended - use for special cases only. */
-    readonly customContent = input<TemplateRef<any>>();
+
+    get nativeElement(): HTMLButtonElement {
+        return this.buttonElement().nativeElement!;
+    }
 
     get shouldShowLabel(): boolean {
         return !this.iconOnly();

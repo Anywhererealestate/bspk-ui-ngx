@@ -1,11 +1,15 @@
 import { signal } from '@angular/core';
-import { UtilityBase } from '../types/common';
+import { UtilityBase } from '../../types/common';
 
 export interface OutsideClickUtilityProps {
-    /** The elements to monitor for outside clicks. */
-    elements: HTMLElement[];
+    /**
+     * The elements to monitor for outside clicks.
+     *
+     * If used in the directive, this can be left empty and the directive's host element will be used.
+     */
+    elements?: HTMLElement[];
     /** The callback function to execute on outside click. */
-    callback: (event?: KeyboardEvent | MouseEvent) => void;
+    callback: (event?: Event | KeyboardEvent | MouseEvent) => void;
     /**
      * Whether the outside click detection is disabled.
      *
@@ -20,7 +24,11 @@ export interface OutsideClickUtilityProps {
     handleTabs?: boolean;
 }
 
-/** Utility to detect clicks outside specified elements and execute a callback. */
+/**
+ * Utility to detect clicks outside specified elements and execute a callback.
+ *
+ * Should be used in components that require outside click detection.
+ */
 export class OutsideClickUtility implements UtilityBase<OutsideClickUtilityProps> {
     readonly props = signal<OutsideClickUtilityProps>({
         elements: [],

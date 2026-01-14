@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, input, computed } from '@angular/core';
 
 import { AsInputSignal, CommonProps } from '../../types/common';
-import { uniqueId } from '../../utils';
+import { uniqueId } from '../../utils/random';
 import { ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { IconChevronRight } from '../icons/chevron-right';
 import { UILinkDirective } from '../link';
@@ -73,7 +73,9 @@ export type BreadcrumbProps = CommonProps<'id'> &
                     <icon-chevron-right aria-hidden="true" width="24" />
                 </li>
                 @if (items().length > 5) {
-                    <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
+                    <li>
+                        <ui-breadcrumb-dropdown [items]="middleItems()" [id]="id()!" [scrollLimit]="scrollLimit()" />
+                    </li>
                 } @else {
                     @for (item of middleItems(); track item.href) {
                         <li>

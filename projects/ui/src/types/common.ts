@@ -102,7 +102,7 @@ export interface CommonPropsLibrary {
      *
      * @type string
      */
-    role?: AriaRole;
+    ariaRole?: AriaRole;
     /**
      * Inline styles to apply to the element.
      *
@@ -119,6 +119,19 @@ export interface CommonPropsLibrary {
     ariaErrorMessage?: string;
     /** The aria-labelledby attribute for the control. */
     ariaLabelledBy?: string;
+    /**
+     * Indicates the current "selected" state of the list item when used in a selectable context, such as within a
+     * ListItemMenu.
+     */
+    ariaSelected?: boolean;
+    /** The aria-disabled attribute for the element. */
+    ariaDisabled?: boolean;
+    /** The aria-readonly attribute for the element. */
+    ariaReadonly?: boolean;
+    /** The htmlFor attribute for the element. */
+    htmlFor?: string;
+    /** Explicit tabIndex; defaults to 0 when actionable, otherwise -1. */
+    tabIndex?: number;
 }
 
 export type CommonProps<K extends keyof CommonPropsLibrary> = Pick<CommonPropsLibrary, K>;
