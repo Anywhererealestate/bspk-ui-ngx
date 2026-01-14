@@ -14,6 +14,16 @@ npm install @bspk/ui-ngx
 npm install --peer @bspk/styles @floating-ui/dom
 ```
 
+## Setup
+
+Ensure you your theme stylesheet from `@bspk/styles` and the base and color stylesheets.
+
+```scss
+@use '@bspk/styles/anywhere.css';
+@use '@bspk/ui-ngx/src/styles/base';
+@use '@bspk/ui-ngx/src/styles/colors';
+```
+
 ## Testing
 
 To test all components
