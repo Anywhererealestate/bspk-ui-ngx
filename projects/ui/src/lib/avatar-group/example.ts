@@ -37,6 +37,6 @@ export class UIAvatarGroupExample {
         { name: 'Miracle Max', initials: 'MM', color: 'green' },
         { name: 'Princess Buttercup', showIcon: true },
         { name: 'Westley', initials: 'W', color: 'purple' },
-        { name: 'Vincent', initials: 'V', color: 'orange' },
+        { name: 'Vincent', initials: 'V', image: '/avatar-04.png' },
     ];
 }

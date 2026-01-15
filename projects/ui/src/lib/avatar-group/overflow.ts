@@ -31,6 +31,8 @@ import { UIMenu } from '../menu/menu';
                                     [id]="item.id"
                                     [name]="item.name"
                                     [image]="item.image"
+                                    [color]="item.color"
+                                    [showIcon]="item.showIcon"
                                     [initials]="item.initials">
                                 </ui-avatar>
                             </span>
@@ -46,6 +48,8 @@ import { UIMenu } from '../menu/menu';
                 [id]="item.id"
                 [name]="item.name"
                 [image]="item.image"
+                [color]="item.color"
+                [showIcon]="item.showIcon"
                 [initials]="item.initials"></ui-avatar>
         </ng-template>
     `,
