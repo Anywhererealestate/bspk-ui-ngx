@@ -63,7 +63,7 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
         @if (open()) {
             <ui-menu
                 [ui-outside-click]="{ callback: handleOutsideClick.bind(this) }"
-                [ui-floating]="{ reference: referenceEl }"
+                [ui-floating]="{ reference: referenceEl, offsetOptions: offset }"
                 [id]="menuId()"
                 label="Expanded breadcrumb"
                 owner="Breadcrumb"
@@ -118,6 +118,11 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
             minWidth: '150px',
         };
     });
+
+    get offset() {
+        // Reads the CSS variable value at runtime, offsetOptions requires a number
+        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+    }
 
     get referenceEl() {
         return this.reference()!.nativeElement as HTMLElement;
