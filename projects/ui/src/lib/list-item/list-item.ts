@@ -214,7 +214,7 @@ export class UIListItem implements AsInputSignal<ListItemProps> {
 
     get role(): string | undefined {
         if (!this.actionable()) return undefined;
-        if (this.as() === 'button') return undefined;
+        if (this.as() === 'button' || this.as() === 'a') return undefined;
         return 'button';
     }
 

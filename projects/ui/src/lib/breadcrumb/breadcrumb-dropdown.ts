@@ -53,9 +53,9 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
             [iconOnly]="true"
             variant="tertiary"
             size="small"
-            [attr.aria-expanded]="!!open() || null"
-            [attr.aria-haspopup]="'listbox'"
-            [attr.aria-controls]="open() ? menuId() : null"
+            [ariaExpanded]="!!open() || null"
+            [ariaHaspopup]="'listbox'"
+            [ariaControls]="open() ? menuId() : null"
             (onClick)="toggleMenu()"
             #reference
             (keydown)="handleKeydown($event)"
@@ -67,7 +67,7 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
                 [id]="menuId()"
                 label="Expanded breadcrumb"
                 owner="Breadcrumb"
-                ariaRole="listbox"
+                role="menu"
                 [ngStyle]="ngMenuStyle()">
                 @for (item of menuItems(); track item.href) {
                     <ui-list-item
