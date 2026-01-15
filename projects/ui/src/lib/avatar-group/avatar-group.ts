@@ -6,6 +6,29 @@ import { UIAvatarGroupOverflow } from './overflow';
 
 export type AvatarItem = Pick<UIAvatarProps, 'color' | 'image' | 'initials' | 'name' | 'showIcon' | 'size'>;
 
+/**
+ * The AvatarGroup component is used to display a group of avatars, with support for overflow handling and different
+ * display variants.
+ *
+ * @example
+ *     <AvatarGroup
+ *     items={[
+ *     { name: 'Fezzik', image: '/avatar-01.png' },
+ *     { name: 'Inigo Montoya', initials: 'IM', color: 'blue' },
+ *     { name: 'Miracle Max', initials: 'MM', color: 'green' },
+ *     { name: 'Princess Buttercup', showIcon: true },
+ *     { name: 'Westley', initials: 'W', color: 'purple' },
+ *     { name: 'Vincent', initials: 'V', image: '/avatar-04.png' },
+ *     ]}
+ *     size="medium"
+ *     max={3}
+ *     variant="spread"
+ *     />;
+ *
+ * @name AvatarGroup
+ * @phase Dev
+ */
+
 @Component({
     selector: 'ui-avatar-group',
     standalone: true,
