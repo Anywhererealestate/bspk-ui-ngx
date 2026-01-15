@@ -171,6 +171,7 @@ export class UIListItem implements AsInputSignal<ListItemProps> {
     readonly active = input<ListItemProps['active']>();
     readonly owner = input<ListItemProps['owner']>();
     readonly ariaLabel = input<ListItemProps['ariaLabel']>();
+    readonly ariaRole = input<ListItemProps['ariaRole']>();
     readonly ariaSelected = input<ListItemProps['ariaSelected']>();
     readonly ariaDisabled = input<ListItemProps['ariaDisabled']>();
     readonly ariaReadonly = input<ListItemProps['ariaReadonly']>();
@@ -213,6 +214,7 @@ export class UIListItem implements AsInputSignal<ListItemProps> {
     }
 
     get role(): string | undefined {
+        if (this.ariaRole()) return this.ariaRole();
         if (!this.actionable()) return undefined;
         if (this.as() === 'button' || this.as() === 'a') return undefined;
         return 'button';

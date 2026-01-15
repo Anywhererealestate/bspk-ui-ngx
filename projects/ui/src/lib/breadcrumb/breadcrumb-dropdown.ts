@@ -67,11 +67,12 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
                 [id]="menuId()"
                 label="Expanded breadcrumb"
                 owner="Breadcrumb"
-                role="menu"
+                [ariaRole]="'menu'"
                 [ngStyle]="ngMenuStyle()">
                 @for (item of menuItems(); track item.href) {
                     <ui-list-item
                         as="a"
+                        [ariaRole]="'menuitem'"
                         [tabIndex]="-1"
                         [id]="item.id"
                         [label]="item.label"
