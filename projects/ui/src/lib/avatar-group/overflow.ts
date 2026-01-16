@@ -15,7 +15,7 @@ import { UIMenu } from '../menu/menu';
         @if (open()) {
             <ng-container>
                 <ui-menu
-                    [ui-floating]="{ reference: menuReference() }"
+                    [ui-floating]="{ reference: menuReference(), offsetOptions: offset }"
                     [id]="menuId()"
                     [style.width]="'fit-content'"
                     [style.paddingRight]="'var(--spacing-sizing-04)'"
@@ -31,6 +31,8 @@ import { UIMenu } from '../menu/menu';
                                     [id]="item.id"
                                     [name]="item.name"
                                     [image]="item.image"
+                                    [color]="item.color"
+                                    [showIcon]="item.showIcon"
                                     [initials]="item.initials">
                                 </ui-avatar>
                             </span>
@@ -46,6 +48,8 @@ import { UIMenu } from '../menu/menu';
                 [id]="item.id"
                 [name]="item.name"
                 [image]="item.image"
+                [color]="item.color"
+                [showIcon]="item.showIcon"
                 [initials]="item.initials"></ui-avatar>
         </ng-template>
     `,
@@ -62,6 +66,11 @@ export class UIAvatarGroupOverflow {
     readonly menuId = input.required<string>();
     readonly activeElementId = model<string | null>(null);
     readonly menuReference = input.required<HTMLElement>();
+
+    get offset() {
+        // Reads the CSS variable value at runtime, offsetOptions requires a number
+        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+    }
 
     get maxMenuHeight() {
         return this.items.length > 5 ? 'calc(var(--spacing-sizing-12) * 5)' : '';

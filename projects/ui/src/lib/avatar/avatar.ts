@@ -42,8 +42,6 @@ export type SizeVariant =
  * An avatar is a visual representation of a user or entity. It can be used to display an initials, icon, or image.
  *
  * @example
- *     import { Avatar } from '@bspk/ui/Avatar';
- *
  *     <Avatar
  *     color="blue"
  *     showIcon
@@ -118,7 +116,7 @@ export class UIAvatar implements AfterViewInit {
      *
      * @default grey
      */
-    readonly color = input('grey');
+    readonly color = input<string | undefined>('grey');
 
     /**
      * Customizable initials to display in the avatar limited to 2 characters.
@@ -138,7 +136,7 @@ export class UIAvatar implements AfterViewInit {
      *
      * @default false
      */
-    readonly showIcon = input(false);
+    readonly showIcon = input<boolean | undefined>(false);
 
     /**
      * The url to the image to display in the avatar.
@@ -155,7 +153,7 @@ export class UIAvatar implements AfterViewInit {
      *
      * @default false
      */
-    readonly hideTooltip = input(false);
+    readonly hideTooltip = input<boolean | undefined>(false);
 
     /**
      * Determines if the element is [disabled](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/disabled).
