@@ -3,8 +3,35 @@ import { AsInputSignal, CommonProps, FieldControlProps } from '../../types/commo
 import { IconCancel } from '../icons/cancel';
 import { UIIncrementButton } from './increment-button';
 
+function isNumber(value: unknown): number | undefined;
+function isNumber(value: unknown, fallbackValue: number): number;
+function isNumber(value: unknown, fallbackValue?: number): number | undefined {
+    if (typeof value === 'number') return value;
+    if (typeof value !== 'string') return fallbackValue;
+    const num = parseFloat(value);
+    return isNaN(num) ? fallbackValue : num;
+}
+
 export type InputNumberProps = CommonProps<'owner' | 'size'> &
     FieldControlProps & {
+        /**
+         * The alignment of the input box. Centered between the plus and minus buttons or to the left of the buttons.
+         *
+         * @default center
+         */
+        align?: 'center' | 'left';
+        /**
+         * Defines the [maximum](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/max) value that is
+         * accepted.
+         */
+        max?: number;
+        /**
+         * Defines the [minimum](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/min) value that is
+         * accepted.
+         *
+         * @default 0
+         */
+        min?: number;
         /**
          * The amount to increment or decrement the value by when the (+) or (-) buttons are pressed.
          *
@@ -55,7 +82,11 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
             [required]="required() || null"
             [value]="value() || ''"
             (input)="handleInput($event)"
+            [max]="max() || null"
+            [min]="min() || null"
+            [step]="step() || null"
             inputMode="numeric"
+            (blur)="handleBlur($event)"
             type="number"
             #inputEl />
         <ui-increment-button kind="add" (click)="incrementHandler('add')" [disabled]="disabled()"></ui-increment-button>
@@ -66,6 +97,7 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
         'data-bspk': 'input-number',
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
+        '[attr.data-centered]': 'centered || null',
     },
     encapsulation: ViewEncapsulation.None,
 })
@@ -86,27 +118,45 @@ export class UIInputNumber implements AsInputSignal<InputNumberProps> {
     readonly owner = input<InputNumberProps['owner']>(undefined);
     readonly ariaLabel = input<InputNumberProps['ariaLabel']>(undefined);
     readonly step = input<InputNumberProps['step']>(1);
+    readonly min = input<InputNumberProps['min']>(0);
+    readonly max = input<InputNumberProps['max']>(undefined);
+    readonly align = input<InputNumberProps['align']>('center');
 
     readonly ariaLabelledBy = input<InputNumberProps['ariaLabelledBy']>(undefined);
     readonly ariaDescribedBy = input<InputNumberProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<InputNumberProps['ariaErrorMessage']>(undefined);
+
+    get centered() {
+        return this.align() === 'center';
+    }
 
     incrementHandler(kind: 'add' | 'remove') {
         if (this.readOnly() || this.disabled()) {
             return;
         }
 
-        const newValue = this.value() ? Number(this.value()) : 0;
-        const stepValue = this.step() || 1;
+        const existingValue = this.value() ? Number(this.value()) : 0;
+        const newValue = kind === 'add' ? existingValue + (this.step() || 1) : existingValue - (this.step() || 1);
 
-        if (kind === 'add') {
-            this.value.set((newValue + stepValue).toString());
-        } else {
-            this.value.set((newValue - stepValue).toString());
+        if (this.max() !== undefined && newValue > this.max()!) {
+            return;
         }
+
+        if (this.min() !== undefined && newValue < this.min()!) {
+            return;
+        }
+
+        this.value.set(newValue.toString());
+    }
+
+    handleBlur(event: Event) {
+        const next = isNumber((event.target as HTMLInputElement).value, this.min() || 0);
+        (event.target as HTMLInputElement).value = next?.toString() || '';
+        this.value.set(next !== undefined ? next.toString() : '');
     }
 
     handleInput(event: Event) {
-        this.value.set((event.target as HTMLInputElement).value);
+        const next = isNumber((event.target as HTMLInputElement).value, this.min() || 0);
+        this.value.set(next !== undefined ? next.toString() : '');
     }
 }
