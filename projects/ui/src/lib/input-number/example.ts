@@ -35,6 +35,14 @@ import { UIInputNumber } from './input-number';
             name="min-input"
             ariaLabel="Input Label" />
 
+        <h3>Align Left</h3>
+        <ui-input-number
+            [value]="values()['left']"
+            (valueChange)="update('left', $event)"
+            [align]="'left'"
+            id="left-input"
+            name="left-input"
+            ariaLabel="Input Label" />
         <h3>Disabled</h3>
         <ui-input-number
             [value]="values()['disabled']"

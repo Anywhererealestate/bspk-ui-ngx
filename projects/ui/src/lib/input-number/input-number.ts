@@ -1,5 +1,8 @@
 import { Component, ElementRef, input, model, viewChild, ViewEncapsulation } from '@angular/core';
 import { AsInputSignal, CommonProps, FieldControlProps } from '../../types/common';
+import { UIDivider } from '../divider';
+import { UIIcon } from '../icon';
+import { IconAdd, IconRemove } from '../icons';
 import { IconCancel } from '../icons/cancel';
 import { UIIncrementButton } from './increment-button';
 
@@ -61,12 +64,8 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
  */
 @Component({
     selector: 'ui-input-number',
-    imports: [UIIncrementButton],
+    imports: [UIIncrementButton, UIDivider, UIIcon, IconAdd, IconRemove],
     template: `
-        <ui-increment-button
-            kind="remove"
-            (click)="incrementHandler('remove')"
-            [disabled]="disabled()"></ui-increment-button>
         <input
             data-main-input
             [attr.aria-labelledby]="ariaLabelledBy() || null"
@@ -88,8 +87,25 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
             inputMode="numeric"
             (blur)="handleBlur($event)"
             type="number"
+            [attr.data-stepper-input-element]="true"
             #inputEl />
-        <ui-increment-button kind="add" (click)="incrementHandler('add')" [disabled]="disabled()"></ui-increment-button>
+        <div aria-hidden="true" data-divider></div>
+        <button
+            aria-label="Decrease value"
+            ui-increment-button
+            kind="remove"
+            (click)="incrementHandler('remove')"
+            [disabled]="decrementDisabled">
+            <ui-icon [icon]="iconRemove"></ui-icon>
+        </button>
+        <button
+            aria-label="Increase value"
+            ui-increment-button
+            kind="add"
+            (click)="incrementHandler('add')"
+            [disabled]="incrementDisabled">
+            <ui-icon [icon]="iconAdd"></ui-icon>
+        </button>
     `,
     styleUrl: './input-number.scss',
     providers: [],
@@ -98,6 +114,9 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
         '[attr.data-centered]': 'centered || null',
+        '[attr.data-disabled]': 'this.disabled() || null',
+        '[attr.data-readonly]': 'readOnly() || null',
+        '[attr.data-stepper-input]': 'true',
     },
     encapsulation: ViewEncapsulation.None,
 })
@@ -126,8 +145,27 @@ export class UIInputNumber implements AsInputSignal<InputNumberProps> {
     readonly ariaDescribedBy = input<InputNumberProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<InputNumberProps['ariaErrorMessage']>(undefined);
 
+    readonly iconAdd = IconAdd;
+    readonly iconRemove = IconRemove;
+
     get centered() {
         return this.align() === 'center';
+    }
+
+    get decrementDisabled() {
+        if (this.min() === undefined) {
+            return false;
+        }
+        const currentValue = this.value() ? Number(this.value()) : 0;
+        return currentValue <= this.min()!;
+    }
+
+    get incrementDisabled() {
+        if (this.max() === undefined) {
+            return false;
+        }
+        const currentValue = this.value() ? Number(this.value()) : 0;
+        return currentValue >= this.max()!;
     }
 
     incrementHandler(kind: 'add' | 'remove') {
