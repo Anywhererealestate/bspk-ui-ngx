@@ -22,12 +22,38 @@ import {
     startOfToday,
     startOfWeek,
 } from 'date-fns';
+import { CommonProps } from '../../types/common';
 import { UIButton } from '../button';
 import { IconChevronLeft } from '../icons/chevron-left';
 import { IconChevronRight } from '../icons/chevron-right';
 import { IconKeyboardDoubleArrowLeft } from '../icons/keyboard-double-arrow-left';
 import { IconKeyboardDoubleArrowRight } from '../icons/keyboard-double-arrow-right';
 import { getCalendarKeydownHandler, optionIdGenerator, COLUMNS_COUNT } from './utils';
+
+export type CalendarProps = CommonProps<'id'> & {
+    /** The currently selected date. */
+    value?: Date;
+    /**
+     * When true, keyboard focus is trapped within the calendar component on initial render.
+     *
+     * Only applicable if the Calendar is used in a popover like in DatePicker.
+     *
+     * @default false
+     */
+    focusTrap?: boolean;
+    /** Fires when the date changes with the new date */
+    onChange?: (date: Date) => void;
+};
+
+/**
+ * Allows customers to select the date, month, and year.
+ *
+ * @example
+ *     <ui-calendar (onChange)="handleChange($event)" />
+ *
+ * @name Calendar
+ * @phase Dev
+ */
 
 @Component({
     selector: 'ui-calendar',
@@ -86,26 +112,9 @@ import { getCalendarKeydownHandler, optionIdGenerator, COLUMNS_COUNT } from './u
                     </tr>
                 </thead>
                 <tbody [id]="gridId" (keydown)="onGridKeydown($event)" #grid tabindex="0">
-                    <!-- @for (week of rows; track week[0]) {
-                        <tr>
-                            @for (date of week; track date.getTime()) {
-                                <td
-                                    [attr.aria-label]="format(date, 'do MMMM yyyy')"
-                                    [attr.data-selected]="isSameDay(date, activeDate) ? true : null"
-                                    [id]="generateOptionId(date)"
-                                    (click)="onChange.emit(date)"
-                                    [attr.role]="isSameDay(date, activeDate) ? 'gridcell' : null"
-                                    [attr.tabindex]="isSameDay(date, activeDate) ? 0 : -1">
-                                    {{ format(date, 'd') }}
-                                    1
-                                </td>
-                            }
-                        </tr>
-                    } -->
                     @for (week of rows; track week[0]?.getTime() ?? -1) {
                         <tr>
                             @for (date of week; track date?.getTime() ?? -1) {
-                                <!-- @if (date) { -->
                                 <td
                                     [attr.aria-label]="format(date, 'do MMMM yyyy')"
                                     [attr.data-selected]="isSameDay(date, activeDate) ? true : null"
@@ -115,7 +124,6 @@ import { getCalendarKeydownHandler, optionIdGenerator, COLUMNS_COUNT } from './u
                                     [attr.tabindex]="isSameDay(date, activeDate) ? 0 : -1">
                                     {{ format(date, 'd') }}
                                 </td>
-                                <!-- } -->
                             }
                         </tr>
                     }
@@ -126,6 +134,9 @@ import { getCalendarKeydownHandler, optionIdGenerator, COLUMNS_COUNT } from './u
     imports: [UIButton],
     styleUrl: './calendar.scss',
     encapsulation: ViewEncapsulation.None,
+    host: {
+        style: 'display: contents;',
+    },
 })
 export class UICalendar implements AfterViewInit, OnInit {
     @Output() onChange = new EventEmitter<Date>();
@@ -155,7 +166,6 @@ export class UICalendar implements AfterViewInit, OnInit {
         const start = startOfWeek(startOfMonth(this.activeDate), { weekStartsOn: 0 });
         const end = endOfWeek(endOfMonth(this.activeDate), { weekStartsOn: 0 });
         const days = eachDayOfInterval({ start, end });
-        // console.log('calendar days:', days);
         const weeks: Date[][] = [];
         for (let i = 0; i < days.length; i += COLUMNS_COUNT) {
             weeks.push(days.slice(i, i + COLUMNS_COUNT));
