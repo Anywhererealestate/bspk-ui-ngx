@@ -10,6 +10,7 @@ export * from './lib/badge';
 export * from './lib/banner-alert';
 export * from './lib/breadcrumb';
 export * from './lib/button';
+export * from './lib/calendar';
 export * from './lib/card';
 export * from './lib/checkbox';
 export * from './lib/checkbox-group';
