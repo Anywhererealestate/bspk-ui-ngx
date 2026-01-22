@@ -74,6 +74,30 @@ import { UIInputNumber } from './input-number';
             name="read-only-input"
             ariaLabel="Input Label"
             [readOnly]="true" />
+        <h3>Small Size</h3>
+        <ui-input-number
+            [value]="values()['small']"
+            (valueChange)="update('small', $event)"
+            id="small-input"
+            name="small-input"
+            ariaLabel="Input Label"
+            size="small" />
+        <h3>Medium Size</h3>
+        <ui-input-number
+            [value]="values()['medium']"
+            (valueChange)="update('medium', $event)"
+            id="medium-input"
+            name="medium-input"
+            ariaLabel="Input Label"
+            size="medium" />
+        <h3>Large Size</h3>
+        <ui-input-number
+            [value]="values()['large']"
+            (valueChange)="update('large', $event)"
+            id="large-input"
+            name="large-input"
+            ariaLabel="Input Label"
+            size="large" />
     `,
 })
 export class UIInputNumberExample {
@@ -81,11 +105,14 @@ export class UIInputNumberExample {
         default: '0',
         max: '0',
         min: '1',
-        leftAlign: '0',
+        left: '0',
         disabled: '0',
         invalid: '0',
         required: '0',
         readOnly: '0',
+        small: '0',
+        medium: '0',
+        large: '0',
     });
 
     readonly defaultValue = signal<string | undefined>('0');

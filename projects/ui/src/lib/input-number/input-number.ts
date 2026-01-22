@@ -1,10 +1,8 @@
 import { Component, ElementRef, input, model, viewChild, ViewEncapsulation } from '@angular/core';
 import { AsInputSignal, CommonProps, FieldControlProps } from '../../types/common';
-import { UIDivider } from '../divider';
 import { UIIcon } from '../icon';
 import { IconAdd, IconRemove } from '../icons';
 import { IconCancel } from '../icons/cancel';
-import { UIIncrementButton } from './increment-button';
 
 function isNumber(value: unknown): number | undefined;
 function isNumber(value: unknown, fallbackValue: number): number;
@@ -64,7 +62,7 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
  */
 @Component({
     selector: 'ui-input-number',
-    imports: [UIIncrementButton, UIDivider, UIIcon, IconAdd, IconRemove],
+    imports: [UIIcon],
     template: `
         <input
             data-main-input
@@ -92,18 +90,18 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
         <div aria-hidden="true" data-divider></div>
         <button
             aria-label="Decrease value"
-            ui-increment-button
             kind="remove"
             (click)="incrementHandler('remove')"
-            [disabled]="decrementDisabled">
+            [disabled]="decrementDisabled"
+            tabindex="-1">
             <ui-icon [icon]="iconRemove"></ui-icon>
         </button>
         <button
             aria-label="Increase value"
-            ui-increment-button
             kind="add"
             (click)="incrementHandler('add')"
-            [disabled]="incrementDisabled">
+            [disabled]="incrementDisabled"
+            tabindex="-1">
             <ui-icon [icon]="iconAdd"></ui-icon>
         </button>
     `,
@@ -137,7 +135,7 @@ export class UIInputNumber implements AsInputSignal<InputNumberProps> {
     readonly owner = input<InputNumberProps['owner']>(undefined);
     readonly ariaLabel = input<InputNumberProps['ariaLabel']>(undefined);
     readonly step = input<InputNumberProps['step']>(1);
-    readonly min = input<InputNumberProps['min']>(0);
+    readonly min = input<InputNumberProps['min']>(undefined);
     readonly max = input<InputNumberProps['max']>(undefined);
     readonly align = input<InputNumberProps['align']>('center');
 
