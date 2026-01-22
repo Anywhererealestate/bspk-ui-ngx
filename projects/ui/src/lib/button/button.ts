@@ -44,6 +44,9 @@ export type IconType = BspkIcon;
         #buttonElement
         [type]="type()"
         [attr.aria-label]="ariaLabel() || label()"
+        [attr.aria-controls]="ariaControls() || null"
+        [attr.aria-expanded]="ariaExpanded() || null"
+        [attr.aria-haspopup]="ariaHaspopup() || null"
         [attr.data-bspk]="'button'"
         [attr.data-bspk-owner]="owner() || null"
         [attr.data-destructive]="destructive() || null"
@@ -110,6 +113,15 @@ export class UIButton {
 
     /** Use only for custom buttons. The aria-label of the button for accessibility purposes. */
     readonly ariaLabel = input<string>();
+
+    /** The aria-haspopup attribute of the button for accessibility purposes. */
+    readonly ariaHaspopup = input<string>();
+
+    /** The aria-expanded attribute of the button for accessibility purposes. */
+    readonly ariaExpanded = input<boolean | null>(null);
+
+    /** The aria-controls attribute of the button for accessibility purposes. */
+    readonly ariaControls = input<string | null>(null);
 
     /**
      * The icon of the button.
