@@ -20,7 +20,7 @@ import { UIAccordion } from './accordion';
                 ]"></ui-accordion>
         </ui-example>
 
-        <h3>Single Open</h3>
+        <h4>Single Open</h4>
 
         <ui-accordion
             [singleOpen]="true"
@@ -30,7 +30,7 @@ import { UIAccordion } from './accordion';
                 { title: 'Car', children: 'Car Children' },
             ]"></ui-accordion>
 
-        <h3>With No Items (hidden)</h3>
+        <h4>With No Items (hidden)</h4>
 
         <ui-accordion [items]="[]"></ui-accordion>
     `,

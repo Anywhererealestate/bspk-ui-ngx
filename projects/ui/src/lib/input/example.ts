@@ -7,7 +7,7 @@ import { UIInput } from './input';
     standalone: true,
     imports: [CommonModule, UIInput],
     template: `
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-input
             [value]="values()['default']"
             (valueChange)="update('default', $event)"
@@ -16,49 +16,49 @@ import { UIInput } from './input';
             ariaLabel="Input Label" />
         <p>The value of the default input is: {{ values()['default'] || 'null' }}</p>
 
-        <h3>Disabled</h3>
+        <h4>Disabled</h4>
         <ui-input name="disabled-input" ariaLabel="Input Label" [disabled]="true" />
 
-        <h3>Invalid</h3>
+        <h4>Invalid</h4>
         <ui-input name="invalid-input" ariaLabel="Input Label" [invalid]="true" />
 
-        <h3>Required</h3>
+        <h4>Required</h4>
         <ui-input name="required-input" ariaLabel="Input Label" [required]="true" />
 
-        <h3>Read Only</h3>
+        <h4>Read Only</h4>
         <ui-input name="read-only-input" ariaLabel="Input Label" [readOnly]="true" />
 
-        <h3>showClearButton = true</h3>
+        <h4>showClearButton = true</h4>
         <ui-input name="show-clear-button-true" ariaLabel="Input Label" [showClearButton]="true" />
 
-        <h3>showClearButton = false</h3>
+        <h4>showClearButton = false</h4>
         <ui-input name="show-clear-button-false" ariaLabel="Input Label" [showClearButton]="false" />
 
-        <h3>Placeholder</h3>
+        <h4>Placeholder</h4>
         <ui-input name="placeholder-input" ariaLabel="Input Label" placeholder="I am placeholder copy" />
 
-        <h3>size = small</h3>
+        <h4>size = small</h4>
         <ui-input name="size-small" ariaLabel="Input Label" size="small" />
 
-        <h3>size = medium</h3>
+        <h4>size = medium</h4>
         <ui-input name="size-medium" ariaLabel="Input Label" size="medium" />
 
-        <h3>size = large</h3>
+        <h4>size = large</h4>
         <ui-input name="size-large" ariaLabel="Input Label" size="large" />
 
-        <h3>type: text</h3>
+        <h4>type: text</h4>
         <ui-input name="type-text" ariaLabel="Input Label" type="text" />
 
-        <h3>type: number</h3>
+        <h4>type: number</h4>
         <ui-input name="type-number" ariaLabel="Input Label" type="number" />
 
-        <h3>type: password</h3>
+        <h4>type: password</h4>
         <ui-input name="type-password" ariaLabel="Input Label" type="password" />
 
-        <h3>leading</h3>
+        <h4>leading</h4>
         <ui-input name="leading-example" ariaLabel="Input Label" leading="$" />
 
-        <h3>trailing</h3>
+        <h4>trailing</h4>
         <ui-input
             [value]="values()['trailing-example']"
             (valueChange)="update('trailing-example', $event)"

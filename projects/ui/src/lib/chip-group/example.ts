@@ -24,12 +24,12 @@ import { UIChipGroup } from './chip-group';
     standalone: true,
     imports: [CommonModule, UIChipGroup],
     template: `
-        <h3>Basic</h3>
+        <h4>Basic</h4>
         <div style="width: 500px">
             <ui-chip-group [items]="basicChips" />
         </div>
 
-        <h3>Scroll</h3>
+        <h4>Scroll</h4>
         <div style="width: 500px">
             <ui-chip-group
                 overflow="scroll"
@@ -44,7 +44,7 @@ import { UIChipGroup } from './chip-group';
             </ui-chip-group>
         </div>
 
-        <h3>Scroll & Flat</h3>
+        <h4>Scroll & Flat</h4>
         <div style="width: 500px">
             <ui-chip-group
                 overflow="scroll"

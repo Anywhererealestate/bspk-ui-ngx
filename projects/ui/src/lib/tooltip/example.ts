@@ -25,13 +25,13 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
         <p>This is a button with a tooltip but not using the ui-tooltip directive directly.</p>
 
         @for (placement of placements; track $index) {
-            <h3>{{ placement | titlecase }}</h3>
+            <h4>{{ placement | titlecase }}</h4>
             <span [ui-tooltip]="{ label: placement + ' side tooltip', placement: placement }"
                 >Hover me ({{ placement }})</span
             >
         }
 
-        <h3>Truncated Only</h3>
+        <h4>Truncated Only</h4>
         <p>
             This tooltip only appears when the content is truncated. Resize the window to see the effect. When the text
             is fully visible, no tooltip will appear.
@@ -45,7 +45,7 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
             <span style="width: 100%" [ui-tooltip]="{ truncated: true }">This is some text.</span>
         </div>
 
-        <h3>Dynamic Placement</h3>
+        <h4>Dynamic Placement</h4>
         <div style="text-align: right;">
             <span
                 [ui-tooltip]="{
@@ -57,7 +57,7 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
         </div>
         <p>Placement is 'right' but the tooltip will adjusts as there is not enough space to the right.</p>
 
-        <h3>No tail</h3>
+        <h4>No tail</h4>
         <span
             [ui-tooltip]="{
                 label: 'No tail',
@@ -66,7 +66,7 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
             >Hover me (no tail)</span
         >
 
-        <h3>Disabled</h3>
+        <h4>Disabled</h4>
         <span
             [ui-tooltip]="{
                 label: 'Disabled tooltip',
@@ -75,7 +75,7 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
             >Hover me (disabled)</span
         >
 
-        <h3>Updated Live</h3>
+        <h4>Updated Live</h4>
         <p>This demonstrates that the tooltip responds to dynamic updates.</p>
         <span
             [ui-tooltip]="{
@@ -84,7 +84,7 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
             >Hover me ({{ counter() }})</span
         >
 
-        <h3>Reference and Tooltip removed from DOM</h3>
+        <h4>Reference and Tooltip removed from DOM</h4>
         <p>
             This demonstrates that when the reference element is removed from the DOM, the tooltip is also removed from
             the DOM.
@@ -97,7 +97,7 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
             <span>Will return in {{ 10 - (counter() % 10) }} second{{ 10 - (counter() % 10) === 1 ? '' : 's' }}</span>
         }
 
-        <h3>Tooltip Utility Component</h3>
+        <h4>Tooltip Utility Component</h4>
         <span #tooltipUtil>Hello there</span>
     `,
     styles: `

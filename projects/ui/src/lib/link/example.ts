@@ -7,7 +7,7 @@ import { LinkProps, UILinkDirective } from './link.directive';
     standalone: true,
     imports: [UILinkDirective, UITxtDirective],
     template: `
-        <h3>Sizes</h3>
+        <h4>Sizes</h4>
         <p>
             <a ui-link href="#" size="small">Small Link</a>
         </p>
@@ -18,16 +18,16 @@ import { LinkProps, UILinkDirective } from './link.directive';
             <a ui-link href="#" size="large">Large Link</a>
         </p>
 
-        <h3>With External Icon</h3>
+        <h4>With External Icon</h4>
         <a ui-link href="https://anywhere.re" trailingIcon="external">External Link</a>
 
-        <h3>With Chevron Icon</h3>
+        <h4>With Chevron Icon</h4>
         <a ui-link href="#" trailingIcon="chevron">Chevron Link</a>
 
-        <h3>With Link Icon</h3>
+        <h4>With Link Icon</h4>
         <a ui-link href="#" trailingIcon="link">Link Icon</a>
 
-        <h3>Variants</h3>
+        <h4>Variants</h4>
         <div data-links-grid>
             <div></div>
             <span ui-txt="labels-large">Default</span>
@@ -62,7 +62,7 @@ import { LinkProps, UILinkDirective } from './link.directive';
             }
         </div>
 
-        <h3>Without directive</h3>
+        <h4>Without directive</h4>
         <a href="https://bspk.dev">Default Link</a>
         <p>
             Anchor tags without the <code>ui-link</code> directive will have the link styles applied if the body has the

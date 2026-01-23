@@ -7,12 +7,10 @@
 
 // get a list of all example files
 
-import { execSync } from 'child_process';
-import { pretty, toPascalCase } from './utils';
+import { toPascalCase } from './utils';
 import fs from 'fs';
 import path from 'path';
-import { ComponentDemo } from '../projects/demo/src/types';
-import { generateMeta } from './generate-meta';
+import { META } from '../projects/demo/src/meta';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 const uiLibPath = path.join(__dirname, '../projects/ui/src/lib');
@@ -41,7 +39,7 @@ import { ComponentPage } from '../components/component-page';
 import { NavRoute } from '../types';
 
 export const componentItems: NavRoute[] = [
- ${generateMeta()
+ ${META.components
      .map(
          // add an entry for each example
          (data) => `

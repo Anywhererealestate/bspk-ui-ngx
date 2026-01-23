@@ -8,19 +8,19 @@ import { UIInlineAlert } from './inline-alert';
     standalone: true,
     imports: [CommonModule, UIInlineAlert],
     template: `
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-inline-alert [label]="'Default alert content'"></ui-inline-alert>
-        <h3>variant="informational"</h3>
+        <h4>variant="informational"</h4>
         <ui-inline-alert variant="informational" [label]="'Informational alert content'"></ui-inline-alert>
-        <h3>variant="success"</h3>
+        <h4>variant="success"</h4>
         <ui-inline-alert variant="success" [label]="'Success alert content'"></ui-inline-alert>
-        <h3>variant="error"</h3>
+        <h4>variant="error"</h4>
         <ui-inline-alert variant="error" [label]="'Error alert content'"></ui-inline-alert>
-        <h3>variant="warning"</h3>
+        <h4>variant="warning"</h4>
         <ui-inline-alert variant="warning" [label]="'Warning alert content'"></ui-inline-alert>
-        <h3>with id</h3>
+        <h4>with id</h4>
         <ui-inline-alert id="custom-inline-alert-id" [label]="'Alert content with custom id'"></ui-inline-alert>
-        <h3>with owner</h3>
+        <h4>with owner</h4>
         <ui-inline-alert owner="CustomOwnerComponent" [label]="'Alert content with custom owner'"></ui-inline-alert>
     `,
 })

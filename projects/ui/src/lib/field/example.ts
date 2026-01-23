@@ -8,7 +8,7 @@ import { UIField } from './field';
     standalone: true,
     imports: [CommonModule, UIField, UIInput],
     template: `
-        <h3>Input with helper text</h3>
+        <h4>Input with helper text</h4>
         <ui-field controlId="example-input" label="Example label" helperText="This is an example description.">
             <ui-input
                 id="example-input"
@@ -19,7 +19,7 @@ import { UIField } from './field';
                 placeholder="Type here" />
         </ui-field>
 
-        <h3>Input with error message and helper text</h3>
+        <h4>Input with error message and helper text</h4>
         <ui-field
             controlId="error-input"
             label="Error label"
@@ -35,7 +35,7 @@ import { UIField } from './field';
                 [invalid]="true" />
         </ui-field>
 
-        <h3>Required with trailing</h3>
+        <h4>Required with trailing</h4>
         <ui-field controlId="req-input" label="Required label" labelTrailing="Optional info" [required]="true">
             <ui-input
                 id="req-input"

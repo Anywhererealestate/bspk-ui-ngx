@@ -9,7 +9,7 @@ import { UICheckboxOption } from './checkbox-option';
     imports: [CommonModule, UICheckboxOption],
     template: `
         @for (ex of examples; track $index) {
-            <h3>{{ ex.label }}</h3>
+            <h4>{{ ex.label }}</h4>
             <ui-checkbox-option
                 [label]="'This is ' + (ex.label ?? '')"
                 [description]="'This is description for ' + (ex.label ?? '')"

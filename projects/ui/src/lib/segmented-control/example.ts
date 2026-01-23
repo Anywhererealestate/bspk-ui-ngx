@@ -8,7 +8,7 @@ import { UISegmentedControl } from './segmented-control';
     standalone: true,
     imports: [CommonModule, UISegmentedControl],
     template: `
-        <h3>SegmentedControl</h3>
+        <h4>SegmentedControl</h4>
         <ui-segmented-control
             [label]="'Segments'"
             [options]="options"
@@ -16,7 +16,7 @@ import { UISegmentedControl } from './segmented-control';
             (valueChange)="selected = $event" />
         <p>Selected: {{ selected }}</p>
 
-        <h3>Icons Only</h3>
+        <h4>Icons Only</h4>
         <ui-segmented-control
             [label]="'Segments Icons'"
             [options]="iconOptions"
@@ -25,7 +25,7 @@ import { UISegmentedControl } from './segmented-control';
             (valueChange)="selectedIcon = $event" />
         <p>Selected: {{ selectedIcon }}</p>
 
-        <h3>With Disabled Option</h3>
+        <h4>With Disabled Option</h4>
         <ui-segmented-control
             [label]="'Segments with Disabled'"
             [options]="optionsWithDisabled"

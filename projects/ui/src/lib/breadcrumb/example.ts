@@ -7,19 +7,19 @@ import { UIBreadcrumb, BreadcrumbItem } from './';
     standalone: true,
     imports: [CommonModule, UIBreadcrumb],
     template: `
-        <h3>Minimum (2 Items)</h3>
+        <h4>Minimum (2 Items)</h4>
         <p>The breadcrumb component requires at least 2 items to display</p>
         <ui-breadcrumb [items]="minimumItems" />
 
-        <h3>5 Items</h3>
+        <h4>5 Items</h4>
         <p>Standard breadcrumb with 5 items</p>
         <ui-breadcrumb [items]="fiveItems" />
 
-        <h3>With Dropdown (6+ Items)</h3>
+        <h4>With Dropdown (6+ Items)</h4>
         <p>When more than 5 items are provided, the middle items collapse into a dropdown menu</p>
         <ui-breadcrumb [items]="manyItems" [scrollLimit]="5" />
 
-        <h3>15 Items with Dropdown and Scroll</h3>
+        <h4>15 Items with Dropdown and Scroll</h4>
         <p>The dropdown menu becomes scrollable when there are many items</p>
         <ui-breadcrumb [items]="manyItemsExtended" [scrollLimit]="5" />
     `,

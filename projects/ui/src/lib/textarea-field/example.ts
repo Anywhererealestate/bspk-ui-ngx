@@ -7,37 +7,37 @@ import { UITextareaField } from './textarea-field';
     standalone: true,
     imports: [CommonModule, UITextareaField],
     template: `
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-textarea-field name="default" label="Textarea" />
 
-        <h3>Disabled</h3>
+        <h4>Disabled</h4>
         <ui-textarea-field name="disabled" label="Textarea" [disabled]="true" />
 
-        <h3>Invalid</h3>
+        <h4>Invalid</h4>
         <ui-textarea-field name="invalid" label="Textarea" [invalid]="true" />
 
-        <h3>Required</h3>
+        <h4>Required</h4>
         <ui-textarea-field name="required" label="Textarea" [required]="true" />
 
-        <h3>Read Only</h3>
+        <h4>Read Only</h4>
         <ui-textarea-field name="readonly" label="Textarea" [readOnly]="true" />
 
-        <h3>Placeholder</h3>
+        <h4>Placeholder</h4>
         <ui-textarea-field name="placeholder" label="Textarea" placeholder="Type here..." />
 
-        <h3>size = small</h3>
+        <h4>size = small</h4>
         <ui-textarea-field name="small" label="Textarea" size="small" />
 
-        <h3>size = medium</h3>
+        <h4>size = medium</h4>
         <ui-textarea-field name="medium" label="Textarea" size="medium" />
 
-        <h3>size = large</h3>
+        <h4>size = large</h4>
         <ui-textarea-field name="large" label="Textarea" size="large" />
 
-        <h3>maxLength</h3>
+        <h4>maxLength</h4>
         <ui-textarea-field name="maxlength" label="Textarea" [maxLength]="120" placeholder="Max 120 chars" />
 
-        <h3>minRows (2) / maxRows (4)</h3>
+        <h4>minRows (2) / maxRows (4)</h4>
         <ui-textarea-field
             name="minmaxrows"
             label="Textarea"

@@ -28,7 +28,7 @@ import { Placement, UIDialog } from './dialog';
             </div>
         </ui-dialog>
 
-        <h3>Contained Dialog (Right, no Scrim)</h3>
+        <h4>Contained Dialog (Right, no Scrim)</h4>
         <div
             #container
             style="border: 1px solid var(--stroke-neutral-base); padding: var(--spacing-sizing-04); min-height: 200px; position: relative; overflow: hidden;">
@@ -55,7 +55,7 @@ import { Placement, UIDialog } from './dialog';
         </div>
 
         @for (placement of placements; track placement) {
-            <h3>Dialog {{ placement }}</h3>
+            <h4>Dialog {{ placement }}</h4>
             <ui-button label="Open {{ placement }} Dialog" (click)="openPlacement[placement] = true"></ui-button>
 
             <ui-dialog
@@ -81,7 +81,7 @@ import { Placement, UIDialog } from './dialog';
             </ui-dialog>
         }
 
-        <h3>Dialog no scrim</h3>
+        <h4>Dialog no scrim</h4>
         <ui-button label="Open Dialog No Scrim" (click)="openNoScrim = true"></ui-button>
 
         <ui-dialog [open]="openNoScrim" (onClose)="openNoScrim = false" placement="center" [showScrim]="false">
@@ -100,7 +100,7 @@ import { Placement, UIDialog } from './dialog';
             </div>
         </ui-dialog>
 
-        <h3>Dialog width full</h3>
+        <h4>Dialog width full</h4>
         <ui-button label="Open Full Width Dialog" (click)="openWidthFull = true"></ui-button>
 
         <ui-dialog [open]="openWidthFull" (onClose)="openWidthFull = false" placement="center" [widthFull]="true">

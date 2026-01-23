@@ -8,12 +8,12 @@ import { UIIcon } from './icon';
     standalone: true,
     imports: [CommonModule, UIIcon],
     template: `
-        <h3>Using prop width = 24</h3>
+        <h4>Using prop width = 24</h4>
         <div>
             <ui-icon [icon]="iconIcecream" width="24"> </ui-icon>
         </div>
 
-        <h3>Not using width prop</h3>
+        <h4>Not using width prop</h4>
         <p>Parent div has a width of 50px</p>
         <div style="width: 50px">
             <ui-icon [icon]="iconIcecream"> </ui-icon>

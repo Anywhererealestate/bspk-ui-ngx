@@ -12,11 +12,13 @@ import { ComponentDemo } from '../projects/demo/src/types';
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-const documentationPath = path.join(__dirname, '../meta/documentation.json');
+const documentationPath = path.join(__dirname, '../.tmp/documentation.json');
 
 export const generatedMetaPath = 'projects/demo/src/meta.ts';
 
 export function generateMeta(): { version: string; components: ComponentDemo[] } {
+    execSync('npx compodoc -p tsconfig.doc.json -e json -d ./.tmp');
+
     const metadata = JSON.parse(fs.readFileSync(documentationPath, 'utf-8'));
 
     // fund compoennts that end with 'ComponentNameExample' and their base component 'ComponentName'
@@ -63,11 +65,29 @@ export function generateMeta(): { version: string; components: ComponentDemo[] }
     return { components, version };
 }
 
-// ewserw
+function writeMetaToFile() {
+    const meta = generateMeta();
+    fs.writeFileSync(generatedMetaPath, 'export const META = ' + JSON.stringify(meta, null, 4));
+}
 
 // if --write is provided, generate the routes once
 if (process.argv.includes('--write')) {
-    const meta = generateMeta();
+    writeMetaToFile();
+}
 
-    fs.writeFileSync(generatedMetaPath, 'export const META = ' + JSON.stringify(meta, null, 4));
+// if --watch is provided, watch for changes and regenerate on change
+if (process.argv.includes('--watch')) {
+    console.log('\x1b[33mWatching for changes to regenerate component metadata...\x1b[0m');
+
+    ['projects/demo', 'projects/ui'].forEach((proj) => {
+        fs.watch(proj, { recursive: true }, (eventType, filename) => {
+            if (filename === 'meta.ts' || filename === 'generated.ts') return;
+
+            writeMetaToFile();
+
+            console.log(
+                `\n\x1b[32m✅ Regenerated component metadata at ${generatedMetaPath} ${eventType} on ${filename} 📄\x1b[0m\n`,
+            );
+        });
+    });
 }

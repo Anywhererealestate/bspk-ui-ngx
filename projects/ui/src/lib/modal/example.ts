@@ -22,7 +22,7 @@ import { UIModal } from './modal';
             Example Modal
         </ui-modal>
 
-        <h3>Vertical Buttons</h3>
+        <h4>Vertical Buttons</h4>
         <ui-button label="Open Vertical Modal" (onClick)="openVertical = true"></ui-button>
         <ui-modal
             [open]="openVertical"
@@ -35,7 +35,7 @@ import { UIModal } from './modal';
             Vertical layout content
         </ui-modal>
 
-        <h3>Scrollable Content</h3>
+        <h4>Scrollable Content</h4>
         <ui-button label="Open Modal" (onClick)="openScrolling = true"></ui-button>
         <ui-modal
             [open]="openScrolling"

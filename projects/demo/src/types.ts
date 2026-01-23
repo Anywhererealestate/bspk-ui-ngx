@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { ComponentPhase } from '@shared/types';
 
 export type NavRoute = Route & {
     hide?: boolean;
@@ -15,5 +16,3 @@ export interface ComponentDemo {
     example: string;
     slug: string;
 }
-
-export type ComponentPhase = 'Backlog' | 'Dev' | 'Stable' | 'Utility' | 'UXReview';
