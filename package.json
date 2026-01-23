@@ -32,7 +32,8 @@
         "start": "npm run prebuild && ng serve",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "publish:test": "ng build ui && npm pack ./dist/ui",
-        "semantic-release": "semantic-release"
+        "semantic-release": "semantic-release",
+        "preview": "npm run gh-build && npx http-server ./dist/browser"
     },
     "overrides": {
         "glob": "^11.0.1"
