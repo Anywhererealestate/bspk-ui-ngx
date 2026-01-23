@@ -1,4 +1,14 @@
-import { Component, computed, ElementRef, input, model, viewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+    Component,
+    computed,
+    ElementRef,
+    input,
+    model,
+    viewChild,
+    ViewEncapsulation,
+    TemplateRef,
+} from '@angular/core';
 import { AsInputSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
@@ -6,7 +16,7 @@ import { IconCancel } from '../icons/cancel';
 export type InputProps = CommonProps<'owner' | 'size'> &
     FieldControlProps & {
         /** The trailing element to display in the field. */
-        trailing?: string;
+        trailing?: TemplateRef<any> | string;
         /** The leading element to display in the field. */
         leading?: string;
         /** The placeholder of the field. */
@@ -48,7 +58,7 @@ export type InputProps = CommonProps<'owner' | 'size'> &
  */
 @Component({
     selector: 'ui-input',
-    imports: [UIButton],
+    imports: [UIButton, CommonModule],
     template: `<ng-content select="[data-leading]">
             @if (leading()) {
                 <span data-leading>{{ leading() }}</span>
@@ -74,11 +84,14 @@ export type InputProps = CommonProps<'owner' | 'size'> &
             [value]="value() || ''"
             (input)="handleInput($event)"
             #inputEl />
-        <ng-content select="[data-trailing]">
-            @if (trailing()) {
+        <ng-content select="[data-trailing]"></ng-content>
+        @if (trailing()) {
+            @if (trailingValue) {
+                <ng-container [ngTemplateOutlet]="trailingValue"></ng-container>
+            } @else {
                 <span data-trailing>{{ trailing() }}</span>
             }
-        </ng-content>
+        }
         @if (displayClearButton()) {
             <ui-button
                 data-clear-button
@@ -104,7 +117,6 @@ export class UIInput implements AsInputSignal<InputProps> {
 
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
 
-    // this method to ensures the returned value is of type ButtonSize
     readonly buttonSize = computed<ButtonSize>(() => {
         const validSizes: ButtonSize[] = ['small', 'medium', 'large'];
         const sizeValue = this.size();
@@ -137,6 +149,11 @@ export class UIInput implements AsInputSignal<InputProps> {
         return this.showClearButton() !== false && !this.readOnly() && !this.disabled() && !!this.value();
     });
 
+    get trailingValue(): TemplateRef<any> | undefined {
+        const value = this.trailing();
+        return value instanceof TemplateRef ? value : undefined;
+    }
+
     clearInput() {
         this.value.set('');
         this.inputEl().nativeElement.focus();
@@ -144,5 +161,9 @@ export class UIInput implements AsInputSignal<InputProps> {
 
     handleInput(event: Event) {
         this.value.set((event.target as HTMLInputElement).value);
+    }
+
+    isTemplateRef(value: any): value is TemplateRef<any> {
+        return value instanceof TemplateRef;
     }
 }

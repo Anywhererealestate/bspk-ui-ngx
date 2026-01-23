@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { sendSnackbar } from '../../utils/send-snackbar';
+import { UIButton } from '../button';
 import { UIInput } from './input';
 
 @Component({
     selector: 'ui-input-example',
     standalone: true,
-    imports: [CommonModule, UIInput],
+    imports: [CommonModule, UIInput, UIButton],
     template: `
         <h2>Input</h2>
 
@@ -67,6 +69,16 @@ import { UIInput } from './input';
             name="trailing-example"
             ariaLabel="Input Label"
             trailing="%" />
+
+        <h3>Placeholder with trailing UIButton</h3>
+        <ng-template #trailingButton>
+            <ui-button label="Go" size="small" (onClick)="onTrailingButtonClick()"></ui-button>
+        </ng-template>
+        <ui-input
+            name="placeholder-trailing-button"
+            ariaLabel="Input Label"
+            placeholder="Type something..."
+            [trailing]="trailingButton" />
     `,
 })
 export class UIInputExample {
@@ -83,4 +95,8 @@ export class UIInputExample {
             [key]: next,
         }));
     };
+
+    onTrailingButtonClick() {
+        sendSnackbar('Trailing UIButton clicked!');
+    }
 }
