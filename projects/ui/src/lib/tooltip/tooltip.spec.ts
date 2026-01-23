@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { hasNoBasicA11yIssues } from '@shared/testing/hasNoBasicA11yIssues';
 import { UITooltipDirective } from './tooltip.directive';
 
 @Component({

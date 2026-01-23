@@ -1,9 +1,9 @@
 import { Component, computed, inject, signal, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UIButton } from '../../../ui/src/lib/button';
-import { IconDarkMode } from '../../../ui/src/lib/icons/dark-mode';
-import { IconDarkModeFill } from '../../../ui/src/lib/icons/dark-mode-fill';
-import { ThemeService } from '../../../ui/src/services/theme';
+import { UIButton } from '@ui/button';
+import { IconDarkMode } from '@ui/icons/dark-mode';
+import { IconDarkModeFill } from '@ui/icons/dark-mode-fill';
+import { ThemeService } from '@ui/services/theme';
 import { AppNavComponent } from './components/app-nav';
 
 @Component({

@@ -4,6 +4,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "strict": true,
+    "moduleResolution": "node",
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
@@ -16,11 +17,16 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
+    "baseUrl": "./",
     "paths": {
-      "ui": [
-        "./dist/ui"
+      "@ui/*": [
+        "projects/ui/src/lib/*",
+        "projects/ui/src/*"
+      ],
+      "@shared/*": [
+        "projects/shared/src/*"
       ]
-    }
+    },
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -40,5 +46,17 @@
     {
       "path": "./projects/demo/tsconfig.app.json"
     },
+    {
+      "path": "./projects/common/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/common/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.spec.json"
+    }
   ]
 }
