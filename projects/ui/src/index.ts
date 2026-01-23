@@ -17,6 +17,7 @@ export * from './lib/checkbox-group';
 export * from './lib/checkbox-option';
 export * from './lib/chip';
 export * from './lib/chip-group';
+export * from './lib/date-picker';
 export * from './lib/dialog';
 export * from './lib/divider';
 export * from './lib/field';
