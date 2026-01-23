@@ -19,8 +19,6 @@ import { TooltipPlacement, UITooltipDirective } from './tooltip.directive';
     standalone: true,
     imports: [CommonModule, UITooltipDirective, UIButton],
     template: `
-        <h2>Tooltip</h2>
-
         <div ngx-example>
             <ui-button label="Hover me" tooltip="I explain what this button does" tooltipId="button"></ui-button>
         </div>

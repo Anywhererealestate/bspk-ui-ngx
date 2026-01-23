@@ -7,8 +7,6 @@ import { UIInputField } from './input-field';
     standalone: true,
     imports: [CommonModule, UIInputField],
     template: `
-        <h2>Input Field</h2>
-
         <h3>Default</h3>
         <ui-input-field
             [value]="values()['default']"

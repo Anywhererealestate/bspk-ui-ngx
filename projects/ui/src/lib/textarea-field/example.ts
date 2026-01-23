@@ -7,8 +7,6 @@ import { UITextareaField } from './textarea-field';
     standalone: true,
     imports: [CommonModule, UITextareaField],
     template: `
-        <h2>Textarea</h2>
-
         <h3>Default</h3>
         <ui-textarea-field name="default" label="Textarea" />
 

@@ -8,8 +8,6 @@ import { UIIcon } from './icon';
     standalone: true,
     imports: [CommonModule, UIIcon],
     template: `
-        <h2>Icon</h2>
-
         <h3>Using prop width = 24</h3>
         <div>
             <ui-icon [icon]="iconIcecream" width="24"> </ui-icon>

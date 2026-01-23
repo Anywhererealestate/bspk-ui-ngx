@@ -7,8 +7,6 @@ import { UITextarea } from './textarea';
     standalone: true,
     imports: [CommonModule, UITextarea],
     template: `
-        <h2>Textarea</h2>
-
         <h3>Default</h3>
         <ui-textarea name="default" ariaLabel="Textarea" />
 

@@ -9,8 +9,6 @@ import { UIBadge } from './badge';
     standalone: true,
     imports: [CommonModule, UIBadge, UIButton],
     template: `
-        <h2>Badge</h2>
-
         <h3>Basic Usage</h3>
 
         <div>

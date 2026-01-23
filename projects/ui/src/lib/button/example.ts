@@ -14,8 +14,6 @@ import { UIButton } from './button';
     standalone: true,
     imports: [CommonModule, UIButton],
     template: `
-        <h2>Button</h2>
-
         <h3>Default</h3>
         <p>only click & the required label prop set</p>
         <ui-button (click)="handleClick('Default')" label="Default" />

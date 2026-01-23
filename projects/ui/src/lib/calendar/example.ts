@@ -8,8 +8,6 @@ import { UICalendar } from './calendar';
     standalone: true,
     imports: [CommonModule, UICalendar],
     template: `
-        <h2>Calendar</h2>
-
         <h3>Default</h3>
         <ui-calendar (onChange)="handleChange($event)" />
 

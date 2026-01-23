@@ -6,6 +6,7 @@
     "outDir": "../../out-tsc/spec",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
     "module": "ES2022",
     "types": [
       "jest",

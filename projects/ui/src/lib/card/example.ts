@@ -7,8 +7,6 @@ import { UICard } from './card';
     standalone: true,
     imports: [CommonModule, UICard],
     template: `
-        <h2>Card</h2>
-
         <h3>Default</h3>
 
         <div style="width: 300px">

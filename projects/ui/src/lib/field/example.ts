@@ -8,7 +8,6 @@ import { UIField } from './field';
     standalone: true,
     imports: [CommonModule, UIField, UIInput],
     template: `
-        <h2>Field</h2>
         <h3>Input with helper text</h3>
         <ui-field controlId="example-input" label="Example label" helperText="This is an example description.">
             <ui-input

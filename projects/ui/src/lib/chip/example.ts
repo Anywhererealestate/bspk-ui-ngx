@@ -10,8 +10,6 @@ import { UIChip } from './chip';
     standalone: true,
     imports: [CommonModule, UIChip],
     template: `
-        <h2>Chip</h2>
-
         <h3>Default with label and click</h3>
         <ui-chip label="Hello I'm Chip" (click)="handleClick('Default with label and click')" />
 

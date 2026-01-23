@@ -5,6 +5,7 @@ import { IconDarkMode } from '@ui/icons/dark-mode';
 import { IconDarkModeFill } from '@ui/icons/dark-mode-fill';
 import { ThemeService } from '@ui/services/theme';
 import { AppNavComponent } from './components/app-nav';
+import { META } from './meta';
 
 @Component({
     selector: 'app-root',
@@ -15,7 +16,7 @@ import { AppNavComponent } from './components/app-nav';
                 <h2 data-brand="true">
                     <a data-name="true" href="/bspk-ui-ngx" data-bspk="link" data-subtle="true" target="_self"
                         ><span>BSPK</span></a
-                    ><span>Version: x</span>
+                    ><span>Version: {{ version }}</span>
                 </h2>
             </div>
             <div data-navbar-right>
@@ -37,6 +38,8 @@ import { AppNavComponent } from './components/app-nav';
     encapsulation: ViewEncapsulation.None,
 })
 export class App {
+    version = META.version;
+
     toggleDarkModeLabel = computed(() => {
         return this.themeService.value() === 'light' ? 'Enable dark mode' : 'Disable dark mode';
     });

@@ -9,8 +9,6 @@ import { KeyNavigationUtilityProps, UIKeyNavigationDirective } from './';
     standalone: true,
     imports: [CommonModule, UIKeyNavigationDirective, UIListItem],
     template: `
-        <h2>Key Navigation (Directive)</h2>
-
         <h3>Single Button with Key Navigation</h3>
         <p>Click on an item below then use arrow keys to navigate between items in the menu.</p>
         <ui-menu [tabIndex]="0" [ui-key-navigation]="keyNavigationProps">

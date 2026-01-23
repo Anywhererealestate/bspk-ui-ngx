@@ -8,7 +8,6 @@ import { UIInlineAlert } from './inline-alert';
     standalone: true,
     imports: [CommonModule, UIInlineAlert],
     template: `
-        <h2>InlineAlert</h2>
         <h3>Default</h3>
         <ui-inline-alert [label]="'Default alert content'"></ui-inline-alert>
         <h3>variant="informational"</h3>

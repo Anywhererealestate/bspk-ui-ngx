@@ -8,7 +8,6 @@ import { UICheckboxOption } from './checkbox-option';
     standalone: true,
     imports: [CommonModule, UICheckboxOption],
     template: `
-        <h2>Checkbox Option</h2>
         @for (ex of examples; track $index) {
             <h3>{{ ex.label }}</h3>
             <ui-checkbox-option

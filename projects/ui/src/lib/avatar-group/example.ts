@@ -7,8 +7,6 @@ import { UIAvatarGroup } from './avatar-group';
     standalone: true,
     imports: [CommonModule, UIAvatarGroup],
     template: `
-        <h2>Avatar Group Examples</h2>
-
         <h3>Default (stacked, small, max=5)</h3>
         <ui-avatar-group [items]="avatars"></ui-avatar-group>
 

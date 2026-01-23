@@ -10,8 +10,6 @@ import { UIModal } from './modal';
     standalone: true,
     imports: [CommonModule, UIModal, UIButton, UIListItem, UIRadio],
     template: `
-        <h2>Modal</h2>
-
         <ui-button label="Open Modal" (onClick)="open = true"></ui-button>
 
         <ui-modal

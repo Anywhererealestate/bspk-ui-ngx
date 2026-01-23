@@ -24,8 +24,6 @@ import { UIChipGroup } from './chip-group';
     standalone: true,
     imports: [CommonModule, UIChipGroup],
     template: `
-        <h2>Chip Group</h2>
-
         <h3>Basic</h3>
         <div style="width: 500px">
             <ui-chip-group [items]="basicChips" />

@@ -7,8 +7,6 @@ import { UITag } from './tag';
     standalone: true,
     imports: [CommonModule, UITag],
     template: `
-        <h2>Tag</h2>
-
         <h3>Default</h3>
         <ui-tag label="basic tag" />
 

@@ -7,8 +7,6 @@ import { LinkProps, UILinkDirective } from './link.directive';
     standalone: true,
     imports: [UILinkDirective, UITxtDirective],
     template: `
-        <h2>Link</h2>
-
         <h3>Sizes</h3>
         <p>
             <a ui-link href="#" size="small">Small Link</a>

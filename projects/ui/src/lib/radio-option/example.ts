@@ -8,7 +8,6 @@ import { UIRadioOption } from './radio-option';
     standalone: true,
     imports: [CommonModule, UIRadioOption],
     template: `
-        <h2>Radio Option</h2>
         @for (ex of examples; track $index) {
             <h3>{{ ex.label }}</h3>
             <ui-radio-option

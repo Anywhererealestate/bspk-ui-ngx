@@ -7,8 +7,6 @@ import { UIRadio } from './radio';
     standalone: true,
     imports: [CommonModule, UIRadio],
     template: `
-        <h2>Radio</h2>
-
         <h3>Basic with id</h3>
         <ui-radio id="test-id" name="radio-0" ariaLabel="Option 0" value="Option 0"></ui-radio>
 

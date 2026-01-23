@@ -1,6 +1,7 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { UITag } from '@ui/tag';
+import { META } from '../meta';
 import { ComponentDemo } from '../types';
 
 @Component({
@@ -23,8 +24,12 @@ export class ComponentPage {
     component: ComponentDemo | undefined;
 
     constructor(private route: ActivatedRoute) {
-        this.route.data.subscribe((data) => {
-            this.component = data as ComponentDemo;
+        this.route.data.subscribe((data: any) => {
+            META.components.find((comp) => {
+                if (comp.name === data.component) {
+                    this.component = comp as ComponentDemo;
+                }
+            });
         });
     }
 }

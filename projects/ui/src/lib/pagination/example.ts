@@ -8,8 +8,6 @@ import { UIPagination } from './pagination';
     standalone: true,
     imports: [CommonModule, UIPagination],
     template: `
-        <h2>Pagination</h2>
-
         <p>See working example on the table page: <a href="/table">Table</a></p>
 
         <h3>Pagination with Input</h3>

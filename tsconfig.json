@@ -4,7 +4,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     "strict": true,
-    "moduleResolution": "node",
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
@@ -22,6 +21,10 @@
       "@ui/*": [
         "projects/ui/src/lib/*",
         "projects/ui/src/*"
+      ],
+      "@demo/*": [
+        "projects/demo/src/lib/*",
+        "projects/demo/src/*"
       ],
       "@shared/*": [
         "projects/shared/src/*"
@@ -45,12 +48,6 @@
     },
     {
       "path": "./projects/demo/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/common/tsconfig.lib.json"
-    },
-    {
-      "path": "./projects/common/tsconfig.spec.json"
     },
     {
       "path": "./projects/shared/tsconfig.lib.json"

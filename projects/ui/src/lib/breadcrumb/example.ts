@@ -7,8 +7,6 @@ import { UIBreadcrumb, BreadcrumbItem } from './';
     standalone: true,
     imports: [CommonModule, UIBreadcrumb],
     template: `
-        <h2>Breadcrumb</h2>
-
         <h3>Minimum (2 Items)</h3>
         <p>The breadcrumb component requires at least 2 items to display</p>
         <ui-breadcrumb [items]="minimumItems" />

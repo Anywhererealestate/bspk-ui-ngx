@@ -14,8 +14,6 @@ import { UIListItem } from './list-item';
     standalone: true,
     imports: [CommonModule, UIListItem, IconFolder, IconChevronRight, UIButton, IconMoreVert, UIAvatar],
     template: `
-        <h2>List Item</h2>
-
         <h3>Basic</h3>
         <div style="width: 360px; display: grid; gap: 16px">
             <ui-list-item

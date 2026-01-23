@@ -9,8 +9,6 @@ import { UIBannerAlert } from './banner-alert';
     standalone: true,
     imports: [CommonModule, UIBannerAlert],
     template: `
-        <h2>BannerAlert</h2>
-
         <h3>Default</h3>
         <ui-banner-alert header="Example Header" body="Example body text"> </ui-banner-alert>
 

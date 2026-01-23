@@ -9,8 +9,6 @@ import { UIOutsideClickDirective } from './outside-click.directive';
     standalone: true,
     imports: [CommonModule, UIOutsideClickDirective, UIButton],
     template: `
-        <h2>Outside Click (Directive)</h2>
-
         <h3>Single Button with Outside Click Detection</h3>
         <ui-button
             label="Click outside me!"

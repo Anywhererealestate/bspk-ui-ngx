@@ -10,8 +10,6 @@ import { Placement, UIDialog } from './dialog';
     standalone: true,
     imports: [CommonModule, UIDialog, UIButton, UIFlexDirective],
     template: `
-        <h2>Dialog</h2>
-
         <ui-button label="Open Dialog" (click)="open = true"></ui-button>
 
         <ui-dialog [open]="open" (onClose)="open = false" placement="center">

@@ -8,7 +8,6 @@ import { UISwitchOption } from './switch-option';
     standalone: true,
     imports: [CommonModule, UISwitchOption],
     template: `
-        <h2>Switch Option</h2>
         @for (ex of examples; track $index) {
             <h3>{{ ex.label }}</h3>
             <ui-switch-option

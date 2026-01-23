@@ -8,8 +8,6 @@ import { UICheckbox } from './checkbox';
     standalone: true,
     imports: [CommonModule, UICheckbox],
     template: `
-        <h2>Checkbox</h2>
-
         <h3>Basic with id</h3>
         <ui-checkbox
             id="test-id"

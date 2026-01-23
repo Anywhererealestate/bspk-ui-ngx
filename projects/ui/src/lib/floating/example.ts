@@ -9,8 +9,6 @@ import { UIFloatingDirective, FloatingDirectiveProps } from './floating.directiv
     standalone: true,
     imports: [CommonModule, UIFloatingDirective, UIButton],
     template: `
-        <h2>Floating (Directive)</h2>
-
         <h3>Basic Example</h3>
 
         <div

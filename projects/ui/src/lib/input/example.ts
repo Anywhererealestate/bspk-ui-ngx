@@ -7,8 +7,6 @@ import { UIInput } from './input';
     standalone: true,
     imports: [CommonModule, UIInput],
     template: `
-        <h2>Input</h2>
-
         <h3>Default</h3>
         <ui-input
             [value]="values()['default']"

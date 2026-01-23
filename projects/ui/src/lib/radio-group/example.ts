@@ -7,8 +7,6 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
     standalone: true,
     imports: [CommonModule, UIRadioGroup],
     template: `
-        <h2>Radio Group Examples</h2>
-
         <h3>Basic</h3>
         <ui-radio-group
             name="group-basic"
