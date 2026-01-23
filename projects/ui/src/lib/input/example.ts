@@ -10,8 +10,14 @@ import { UIInput } from './input';
     imports: [CommonModule, UIInput, UIButton],
     template: `
         <h2>Input</h2>
-
         <h3>Default</h3>
+        <ui-input
+            (valueChange)="update('default', $event)"
+            id="default-input"
+            name="default-input"
+            ariaLabel="Input Label" />
+
+        <h3>Default with preset Value</h3>
         <ui-input
             [value]="values()['default']"
             (valueChange)="update('default', $event)"
@@ -31,6 +37,9 @@ import { UIInput } from './input';
 
         <h3>Read Only</h3>
         <ui-input name="read-only-input" ariaLabel="Input Label" [readOnly]="true" />
+
+        <h3>Read Only & preset Value</h3>
+        <ui-input name="read-only-input" ariaLabel="Input Label" [readOnly]="true" [value]="values()['default']" />
 
         <h3>showClearButton = true</h3>
         <ui-input name="show-clear-button-true" ariaLabel="Input Label" [showClearButton]="true" />

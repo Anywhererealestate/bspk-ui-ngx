@@ -109,6 +109,7 @@ export type InputProps = CommonProps<'owner' | 'size'> &
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
         '[attr.data-show-clear-button]': 'displayClearButton() || null',
+        '[attr.data-readonly]': 'readOnly() || null',
     },
     encapsulation: ViewEncapsulation.None,
 })

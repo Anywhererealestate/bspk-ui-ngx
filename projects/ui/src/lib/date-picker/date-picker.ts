@@ -103,7 +103,7 @@ export type DatePickerProps = CommonProps<
                 [trailing]="calendarButton"></ui-input>
 
             <ng-template #calendarButton>
-                @if (!disabled()) {
+                @if (!disabled() && !readOnly()) {
                     <ui-button
                         [icon]="IconEvent"
                         [iconOnly]="true"
@@ -136,8 +136,8 @@ export type DatePickerProps = CommonProps<
     encapsulation: ViewEncapsulation.None,
 })
 export class UIDatePicker implements OnInit, OnChanges, AsInputSignal<DatePickerProps> {
-    @Output() onChange = new EventEmitter<string>();
-
+    // @Output() readonly onChange = new EventEmitter<string>();
+    @Output() readonly valueChange = new EventEmitter<string>();
     // Inputs
     readonly value = input<Date | string | undefined>(undefined);
     readonly disabled = input<DatePickerProps['disabled']>();
@@ -212,17 +212,17 @@ export class UIDatePicker implements OnInit, OnChanges, AsInputSignal<DatePicker
     };
 
     onInputChange(value: string | undefined) {
-        this.onChange.emit(value ?? '');
+        this.valueChange.emit(value ?? '');
         this.setActiveDateFromValue();
     }
 
     onCalendarChange(date: Date) {
         const formatted = format(date, 'MM/dd/yyyy');
-        this.internalValue.set(formatted); // <-- Update the input value
-        this.activeDate.set(date); // (optional: keep activeDate in sync)
+        this.internalValue.set(formatted);
+        this.activeDate.set(date);
         if (this.closeCalendarOnChange()) {
             this.calendarVisible.set(false);
         }
-        this.onChange.emit(formatted);
+        this.valueChange.emit(formatted);
     }
 }
