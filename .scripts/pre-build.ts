@@ -4,8 +4,6 @@ import { generateComponentRoutes } from './generate-component-routes';
 import { generateMeta } from './generate-meta';
 import { updateIndex } from './update-index';
 
-generateMeta();
-
 generateComponentRoutes();
 
 updateIndex();
