@@ -11,18 +11,14 @@ import { UIInput } from './input';
     template: `
         <h2>Input</h2>
         <h3>Default</h3>
-        <ui-input
-            (valueChange)="update('default', $event)"
-            id="default-input"
-            name="default-input"
-            ariaLabel="Input Label" />
+        <ui-input name="default" ariaLabel="Input Label" />
 
         <h3>Default with preset Value</h3>
         <ui-input
             [value]="values()['default']"
             (valueChange)="update('default', $event)"
             id="default-input"
-            name="default-input"
+            name="default-preset-value"
             ariaLabel="Input Label" />
         <p>The value of the default input is: {{ values()['default'] || 'null' }}</p>
 
@@ -42,6 +38,7 @@ import { UIInput } from './input';
         <ui-input name="read-only-input" ariaLabel="Input Label" [readOnly]="true" [value]="values()['default']" />
 
         <h3>showClearButton = true</h3>
+        <p>The clear button will only show when there is a value present.</p>
         <ui-input name="show-clear-button-true" ariaLabel="Input Label" [showClearButton]="true" />
 
         <h3>showClearButton = false</h3>
