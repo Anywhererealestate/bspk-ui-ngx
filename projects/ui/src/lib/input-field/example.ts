@@ -7,9 +7,7 @@ import { UIInputField } from './input-field';
     standalone: true,
     imports: [CommonModule, UIInputField],
     template: `
-        <h2>Input Field</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-input-field
             [value]="values()['default']"
             (valueChange)="update('default', $event)"
@@ -18,49 +16,49 @@ import { UIInputField } from './input-field';
             label="Input Label"
             helperText="The value of the default input is: {{ values()['default'] || 'null' }}" />
 
-        <h3>Disabled</h3>
+        <h4>Disabled</h4>
         <ui-input-field name="disabled-input" label="Input Label" [disabled]="true" />
 
-        <h3>Invalid</h3>
+        <h4>Invalid</h4>
         <ui-input-field name="invalid-input" label="Input Label" [invalid]="true" />
 
-        <h3>Required</h3>
+        <h4>Required</h4>
         <ui-input-field name="required-input" label="Input Label" [required]="true" />
 
-        <h3>Read Only</h3>
+        <h4>Read Only</h4>
         <ui-input-field name="read-only-input" label="Input Label" [readOnly]="true" />
 
-        <h3>showClearButton = true</h3>
+        <h4>showClearButton = true</h4>
         <ui-input-field name="show-clear-button-true" label="Input Label" [showClearButton]="true" />
 
-        <h3>showClearButton = false</h3>
+        <h4>showClearButton = false</h4>
         <ui-input-field name="show-clear-button-false" label="Input Label" [showClearButton]="false" />
 
-        <h3>Placeholder</h3>
+        <h4>Placeholder</h4>
         <ui-input-field name="placeholder-input" label="Input Label" placeholder="I am placeholder copy" />
 
-        <h3>size = small</h3>
+        <h4>size = small</h4>
         <ui-input-field name="size-small" label="Input Label" size="small" />
 
-        <h3>size = medium</h3>
+        <h4>size = medium</h4>
         <ui-input-field name="size-medium" label="Input Label" size="medium" />
 
-        <h3>size = large</h3>
+        <h4>size = large</h4>
         <ui-input-field name="size-large" label="Input Label" size="large" />
 
-        <h3>type: text</h3>
+        <h4>type: text</h4>
         <ui-input-field name="type-text" label="Input Label" type="text" />
 
-        <h3>type: number</h3>
+        <h4>type: number</h4>
         <ui-input-field name="type-number" label="Input Label" type="number" />
 
-        <h3>type: password</h3>
+        <h4>type: password</h4>
         <ui-input-field name="type-password" label="Input Label" type="password" />
 
-        <h3>leading</h3>
+        <h4>leading</h4>
         <ui-input-field name="leading-example" label="Input Label" leading="$" />
 
-        <h3>trailing</h3>
+        <h4>trailing</h4>
         <ui-input-field
             ariaLabel="Input Label"
             [value]="values()['trailing-example']"
