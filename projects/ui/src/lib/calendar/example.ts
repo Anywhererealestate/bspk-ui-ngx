@@ -8,18 +8,16 @@ import { UICalendar } from './calendar';
     standalone: true,
     imports: [CommonModule, UICalendar],
     template: `
-        <h2>Calendar</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-calendar (onChange)="handleChange($event)" />
 
-        <h3>With Initial Value</h3>
+        <h4>With Initial Value</h4>
         <ui-calendar [value]="initialDate()" (onChange)="handleChange($event, 'With Initial Value')" />
 
-        <h3>With Focus Trap</h3>
+        <h4>With Focus Trap</h4>
         <ui-calendar [focusTrap]="true" (onChange)="handleChange($event, 'With Focus Trap')" />
 
-        <h3>With Custom ID</h3>
+        <h4>With Custom ID</h4>
         <ui-calendar id="custom-calendar" (onChange)="handleChange($event, 'With Custom ID')" />
     `,
 })

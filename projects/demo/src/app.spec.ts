@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { hasNoBasicA11yIssues } from '../../../ui/src/testutils/hasNoBasicA11yIssues';
+import { hasNoBasicA11yIssues } from '@shared/testing/hasNoBasicA11yIssues';
 import { App } from './app';
 
 describe('App', () => {

@@ -9,37 +9,35 @@ import { UIBannerAlert } from './banner-alert';
     standalone: true,
     imports: [CommonModule, UIBannerAlert],
     template: `
-        <h2>BannerAlert</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-banner-alert header="Example Header" body="Example body text"> </ui-banner-alert>
 
-        <h3>variant="informational"</h3>
+        <h4>variant="informational"</h4>
         <ui-banner-alert header="Example Header" body="Example body text" variant="informational"> </ui-banner-alert>
 
-        <h3>variant="success"</h3>
+        <h4>variant="success"</h4>
         <ui-banner-alert header="Example Header" body="Example body text" variant="success"></ui-banner-alert>
 
-        <h3>variant="error"</h3>
+        <h4>variant="error"</h4>
         <ui-banner-alert header="Example Header" body="Example body text" variant="error"></ui-banner-alert>
 
-        <h3>variant="warning"</h3>
+        <h4>variant="warning"</h4>
         <ui-banner-alert header="Example Header" body="Example body text" variant="warning"></ui-banner-alert>
 
-        <h3>Elevated</h3>
+        <h4>Elevated</h4>
         <ui-banner-alert header="Example Header" body="Example body text" [elevated]="true"> </ui-banner-alert>
 
-        <h3>onClose</h3>
+        <h4>onClose</h4>
         <ui-banner-alert header="Example Header" body="Example body text" (onClose)="onClose()"> </ui-banner-alert>
 
-        <h3>callToAction</h3>
+        <h4>callToAction</h4>
         <ui-banner-alert
             header="Example Header"
             body="Example body text"
             [callToAction]="{ label: 'Click me', onClick: onCta }">
         </ui-banner-alert>
 
-        <h3>onClose + callToAction</h3>
+        <h4>onClose + callToAction</h4>
         <ui-banner-alert
             header="Example Header"
             body="Example body text"

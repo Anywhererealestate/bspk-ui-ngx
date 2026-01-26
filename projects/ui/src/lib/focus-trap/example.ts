@@ -10,7 +10,7 @@ import { UIFocusTrapDirective } from './focus-trap.directive';
     imports: [CommonModule, UIFocusTrapDirective, UIButton],
     encapsulation: ViewEncapsulation.None,
     template: `
-        <h3>Focus Trap</h3>
+        <h4>Focus Trap</h4>
 
         <label style="display: block; margin: var(--spacing-sizing-08) 0;">
             <input type="checkbox" [checked]="enabled" (change)="enabled = $event.target.checked" /> Enable focus trap

@@ -8,17 +8,15 @@ import { UIPagination } from './pagination';
     standalone: true,
     imports: [CommonModule, UIPagination],
     template: `
-        <h2>Pagination</h2>
-
         <p>See working example on the table page: <a href="/table">Table</a></p>
 
-        <h3>Pagination with Input</h3>
+        <h4>Pagination with Input</h4>
         <ui-pagination [value]="values()[0]" [numPages]="50" (onChange)="handleChange(0, $event)" />
 
-        <h3>Pagination with Buttons</h3>
+        <h4>Pagination with Buttons</h4>
         <ui-pagination [value]="values()[1]" [numPages]="7" (onChange)="handleChange(1, $event)" />
 
-        <h3>Hidden when only one page</h3>
+        <h4>Hidden when only one page</h4>
         <ui-pagination [value]="values()[2]" [numPages]="1" (onChange)="handleChange(2, $event)" />
         <p>This pagination component is hidden because there is only one page.</p>
     `,

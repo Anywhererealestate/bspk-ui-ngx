@@ -8,9 +8,7 @@ import { UICheckbox } from './checkbox';
     standalone: true,
     imports: [CommonModule, UICheckbox],
     template: `
-        <h2>Checkbox</h2>
-
-        <h3>Basic with id</h3>
+        <h4>Basic with id</h4>
         <ui-checkbox
             id="test-id"
             name="checkbox-0"
@@ -19,7 +17,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-0']"
             (checkedChange)="setChecked('checkbox-0', $event)" />
 
-        <h3>checked = {{ checked['checkbox-1'] }}</h3>
+        <h4>checked = {{ checked['checkbox-1'] }}</h4>
         <ui-checkbox
             name="checkbox-1"
             ariaLabel="Option 1"
@@ -27,7 +25,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-1']"
             (checkedChange)="setChecked('checkbox-1', $event)" />
 
-        <h3>checked = {{ checked['checkbox-2'] }}</h3>
+        <h4>checked = {{ checked['checkbox-2'] }}</h4>
         <ui-checkbox
             name="checkbox-2"
             ariaLabel="Option 2"
@@ -35,7 +33,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-2']"
             (checkedChange)="setChecked('checkbox-2', $event)" />
 
-        <h3>checked = {{ checked['checkbox-3'] }}, disabled = true</h3>
+        <h4>checked = {{ checked['checkbox-3'] }}, disabled = true</h4>
         <ui-checkbox
             name="checkbox-3"
             ariaLabel="Option 3"
@@ -44,7 +42,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-3']"
             (checkedChange)="setChecked('checkbox-3', $event)" />
 
-        <h3>checked = {{ checked['checkbox-4'] }}, disabled = true</h3>
+        <h4>checked = {{ checked['checkbox-4'] }}, disabled = true</h4>
         <ui-checkbox
             name="checkbox-4"
             ariaLabel="Option 4"
@@ -53,7 +51,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-4']"
             (checkedChange)="setChecked('checkbox-4', $event)" />
 
-        <h3>checked = {{ checked['checkbox-5'] }}, invalid = true</h3>
+        <h4>checked = {{ checked['checkbox-5'] }}, invalid = true</h4>
         <ui-checkbox
             name="checkbox-5"
             ariaLabel="Option 5"
@@ -62,7 +60,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-5']"
             (checkedChange)="setChecked('checkbox-5', $event)" />
 
-        <h3>checked = {{ checked['checkbox-6'] }} , invalid = true</h3>
+        <h4>checked = {{ checked['checkbox-6'] }} , invalid = true</h4>
         <ui-checkbox
             name="checkbox-6"
             ariaLabel="Option 6"
@@ -71,7 +69,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-6']"
             (checkedChange)="setChecked('checkbox-6', $event)" />
 
-        <h3>checked = {{ checked['checkbox-7'] }}, required = true</h3>
+        <h4>checked = {{ checked['checkbox-7'] }}, required = true</h4>
         <ui-checkbox
             name="checkbox-7"
             ariaLabel="Option 7"
@@ -80,7 +78,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-7']"
             (checkedChange)="setChecked('checkbox-7', $event)" />
 
-        <h3>checked = {{ checked['checkbox-8'] }}, required = true</h3>
+        <h4>checked = {{ checked['checkbox-8'] }}, required = true</h4>
         <ui-checkbox
             name="checkbox-8"
             ariaLabel="Option 8"
@@ -89,14 +87,14 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-8']"
             (checkedChange)="setChecked('checkbox-8', $event)" />
 
-        <h3>
+        <h4>
             indeterminate =
             <button
                 style="font: inherit; border: none; padding: 0; cursor: pointer;"
                 (click)="toggleIndeterminate('checkbox-9')">
                 {{ indeterminate['checkbox-9'] }}</button
             >, checked = {{ checked['checkbox-9'] }}
-        </h3>
+        </h4>
         <ui-checkbox
             name="checkbox-9"
             ariaLabel="Option 9"
@@ -105,14 +103,14 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-9']"
             (checkedChange)="setChecked('checkbox-9', $event)" />
 
-        <h3>
+        <h4>
             checked = {{ checked['checkbox-10'] }}, indeterminate =
             <button
                 style="font: inherit; border: none; padding: 0; cursor: pointer;"
                 (click)="toggleIndeterminate('checkbox-10')">
                 {{ indeterminate['checkbox-10'] }}
             </button>
-        </h3>
+        </h4>
         <ui-checkbox
             name="checkbox-10"
             ariaLabel="Option 10"
@@ -121,14 +119,14 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-10']"
             (checkedChange)="setChecked('checkbox-10', $event)" />
 
-        <h3>
+        <h4>
             disabled = true, indeterminate =
             <button
                 style="font: inherit; border: none; padding: 0; cursor: pointer;"
                 (click)="toggleIndeterminate('checkbox-11')">
                 {{ indeterminate['checkbox-11'] }}
             </button>
-        </h3>
+        </h4>
         <ui-checkbox
             name="checkbox-11"
             ariaLabel="Option 11"
@@ -138,7 +136,7 @@ import { UICheckbox } from './checkbox';
             [checked]="checked['checkbox-11']"
             (checkedChange)="setChecked('checkbox-11', $event)" />
 
-        <h3>aria-describedby and aria-errormessage</h3>
+        <h4>aria-describedby and aria-errormessage</h4>
         <div id="desc">This describes the checkbox</div>
         <div id="err">This is an error message</div>
         <ui-checkbox
