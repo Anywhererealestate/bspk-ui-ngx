@@ -27,39 +27,50 @@ export function generateMeta(): { version: string; components: ComponentDemo[] }
         metadata.components.filter((comp: any) => comp.name.endsWith('Example') && comp.name.startsWith('UI')),
     ].flat();
 
-    const components: ComponentDemo[] = [...metadata.components, ...metadata.directives].flatMap((comp: any) => {
-        const exampleComp = exampleComponents.find(
-            (exComp: any) =>
-                exComp.name === `${comp.name}Example` ||
-                exComp.name === `${comp.name.replace(/Directive$/, '')}Example`,
-        );
+    const components: ComponentDemo[] = [...metadata.components, ...metadata.directives]
+        .flatMap((comp: any): ComponentDemo | [] => {
+            const exampleComp = exampleComponents.find(
+                (exComp: any) =>
+                    exComp.name === `${comp.name}Example` ||
+                    exComp.name === `${comp.name.replace(/Directive$/, '')}Example`,
+            );
 
-        if (!exampleComp) return [];
+            if (!exampleComp) return [];
 
-        const name = toPascalCase(comp.name.replace(/^UI/, '').replace(/Directive$/, ''));
+            const name = toPascalCase(comp.name.replace(/^UI/, '').replace(/Directive$/, ''));
 
-        const slug = name.replace(/([a-z])([A-Z])/g, (_: any, a: any, b: string) => `${a}-${b}`).toLowerCase();
+            const slug = name.replace(/([a-z])([A-Z])/g, (_: any, a: any, b: string) => `${a}-${b}`).toLowerCase();
 
-        const example = comp.rawdescription.match(/```html([\s\S]*?)```;/)?.[1]?.trim() || '';
+            const example = comp.rawdescription.match(/```html([\s\S]*?)```;/)?.[1]?.trim() || '';
 
-        // remove code from rawdescription
-        const description = comp.rawdescription.split('```html')[0].trim();
+            // remove code from rawdescription
+            const description = comp.rawdescription.split('```html')[0].trim();
 
-        const phase = comp.sourceCode.match(/@phase\s+(\w+)/)?.[1] || 'Dev';
+            const phase = comp.sourceCode.match(/@phase\s+(\w+)/)?.[1] || 'Dev';
 
-        return {
-            name,
-            slug,
-            descriptionExample: comp.description,
-            description,
-            phase,
-            directive: comp.name.endsWith('Directive'),
-            example: {
-                name: exampleComp.name,
-                path: exampleComp.file,
-            },
-        };
-    });
+            return {
+                name,
+                className: comp.name,
+                slug,
+                descriptionExample: comp.description,
+                description,
+                phase,
+                directive: comp.name.endsWith('Directive'),
+                example: {
+                    name: exampleComp.name,
+                    path: exampleComp.file,
+                },
+            };
+        })
+        .sort((a, b) => {
+            if (a.name !== b.name) return a.name.localeCompare(b.name);
+            // directives before non-directives
+            return Number(b.directive) - Number(a.directive);
+        })
+        .filter((value, index, self) => {
+            const prevName = index > 0 ? self[index - 1].name : null;
+            return !prevName || prevName !== value.name;
+        });
 
     // get version from package.json
 
