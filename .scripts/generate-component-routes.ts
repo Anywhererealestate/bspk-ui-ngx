@@ -30,10 +30,12 @@ let examples = getExamples();
 export function generateComponentRoutes() {
     examples = getExamples();
 
-    const generatedRoutesPath = 'projects/demo/src/routes/generated.ts';
+    const generatedRoutesPath = path.join(__dirname, '..', 'projects/demo/src/routes/generated.ts');
+
+    fs.rmSync(generatedRoutesPath, { force: true });
 
     fs.writeFileSync(
-        path.join(__dirname, '..', generatedRoutesPath),
+        generatedRoutesPath,
         `
 import { ComponentPage } from '../components/component-page';
 import { NavRoute } from '../types';
