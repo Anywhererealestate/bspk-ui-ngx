@@ -213,7 +213,11 @@ export class UIDatePicker implements OnInit, OnChanges, AsInputSignal<DatePicker
 
     onInputChange(value: string | undefined) {
         this.valueChange.emit(value ?? '');
-        this.setActiveDateFromValue();
+        this.internalValue.set(value);
+        const parsed = value ? parseDate(value) : undefined;
+        if (parsed) {
+            this.activeDate.set(parsed);
+        }
     }
 
     onCalendarChange(date: Date) {
