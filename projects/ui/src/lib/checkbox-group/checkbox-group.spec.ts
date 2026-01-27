@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { hasNoBasicA11yIssues } from '@shared/testing/hasNoBasicA11yIssues';
 import { UICheckboxGroup } from './checkbox-group';
 
 @Component({

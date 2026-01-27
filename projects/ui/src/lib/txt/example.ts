@@ -7,8 +7,6 @@ import { UITxtDirective } from './txt.directive';
     standalone: true,
     imports: [CommonModule, UITxtDirective],
     template: `
-        <h2>Txt Directive</h2>
-
         <div ui-txt="body-base">body-base</div>
         <div ui-txt="body-large">body-large</div>
         <div ui-txt="body-small">body-small</div>

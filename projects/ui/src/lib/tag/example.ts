@@ -7,33 +7,31 @@ import { UITag } from './tag';
     standalone: true,
     imports: [CommonModule, UITag],
     template: `
-        <h2>Tag</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-tag label="basic tag" />
 
-        <h3>variant = flat</h3>
+        <h4>variant = flat</h4>
         <ui-tag label="flat tag" variant="flat" />
 
-        <h3>variant = corner-wrap</h3>
+        <h4>variant = corner-wrap</h4>
         <ui-tag label="corner-wrap" variant="corner-wrap" />
 
-        <h3>variant = pill</h3>
+        <h4>variant = pill</h4>
         <ui-tag label="pill tag" variant="pill" />
 
-        <h3>size = small</h3>
+        <h4>size = small</h4>
         <ui-tag label="small tag" size="small" />
 
-        <h3>size = x-small</h3>
+        <h4>size = x-small</h4>
         <ui-tag label="x-small tag" size="x-small" />
 
-        <h3>size = x-small; variant = corner-wrap</h3>
+        <h4>size = x-small; variant = corner-wrap</h4>
         <ui-tag label="basic tag" size="x-small" variant="corner-wrap" />
 
-        <h3>size = x-small; variant = pill</h3>
+        <h4>size = x-small; variant = pill</h4>
         <ui-tag label="basic tag" size="x-small" variant="pill" />
 
-        <h3>Color: blue</h3>
+        <h4>Color: blue</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="blue" label="basic tag" />
@@ -47,7 +45,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: green</h3>
+        <h4>Color: green</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="green" label="basic tag" />
@@ -61,7 +59,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: lime</h3>
+        <h4>Color: lime</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="lime" label="basic tag" />
@@ -75,7 +73,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: magenta</h3>
+        <h4>Color: magenta</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="magenta" label="basic tag" />
@@ -89,7 +87,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: orange</h3>
+        <h4>Color: orange</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="orange" label="basic tag" />
@@ -103,7 +101,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: pink</h3>
+        <h4>Color: pink</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="pink" label="basic tag" />
@@ -117,7 +115,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: purple</h3>
+        <h4>Color: purple</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="purple" label="basic tag" />
@@ -131,7 +129,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: red</h3>
+        <h4>Color: red</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="red" label="basic tag" />
@@ -145,7 +143,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: teal</h3>
+        <h4>Color: teal</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="teal" label="basic tag" />
@@ -159,7 +157,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: yellow</h3>
+        <h4>Color: yellow</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="yellow" label="basic tag" />
@@ -173,7 +171,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: grey</h3>
+        <h4>Color: grey</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="grey" label="basic tag" />
@@ -187,7 +185,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: white</h3>
+        <h4>Color: white</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="white" label="basic tag" />
@@ -201,7 +199,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: primary</h3>
+        <h4>Color: primary</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="primary" label="basic tag" />
@@ -215,7 +213,7 @@ import { UITag } from './tag';
             </div>
         </div>
 
-        <h3>Color: secondary</h3>
+        <h4>Color: secondary</h4>
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; flex-wrap: wrap; gap: 8px;">
                 <ui-tag color="secondary" label="basic tag" />

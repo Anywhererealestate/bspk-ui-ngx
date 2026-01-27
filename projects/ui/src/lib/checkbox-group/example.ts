@@ -7,12 +7,10 @@ import { UICheckboxGroup } from './checkbox-group';
     standalone: true,
     imports: [CommonModule, UICheckboxGroup],
     template: `
-        <h2>Checkbox Group Example</h2>
         <ui-checkbox-group [options]="options" [value]="selectedBasic" (valueChange)="onBasicValueChange($event)">
         </ui-checkbox-group>
         <div>Selected: {{ selectedBasic | json }}</div>
 
-        <h2>Checkbox Group Example with Select All</h2>
         <ui-checkbox-group
             [options]="options"
             [value]="selectedAll"

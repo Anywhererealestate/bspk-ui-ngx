@@ -21,8 +21,6 @@ export function getIndexFileContent() {
         .readdirSync(servicesDir, { withFileTypes: true })
         .map((dirent) => path.parse(dirent.name).name);
 
-    console.log('serviceFiles', serviceFiles);
-
     exportLines.push(...serviceFiles.map((file) => `export * from './services/${file}';`));
 
     const indexContent = `/**

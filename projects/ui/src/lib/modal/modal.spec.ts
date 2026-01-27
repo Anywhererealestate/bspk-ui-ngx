@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { hasNoBasicA11yIssues } from '../../testutils/hasNoBasicA11yIssues';
+import { hasNoBasicA11yIssues } from '@shared/testing/hasNoBasicA11yIssues';
 import { UIButton } from '../button/button';
 import { UIModal } from './modal';
 

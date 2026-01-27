@@ -10,31 +10,29 @@ import { UIChip } from './chip';
     standalone: true,
     imports: [CommonModule, UIChip],
     template: `
-        <h2>Chip</h2>
-
-        <h3>Default with label and click</h3>
+        <h4>Default with label and click</h4>
         <ui-chip label="Hello I'm Chip" (click)="handleClick('Default with label and click')" />
 
-        <h3>flat = true</h3>
+        <h4>flat = true</h4>
         <ui-chip [flat]="true" label="Hello I'm Chip" (click)="handleClick('flat = true')" />
 
-        <h3>Leading Icon</h3>
+        <h4>Leading Icon</h4>
         <ui-chip label="Hello I'm Chip" [leadingIcon]="iconAdd" (click)="handleClick('Leading Icon')" />
 
-        <h3>Trailing Icon</h3>
+        <h4>Trailing Icon</h4>
         <ui-chip label="Hello I'm Chip" [trailingIcon]="iconIcecream" (click)="handleClick('Trailing Icon')" />
 
-        <h3>Both Icons</h3>
+        <h4>Both Icons</h4>
         <ui-chip
             label="Hello I'm Chip"
             [leadingIcon]="iconAdd"
             [trailingIcon]="iconAdd"
             (click)="handleClick('Both Icons')" />
 
-        <h3>Badge</h3>
+        <h4>Badge</h4>
         <ui-chip label="Hello I'm Chip" [trailingBadge]="{ count: 3 }" (click)="handleClick('Badge')" />
 
-        <h3>Badge & Trailing Icon</h3>
+        <h4>Badge & Trailing Icon</h4>
         <p>When both are provided the icon will be visible. You cannot have both trailing items.</p>
         <ui-chip
             label="Hello I'm Chip"
@@ -42,7 +40,7 @@ import { UIChip } from './chip';
             [trailingIcon]="iconAdd"
             (click)="handleClick('Badge & Trailing Icon')" />
 
-        <h3>Disabled = true</h3>
+        <h4>Disabled = true</h4>
         <div style="display: flex; flex-wrap: wrap; gap: 8px;">
             <ui-chip [disabled]="true" label="Hello I'm Chip" />
             <ui-chip [flat]="true" [disabled]="true" label="Hello I'm Chip" />
@@ -59,7 +57,7 @@ import { UIChip } from './chip';
                 (click)="handleClick('Disabled with badge')" />
         </div>
 
-        <h3>Selected = true</h3>
+        <h4>Selected = true</h4>
         <ui-chip [selected]="true" label="Hello I'm Chip" (click)="handleClick('Selected = true')" />
     `,
 })
