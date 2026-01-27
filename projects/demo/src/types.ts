@@ -10,6 +10,7 @@ export type NavRoute = Route & {
 
 export interface ComponentDemo {
     name: string;
+    className: string;
     description: string;
     phase: ComponentPhase;
     descriptionExample?: string;
