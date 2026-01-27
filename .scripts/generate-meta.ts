@@ -70,6 +70,9 @@ export function generateMeta(): { version: string; components: ComponentDemo[] }
 
 function writeMetaToFile() {
     const meta = generateMeta();
+
+    fs.rmSync(generatedMetaPath, { force: true });
+
     fs.writeFileSync(generatedMetaPath, 'export const META = ' + JSON.stringify(meta, null, 4));
 }
 
