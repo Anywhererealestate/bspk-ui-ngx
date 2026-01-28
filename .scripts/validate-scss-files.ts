@@ -50,7 +50,7 @@ ngxFiles.forEach((ngxFilePath: string) => {
     const reactContent = fs.readFileSync(reactFilePath, 'utf-8').trim();
 
     if (ngxContent !== reactContent) {
-        errorFiles.push(`Differing SCSS content for: ${fileName}\n${ngxFilePath}\n${reactFilePath}\n\n`);
+        errorFiles.push(`Differing SCSS content: code --diff ${ngxFilePath} ${reactFilePath}\n\n`);
     }
 
     successFiles.push(`\x1b[32m${fileName}\x1b[0m`);
