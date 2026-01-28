@@ -9,7 +9,7 @@ export type FabVariant = 'neutral' | 'primary' | 'secondary';
 export type FabPlacement = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
 export type FabContainer = 'local' | 'page';
 
-export type IconType = BspkIcon;
+export type FabIconType = BspkIcon;
 
 @Component({
     selector: 'ui-fab',
@@ -62,7 +62,7 @@ export class UIFab {
 
     readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
     readonly label = input<string>('');
-    readonly icon = input<IconType | undefined>();
+    readonly icon = input<FabIconType | undefined>();
     readonly tooltip = input<string | undefined>(undefined);
     readonly size = input<FabSize>('small');
     readonly variant = input<FabVariant>('primary');
