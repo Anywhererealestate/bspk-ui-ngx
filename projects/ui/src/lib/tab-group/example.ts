@@ -7,11 +7,11 @@ import { UITabGroup } from './tab-group';
     standalone: true,
     imports: [CommonModule, UITabGroup],
     template: `
-        <h3>TabGroup Basic</h3>
+        <h4>TabGroup Basic</h4>
         <ui-tab-group [label]="'Group'" [options]="options" [value]="selected" (valueChange)="selected = $event" />
         <p style="margin-top: var(--spacing-sizing-04);">Selected: {{ selected }}</p>
 
-        <h3>Show Trail (hug)</h3>
+        <h4>Show Trail (hug)</h4>
         <ui-tab-group
             [label]="'Group Trail'"
             [options]="options"
@@ -21,7 +21,7 @@ import { UITabGroup } from './tab-group';
             (valueChange)="selectedTrail = $event" />
         <p style="margin-top: var(--spacing-sizing-04);">Selected: {{ selectedTrail }}</p>
 
-        <h3>With Disabled Option</h3>
+        <h4>With Disabled Option</h4>
         <ui-tab-group
             [label]="'Segments with Disabled'"
             [options]="optionsWithDisabled"

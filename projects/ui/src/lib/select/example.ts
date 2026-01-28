@@ -7,7 +7,7 @@ import { SelectOption, UISelect } from './select';
     standalone: true,
     imports: [UISelect, UIField],
     template: `
-        <h3>Select</h3>
+        <h4>Select</h4>
         <ui-field
             [controlId]="'example-select'"
             [helperText]="'The select allows you to choose one option.'"

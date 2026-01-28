@@ -37,7 +37,7 @@ import { UIMenu } from './menu';
         IconLogout,
     ],
     template: `
-        <h3>Menu</h3>
+        <h4>Menu</h4>
         <ui-menu [width]="'332px'" [owner]="'menu'" [style]="'padding: var(--spacing-sizing-02);'">
             <ui-list-item [label]="'Michael Scott'" subText="michael.scott@email.com">
                 <span data-leading>

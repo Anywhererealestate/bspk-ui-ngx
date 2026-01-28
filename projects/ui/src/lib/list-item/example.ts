@@ -14,9 +14,7 @@ import { UIListItem } from './list-item';
     standalone: true,
     imports: [CommonModule, UIListItem, IconFolder, IconChevronRight, UIButton, IconMoreVert, UIAvatar],
     template: `
-        <h2>List Item</h2>
-
-        <h3>Basic</h3>
+        <h4>Basic</h4>
         <div style="width: 360px; display: grid; gap: 16px">
             <ui-list-item
                 label="Death Star Plans"
@@ -25,7 +23,7 @@ import { UIListItem } from './list-item';
             </ui-list-item>
         </div>
 
-        <h3>Leading avatar and trailing delete (as="div")</h3>
+        <h4>Leading avatar and trailing delete (as="div")</h4>
         <div style="width: 360px; display: grid; gap: 16px">
             <ui-list-item as="div" label="File 13 nice" subText="Last modified: Jan 21, 2024">
                 <span data-leading>
@@ -44,7 +42,7 @@ import { UIListItem } from './list-item';
             </ui-list-item>
         </div>
 
-        <h3>As anchor (as="a") with href</h3>
+        <h4>As anchor (as="a") with href</h4>
         <div style="width: 360px; display: grid; gap: 16px">
             <ui-list-item
                 as="a"
@@ -58,7 +56,7 @@ import { UIListItem } from './list-item';
             </ui-list-item>
         </div>
 
-        <h3>As button (as="button") with trailing icon</h3>
+        <h4>As button (as="button") with trailing icon</h4>
         <div style="width: 360px; display: grid; gap: 16px">
             <ui-list-item
                 as="button"
@@ -74,7 +72,7 @@ import { UIListItem } from './list-item';
             </ui-list-item>
         </div>
 
-        <h3>Trailing button</h3>
+        <h4>Trailing button</h4>
         <div style="width: 360px; display: grid; gap: 16px">
             <ui-list-item as="div" label="Design Assets" subText="Updated: Oct 03, 2025">
                 <span data-leading><icon-folder /></span>

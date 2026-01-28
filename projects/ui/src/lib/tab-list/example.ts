@@ -8,7 +8,7 @@ import { UITabList, TabOption } from './tab-list';
     standalone: true,
     imports: [CommonModule, UITabList],
     template: `
-        <h3>TabList Basic</h3>
+        <h4>TabList Basic</h4>
         <ul
             ui-tab-list
             data-bspk="segmented-control"
@@ -18,7 +18,7 @@ import { UITabList, TabOption } from './tab-list';
             (valueChange)="setSelected($event)"></ul>
         <p style="margin-top: var(--spacing-sizing-04);">Selected: {{ selected() }}</p>
 
-        <h3>Icons Only (with tooltip)</h3>
+        <h4>Icons Only (with tooltip)</h4>
         <ul
             ui-tab-list
             data-bspk="tab-group"

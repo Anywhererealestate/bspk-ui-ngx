@@ -7,8 +7,6 @@ import { TableColumn, TableRow, UITable } from './table';
     standalone: true,
     imports: [CommonModule, UITable],
     template: `
-        <h2>Table</h2>
-
         <p>Sortable columns with pagination.</p>
 
         <ui-table
@@ -18,7 +16,6 @@ import { TableColumn, TableRow, UITable } from './table';
             [columns]="capitals.columns"
             [data]="capitals.data"></ui-table>
 
-        <h2>Table: different pagination</h2>
         <p>Table with 3 pages of content.</p>
 
         <ui-table
