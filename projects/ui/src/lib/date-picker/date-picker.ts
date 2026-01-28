@@ -136,8 +136,8 @@ export type DatePickerProps = CommonProps<
     encapsulation: ViewEncapsulation.None,
 })
 export class UIDatePicker implements OnInit, OnChanges, AsInputSignal<DatePickerProps> {
-    // @Output() readonly onChange = new EventEmitter<string>();
     @Output() readonly valueChange = new EventEmitter<string>();
+
     // Inputs
     readonly value = input<Date | string | undefined>(undefined);
     readonly disabled = input<DatePickerProps['disabled']>();
