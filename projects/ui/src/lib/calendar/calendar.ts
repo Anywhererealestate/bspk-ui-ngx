@@ -203,7 +203,7 @@ export class UICalendar implements AfterViewInit, OnInit {
     }
 
     onFirstButtonKeydown(event: KeyboardEvent) {
-        if (event.shiftKey && event.key === 'Tab') {
+        if (this.focusTrap() && event.shiftKey && event.key === 'Tab') {
             event.preventDefault();
             event.stopPropagation();
             this.focusDay = true;
@@ -233,7 +233,7 @@ export class UICalendar implements AfterViewInit, OnInit {
         )(event);
 
         // Tab navigation for focus trap
-        if (event.key === 'Tab' && !event.shiftKey) {
+        if (this.focusTrap() && event.key === 'Tab' && !event.shiftKey) {
             event.preventDefault();
             event.stopPropagation();
             this.firstButton()?.nativeElement?.focus();
