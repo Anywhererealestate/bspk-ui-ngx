@@ -5,6 +5,7 @@ on:
         types: [opened, reopened, synchronize, edited, ready_for_review]
         branches:
             - main
+            - dev
 
 jobs:
     sematic-pr:
@@ -32,11 +33,11 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
-            - name: Lint
-              run: npm run lint:all
-
             - name: Build
               run: npm run build
+
+            - name: Lint
+              run: npm run lint:all
 
             - name: Test
               run: npm run test

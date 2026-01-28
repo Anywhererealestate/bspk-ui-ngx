@@ -14,13 +14,11 @@ import { UIButton } from './button';
     standalone: true,
     imports: [CommonModule, UIButton],
     template: `
-        <h2>Button</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
         <p>only click & the required label prop set</p>
         <ui-button (click)="handleClick('Default')" label="Default" />
 
-        <h3>Primary</h3>
+        <h4>Primary</h4>
         <ui-button
             (click)="handleClick('Primary')"
             label="Example Label"
@@ -28,7 +26,7 @@ import { UIButton } from './button';
             variant="primary"
             [icon]="iconGTranslate" />
 
-        <h3>Secondary</h3>
+        <h4>Secondary</h4>
         <ui-button
             (click)="handleClick('Secondary')"
             label="Example Label"
@@ -36,7 +34,7 @@ import { UIButton } from './button';
             variant="secondary"
             [icon]="iconBrail" />
 
-        <h3>Tertiary</h3>
+        <h4>Tertiary</h4>
         <ui-button
             (click)="handleClick('Tertiary')"
             label="Example Label"
@@ -44,7 +42,7 @@ import { UIButton } from './button';
             variant="tertiary"
             [icon]="iconBarn" />
 
-        <h3>Primary with Tooltip</h3>
+        <h4>Primary with Tooltip</h4>
         <ui-button
             (click)="handleClick('Primary with Tooltip')"
             label="Primary with Tooltip"
@@ -52,7 +50,7 @@ import { UIButton } from './button';
             [icon]="iconCloud"
             tooltip="Primary with Tooltip" />
 
-        <h3>Destructive with Tooltip</h3>
+        <h4>Destructive with Tooltip</h4>
         <ui-button
             (click)="handleClick('Destructive with Tooltip')"
             label="Destructive with Tooltip"
@@ -60,7 +58,7 @@ import { UIButton } from './button';
             [destructive]="true"
             tooltip="Destructive with Tooltip" />
 
-        <h3>Destructive iconOnly = true</h3>
+        <h4>Destructive iconOnly = true</h4>
 
         <ui-button
             (click)="handleClick('Destructive iconOnly = true')"
@@ -69,10 +67,10 @@ import { UIButton } from './button';
             [iconOnly]="true"
             [destructive]="true" />
 
-        <h3>Disabled</h3>
+        <h4>Disabled</h4>
         <ui-button (click)="handleClick('Disabled')" label="Disabled test" [icon]="iconWarningFill" [disabled]="true" />
 
-        <h3>Disabled iconOnly = true</h3>
+        <h4>Disabled iconOnly = true</h4>
         <ui-button
             (click)="handleClick('Disabled iconOnly = true')"
             label="Destructive test"
@@ -80,7 +78,7 @@ import { UIButton } from './button';
             [iconOnly]="true"
             [disabled]="true" />
 
-        <h3>Disabled & destructive = true</h3>
+        <h4>Disabled & destructive = true</h4>
         <p>should visually see disabled and not destructive</p>
         <ui-button
             (click)="handleClick('Disabled & Destructive')"
@@ -89,7 +87,7 @@ import { UIButton } from './button';
             [disabled]="true"
             [destructive]="true" />
 
-        <h3>Primary Disabled & destructive = true</h3>
+        <h4>Primary Disabled & destructive = true</h4>
         <p>should visually see disabled and not destructive</p>
         <ui-button
             (click)="handleClick('Primary Disabled & Destructive')"
@@ -99,7 +97,7 @@ import { UIButton } from './button';
             [disabled]="true"
             [destructive]="true" />
 
-        <h3>Secondary Disabled & destructive = true</h3>
+        <h4>Secondary Disabled & destructive = true</h4>
         <p>should visually see disabled and not destructive</p>
         <ui-button
             (click)="handleClick('Secondary Disabled & Destructive')"
@@ -109,7 +107,7 @@ import { UIButton } from './button';
             [disabled]="true"
             [destructive]="true" />
 
-        <h3>Tertiary Disabled & destructive = true</h3>
+        <h4>Tertiary Disabled & destructive = true</h4>
         <p>should visually see disabled and not destructive</p>
         <ui-button
             (click)="handleClick('Tertiary Disabled & Destructive')"
@@ -119,13 +117,13 @@ import { UIButton } from './button';
             [disabled]="true"
             [destructive]="true" />
 
-        <h3>width = fill</h3>
+        <h4>width = fill</h4>
         <p>should visually see button fill the width of 500px parent width</p>
         <div style="width: 500px">
             <ui-button (click)="handleClick('Example Label')" label="Example Label" [icon]="iconBox" width="fill" />
         </div>
 
-        <h3>Custom Content</h3>
+        <h4>Custom Content</h4>
         <ui-button label="" (click)="handleClick('Custom Content')" style="padding: 0 var(--spacing-sizing-03)">
             <svg
                 width="16"
@@ -140,7 +138,7 @@ import { UIButton } from './button';
             Custom Content Example</ui-button
         >
 
-        <h3>Custom Icon</h3>
+        <h4>Custom Icon</h4>
         <ui-button (click)="handleClick('Custom Icon')" tooltip="hello world example" label="" variant="secondary">
             <svg
                 focusable="false"

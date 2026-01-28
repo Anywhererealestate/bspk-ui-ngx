@@ -1,0 +1,25 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { hasNoBasicA11yIssues } from '@shared/testing/hasNoBasicA11yIssues';
+import { UICalendar } from './calendar';
+
+describe('Calendar', () => {
+    let component: UICalendar;
+    let fixture: ComponentFixture<UICalendar>;
+
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [UICalendar],
+        }).compileComponents();
+
+        fixture = TestBed.createComponent(UICalendar);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
+
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
+
+    it('should have no basic a11y issues', async () => await hasNoBasicA11yIssues(fixture));
+});

@@ -53,9 +53,9 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
             [iconOnly]="true"
             variant="tertiary"
             size="small"
-            [attr.aria-expanded]="!!open() || null"
-            [attr.aria-haspopup]="'listbox'"
-            [attr.aria-controls]="open() ? menuId() : null"
+            [ariaExpanded]="!!open() || null"
+            [ariaHaspopup]="'listbox'"
+            [ariaControls]="open() ? menuId() : null"
             (onClick)="toggleMenu()"
             #reference
             (keydown)="handleKeydown($event)"
@@ -63,15 +63,16 @@ export type BreadcrumbDropdownProps = ScrollLimitStyleProps & {
         @if (open()) {
             <ui-menu
                 [ui-outside-click]="{ callback: handleOutsideClick.bind(this) }"
-                [ui-floating]="{ reference: referenceEl }"
+                [ui-floating]="{ reference: referenceEl, offsetOptions: offset }"
                 [id]="menuId()"
                 label="Expanded breadcrumb"
                 owner="Breadcrumb"
-                ariaRole="listbox"
+                [ariaRole]="'menu'"
                 [ngStyle]="ngMenuStyle()">
                 @for (item of menuItems(); track item.href) {
                     <ui-list-item
                         as="a"
+                        [ariaRole]="'menuitem'"
                         [tabIndex]="-1"
                         [id]="item.id"
                         [label]="item.label"
@@ -118,6 +119,11 @@ export class UIBreadcrumbDropdown implements AsInputSignal<BreadcrumbDropdownPro
             minWidth: '150px',
         };
     });
+
+    get offset() {
+        // Reads the CSS variable value at runtime, offsetOptions requires a number
+        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+    }
 
     get referenceEl() {
         return this.reference()!.nativeElement as HTMLElement;

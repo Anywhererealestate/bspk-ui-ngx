@@ -7,9 +7,7 @@ import { UICard } from './card';
     standalone: true,
     imports: [CommonModule, UICard],
     template: `
-        <h2>Card</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
 
         <div style="width: 300px">
             <ui-card>
@@ -17,7 +15,7 @@ import { UICard } from './card';
             </ui-card>
         </div>
 
-        <h3>Outlined Variant</h3>
+        <h4>Outlined Variant</h4>
 
         <div style="width: 300px">
             <ui-card variant="outlined">
@@ -25,7 +23,7 @@ import { UICard } from './card';
             </ui-card>
         </div>
 
-        <h3>Elevated Variant</h3>
+        <h4>Elevated Variant</h4>
 
         <div style="width: 300px">
             <ui-card variant="elevated">

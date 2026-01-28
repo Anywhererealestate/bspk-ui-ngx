@@ -9,8 +9,6 @@ import { UIDivider } from './divider';
     standalone: true,
     imports: [CommonModule, UIDivider, UIListItem, UIExample],
     template: `
-        <h3>Divider</h3>
-
         <h4>Default</h4>
         <ui-example width="320px" direction="column">
             <ui-list-item [label]="'Above'"></ui-list-item>

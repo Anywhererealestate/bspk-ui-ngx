@@ -1,6 +1,6 @@
 {
     "name": "bspk-ui-ngx",
-    "version": "1.0.2",
+    "version": "1.1.4",
     "license": "CC-BY-4.0",
     "type": "module",
     "repository": {
@@ -11,10 +11,10 @@
         "node": ">=22"
     },
     "scripts": {
-        "prebuild": "npx tsx .scripts/pre-build.ts",
+        "prebuild": "npm run meta && npx tsx .scripts/pre-build.ts",
         "build": "ng build --project=demo --configuration=production && ng build --project=ui --configuration=production",
         "checks": "npm run lint:all && npm run test",
-        "dev": "npm run routes && run-p dev:serve routes:watch",
+        "dev": "npm run meta && npm run routes && run-p dev:serve routes:watch meta:watch",
         "dev:serve": "ng serve",
         "gh-build": "npm run lint && npm run build && npm run test && cp -r ./dist/browser/index.html ./dist/browser/404.html",
         "lint": "eslint && tsc --noEmit ",
@@ -22,15 +22,19 @@
         "lint:css": "npx stylelint '**/*.scss'",
         "lint:css:fix": "npx stylelint '**/*.scss' --fix",
         "lint:ui": "npx tsx .scripts/lint.ts",
-        "newc": "ng generate component --project=ui",
+        "newc": "ng generate component --project=ui && npx tsx .scripts/generate-new-component.ts",
         "ng": "ng",
         "pr": "npm run checks && git push --set-upstream origin $(git symbolic-ref --short HEAD) && open \"https://github.com/Anywhererealestate/bspk-ui-ngx/compare/main...$(git symbolic-ref --short HEAD)\"",
         "routes": "npx tsx .scripts/generate-component-routes.ts --write",
         "routes:watch": "npx tsx .scripts/generate-component-routes.ts --watch",
+        "meta": "npx tsx .scripts/generate-meta.ts --write",
+        "meta:watch": "npx tsx .scripts/generate-meta.ts --watch",
         "start": "npm run prebuild && ng serve",
         "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
         "publish:test": "ng build ui && npm pack ./dist/ui",
-        "semantic-release": "semantic-release"
+        "semantic-release": "semantic-release",
+        "preview": "npm run gh-build && npx http-server ./dist/browser",
+        "clean": "rm -rf ./dist ./coverage ./.angular projects/demo/src/meta.ts projects/demo/src/routes/generated.ts"
     },
     "overrides": {
         "glob": "^11.0.1"
@@ -42,6 +46,7 @@
         "@angular/platform-browser": "^20.3.0",
         "@angular/router": "^20.3.0",
         "rxjs": "~7.8.0",
+        "tslib": "^2.3.0",
         "zone.js": "~0.15.0"
     },
     "devDependencies": {

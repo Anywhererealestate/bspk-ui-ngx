@@ -7,9 +7,7 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
     standalone: true,
     imports: [CommonModule, UIRadioGroup],
     template: `
-        <h2>Radio Group Examples</h2>
-
-        <h3>Basic</h3>
+        <h4>Basic</h4>
         <ui-radio-group
             name="group-basic"
             [options]="basicOptions"
@@ -17,7 +15,7 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
             (valueChange)="selectedBasic = $event"></ui-radio-group>
         <p>Demo output of selected: {{ selectedBasic }}</p>
 
-        <h3>Disabled Group</h3>
+        <h4>Disabled Group</h4>
         <ui-radio-group
             name="group-disabled"
             [options]="basicOptions"
@@ -26,7 +24,7 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
             (valueChange)="selectedDisabled = $event"></ui-radio-group>
         <p>Demo output of selected: {{ selectedDisabled }}</p>
 
-        <h3>Invalid Group</h3>
+        <h4>Invalid Group</h4>
         <ui-radio-group
             name="group-invalid"
             [options]="basicOptions"
@@ -35,7 +33,7 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
             (valueChange)="selectedInvalid = $event"></ui-radio-group>
         <p>Demo output of selected: {{ selectedInvalid }}</p>
 
-        <h3>Required Group</h3>
+        <h4>Required Group</h4>
         <ui-radio-group
             name="group-required"
             [options]="altOptions"
@@ -44,7 +42,7 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
             (valueChange)="selectedRequired = $event"></ui-radio-group>
         <p>Demo output of selected: {{ selectedRequired }}</p>
 
-        <h3>With aria-describedby and aria-errormessage</h3>
+        <h4>With aria-describedby and aria-errormessage</h4>
         <div id="desc">This describes the group</div>
         <div id="err">This is an error message</div>
         <ui-radio-group
@@ -56,7 +54,7 @@ import { UIRadioGroup, RadioGroupOption } from './radio-group';
             (valueChange)="selectedAria = $event"></ui-radio-group>
         <p>Demo output of selected: {{ selectedAria }}</p>
 
-        <h3>Options with individual disabled/checked/description</h3>
+        <h4>Options with individual disabled/checked/description</h4>
         <ui-radio-group
             name="group-mixed"
             [options]="mixedOptions"
