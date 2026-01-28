@@ -9,47 +9,45 @@ import { UIDatePicker } from './date-picker';
     imports: [CommonModule, UIDatePicker],
     template: `
         <div style="width: 320px;">
-            <h2>Date Picker</h2>
-
-            <h3>Default</h3>
+            <h4>Default</h4>
             <ui-date-picker (valueChange)="handleValueChange($event, 'Default')" />
 
-            <h3>With Initial Value</h3>
+            <h4>With Initial Value</h4>
             <ui-date-picker [value]="initialDate()" (valueChange)="handleValueChange($event, 'With Initial Value')" />
 
-            <h3>Disabled</h3>
+            <h4>Disabled</h4>
             <ui-date-picker [disabled]="true" (valueChange)="handleValueChange($event, 'Disabled')" />
 
-            <h3>Read Only</h3>
+            <h4>Read Only</h4>
             <ui-date-picker [readOnly]="true" (valueChange)="handleValueChange($event, 'Read Only')" />
 
-            <h3>Read Only & Initial Value</h3>
+            <h4>Read Only & Initial Value</h4>
             <ui-date-picker
                 [readOnly]="true"
                 [value]="initialDate()"
                 (valueChange)="handleValueChange($event, 'Read Only')" />
 
-            <h3>Required</h3>
+            <h4>Required</h4>
             <ui-date-picker [required]="true" (valueChange)="handleValueChange($event, 'Required')" />
 
-            <h3>Invalid</h3>
+            <h4>Invalid</h4>
             <ui-date-picker [invalid]="true" (valueChange)="handleValueChange($event, 'Invalid')" />
 
-            <h3>Custom Placeholder</h3>
+            <h4>Custom Placeholder</h4>
             <ui-date-picker
                 placeholder="Pick a date!"
                 (valueChange)="handleValueChange($event, 'Custom Placeholder')" />
 
-            <h3>Custom Name & ID</h3>
+            <h4>Custom Name & ID</h4>
             <ui-date-picker
                 name="custom-name"
                 id="custom-id"
                 (valueChange)="handleValueChange($event, 'Custom Name & ID')" />
 
-            <h3>Size: Small</h3>
+            <h4>Size: Small</h4>
             <ui-date-picker size="small" (valueChange)="handleValueChange($event, 'Small')" />
 
-            <h3>Size: Large</h3>
+            <h4>Size: Large</h4>
             <ui-date-picker size="large" (valueChange)="handleValueChange($event, 'Large')" />
         </div>
     `,
