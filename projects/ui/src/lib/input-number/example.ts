@@ -7,9 +7,7 @@ import { UIInputNumber } from './input-number';
     standalone: true,
     imports: [CommonModule, UIInputNumber],
     template: `
-        <h2>Input</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-input-number
             [value]="values()['default']"
             (valueChange)="update('default', $event)"
@@ -17,7 +15,7 @@ import { UIInputNumber } from './input-number';
             name="default-input"
             ariaLabel="Input Label" />
 
-        <h3>Max set</h3>
+        <h4>Max set</h4>
         <ui-input-number
             [value]="values()['max']"
             (valueChange)="update('max', $event)"
@@ -26,7 +24,7 @@ import { UIInputNumber } from './input-number';
             name="max-input"
             ariaLabel="Input Label" />
 
-        <h3>Min set</h3>
+        <h4>Min set</h4>
         <ui-input-number
             [value]="values()['min']"
             (valueChange)="update('min', $event)"
@@ -35,7 +33,7 @@ import { UIInputNumber } from './input-number';
             name="min-input"
             ariaLabel="Input Label" />
 
-        <h3>Align Left</h3>
+        <h4>Align Left</h4>
         <ui-input-number
             [value]="values()['left']"
             (valueChange)="update('left', $event)"
@@ -43,7 +41,7 @@ import { UIInputNumber } from './input-number';
             id="left-input"
             name="left-input"
             ariaLabel="Input Label" />
-        <h3>Disabled</h3>
+        <h4>Disabled</h4>
         <ui-input-number
             [value]="values()['disabled']"
             (valueChange)="update('disabled', $event)"
@@ -51,7 +49,7 @@ import { UIInputNumber } from './input-number';
             ariaLabel="Input Label"
             [disabled]="true" />
 
-        <h3>Invalid</h3>
+        <h4>Invalid</h4>
         <ui-input-number
             [value]="values()['invalid']"
             (valueChange)="update('invalid', $event)"
@@ -59,7 +57,7 @@ import { UIInputNumber } from './input-number';
             ariaLabel="Input Label"
             [invalid]="true" />
 
-        <h3>Required</h3>
+        <h4>Required</h4>
         <ui-input-number
             [value]="values()['required']"
             (valueChange)="update('required', $event)"
@@ -67,14 +65,14 @@ import { UIInputNumber } from './input-number';
             ariaLabel="Input Label"
             [required]="true" />
 
-        <h3>Read Only</h3>
+        <h4>Read Only</h4>
         <ui-input-number
             (valueChange)="update('readOnly', $event)"
             [value]="values()['readOnly']"
             name="read-only-input"
             ariaLabel="Input Label"
             [readOnly]="true" />
-        <h3>Small Size</h3>
+        <h4>Small Size</h4>
         <ui-input-number
             [value]="values()['small']"
             (valueChange)="update('small', $event)"
@@ -82,7 +80,7 @@ import { UIInputNumber } from './input-number';
             name="small-input"
             ariaLabel="Input Label"
             size="small" />
-        <h3>Medium Size</h3>
+        <h4>Medium Size</h4>
         <ui-input-number
             [value]="values()['medium']"
             (valueChange)="update('medium', $event)"
@@ -90,7 +88,7 @@ import { UIInputNumber } from './input-number';
             name="medium-input"
             ariaLabel="Input Label"
             size="medium" />
-        <h3>Large Size</h3>
+        <h4>Large Size</h4>
         <ui-input-number
             [value]="values()['large']"
             (valueChange)="update('large', $event)"
