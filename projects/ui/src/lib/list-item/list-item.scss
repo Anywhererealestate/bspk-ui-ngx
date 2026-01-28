@@ -10,7 +10,10 @@
     gap: var(--spacing-sizing-03);
     padding: var(--spacing-sizing-02);
     justify-items: stretch;
+
+    // prevent inherited styles from affecting layout when the as prop is leveraged
     border: unset;
+    border-radius: var(--radius-sm);
     margin: unset;
     text-decoration: unset;
     width: 100%;
@@ -79,7 +82,7 @@
 
         [data-text] {
             width: 100%;
-            font: var(--labels-base);
+            font: var(--labels-small);
             color: var(--foreground-neutral-on-surface);
         }
 
@@ -121,4 +124,4 @@
     }
 }
 
-/** Copyright 2025 Anywhere Real Estate - CC BY 4.0 */
+/** Copyright 2026 Anywhere Real Estate - CC BY 4.0 */

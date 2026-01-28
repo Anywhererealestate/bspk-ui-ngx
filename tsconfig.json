@@ -1,5 +1,3 @@
-/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
-/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -13,14 +11,24 @@
     "experimentalDecorators": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
     "importHelpers": true,
     "target": "ES2022",
     "module": "preserve",
+    "baseUrl": "./",
     "paths": {
-      "ui": [
-        "./dist/ui"
+      "@ui/*": [
+        "projects/ui/src/lib/*",
+        "projects/ui/src/*"
+      ],
+      "@demo/*": [
+        "projects/demo/src/lib/*",
+        "projects/demo/src/*"
+      ],
+      "@shared/*": [
+        "projects/shared/src/*"
       ]
-    }
+    },
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -40,5 +48,11 @@
     {
       "path": "./projects/demo/tsconfig.app.json"
     },
+    {
+      "path": "./projects/shared/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.spec.json"
+    }
   ]
 }

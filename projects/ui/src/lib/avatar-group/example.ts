@@ -7,15 +7,13 @@ import { UIAvatarGroup } from './avatar-group';
     standalone: true,
     imports: [CommonModule, UIAvatarGroup],
     template: `
-        <h2>Avatar Group Examples</h2>
-
-        <h3>Default (stacked, small, max=5)</h3>
+        <h4>Default (stacked, small, max=5)</h4>
         <ui-avatar-group [items]="avatars"></ui-avatar-group>
 
-        <h3>Spread variant, medium size, max=3</h3>
+        <h4>Spread variant, medium size, max=3</h4>
         <ui-avatar-group [items]="avatars" [variant]="'spread'" [size]="'medium'" [max]="3"></ui-avatar-group>
 
-        <h3>Stacked, x-large, max=4, custom style</h3>
+        <h4>Stacked, x-large, max=4, custom style</h4>
         <ui-avatar-group
             [items]="avatars"
             [variant]="'stacked'"
@@ -23,10 +21,10 @@ import { UIAvatarGroup } from './avatar-group';
             [max]="4"
             [style]="{ marginLeft: '2rem', border: '2px solid #eee', padding: '1rem' }"></ui-avatar-group>
 
-        <h3>Only 2 avatars, max=5</h3>
+        <h4>Only 2 avatars, max=5</h4>
         <ui-avatar-group [items]="avatars.slice(0, 2)" [max]="5"></ui-avatar-group>
 
-        <h3>All avatars, max=2 (shows overflow)</h3>
+        <h4>All avatars, max=2 (shows overflow)</h4>
         <ui-avatar-group [items]="avatars" [max]="2"></ui-avatar-group>
     `,
 })

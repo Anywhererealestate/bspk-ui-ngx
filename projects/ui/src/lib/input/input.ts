@@ -1,4 +1,15 @@
-import { Component, computed, ElementRef, input, model, viewChild, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+    Component,
+    computed,
+    ElementRef,
+    input,
+    model,
+    viewChild,
+    ViewEncapsulation,
+    TemplateRef,
+    signal,
+} from '@angular/core';
 import { AsInputSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
@@ -6,7 +17,7 @@ import { IconCancel } from '../icons/cancel';
 export type InputProps = CommonProps<'owner' | 'size'> &
     FieldControlProps & {
         /** The trailing element to display in the field. */
-        trailing?: string;
+        trailing?: TemplateRef<any> | string;
         /** The leading element to display in the field. */
         leading?: string;
         /** The placeholder of the field. */
@@ -48,7 +59,7 @@ export type InputProps = CommonProps<'owner' | 'size'> &
  */
 @Component({
     selector: 'ui-input',
-    imports: [UIButton],
+    imports: [UIButton, CommonModule],
     template: `<ng-content select="[data-leading]">
             @if (leading()) {
                 <span data-leading>{{ leading() }}</span>
@@ -73,18 +84,24 @@ export type InputProps = CommonProps<'owner' | 'size'> &
             [type]="type()"
             [value]="value() || ''"
             (input)="handleInput($event)"
+            (focus)="hasFocus.set(true)"
+            (blur)="hasFocus.set(false)"
             #inputEl />
-        <ng-content select="[data-trailing]">
-            @if (trailing()) {
+        <ng-content select="[data-trailing]"></ng-content>
+        @if (trailing()) {
+            @if (trailingValue) {
+                <ng-container [ngTemplateOutlet]="trailingValue"></ng-container>
+            } @else {
                 <span data-trailing>{{ trailing() }}</span>
             }
-        </ng-content>
+        }
         @if (displayClearButton()) {
             <ui-button
                 data-clear-button
                 label="Clear input"
                 variant="tertiary"
                 [size]="buttonSize()"
+                (mousedown)="onClearMouseDown($event)"
                 (click)="clearInput()"
                 [icon]="IconCancel"
                 [iconOnly]="true" />
@@ -95,23 +112,27 @@ export type InputProps = CommonProps<'owner' | 'size'> &
         'data-bspk': 'input',
         '[attr.data-size]': 'size()',
         '[attr.data-invalid]': 'invalid() || null',
-        '[attr.data-show-clear-button]': 'displayClearButton() || null',
+        '[attr.data-show-clear-button]': '( displayClearButton()) || null',
+        '[attr.data-readonly]': 'readOnly() || null',
     },
     encapsulation: ViewEncapsulation.None,
 })
 export class UIInput implements AsInputSignal<InputProps> {
     public IconCancel = IconCancel;
-
+    readonly hasFocus = signal(false);
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
 
-    // this method to ensures the returned value is of type ButtonSize
+    readonly displayClearButton = computed<boolean>(() => {
+        return !!(this.showClearButton() && !this.readOnly() && !this.disabled() && this.value() && this.hasFocus());
+    });
+
     readonly buttonSize = computed<ButtonSize>(() => {
         const validSizes: ButtonSize[] = ['small', 'medium', 'large'];
         const sizeValue = this.size();
         return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
     });
 
-    readonly value = model<InputProps['value']>('');
+    readonly value = model<InputProps['value']>(undefined);
     readonly name = input.required<InputProps['name']>();
 
     readonly showClearButton = input<InputProps['showClearButton']>(true);
@@ -133,9 +154,14 @@ export class UIInput implements AsInputSignal<InputProps> {
     readonly ariaDescribedBy = input<InputProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<InputProps['ariaErrorMessage']>(undefined);
 
-    readonly displayClearButton = computed<boolean>(() => {
-        return this.showClearButton() !== false && !this.readOnly() && !this.disabled() && !!this.value();
-    });
+    get trailingValue(): TemplateRef<any> | undefined {
+        const value = this.trailing();
+        return value instanceof TemplateRef ? value : undefined;
+    }
+
+    onClearMouseDown(event: MouseEvent) {
+        event.preventDefault();
+    }
 
     clearInput() {
         this.value.set('');
@@ -144,5 +170,9 @@ export class UIInput implements AsInputSignal<InputProps> {
 
     handleInput(event: Event) {
         this.value.set((event.target as HTMLInputElement).value);
+    }
+
+    isTemplateRef(value: any): value is TemplateRef<any> {
+        return value instanceof TemplateRef;
     }
 }

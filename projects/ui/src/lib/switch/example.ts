@@ -8,9 +8,8 @@ import { UISwitch } from './switch';
     standalone: true,
     imports: [CommonModule, UISwitch],
     template: `
-        <h2>Switch</h2>
         @for (ex of examples; track $index) {
-            <h3>{{ ex.label }}</h3>
+            <h4>{{ ex.label }}</h4>
             <ui-switch
                 [id]="ex.id"
                 [name]="ex.name"

@@ -21,8 +21,6 @@ export function getIndexFileContent() {
         .readdirSync(servicesDir, { withFileTypes: true })
         .map((dirent) => path.parse(dirent.name).name);
 
-    console.log('serviceFiles', serviceFiles);
-
     exportLines.push(...serviceFiles.map((file) => `export * from './services/${file}';`));
 
     const indexContent = `/**
@@ -38,6 +36,9 @@ ${exportLines.join('\n')}
 
 export function updateIndex() {
     const { indexPath, indexContent } = getIndexFileContent();
+
+    fs.rmSync(indexPath, { force: true });
+
     fs.writeFileSync(indexPath, indexContent, 'utf-8');
     console.log('\x1b[32m✅ Updated index at ' + indexPath + ' 🎉\x1b[0m');
 }
