@@ -59,17 +59,14 @@ export type IconType = BspkIcon;
         (mouseover)="handleMouseOver($event)"
         (mouseleave)="handleMouseLeave($event)"
         [style]="style()">
-        @if (!label()) {
-            <ng-content></ng-content>
-        } @else {
-            @if (icon()) {
-                <span [attr.aria-hidden]="true" [attr.data-button-icon]="true">
-                    <ui-icon [icon]="icon()!"></ui-icon>
-                </span>
-            }
-            @if (shouldShowLabel) {
-                <span [attr.data-button-label]="true">{{ label() }}</span>
-            }
+        <ng-content></ng-content>
+        @if (icon()) {
+            <span [attr.aria-hidden]="true" [attr.data-button-icon]="true">
+                <ui-icon [icon]="icon()!"></ui-icon>
+            </span>
+        }
+        @if (shouldShowLabel) {
+            <span [attr.data-button-label]="true">{{ label() }}</span>
         }
         <span [attr.data-touch-target]="true"></span>
     </button>`,
@@ -189,7 +186,7 @@ export class UIButton {
     }
 
     get tooltipLabel(): string | undefined {
-        return this.tooltip() || (this.iconOnly() ? this.label() : undefined);
+        return this.tooltip();
     }
 
     get buttonClasses(): string {
