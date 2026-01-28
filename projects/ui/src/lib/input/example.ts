@@ -1,18 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
+import { sendSnackbar } from '../../utils/send-snackbar';
+import { UIButton } from '../button';
 import { UIInput } from './input';
 
 @Component({
     selector: 'ui-input-example',
     standalone: true,
-    imports: [CommonModule, UIInput],
+    imports: [CommonModule, UIInput, UIButton],
     template: `
         <h4>Default</h4>
+        <ui-input name="default" ariaLabel="Input Label" />
+
+        <h4>Default with preset Value</h4>
         <ui-input
             [value]="values()['default']"
             (valueChange)="update('default', $event)"
             id="default-input"
-            name="default-input"
+            name="default-preset-value"
             ariaLabel="Input Label" />
         <p>The value of the default input is: {{ values()['default'] || 'null' }}</p>
 
@@ -28,7 +33,11 @@ import { UIInput } from './input';
         <h4>Read Only</h4>
         <ui-input name="read-only-input" ariaLabel="Input Label" [readOnly]="true" />
 
+        <h4>Read Only & preset Value</h4>
+        <ui-input name="read-only-input" ariaLabel="Input Label" [readOnly]="true" [value]="values()['default']" />
+
         <h4>showClearButton = true</h4>
+        <p>The clear button will only show when there is a value present.</p>
         <ui-input name="show-clear-button-true" ariaLabel="Input Label" [showClearButton]="true" />
 
         <h4>showClearButton = false</h4>
@@ -65,6 +74,16 @@ import { UIInput } from './input';
             name="trailing-example"
             ariaLabel="Input Label"
             trailing="%" />
+
+        <h3>Placeholder with trailing UIButton</h3>
+        <ng-template #trailingButton>
+            <ui-button label="Go" size="small" (onClick)="onTrailingButtonClick()"></ui-button>
+        </ng-template>
+        <ui-input
+            name="placeholder-trailing-button"
+            ariaLabel="Input Label"
+            placeholder="Type something..."
+            [trailing]="trailingButton" />
     `,
 })
 export class UIInputExample {
@@ -81,4 +100,8 @@ export class UIInputExample {
             [key]: next,
         }));
     };
+
+    onTrailingButtonClick() {
+        sendSnackbar('Trailing UIButton clicked!');
+    }
 }
