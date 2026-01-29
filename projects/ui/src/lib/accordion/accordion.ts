@@ -1,16 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, ViewEncapsulation, computed, input, model } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, computed, contentChildren, effect, input, model } from '@angular/core';
+import { AsInputSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
-import { IconKeyboardArrowDown } from '../icons/keyboard-arrow-down';
-import { IconKeyboardArrowUp } from '../icons/keyboard-arrow-up';
+import { UIAccordionSection } from './section';
 
 export interface AccordionSection {
-    /**
-     * The content of the accordion.
-     *
-     * @required
-     */
-    children?: TemplateRef<any> | string;
     /**
      * The title of the accordion.
      *
@@ -19,12 +13,18 @@ export interface AccordionSection {
     title: string;
     /** The subtitle of the accordion. */
     subtitle?: string;
-    /** The leading element to display in the accordion header. */
-
-    leading?: TemplateRef<any> | string;
-    /** The trailing element to display in the accordion header. */
-
-    trailing?: TemplateRef<any> | string;
+    /**
+     * The leading element to display in the accordion header.
+     *
+     * May be passed as string or use <span data-leading> for non-string content.
+     */
+    leading?: string;
+    /**
+     * The trailing element to display in the accordion header.
+     *
+     * May be passed as string or use <span data-trailing> for non-string content.
+     */
+    trailing?: string;
     /**
      * If the accordion is initially open.
      *
@@ -47,6 +47,15 @@ export interface AccordionSection {
     id?: string;
 }
 
+export interface AccordionProps {
+    /**
+     * If true only one accordion section can be opened at a time
+     *
+     * @default true
+     */
+    singleOpen?: boolean;
+}
+
 /**
  * A vertical stack of collapsible panels or that allows customers to expand or collapse each panel individually to
  * reveal or hide their content.
@@ -62,111 +71,45 @@ export interface AccordionSection {
 @Component({
     selector: 'ui-accordion',
     standalone: true,
-    imports: [CommonModule, IconKeyboardArrowDown, IconKeyboardArrowUp],
-    template: `@for (item of itemsWithIds(); track item) {
-        <section data-bspk="accordion-item" [attr.data-disabled]="item.disabled ? true : null" [id]="item.id">
-            <button
-                type="button"
-                [attr.aria-controls]="item.id + '-content'"
-                [attr.aria-expanded]="isOpen(item)"
-                data-header
-                [disabled]="item.disabled ? true : null"
-                (click)="!item.disabled && toggleOpen(item.id!)">
-                @if (item.leading) {
-                    <span data-leading>
-                        @if (isTemplateRef(item.leading)) {
-                            <ng-container>
-                                <ng-container *ngTemplateOutlet="item.leading as TemplateRef"></ng-container>
-                            </ng-container>
-                        } @else {
-                            <ng-container
-                                *ngTemplateOutlet="leadingText; context: { $implicit: item.children }"></ng-container>
-                        }
-                        <ng-template #leadingText>{{ item.leading }}</ng-template>
-                    </span>
-                }
-
-                <span data-title-subtitle>
-                    <span data-title>{{ item.title }}</span>
-
-                    @if (item.subtitle) {
-                        <span data-subtitle>{{ item.subtitle }}</span>
-                    }
-                </span>
-
-                @if (item.trailing) {
-                    <span data-trailing>
-                        @if (isTemplateRef(item.trailing)) {
-                            <ng-container>
-                                <ng-container *ngTemplateOutlet="item.trailing as TemplateRef"></ng-container>
-                            </ng-container>
-                        } @else {
-                            <ng-container
-                                *ngTemplateOutlet="trailingText; context: { $implicit: item.children }"></ng-container>
-                        }
-                        <ng-template #trailingText>{{ item.trailing }}</ng-template>
-                    </span>
-                }
-
-                <span data-arrow>
-                    @if (isOpen(item)) {
-                        <icon-keyboard-arrow-up />
-                    } @else {
-                        <icon-keyboard-arrow-down />
-                    }
-                </span>
-            </button>
-
-            @if (isOpen(item)) {
-                <div data-content [attr.data-hidden]="!isOpen(item) ? true : null" [id]="item.id + '-content'">
-                    @if (isTemplateRef(item.children)) {
-                        <ng-container>
-                            <ng-container *ngTemplateOutlet="item.children as TemplateRef"></ng-container>
-                        </ng-container>
-                    } @else {
-                        <ng-container
-                            *ngTemplateOutlet="childrenText; context: { $implicit: item.children }"></ng-container>
-                    }
-                    <ng-template #childrenText let-content>{{ content }}</ng-template>
-                </div>
-            }
-            <span data-divider></span>
-        </section>
-    }`,
+    imports: [CommonModule],
+    template: `<ng-content></ng-content>`,
     styleUrls: ['./accordion.scss'],
     encapsulation: ViewEncapsulation.None,
     host: {
         'data-bspk': 'accordion',
     },
 })
-export class UIAccordion {
-    /**
-     * Array of accordion sections
-     *
-     * @exampleType Array<AccordionSection>
-     * @required
-     */
-    readonly items = input<AccordionSection[]>([]);
+export class UIAccordion implements OnInit, AsInputSignal<AccordionProps> {
+    readonly singleOpen = input<AccordionProps['singleOpen']>(true);
 
-    /**
-     * If true only one accordion section can be opened at a time
-     *
-     * @default true
-     */
-    readonly singleOpen = input(true);
+    readonly sections = contentChildren(UIAccordionSection, { descendants: true });
 
-    readonly itemsWithIds = computed(() =>
-        this.items().map((item): AccordionSection & { id: string } => ({
-            ...item,
-            id: item.id || uniqueId('accordion-item'),
-        })),
-    );
+    readonly items = computed<(AccordionSection & { id: string })[]>(() => {
+        return this.sections().map((section) => ({
+            ...section.item,
+            id: section.id() || uniqueId('accordion-item'),
+        }));
+    });
 
     readonly openSections = model(
-        this.itemsWithIds()
+        this.items()
             .filter((i) => i.isOpen)
             .map((i) => i.id!),
     );
+
+    constructor() {
+        effect(() => {
+            this.sections().forEach((section) => {
+                section.isOpen.set(this.openSections().includes(section.id()));
+            });
+        });
+    }
+
+    ngOnInit() {
+        this.sections().forEach((section) => {
+            section.toggleOpen.subscribe((itemId: string) => this.toggleOpen(itemId));
+        });
+    }
 
     toggleOpen(itemId: string) {
         const isOpen = this.openSections().includes(itemId);
@@ -183,9 +126,5 @@ export class UIAccordion {
 
     isOpen(item: AccordionSection & { id: string }): boolean {
         return !!item.id && this.openSections().includes(item.id) && !item.disabled;
-    }
-
-    isTemplateRef(value: any): value is TemplateRef<any> {
-        return value instanceof TemplateRef;
     }
 }
