@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    OnInit,
-    TemplateRef,
-    ViewEncapsulation,
-    computed,
-    contentChildren,
-    effect,
-    input,
-    model,
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, computed, contentChildren, effect, input, model } from '@angular/core';
 import { AsInputSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIAccordionSection } from './section';
@@ -136,9 +126,5 @@ export class UIAccordion implements OnInit, AsInputSignal<AccordionProps> {
 
     isOpen(item: AccordionSection & { id: string }): boolean {
         return !!item.id && this.openSections().includes(item.id) && !item.disabled;
-    }
-
-    isTemplateRef(value: any): value is TemplateRef<any> {
-        return value instanceof TemplateRef;
     }
 }
