@@ -1,11 +1,9 @@
 import { InputSignal, Signal } from '@angular/core';
 
 export type AsInputSignal<T> = {
-    [K in keyof T]: undefined extends T[K] ? InputSignal<T[K] | undefined> : InputSignal<NonNullable<T[K]>>;
-};
-
-export type AsSignal<T> = {
-    [K in keyof T]: undefined extends T[K] ? Signal<T[K] | undefined> : Signal<NonNullable<T[K]>>;
+    [K in keyof T]: undefined extends T[K]
+        ? InputSignal<T[K] | undefined> | Signal<T[K] | undefined>
+        : InputSignal<NonNullable<T[K]>> | Signal<NonNullable<T[K]>>;
 };
 
 export type AlertVariant = 'error' | 'informational' | 'success' | 'warning';
