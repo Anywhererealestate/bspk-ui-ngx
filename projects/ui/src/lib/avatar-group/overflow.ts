@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, viewChild, ElementRef, ViewEncapsulation, model } from '@angular/core';
+import { Component, input, viewChild, ElementRef, ViewEncapsulation, model, computed } from '@angular/core';
 
 // Assume these are your Angular equivalents:
-import { UIAvatar, UIAvatarProps } from '../avatar/avatar';
+import { withIds } from '../../utils/with-ids';
+import { UIAvatar, AvatarProps } from '../avatar/avatar';
 import { UIFloatingDirective } from '../floating';
 import { UIListItem } from '../list-item/list-item';
 import { UIMenu } from '../menu/menu';
@@ -64,11 +65,13 @@ import { UIMenu } from '../menu/menu';
 export class UIAvatarGroupOverflow {
     readonly overflowBtn = viewChild<ElementRef<HTMLButtonElement>>('overflowBtn');
     readonly size = input<string>('medium');
-    readonly items = input.required<UIAvatarProps[]>();
     readonly open = model<boolean>(false);
     readonly menuId = input.required<string>();
     readonly activeElementId = model<string | null>(null);
     readonly menuReference = input.required<HTMLElement>();
+    // eslint-disable-next-line @angular-eslint/no-input-rename
+    readonly itemsProp = input.required<AvatarProps[]>({ alias: 'items' });
+    readonly items = computed(() => withIds('avatar-group-overflow', this.itemsProp()));
 
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
@@ -87,13 +90,13 @@ export class UIAvatarGroupOverflow {
         this.open.set(!this.open());
         const items = this.items();
         if (this.open() && items.length) {
-            this.activeElementId.set(items[0].id);
+            this.activeElementId.set(items[0].id!);
         } else {
             this.activeElementId.set(null);
         }
     }
 
-    avatarTemplate(item: UIAvatarProps) {
+    avatarTemplate(item: AvatarProps) {
         return {
             ...item,
             hideTooltip: true,

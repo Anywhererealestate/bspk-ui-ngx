@@ -48,7 +48,7 @@ files.forEach((dirent) => {
 
             if (!/implements .*AsInputSignal<.*Props/.test(content)) {
                 warnings.push(
-                    `Component "${dirent.name}" in file "${filePath}" does not implenment ${pascalCaseName}Props.`,
+                    `Component "${dirent.name}" in file "${filePath}" does not implenment AsInputSignal<${pascalCaseName}Props>.`,
                 );
             }
 

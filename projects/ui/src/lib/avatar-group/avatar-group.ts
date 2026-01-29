@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, signal, ViewEncapsulation } from '@angular/core';
 import { uniqueId } from '../../utils/random';
-import { UIAvatar, UIAvatarProps, SizeVariant } from '../avatar/avatar';
+import { UIAvatar, AvatarProps, SizeVariant } from '../avatar/avatar';
 import { UIAvatarGroupOverflow } from './overflow';
 
-export type AvatarItem = Pick<UIAvatarProps, 'color' | 'image' | 'initials' | 'name' | 'showIcon' | 'size'>;
+export type AvatarItem = Pick<AvatarProps, 'color' | 'image' | 'initials' | 'name' | 'showIcon' | 'size'>;
 
 /**
  * The AvatarGroup component is used to display a group of avatars, with support for overflow handling and different
