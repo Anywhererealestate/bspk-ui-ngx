@@ -27,13 +27,7 @@ export type InputProps = CommonProps<'owner' | 'size'> &
          *
          * @default text
          */
-        type?: 'number' | 'password' | 'tel' | 'text';
-        /**
-         * The inputmode attribute for the input.
-         *
-         * @default undefined
-         */
-        inputMode?: 'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url';
+        type?: 'number' | 'password' | 'text';
         /**
          * Specifies if user agent has any permission to provide automated assistance in filling out form field values
          *
@@ -85,7 +79,6 @@ export type InputProps = CommonProps<'owner' | 'size'> &
             [attr.placeholder]="placeholder() || null"
             [attr.name]="name() || null"
             [attr.autocomplete]="autoComplete() || null"
-            [attr.inputmode]="inputMode() || null"
             [readOnly]="readOnly() || null"
             [required]="required() || null"
             [type]="type()"
@@ -149,7 +142,6 @@ export class UIInput implements AsInputSignal<InputProps> {
     readonly readOnly = input<InputProps['readOnly']>(false);
     readonly required = input<InputProps['required']>(false);
     readonly type = input<InputProps['type']>('text');
-    readonly inputMode = input<InputProps['inputMode']>(undefined);
     readonly size = input<InputProps['size']>('medium');
     readonly leading = input<InputProps['leading']>(undefined);
     readonly trailing = input<InputProps['trailing']>(undefined);
