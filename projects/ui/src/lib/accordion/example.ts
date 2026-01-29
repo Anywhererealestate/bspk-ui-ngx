@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { UIAvatar } from '../..';
 import { UIExample } from '../../demo';
 import { IconCat } from '../icons/cat';
-import { UIAccordion, UIAccordionSection } from './accordion';
+import { UIAccordion, UIAccordionSection } from './';
 
 @Component({
     selector: 'ui-accordion-example',
