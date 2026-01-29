@@ -7,9 +7,7 @@ import { UIInputPhone } from './input-phone';
     standalone: true,
     imports: [CommonModule, UIInputPhone],
     template: `
-        <h2>InputPhone</h2>
-
-        <h3>Default</h3>
+        <h4>Default</h4>
         <ui-input-phone
             [value]="values()['default']"
             (valueChange)="update('default', $event)"
@@ -18,24 +16,24 @@ import { UIInputPhone } from './input-phone';
             ariaLabel="Phone Number"
             initialCountryCode="US" />
 
-        <h3>Disabled</h3>
+        <h4>Disabled</h4>
         <ui-input-phone
             name="disabled-input-phone"
             ariaLabel="Phone Number"
             [disabled]="true"
             initialCountryCode="US" />
 
-        <h3>Invalid</h3>
+        <h4>Invalid</h4>
         <ui-input-phone name="invalid-input-phone" ariaLabel="Phone Number" [invalid]="true" initialCountryCode="US" />
 
-        <h3>Required</h3>
+        <h4>Required</h4>
         <ui-input-phone
             name="required-input-phone"
             ariaLabel="Phone Number"
             [required]="true"
             initialCountryCode="US" />
 
-        <h3>Read Only</h3>
+        <h4>Read Only</h4>
         <ui-input-phone
             name="read-only-input-phone"
             ariaLabel="Phone Number"
@@ -43,7 +41,7 @@ import { UIInputPhone } from './input-phone';
             initialCountryCode="US"
             value="+1234567890" />
 
-        <h3>Different Country Code</h3>
+        <h4>Different Country Code</h4>
         <ui-input-phone
             [value]="values()['country']"
             (valueChange)="update('country', $event)"
@@ -52,7 +50,7 @@ import { UIInputPhone } from './input-phone';
             ariaLabel="Phone Number"
             initialCountryCode="GB" />
 
-        <h3>Disable Formatting</h3>
+        <h4>Disable Formatting</h4>
         <ui-input-phone
             [value]="values()['unformatted']"
             (valueChange)="update('unformatted', $event)"
@@ -62,7 +60,7 @@ import { UIInputPhone } from './input-phone';
             [disableFormatting]="true"
             initialCountryCode="US" />
 
-        <h3>Different Sizes</h3>
+        <h4>Different Sizes</h4>
         <p>Small:</p>
         <ui-input-phone name="small-input-phone" ariaLabel="Phone Number" [size]="'small'" initialCountryCode="US" />
 
