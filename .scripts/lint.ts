@@ -52,7 +52,7 @@ files.forEach((dirent) => {
                 // does not export props interface
                 !/implements .*AsSignal<.*Props/.test(content)
             ) {
-                warnings.push(
+                errors.push(
                     `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
                 );
             }
