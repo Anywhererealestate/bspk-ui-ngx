@@ -173,3 +173,5 @@ export class UIFab implements AsSignal<FabProps> {
         this.onMouseLeave.emit(event);
     }
 }
+
+/** Copyright 2026 Anywhere Real Estate - CC BY 4.0 */
