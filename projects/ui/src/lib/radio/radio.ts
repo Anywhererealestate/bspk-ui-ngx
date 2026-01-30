@@ -54,7 +54,7 @@ export class UIRadio implements AsSignal<RadioProps> {
     readonly ariaLabel = input<RadioProps['ariaLabel']>(undefined);
     readonly checked = input<RadioProps['checked']>(false);
     readonly disabled = input<RadioProps['disabled']>(false);
-    readonly id = input<string>(uniqueId('radio'));
+    readonly id = input<RadioProps['id']>(uniqueId('radio'));
     readonly invalid = input<RadioProps['invalid']>(false);
     readonly required = input<RadioProps['required']>(false);
 

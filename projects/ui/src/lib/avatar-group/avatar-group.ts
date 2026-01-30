@@ -2,7 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, computed, input, signal, ViewEncapsulation } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
-import { UIAvatar, AvatarProps, SizeVariant } from '../avatar/avatar';
+import { AvatarProps, SizeVariant } from '../avatar';
+import { UIAvatar } from '../avatar/avatar';
 import { UIAvatarGroupOverflow } from './overflow';
 
 export type AvatarItem = Pick<AvatarProps, 'color' | 'image' | 'initials' | 'name' | 'showIcon'>;
@@ -133,7 +134,7 @@ export class UIAvatarGroup implements AsSignal<AvatarGroupProps> {
     readonly variant = input<AvatarGroupProps['variant']>('stacked');
 
     readonly open = signal<boolean>(false);
-    readonly activeElementId = signal<string | null>(null);
+    readonly activeElementId = signal<string | undefined>(undefined);
 
     readonly itemsWithIds = computed(() => {
         return this.items().map((item, idx) => ({
@@ -194,7 +195,7 @@ export class UIAvatarGroup implements AsSignal<AvatarGroupProps> {
         if (this.open() && items.length) {
             this.activeElementId.set(items[0].id);
         } else {
-            this.activeElementId.set(null);
+            this.activeElementId.set(undefined);
         }
     }
 

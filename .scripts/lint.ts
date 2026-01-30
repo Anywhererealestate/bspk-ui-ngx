@@ -109,11 +109,32 @@ allFiles.forEach((file) => {
 
     const content = fs.readFileSync(filePath, 'utf-8');
 
-    const classesWithDoc = content.matchAll(/\*\/\n@(Component|Directive)/g);
-    const totalClasses = content.matchAll(/\n@(Component|Directive)/g);
+    const classes = Array.from(content.matchAll(/\n@(Component|Directive)/g));
+    const classesWithDoc = Array.from(content.matchAll(/\*\/\n@(Component|Directive)/g));
+    const totalClasses = Array.from(content.matchAll(/\n@(Component|Directive)/g));
 
-    if (Array.from(totalClasses).length > Array.from(classesWithDoc).length) {
+    if (totalClasses.length > classesWithDoc.length) {
         errors.push(`Component or Directive class in file "${file}" is missing documentation.`);
+    }
+
+    // find that all inputs have aren't typed with *Props['*'] type annotations
+    const inputsWithoutPropType = Array.from(
+        content.matchAll(/[a-z_]+ = input(?:\.required)?<(?!\w+Props\['\w+'\])\w+>/g),
+    );
+
+    if (classes && inputsWithoutPropType.length) {
+        errors.push(
+            `Inputs missing proper Props type annotations in file "${file}".\n\t${inputsWithoutPropType.map((m) => m).join('\n')}`,
+        );
+    }
+
+    // find that all models have aren't typed with *Props['*'] type annotations
+    const modelsWithoutPropType = Array.from(content.matchAll(/[a-z_]+ = model<(?!\w+Props\['\w+'\])\w+>/g));
+
+    if (classes && modelsWithoutPropType.length) {
+        errors.push(
+            `Models missing proper Props type annotations in file "${file}".\n\t${modelsWithoutPropType.map((m) => m).join('\n')}`,
+        );
     }
 });
 

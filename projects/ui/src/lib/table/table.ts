@@ -1,31 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation, computed, input, model } from '@angular/core';
+import { Component, ViewEncapsulation, computed, input, signal } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import { sendAriaLiveMessage } from '../../utils/send-aria-live-message';
 import { IconArrowDownward, IconArrowUpward } from '../icons';
 import { UIPagination } from '../pagination';
-
-export type TableSize = 'large' | 'medium' | 'small' | 'x-large';
-
-export type TableCellValue = unknown;
-
-export interface TableRow {
-    [key: string]: TableCellValue | TableCellValue[];
-    id: string;
-}
-
-export type BuiltInColumnSorters = 'boolean' | 'date' | 'number' | 'string';
-export type TableColumnSortingFn = (a: TableCellValue, b: TableCellValue) => number;
-
-export interface TableColumn<R extends TableRow> {
-    key: string;
-    label: string;
-    width?: string;
-    align?: 'center' | 'left' | 'right';
-    valign?: 'bottom' | 'center' | 'top';
-    sort?: BuiltInColumnSorters | TableColumnSortingFn;
-    formatter?: (row: R, size: TableSize) => unknown;
-}
+import {
+    TableRow,
+    TableColumn,
+    TableSize,
+    TableCellValue,
+    BuiltInColumnSorters,
+    TableColumnSortingFn,
+    SortOrder,
+    SortState,
+} from './utils';
 
 export interface TableProps<R extends TableRow> {
     /**
@@ -57,9 +45,6 @@ export interface TableProps<R extends TableRow> {
      */
     pageSize?: number;
 }
-
-type SortOrder = 'asc' | 'desc';
-type SortState = { key: string; order: SortOrder }[];
 
 function parseDateTime(val: TableCellValue): number {
     let dateValue: any = val;
@@ -209,7 +194,7 @@ export class UITable<R extends TableRow> implements AsSignal<TableProps<R>> {
         ),
     );
 
-    readonly sorting = model<SortState>([]);
+    readonly sorting = signal<SortState>([]);
 
     readonly data = input<TableProps<R>['data']>([]);
     readonly columns = input<TableProps<R>['columns']>([]);

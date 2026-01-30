@@ -23,8 +23,8 @@ export interface IconProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIIcon implements AsSignal<IconProps> {
-    readonly icon = input.required<BspkIcon>();
-    readonly width = input<string>();
+    readonly icon = input.required<IconProps['icon']>();
+    readonly width = input<IconProps['width']>();
 
     viewContainerRef = inject(ViewContainerRef);
 

@@ -1,12 +1,12 @@
-import { InputSignal, Signal, OutputEmitterRef } from '@angular/core';
+import { InputSignal, Signal, OutputEmitterRef, ModelSignal } from '@angular/core';
 
 import * as CSS from 'csstype';
 
 type Output<T> = OutputEmitterRef<T>;
 
 type AsInputOrSignal<V> = undefined extends V
-    ? InputSignal<V | undefined> | Signal<V | undefined>
-    : InputSignal<NonNullable<V>> | Signal<NonNullable<V>>;
+    ? InputSignal<V | undefined> | ModelSignal<V | undefined> | Signal<V | undefined>
+    : InputSignal<NonNullable<V>> | ModelSignal<NonNullable<V>> | Signal<NonNullable<V>>;
 
 type OutputPayload<V> =
     Extract<NonNullable<V>, (...args: any[]) => any> extends (...args: infer A) => any

@@ -54,8 +54,8 @@ export interface TagProps {
     },
 })
 export class UITag implements AsSignal<TagProps> {
-    readonly label = input.required<string>();
-    readonly size = input<'small' | 'x-small'>('small');
-    readonly color = input<ColorVariant>('grey');
-    readonly variant = input<'corner-wrap' | 'flat' | 'pill'>('flat');
+    readonly label = input.required<TagProps['label']>();
+    readonly size = input<TagProps['size']>('small');
+    readonly color = input<TagProps['color']>('grey');
+    readonly variant = input<TagProps['variant']>('flat');
 }

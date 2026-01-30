@@ -9,6 +9,7 @@ import {
     signal,
     inject,
     ElementRef,
+    model,
 } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
 import { AsSignal } from '../../types/common';
@@ -246,6 +247,15 @@ export class UITabListUtility<O extends TabOption = TabOption> implements AsSign
     }
 }
 
+export interface UITabListProps {
+    /**
+     * The component identifier.
+     *
+     * Usually
+     */
+    component: string;
+}
+
 /**
  * Navigation tool that organizes content across different screens and views.
  *
@@ -315,9 +325,8 @@ export class UITabListUtility<O extends TabOption = TabOption> implements AsSign
         '(keydown)': 'handleKeyDownEvent($event)',
     },
 })
-export class UITabList extends UITabListUtility {
-    readonly component = input<string>('', {
-        // eslint-disable-next-line @angular-eslint/no-input-rename
+export class UITabList extends UITabListUtility implements AsSignal<UITabListProps> {
+    readonly component = model<UITabListProps['component']>('', {
         alias: 'data-bspk',
     });
 }

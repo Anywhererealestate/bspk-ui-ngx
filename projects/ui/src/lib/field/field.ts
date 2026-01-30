@@ -80,13 +80,13 @@ export interface FieldProps extends CommonProps<'style'> {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIField implements AsSignal<FieldProps> {
-    readonly errorMessage = input<string | undefined>(undefined);
-    readonly label = input.required<string>();
-    readonly helperText = input<string | undefined>(undefined);
-    readonly labelTrailing = input<string | undefined>(undefined);
-    readonly required = input<boolean | undefined>(undefined);
-    readonly controlId = input.required<string>();
-    readonly style = input<string | undefined>(undefined);
+    readonly errorMessage = input<FieldProps['errorMessage']>();
+    readonly label = input.required<FieldProps['label']>();
+    readonly helperText = input<FieldProps['helperText']>();
+    readonly labelTrailing = input<FieldProps['labelTrailing']>();
+    readonly required = input<FieldProps['required']>();
+    readonly controlId = input.required<FieldProps['controlId']>();
+    readonly style = input<FieldProps['style']>();
 
     errorMessageId(): string {
         return errorMessageId(this.controlId());

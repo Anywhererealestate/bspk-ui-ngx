@@ -21,7 +21,7 @@ export interface KeyNavigationProps {
 export class UIKeyNavigationDirective implements AfterViewInit, OnDestroy, AsSignal<KeyNavigationProps> {
     host = inject<ElementRef<HTMLElement>>(ElementRef<HTMLElement>);
 
-    readonly props = input<KeyNavigationUtilityProps>(
+    readonly props = input<KeyNavigationProps['props']>(
         {
             activeElementId: null,
         },

@@ -12,7 +12,7 @@ export interface PortalProps {
 @Directive({ selector: '[ui-portal]' })
 export class UIPortalDirective implements OnDestroy, OnChanges, AsSignal<PortalProps> {
     /** The target element to render the portal into. Defaults to `document.body` in the browser. */
-    readonly container = input<PortalContainer>(undefined, { alias: 'ui-portal' });
+    readonly container = input<PortalProps['container']>(undefined, { alias: 'ui-portal' });
 
     constructor(private elRef: ElementRef) {}
 

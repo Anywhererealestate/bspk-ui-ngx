@@ -20,6 +20,8 @@ export interface FocusTrapProps {
      * @default true
      */
     restoreFocus?: boolean;
+    /** Enable or disable the focus trap. */
+    'ui-focus-trap'?: boolean;
 }
 
 /**
@@ -40,7 +42,7 @@ export interface FocusTrapProps {
     standalone: true,
 })
 export class UIFocusTrapDirective implements OnChanges, OnDestroy, AsSignal<FocusTrapProps> {
-    readonly enabled = input<boolean>(true, {
+    readonly enabled = input<FocusTrapProps['ui-focus-trap']>(true, {
         alias: 'ui-focus-trap',
     });
     readonly autoFocus = input<FocusTrapProps['autoFocus']>(true);
