@@ -73,7 +73,6 @@ export type FabProps = CommonProps<'ariaLabel' | 'owner' | 'style'> & {
  * @name Fab
  * @phase Dev
  */
-
 @Component({
     selector: 'ui-fab',
     template: `
