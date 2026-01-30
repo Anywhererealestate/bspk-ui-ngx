@@ -140,6 +140,7 @@ export class UIInput implements AsSignal<InputProps> {
     readonly value = model<InputProps['value']>(undefined);
     readonly name = input.required<InputProps['name']>();
 
+    readonly inputMode = input<InputProps['inputMode']>(undefined);
     readonly showClearButton = input<InputProps['showClearButton']>(true);
     readonly disabled = input<InputProps['disabled']>(false);
     readonly invalid = input<InputProps['invalid']>(false);

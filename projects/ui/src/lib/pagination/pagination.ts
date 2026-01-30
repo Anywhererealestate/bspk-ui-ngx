@@ -58,7 +58,7 @@ export interface PaginationProps {
                 <ng-container>
                     <form data-input-form (submit)="submitManual($event)">
                         <ui-input
-                            label="Page number"
+                            ariaLabel="Page number"
                             [type]="'number'"
                             [showClearButton]="false"
                             [value]="inputValue"

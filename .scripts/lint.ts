@@ -1,7 +1,17 @@
 /**
  * Ensures all component classes and selectors follow naming conventions.
  *
- * Ensures that the public API file is up to date.
+ * Ensures that the index file is up to date exporting all components and directives.
+ *
+ * Ensures that all components with inputs implement AsSignal<Props> interface.
+ *
+ * Ensures that all components and directives have proper documentation.
+ *
+ * Ensures that all inputs and models have proper Props type annotations.
+ *
+ * Ensures that test files properly reference example components.
+ *
+ * Ensures that there are no obsolete test files with incorrect naming.
  *
  * $ npx tsx .scripts/lint.ts
  */
@@ -20,76 +30,98 @@ const errors: string[] = [];
 const warnings: string[] = [];
 
 files.forEach((dirent) => {
-    if (dirent.isDirectory()) {
-        if (dirent.name === 'icons') return;
+    if (!dirent.isDirectory() || dirent.name === 'icons') return;
 
-        const componentDir = path.join(libDir, dirent.name);
-        const componentFilePath = path.join(componentDir, dirent.name + '.ts');
-        const directiveFilePath = path.join(componentDir, dirent.name + '.directive.ts');
+    const componentDir = path.join(libDir, dirent.name);
+    const componentFilePath = path.join(componentDir, dirent.name + '.ts');
+    const directiveFilePath = path.join(componentDir, dirent.name + '.directive.ts');
 
-        const pascalCaseName = dirent.name
-            .split('-')
-            .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
-            .join('');
+    const pascalCaseName = dirent.name
+        .split('-')
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join('');
 
-        const filesToCheck: {
-            filePath: string;
-            type: 'component' | 'directive';
-        }[] = [];
+    const filesToCheck: {
+        filePath: string;
+        type: 'component' | 'directive';
+    }[] = [];
 
-        if (fs.existsSync(componentFilePath)) filesToCheck.push({ filePath: componentFilePath, type: 'component' });
+    if (fs.existsSync(componentFilePath)) filesToCheck.push({ filePath: componentFilePath, type: 'component' });
 
-        if (fs.existsSync(directiveFilePath)) filesToCheck.push({ filePath: directiveFilePath, type: 'directive' });
+    if (fs.existsSync(directiveFilePath)) filesToCheck.push({ filePath: directiveFilePath, type: 'directive' });
 
-        filesToCheck.forEach(({ filePath, type }) => {
-            const content = fs.readFileSync(filePath, 'utf-8');
+    filesToCheck.forEach(({ filePath, type }) => {
+        const content = fs.readFileSync(filePath, 'utf-8');
 
-            if (type === 'component' && !content.includes('@name')) return;
+        if (type === 'component' && !content.includes('@name')) return;
 
-            const hasInputs = / = input[<|(]/.test(content) || / = input.required[<|(]/.test(content);
-            const implementsAsSignal = /implements .*AsSignal<.*Props/.test(content);
+        const hasInputs = / = input[<|(]/.test(content) || / = input.required[<|(]/.test(content);
+        const implementsAsSignal = /implements .*AsSignal<.*Props/.test(content);
 
-            if (
-                // class has inputs
-                hasInputs &&
-                // does not export props interface
-                !implementsAsSignal
-            ) {
+        if (
+            // class has inputs
+            hasInputs &&
+            // does not export props interface
+            !implementsAsSignal
+        ) {
+            errors.push(
+                `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
+            );
+        }
+
+        const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
+        const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
+        const classNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map((m) => m[1]);
+
+        if (!classNameMatches.length) {
+            errors.push(`No class found in file "${filePath}".`);
+        } else if (!classNameMatches.some((name) => name === classNameExpected)) {
+            if (type === 'component')
                 errors.push(
-                    `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
+                    `Class name(s) "${classNameMatches.join(', ')}" in file "${filePath}" does not follow the convention and should be ${classNameExpected}.`,
                 );
-            }
+        }
 
-            const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
-            const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
-            const classNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map((m) => m[1]);
+        const selectorMatch = content.match(/selector:\s*'([^']+)'/)?.[1];
 
-            if (!classNameMatches.length) {
-                errors.push(`No class found in file "${filePath}".`);
-            } else if (!classNameMatches.some((name) => name === classNameExpected)) {
-                if (type === 'component')
-                    errors.push(
-                        `Class name(s) "${classNameMatches.join(', ')}" in file "${filePath}" does not follow the convention and should be ${classNameExpected}.`,
-                    );
-            }
+        if (!selectorMatch) {
+            errors.push(`No selector found in file "${filePath}".`);
+        } else if (
+            // not a direct match
+            selectorMatch !== selectorExpected &&
+            // allow for selectors that include both tag and attribute
+            !selectorMatch.includes(`[ui-${dirent.name}]`)
+        ) {
+            const selectorMatch = content.match(/selector:\s*'([^']+)'/)?.[0];
 
-            const selectorMatch = content.match(/selector:\s*'([^']+)'/)?.[1];
+            errors.push(
+                `Selector "${selectorMatch}" in file "${filePath}" does not follow the convention and should be "${selectorExpected}".`,
+            );
+        }
+    });
 
-            if (!selectorMatch) {
-                errors.push(`No selector found in file "${filePath}".`);
-            } else if (
-                // not a direct match
-                selectorMatch !== selectorExpected &&
-                // allow for selectors that include both tag and attribute
-                !selectorMatch.includes(`[ui-${dirent.name}]`)
-            ) {
-                const selectorMatch = content.match(/selector:\s*'([^']+)'/)?.[0];
+    // ensure tests and example files exist and example files are properly referenced in tests
 
-                errors.push(
-                    `Selector "${selectorMatch}" in file "${filePath}" does not follow the convention and should be "${selectorExpected}".`,
-                );
-            }
-        });
+    const testPath = path.join(componentDir, dirent.name + '.spec.ts');
+    const examplePath = path.join(componentDir, 'example.ts');
+
+    if (fs.existsSync(testPath) && fs.existsSync(examplePath)) {
+        const testContent = fs.readFileSync(testPath, 'utf-8');
+        const exampleContent = fs.readFileSync(examplePath, 'utf-8');
+
+        const exampleComponentName = exampleContent.match(/export class (\w+) \{/)?.[1];
+
+        if (
+            exampleComponentName &&
+            // does not import the example component
+            !testContent.includes(`from './example'`) &&
+            // does not have a description of custom test
+            !testContent.includes('/**')
+        ) {
+            errors.push(
+                `Test file "${testPath}" does not import the example component "${exampleComponentName}" from the example file.`,
+            );
+        }
     }
 });
 
