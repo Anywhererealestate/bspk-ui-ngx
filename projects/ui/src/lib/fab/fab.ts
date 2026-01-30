@@ -12,7 +12,7 @@ export type FabContainer = 'local' | 'page';
 
 export type FabIconType = BspkIcon;
 
-export type FabProps = CommonProps<'ariaLabel' | 'disabled' | 'owner' | 'style'> & {
+export type FabProps = CommonProps<'ariaLabel' | 'owner' | 'style'> & {
     /** The label of the button. */
     label?: string;
     /**
@@ -76,8 +76,7 @@ export type FabProps = CommonProps<'ariaLabel' | 'disabled' | 'owner' | 'style'>
             (blur)="onBlur($event)"
             (focus)="onFocus($event)"
             (mouseleave)="onMouseLeave($event)"
-            (mouseover)="onMouseOver($event)"
-            [disabled]="disabled()">
+            (mouseenter)="onMouseEnter($event)">
             @if (!label()) {
                 <ng-content></ng-content>
             } @else {
@@ -104,8 +103,8 @@ export class UIFab implements AsInputSignal<FabProps> {
     // Event forwarding for accessibility
     @Output() blur = new EventEmitter<FocusEvent>();
     @Output() focus = new EventEmitter<FocusEvent>();
-    @Output() mouseleave = new EventEmitter<MouseEvent>();
-    @Output() mouseover = new EventEmitter<MouseEvent>();
+    @Output() mouseLeaveEvent = new EventEmitter<MouseEvent>();
+    @Output() mouseEnterEvent = new EventEmitter<MouseEvent>();
 
     readonly ariaLabel = input<FabProps['ariaLabel']>();
     readonly label = input<FabProps['label']>('');
@@ -116,7 +115,6 @@ export class UIFab implements AsInputSignal<FabProps> {
     readonly placement = input<FabProps['placement']>('bottom-right');
     readonly container = input<FabProps['container']>('local');
     readonly iconOnly = input<FabProps['iconOnly']>(false);
-    readonly disabled = input<FabProps['disabled']>(false);
 
     get tooltipLabel(): string | undefined {
         return this.tooltip() || (this.iconOnly() ? this.label() : undefined);
@@ -137,9 +135,9 @@ export class UIFab implements AsInputSignal<FabProps> {
         this.focus.emit(event);
     }
     onMouseLeave(event: MouseEvent) {
-        this.mouseleave.emit(event);
+        this.mouseLeaveEvent.emit(event);
     }
-    onMouseOver(event: MouseEvent) {
-        this.mouseover.emit(event);
+    onMouseEnter(event: MouseEvent) {
+        this.mouseEnterEvent.emit(event);
     }
 }
