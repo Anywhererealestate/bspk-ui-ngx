@@ -46,9 +46,14 @@ files.forEach((dirent) => {
 
             if (type === 'component' && !content.includes('@name')) return;
 
-            if (!/implements .*AsInputSignal<.*Props/.test(content)) {
+            if (
+                // class has inputs
+                (/ = input[<|(]/.test(content) || / = input.required[<|(]/.test(content)) &&
+                // does not export props interface
+                !/implements .*AsSignal<.*Props/.test(content)
+            ) {
                 warnings.push(
-                    `Component "${dirent.name}" in file "${filePath}" does not implenment AsInputSignal<${pascalCaseName}Props>.`,
+                    `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
                 );
             }
 

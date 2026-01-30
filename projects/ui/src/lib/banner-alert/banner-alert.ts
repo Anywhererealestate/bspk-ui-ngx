@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
-import { AlertVariant, AsInputSignal } from '../../types/common';
+import { AlertVariant, AsSignal } from '../../types/common';
 import { UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
 
@@ -102,7 +102,7 @@ export interface CallToActionButton {
         role: 'alert',
     },
 })
-export class UIBannerAlert implements AsInputSignal<BannerAlertProps> {
+export class UIBannerAlert implements AsSignal<BannerAlertProps> {
     /** Function to call when the banner alert is closed. */
     @Output() onClose = new EventEmitter<void>();
 

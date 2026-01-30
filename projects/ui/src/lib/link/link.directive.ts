@@ -10,7 +10,7 @@ import {
     ViewContainerRef,
     EnvironmentInjector,
 } from '@angular/core';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 
 export interface LinkProps {
     /** The variant of the link. Controls the icon that is displayed and link target. */
@@ -57,7 +57,7 @@ export interface LinkProps {
 @Directive({
     selector: 'a[ui-link]',
 })
-export class UILinkDirective implements AsInputSignal<LinkProps>, OnDestroy {
+export class UILinkDirective implements AsSignal<LinkProps>, OnDestroy {
     readonly trailingIcon = input<LinkProps['trailingIcon']>();
     readonly href = input<LinkProps['href']>();
     readonly size = input<LinkProps['size']>('base');

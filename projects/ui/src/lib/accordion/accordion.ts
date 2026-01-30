@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewEncapsulation, computed, contentChildren, effect, input, model } from '@angular/core';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIAccordionSection } from './section';
 
@@ -79,7 +79,7 @@ export interface AccordionProps {
         'data-bspk': 'accordion',
     },
 })
-export class UIAccordion implements OnInit, AsInputSignal<AccordionProps> {
+export class UIAccordion implements OnInit, AsSignal<AccordionProps> {
     readonly singleOpen = input<AccordionProps['singleOpen']>(true);
 
     readonly sections = contentChildren(UIAccordionSection, { descendants: true });

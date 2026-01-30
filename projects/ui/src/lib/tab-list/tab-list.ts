@@ -11,7 +11,7 @@ import {
     ElementRef,
 } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 import { keydownHandler } from '../../utils/keydown-handler';
 import { randomString } from '../../utils/random';
 import { UIBadge } from '../badge';
@@ -134,7 +134,7 @@ export interface TabListProps<O extends TabOption = TabOption> {
 @Component({
     template: '',
 })
-export class UITabListUtility<O extends TabOption = TabOption> implements AsInputSignal<TabListProps<O>> {
+export class UITabListUtility<O extends TabOption = TabOption> implements AsSignal<TabListProps<O>> {
     /** The function to call when the tab is clicked. */
     @Output() valueChange = new EventEmitter<string>();
 

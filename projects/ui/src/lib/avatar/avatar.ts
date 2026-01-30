@@ -11,7 +11,7 @@ import {
     EnvironmentInjector,
     ElementRef,
 } from '@angular/core';
-import { AsInputSignal, CommonProps } from '../../types/common';
+import { AsSignal, CommonProps } from '../../types/common';
 import { ColorVariant } from '../../utils/color-variants';
 import { IconPerson } from '../icons/person';
 import { TooltipUtility } from '../tooltip/tooltip';
@@ -136,7 +136,7 @@ export type AvatarProps = CommonProps<'disabled'> & {
         '(keydown)': 'handleKeyDown($event)',
     },
 })
-export class UIAvatar implements AfterViewInit, AsInputSignal<AvatarProps> {
+export class UIAvatar implements AfterViewInit, AsSignal<AvatarProps> {
     /** The function to call when the avatar is clicked. */
     @Output() onClick = new EventEmitter<MouseEvent>();
 

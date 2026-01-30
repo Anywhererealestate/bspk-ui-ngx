@@ -10,7 +10,7 @@ import {
     TemplateRef,
     signal,
 } from '@angular/core';
-import { AsInputSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
+import { AsSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
 
@@ -122,7 +122,7 @@ export type InputProps = CommonProps<'owner' | 'size'> &
     },
     encapsulation: ViewEncapsulation.None,
 })
-export class UIInput implements AsInputSignal<InputProps> {
+export class UIInput implements AsSignal<InputProps> {
     public IconCancel = IconCancel;
     readonly hasFocus = signal(false);
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');

@@ -17,7 +17,7 @@ import {
     viewChild,
 } from '@angular/core';
 import { Placement } from '@floating-ui/dom';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 import { addComponent } from '../../utils/add-component';
 import { uniqueId } from '../../utils/random';
 import { FloatingUtility } from '../floating/floating';
@@ -232,7 +232,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         '[attr.id]': 'id() || null',
     },
 })
-export class UITooltip implements AsInputSignal<TooltipProps> {
+export class UITooltip implements AsSignal<TooltipProps> {
     readonly arrow = viewChild<ElementRef>('arrow');
     readonly id = signal<string | undefined>(undefined);
     readonly disabled = model<TooltipProps['disabled']>(false);

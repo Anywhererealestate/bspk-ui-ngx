@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
-import { AsInputSignal, CommonProps } from '../../types/common';
+import { AsSignal, CommonProps } from '../../types/common';
 import { UIInlineAlert } from '../inline-alert/inline-alert';
 
 /**
@@ -79,7 +79,7 @@ export interface FieldProps extends CommonProps<'style'> {
     },
     encapsulation: ViewEncapsulation.None,
 })
-export class UIField implements AsInputSignal<FieldProps> {
+export class UIField implements AsSignal<FieldProps> {
     readonly errorMessage = input<string | undefined>(undefined);
     readonly label = input.required<string>();
     readonly helperText = input<string | undefined>(undefined);

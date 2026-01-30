@@ -1,6 +1,6 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, Output, EventEmitter, ViewEncapsulation, input, computed } from '@angular/core';
-import { AsInputSignal, CommonProps } from '../../types/common';
+import { AsSignal, CommonProps } from '../../types/common';
 import { UITooltipDirective } from '../tooltip';
 
 export type ListItemProps = CommonProps<
@@ -165,7 +165,7 @@ export type ListItemProps = CommonProps<
         '[attr.id]': 'listItemId()',
     },
 })
-export class UIListItem implements AsInputSignal<ListItemProps> {
+export class UIListItem implements AsSignal<ListItemProps> {
     @Output() onClick = new EventEmitter<Event>();
 
     readonly active = input<ListItemProps['active']>();

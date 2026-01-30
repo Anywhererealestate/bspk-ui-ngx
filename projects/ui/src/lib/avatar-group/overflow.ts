@@ -1,8 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, viewChild, ElementRef, ViewEncapsulation, model, computed } from '@angular/core';
-
-// Assume these are your Angular equivalents:
-import { withIds } from '../../utils/with-ids';
+import { Component, input, viewChild, ElementRef, ViewEncapsulation, model } from '@angular/core';
 import { UIAvatar, AvatarProps } from '../avatar/avatar';
 import { UIFloatingDirective } from '../floating';
 import { UIListItem } from '../list-item/list-item';
@@ -69,9 +66,7 @@ export class UIAvatarGroupOverflow {
     readonly menuId = input.required<string>();
     readonly activeElementId = model<string | null>(null);
     readonly menuReference = input.required<HTMLElement>();
-    // eslint-disable-next-line @angular-eslint/no-input-rename
-    readonly itemsProp = input.required<AvatarProps[]>({ alias: 'items' });
-    readonly items = computed(() => withIds('avatar-group-overflow', this.itemsProp()));
+    readonly items = input.required<(AvatarProps & { id: string })[]>();
 
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
@@ -79,7 +74,7 @@ export class UIAvatarGroupOverflow {
     }
 
     get maxMenuHeight() {
-        return this.items.length > 5 ? 'calc(var(--spacing-sizing-12) * 5)' : '';
+        return this.items().length > 5 ? 'calc(var(--spacing-sizing-12) * 5)' : '';
     }
 
     closeMenu() {

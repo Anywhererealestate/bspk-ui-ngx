@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, output, input, model, computed } from '@angular/core';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { IconKeyboardArrowDown, IconKeyboardArrowUp } from '../icons';
 import { AccordionSection } from './accordion';
@@ -58,7 +58,7 @@ import { AccordionSection } from './accordion';
         <span data-divider></span>
     `,
 })
-export class UIAccordionSection implements AsInputSignal<AccordionSection> {
+export class UIAccordionSection implements AsSignal<AccordionSection> {
     toggleOpen = output<string>();
 
     readonly title = input<AccordionSection['title']>('');

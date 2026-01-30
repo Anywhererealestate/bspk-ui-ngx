@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, computed, input, model } from '@angular/core';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 import { sendAriaLiveMessage } from '../../utils/send-aria-live-message';
 import { IconArrowDownward, IconArrowUpward } from '../icons';
 import { UIPagination } from '../pagination';
@@ -177,7 +177,7 @@ const BUILT_IN_COLUMN_SORTERS: Record<BuiltInColumnSorters, TableColumnSortingFn
         'data-bspk': 'table',
     },
 })
-export class UITable<R extends TableRow> implements AsInputSignal<TableProps<R>> {
+export class UITable<R extends TableRow> implements AsSignal<TableProps<R>> {
     readonly rows = computed<R[]>(() => {
         const cols = this.normalizedColumns;
         const result = [...(this.data() || [])];

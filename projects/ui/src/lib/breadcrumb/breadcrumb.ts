@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ChangeDetectionStrategy, ViewEncapsulation, input, computed } from '@angular/core';
 
-import { AsInputSignal, CommonProps } from '../../types/common';
+import { AsSignal, CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { IconChevronRight } from '../icons/chevron-right';
@@ -95,7 +95,7 @@ export type BreadcrumbProps = CommonProps<'id'> &
     imports: [CommonModule, UITxtDirective, UIBreadcrumbDropdown, IconChevronRight, UILinkDirective],
     encapsulation: ViewEncapsulation.None,
 })
-export class UIBreadcrumb implements AsInputSignal<BreadcrumbProps> {
+export class UIBreadcrumb implements AsSignal<BreadcrumbProps> {
     readonly items = input.required<BreadcrumbProps['items']>();
     readonly id = input<BreadcrumbProps['id']>(uniqueId('breadcrumb-'));
     readonly scrollLimit = input<BreadcrumbProps['scrollLimit']>();

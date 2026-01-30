@@ -1,5 +1,5 @@
 import { Component, computed, input, output, ViewEncapsulation } from '@angular/core';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { FieldProps, UIField, describedById, errorMessageId, labelledById } from '../field';
 import { UIInput } from '../input';
@@ -63,7 +63,7 @@ import { UIInput } from '../input';
     styleUrl: '../field/field.scss',
     encapsulation: ViewEncapsulation.None,
 })
-export class UIInputField extends UIInput implements AsInputSignal<Omit<FieldProps, 'controlId' | 'label'>> {
+export class UIInputField extends UIInput implements AsSignal<Omit<FieldProps, 'controlId' | 'label'>> {
     readonly valueChange = output<string | undefined>();
 
     readonly errorMessage = input<string | undefined>(undefined);

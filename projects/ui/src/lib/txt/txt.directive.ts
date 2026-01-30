@@ -1,5 +1,5 @@
 import { computed, Directive, input } from '@angular/core';
-import { AsInputSignal } from '../../types/common';
+import { AsSignal } from '../../types/common';
 
 export type TxtVariant =
     | 'body-base'
@@ -53,7 +53,7 @@ export interface TxtProps {
         '[attr.id]': 'id()',
     },
 })
-export class UITxtDirective implements AsInputSignal<TxtProps> {
+export class UITxtDirective implements AsSignal<TxtProps> {
     readonly variant = input<TxtProps['variant']>('body-base', { alias: 'ui-txt' });
     readonly id = input<TxtProps['id']>();
     readonly inherit = input<TxtProps['inherit']>(false);

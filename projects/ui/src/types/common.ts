@@ -1,6 +1,6 @@
 import { InputSignal, Signal } from '@angular/core';
 
-export type AsInputSignal<T> = {
+export type AsSignal<T> = {
     [K in keyof T]: undefined extends T[K]
         ? InputSignal<T[K] | undefined> | Signal<T[K] | undefined>
         : InputSignal<NonNullable<T[K]>> | Signal<NonNullable<T[K]>>;
@@ -130,6 +130,24 @@ export interface CommonPropsLibrary {
     htmlFor?: string;
     /** Explicit tabIndex; defaults to 0 when actionable, otherwise -1. */
     tabIndex?: number;
+    /** The aria-description attribute for the element. */
+    ariaDescription?: string;
+    /** The aria-haspopup attribute of the element for accessibility purposes. */
+    ariaHaspopup?: string;
+    /**
+     * The aria-expanded attribute of the element for accessibility purposes.
+     *
+     * @default null
+     */
+    ariaExpanded?: boolean | null;
+    /**
+     * The aria-controls attribute of the element for accessibility purposes.
+     *
+     * @default null
+     */
+    ariaControls?: string | null;
+    /** Additional CSS classes to apply. */
+    class?: string;
 }
 
 export type CommonProps<K extends keyof CommonPropsLibrary> = Pick<CommonPropsLibrary, K>;
