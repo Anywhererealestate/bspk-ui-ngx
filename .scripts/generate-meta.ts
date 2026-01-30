@@ -74,11 +74,11 @@ export function generateMeta(dev?: boolean): Meta {
 
     const branch = execSync(`git branch --show-current`, { encoding: 'utf-8' }).trim();
 
-    const hash = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
+    const commit = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
 
     const version: string = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8')).version || '';
 
-    return { components, version, hash: branch === 'main' ? hash : branch };
+    return { components, version, hash: branch === 'main' ? commit : branch };
 }
 
 export function writeMetaToFile(dev?: boolean): Meta {
