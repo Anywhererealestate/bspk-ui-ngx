@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { sendSnackbar } from '../../utils/send-snackbar';
 import { IconCloud } from '../icons/cloud';
+import { UISwitchOption } from '../switch-option';
 import { UIFab } from './fab';
 
 @Component({
     selector: 'ui-fab-example',
     standalone: true,
-    imports: [CommonModule, UIFab],
+    imports: [CommonModule, UIFab, UISwitchOption],
     template: `
         <h4>Default</h4>
         <div style="height: 200px; position: relative; border: 1px solid #ccc; margin-bottom: 16px;">
@@ -160,21 +161,28 @@ import { UIFab } from './fab';
             <ui-fab label="Container: local FAB" container="local" (onClick)="handleClick(' Container Local')" />
         </div>
 
-        <h4>Container: Page</h4>
-        <div style="height: 200px; position: relative; border: 1px solid #ccc; margin-bottom: 16px;">
+        <h4>Toggle FAB Container: local/page</h4>
+        <div style="margin-bottom: 16px;">
+            <ui-switch-option
+                name="containerToggle"
+                value="container"
+                [checked]="isPage"
+                (checkedChange)="isPage = $event"
+                label="Toggle Container prop" />
+        </div>
+        <div style="height: 200px; position: relative; border: 1px solid #ccc;">
             <ui-fab
-                label="Container: page FAB"
-                container="page"
-                variant="secondary"
-                (onClick)="handleClick('Container Page')" />
+                label="Toggle Container FAB"
+                [container]="isPage ? 'page' : 'local'"
+                (onClick)="handleClick('Toggle Container')" />
         </div>
     `,
 })
 export class UIFabExample {
     protected readonly iconCloud = IconCloud;
+    protected isPage = false;
 
     log(msg: string) {
-        // Replace with your snackbar or console log as needed
         sendSnackbar(msg);
     }
 
