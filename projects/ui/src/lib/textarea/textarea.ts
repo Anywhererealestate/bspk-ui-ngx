@@ -107,7 +107,6 @@ export class UITextarea implements AsSignal<TextareaProps> {
     readonly readOnly = input<TextareaProps['readOnly']>(false);
     readonly required = input<TextareaProps['required']>(false);
     readonly size = input<TextareaProps['size']>('medium');
-
     readonly ariaLabelledBy = input<TextareaProps['ariaLabelledBy']>(undefined);
     readonly ariaDescribedBy = input<TextareaProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<TextareaProps['ariaErrorMessage']>(undefined);

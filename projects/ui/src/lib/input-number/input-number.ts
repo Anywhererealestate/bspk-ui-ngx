@@ -138,7 +138,6 @@ export class UIInputNumber implements AsSignal<InputNumberProps> {
     readonly min = input<InputNumberProps['min']>(undefined);
     readonly max = input<InputNumberProps['max']>(undefined);
     readonly align = input<InputNumberProps['align']>('center');
-
     readonly ariaLabelledBy = input<InputNumberProps['ariaLabelledBy']>(undefined);
     readonly ariaDescribedBy = input<InputNumberProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<InputNumberProps['ariaErrorMessage']>(undefined);

@@ -154,7 +154,6 @@ export class UIInput implements AsSignal<InputProps> {
     readonly id = input<InputProps['id']>(undefined);
     readonly owner = input<InputProps['owner']>(undefined);
     readonly ariaLabel = input<InputProps['ariaLabel']>(undefined);
-
     readonly ariaLabelledBy = input<InputProps['ariaLabelledBy']>(undefined);
     readonly ariaDescribedBy = input<InputProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<InputProps['ariaErrorMessage']>(undefined);
