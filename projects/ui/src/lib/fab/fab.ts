@@ -58,6 +58,22 @@ export type FabProps = CommonProps<'ariaLabel' | 'owner' | 'style'> & {
     tooltip?: string;
 };
 
+/**
+ * A button that highlights a primary action that is elevated above the body content of a page; normally fixed to the
+ * bottom right of a screen.
+ *
+ * @example
+ *     ```html
+ *     <ui-fab
+ *         label="Floating Action Button"
+ *         [icon]="iconCloud"
+ *         (onClick)="handleClick()" />
+ *     ```;
+ *
+ * @name Fab
+ * @phase Dev
+ */
+
 @Component({
     selector: 'ui-fab',
     template: `
