@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
+import { AsInputSignal, CommonProps } from '../../types/common';
 import { UIIcon } from '../icon';
 import { UITooltipDirective } from '../tooltip';
 
@@ -10,6 +11,52 @@ export type FabPlacement = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-ri
 export type FabContainer = 'local' | 'page';
 
 export type FabIconType = BspkIcon;
+
+export type FabProps = CommonProps<'ariaLabel' | 'disabled' | 'owner' | 'style'> & {
+    /** The label of the button. */
+    label?: string;
+    /**
+     * The icon of the button.
+     *
+     * @type BspkIcon
+     */
+    icon?: FabIconType;
+    /**
+     * The size of the button.
+     *
+     * @default small
+     */
+    size?: FabSize;
+    /**
+     * The style variant of the button.
+     *
+     * @default primary
+     */
+    variant?: FabVariant;
+    /**
+     * The placement of the button on the container.
+     *
+     * @default bottom-right
+     */
+    placement?: FabPlacement;
+    /**
+     * The container to render the button in.
+     *
+     * @default local
+     */
+    container?: FabContainer;
+    /**
+     * When true the button label is hidden and only the icon is shown. When label isn't showing it is used in a tooltip
+     * and as the aria-label prop.
+     *
+     * Ignored if `icon` is not provided.
+     *
+     * @default false
+     */
+    iconOnly?: boolean;
+    /** The tool tip text that appears when hovered. */
+    tooltip?: string;
+};
 
 @Component({
     selector: 'ui-fab',
@@ -51,7 +98,7 @@ export type FabIconType = BspkIcon;
     standalone: true,
     imports: [CommonModule, UIIcon, UITooltipDirective],
 })
-export class UIFab {
+export class UIFab implements AsInputSignal<FabProps> {
     @Output() onClick = new EventEmitter<Event>();
 
     // Event forwarding for accessibility
@@ -60,16 +107,16 @@ export class UIFab {
     @Output() mouseleave = new EventEmitter<MouseEvent>();
     @Output() mouseover = new EventEmitter<MouseEvent>();
 
-    readonly ariaLabel = input<string | undefined>(undefined, { alias: 'aria-label' });
-    readonly label = input<string>('');
-    readonly icon = input<FabIconType | undefined>();
-    readonly tooltip = input<string | undefined>(undefined);
-    readonly size = input<FabSize>('small');
-    readonly variant = input<FabVariant>('primary');
-    readonly placement = input<FabPlacement>('bottom-right');
-    readonly container = input<FabContainer>('local');
-    readonly iconOnly = input<boolean>(false);
-    readonly disabled = input<boolean>(false);
+    readonly ariaLabel = input<FabProps['ariaLabel']>();
+    readonly label = input<FabProps['label']>('');
+    readonly icon = input<FabProps['icon']>();
+    readonly tooltip = input<FabProps['tooltip']>();
+    readonly size = input<FabProps['size']>('small');
+    readonly variant = input<FabProps['variant']>('primary');
+    readonly placement = input<FabProps['placement']>('bottom-right');
+    readonly container = input<FabProps['container']>('local');
+    readonly iconOnly = input<FabProps['iconOnly']>(false);
+    readonly disabled = input<FabProps['disabled']>(false);
 
     get tooltipLabel(): string | undefined {
         return this.tooltip() || (this.iconOnly() ? this.label() : undefined);
