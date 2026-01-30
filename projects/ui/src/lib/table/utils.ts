@@ -1,6 +1,4 @@
 import { isValid } from 'date-fns';
-import { isValidElement, ReactNode, useMemo, useState } from 'react';
-import { sendAriaLiveMessage } from '../../utils/send-aria-live-message';
 
 const parseDateTime = (val: TableCellValue) => {
     let dateValue = val;
@@ -88,15 +86,13 @@ export interface TableColumn<R extends TableRow> {
     formatter?: TableCellValueFormatter<R>;
 }
 
-export type TableCellValueFormatter<R extends TableRow> = (row: R, size: TableSize) => ReactNode;
+export type TableCellValueFormatter<R extends TableRow> = (row: R, size: TableSize) => string | null;
 
 export type SortOrder = 'asc' | 'desc';
 
 export type SortState = { key: string; order: SortOrder }[];
 
-export function formatCell(value: TableCellValue): ReactNode {
-    if (isValidElement(value)) return value;
-
+export function formatCell(value: TableCellValue): string | null {
     if (Array.isArray(value)) return value.map(formatCell).join(', ');
 
     if (typeof value === 'object') {
@@ -106,85 +102,4 @@ export function formatCell(value: TableCellValue): ReactNode {
     }
 
     return `${value}`;
-}
-
-export function useTable<R extends TableRow>({
-    data,
-    pageIndex,
-    pageSize,
-    columns,
-}: {
-    data: R[];
-    pageIndex: number;
-    pageSize: number;
-    columns?: TableColumn<R>[];
-}) {
-    const [sorting, setSorting] = useState<SortState>([]);
-
-    const filteredData = useMemo(() => {
-        let result = data;
-
-        // Apply sorting
-        if (sorting.length) {
-            result = result.sort((a, b) => {
-                for (const { key, order } of sorting) {
-                    const aValue = a[key];
-                    const bValue = b[key];
-
-                    const colSort = columns?.find((col) => col.key === key)?.sort;
-
-                    if (!colSort) continue;
-
-                    const colSortFn = typeof colSort === 'function' ? colSort : BUILT_IN_COLUMN_SORTERS[colSort];
-                    const next: number = colSortFn(aValue, bValue);
-
-                    if (next !== 0) return next * (order === 'asc' ? 1 : -1);
-                }
-
-                return 0;
-            });
-        }
-
-        // Apply pagination
-        const start = pageIndex * pageSize;
-        const end = start + pageSize;
-        result = result.slice(start, end);
-
-        return result;
-    }, [data, sorting, pageIndex, pageSize, columns]);
-
-    return {
-        rows: filteredData,
-        sorting,
-        toggleSorting: (key: string) => {
-            setSorting((prev) => {
-                let nextArr: SortState = [];
-
-                const exists = prev.find((sort) => sort.key === key);
-                const order: SortOrder | undefined = getNextOrder(exists?.order);
-
-                // update to nextOrder
-                if (order && exists) nextArr = prev.map((sort) => (sort.key === key ? { ...sort, order } : sort));
-
-                // add nextOrder
-                if (order && !exists) nextArr = [...prev, { key, order }];
-
-                // remove sorting
-                if (!order && exists) nextArr = prev.filter((sort) => sort.key !== key);
-
-                const columnLabel = columns?.find((col) => col.key === key)?.label || key;
-                sendAriaLiveMessage(`${order ? `Sorted ${order}ending` : 'Removed sorting'} by ${columnLabel}`);
-
-                return nextArr;
-            });
-        },
-        totalColumns: columns?.length || 0,
-        totalPages: Math.ceil(data.length / pageSize),
-    };
-}
-
-function getNextOrder(currentOrder: SortOrder | undefined): SortOrder | undefined {
-    if (!currentOrder) return 'asc';
-    if (currentOrder === 'asc') return 'desc';
-    return undefined;
 }
