@@ -25,7 +25,7 @@ export type CheckboxOptionProps = CheckboxProps &
  * If only a checkbox button is needed, consider using the Checkbox component directly.
  *
  * @name CheckboxOption
- * @phase Utility
+ * @phase UXReview
  */
 @Component({
     selector: 'ui-checkbox-option',

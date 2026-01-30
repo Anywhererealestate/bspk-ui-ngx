@@ -128,9 +128,6 @@ export interface TabListProps<O extends TabOption = TabOption> {
  * Navigation tool that organizes content across different screens and views.
  *
  * See TabGroup or SegmentedControl for examples.
- *
- * @name TabList
- * @phase Utility
  */
 @Component({
     template: '',
