@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
-import { AsInputSignal, CommonProps } from '../../types/common';
+import { AsSignal, CommonProps } from '../../types/common';
 import { UIIcon } from '../icon';
 import { UITooltipDirective } from '../tooltip';
 
@@ -72,11 +72,11 @@ export type FabProps = CommonProps<'ariaLabel' | 'owner' | 'style'> & {
             [attr.data-round]="iconOnly() ? true : null"
             [attr.data-size]="size()"
             [attr.data-variant]="variant()"
-            (click)="onClick.emit($event)"
-            (blur)="onBlur($event)"
-            (focus)="onFocus($event)"
-            (mouseleave)="onMouseLeave($event)"
-            (mouseenter)="onMouseEnter($event)">
+            (click)="handleClick($event)"
+            (focus)="handleFocus($event)"
+            (blur)="handleBlur($event)"
+            (mouseenter)="handleMouseEnter($event)"
+            (mouseleave)="handleMouseLeave($event)">
             @if (!label()) {
                 <ng-content></ng-content>
             } @else {
@@ -96,15 +96,24 @@ export type FabProps = CommonProps<'ariaLabel' | 'owner' | 'style'> & {
     encapsulation: ViewEncapsulation.None,
     standalone: true,
     imports: [CommonModule, UIIcon, UITooltipDirective],
+    host: {
+        style: 'display: contents;',
+    },
 })
-export class UIFab implements AsInputSignal<FabProps> {
+export class UIFab implements AsSignal<FabProps> {
     @Output() onClick = new EventEmitter<Event>();
 
-    // Event forwarding for accessibility
-    @Output() blur = new EventEmitter<FocusEvent>();
-    @Output() focus = new EventEmitter<FocusEvent>();
-    @Output() mouseLeaveEvent = new EventEmitter<MouseEvent>();
-    @Output() mouseEnterEvent = new EventEmitter<MouseEvent>();
+    /** Event emitted when the button receives focus. */
+    @Output() onFocus = new EventEmitter<FocusEvent>();
+
+    /** Event emitted when the button loses focus. */
+    @Output() onBlur = new EventEmitter<FocusEvent>();
+
+    /** Event emitted when mouse enters the button. */
+    @Output() onMouseEnter = new EventEmitter<MouseEvent>();
+
+    /** Event emitted when mouse leaves the button. */
+    @Output() onMouseLeave = new EventEmitter<MouseEvent>();
 
     readonly ariaLabel = input<FabProps['ariaLabel']>();
     readonly label = input<FabProps['label']>('');
@@ -128,16 +137,23 @@ export class UIFab implements AsInputSignal<FabProps> {
         return typeof this.icon() !== 'string';
     }
 
-    onBlur(event: FocusEvent) {
-        this.blur.emit(event);
+    handleClick(event: MouseEvent): void {
+        this.onClick.emit(event);
     }
-    onFocus(event: FocusEvent) {
-        this.focus.emit(event);
+
+    handleFocus(event: FocusEvent): void {
+        this.onFocus.emit(event);
     }
-    onMouseLeave(event: MouseEvent) {
-        this.mouseLeaveEvent.emit(event);
+
+    handleBlur(event: FocusEvent): void {
+        this.onBlur.emit(event);
     }
-    onMouseEnter(event: MouseEvent) {
-        this.mouseEnterEvent.emit(event);
+
+    handleMouseEnter(event: MouseEvent): void {
+        this.onMouseEnter.emit(event);
+    }
+
+    handleMouseLeave(event: MouseEvent): void {
+        this.onMouseLeave.emit(event);
     }
 }
