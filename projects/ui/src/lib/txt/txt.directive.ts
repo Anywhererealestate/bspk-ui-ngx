@@ -45,6 +45,15 @@ export interface TxtProps {
     inherit?: boolean;
 }
 
+/**
+ * A directive that applies the correct font styles based on the variant and size.
+ *
+ * @example
+ *     <div ui-txt="heading-h3">This is a heading</div>
+ *
+ * @name Txt
+ * @phase UXReview
+ */
 @Directive({
     selector: '[ui-txt]',
     host: {

@@ -81,9 +81,15 @@ export type RadioGroupProps = Omit<FieldControlProps, 'readOnly'> & {
     },
     encapsulation: ViewEncapsulation.None,
 })
-export class UIRadioGroup extends UIRadioOption implements AsSignal<RadioGroupProps> {
+export class UIRadioGroup implements AsSignal<RadioGroupProps> {
     @Output() valueChange = new EventEmitter<string>();
 
+    readonly id = input<RadioGroupProps['id']>(undefined);
+    readonly name = input.required<RadioGroupProps['name']>();
+    readonly value = input<RadioGroupProps['value']>(undefined);
+    readonly disabled = input<RadioGroupProps['disabled']>(false);
+    readonly required = input<RadioGroupProps['required']>(false);
+    readonly invalid = input<RadioGroupProps['invalid']>(false);
     readonly options = input<RadioGroupOption[]>([]);
     readonly ariaDescribedBy = input<RadioGroupProps['ariaDescribedBy']>();
     readonly ariaErrorMessage = input<RadioGroupProps['ariaErrorMessage']>();

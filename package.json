@@ -13,7 +13,7 @@
     "scripts": {
         "prebuild": "npm run meta && npx tsx .scripts/pre-build.ts",
         "build": "ng build --project=demo --configuration=production && ng build --project=ui --configuration=production",
-        "checks": "npm run lint:all && npm run test",
+        "checks": "npm run build && npm run lint:all && npm run test",
         "dev": "npm run meta && npm run routes && run-p dev:serve dev:watch",
         "dev:serve": "ng serve",
         "dev:watch": "npx tsx .scripts/dev.ts",

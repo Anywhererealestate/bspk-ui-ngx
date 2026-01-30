@@ -46,21 +46,30 @@ files.forEach((dirent) => {
 
             if (type === 'component' && !content.includes('@name')) return;
 
-            if (
-                // class has inputs
-                (/ = input[<|(]/.test(content) || / = input.required[<|(]/.test(content)) &&
-                // does not export props interface
-                !/implements .*AsSignal<.*Props/.test(content)
-            ) {
-                errors.push(
-                    `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
-                );
-            }
+            const hasInputs = / = input[<|(]/.test(content) || / = input.required[<|(]/.test(content);
+            const implementsAsSignal = /implements .*AsSignal<.*Props/.test(content);
 
             const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
             const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
 
             const classNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map((m) => m[1]);
+
+            const classesWithDoc = content.matchAll(/\*\/\n@(Component|Directive)/g);
+            const totalClasses = content.matchAll(/\n@(Component|Directive)/g);
+
+            if (Array.from(totalClasses).length > Array.from(classesWithDoc).length)
+                errors.push(`Component or Directive class in file "${filePath}" is missing documentation.`);
+
+            if (
+                // class has inputs
+                hasInputs &&
+                // does not export props interface
+                !implementsAsSignal
+            ) {
+                errors.push(
+                    `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
+                );
+            }
 
             if (!classNameMatches.length) {
                 errors.push(`No class found in file "${filePath}".`);

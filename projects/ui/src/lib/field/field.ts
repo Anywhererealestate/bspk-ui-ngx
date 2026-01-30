@@ -2,26 +2,6 @@ import { Component, ViewEncapsulation, input } from '@angular/core';
 import { AsSignal, CommonProps } from '../../types/common';
 import { UIInlineAlert } from '../inline-alert/inline-alert';
 
-/**
- * Wrapper component for form controls.
- *
- * Children should be one of the following: DatePicker, Input, InputNumber, InputPhone, Password, Select, Textarea,
- * RadioGroup, CheckboxGroup, or TimePicker.
- *
- * @example
- *     <ui-field
- *     controlId="example-control-id"
- *     helperText="This is an example description."
- *     label="Example label">
- *     <input
- *     aria-label="example aria-label"
- *     id="example-control-id"
- *     name="example-text" />
- *     </ui-field>
- *
- * @name Field
- * @phase Utility
- */
 export interface FieldProps extends CommonProps<'style'> {
     /** Displays an error message and marks the field as invalid. */
     errorMessage?: string;
@@ -50,6 +30,26 @@ export interface FieldProps extends CommonProps<'style'> {
     controlId: string;
 }
 
+/**
+ * Wrapper component for form controls.
+ *
+ * Children should be one of the following: DatePicker, Input, InputNumber, InputPhone, Password, Select, Textarea,
+ * RadioGroup, CheckboxGroup, or TimePicker.
+ *
+ * @example
+ *     <ui-field
+ *     controlId="example-control-id"
+ *     helperText="This is an example description."
+ *     label="Example label">
+ *     <input
+ *     aria-label="example aria-label"
+ *     id="example-control-id"
+ *     name="example-text" />
+ *     </ui-field>
+ *
+ * @name Field
+ * @phase Utility
+ */
 @Component({
     selector: 'ui-field',
     standalone: true,
