@@ -21,7 +21,7 @@ export function generateMeta(dev?: boolean): Meta {
 
     const metadata = JSON.parse(fs.readFileSync(documentationPath, 'utf-8'));
 
-    // fund components that end with 'ComponentNameExample' and their base component 'ComponentName'
+    // find components that end with 'ComponentNameExample' and their base component 'ComponentName'
 
     const exampleComponents = [
         metadata.components.filter((comp: any) => comp.name.endsWith('Example') && comp.name.startsWith('UI')),
