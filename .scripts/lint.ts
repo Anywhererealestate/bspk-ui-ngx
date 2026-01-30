@@ -54,12 +54,6 @@ files.forEach((dirent) => {
 
             const classNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map((m) => m[1]);
 
-            const classesWithDoc = content.matchAll(/\*\/\n@(Component|Directive)/g);
-            const totalClasses = content.matchAll(/\n@(Component|Directive)/g);
-
-            if (Array.from(totalClasses).length > Array.from(classesWithDoc).length)
-                errors.push(`Component or Directive class in file "${filePath}" is missing documentation.`);
-
             if (
                 // class has inputs
                 hasInputs &&
@@ -97,6 +91,30 @@ files.forEach((dirent) => {
                 );
             }
         });
+    }
+});
+
+const allFiles = fs.readdirSync(libDir, { recursive: true, encoding: 'utf-8' });
+
+allFiles.forEach((file) => {
+    if (
+        !file.endsWith('.ts') ||
+        file.startsWith('icons/') ||
+        file.endsWith('/example.ts') ||
+        file === 'index.ts' ||
+        file.endsWith('spec.ts')
+    )
+        return;
+
+    const filePath = path.join(libDir, file);
+
+    const content = fs.readFileSync(filePath, 'utf-8');
+
+    const classesWithDoc = content.matchAll(/\*\/\n@(Component|Directive)/g);
+    const totalClasses = content.matchAll(/\n@(Component|Directive)/g);
+
+    if (Array.from(totalClasses).length > Array.from(classesWithDoc).length) {
+        errors.push(`Component or Directive class in file "${file}" is missing documentation.`);
     }
 });
 

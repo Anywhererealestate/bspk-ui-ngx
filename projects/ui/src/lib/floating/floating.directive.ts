@@ -1,9 +1,9 @@
 import { Directive, inject, input, Renderer2, AfterViewInit, ElementRef, OnDestroy } from '@angular/core';
 import { AsSignal } from '../../types/common';
-import { FloatingUtility, FloatingProps } from './floating';
+import { FloatingUtility, FloatingUtilityProps } from './floating';
 
-export interface FloatingDirectiveProps {
-    props: Omit<FloatingProps, 'floating'>;
+export interface FloatingProps {
+    props: Omit<FloatingUtilityProps, 'floating'>;
 }
 
 /**
@@ -18,16 +18,15 @@ export interface FloatingDirectiveProps {
         style: 'position: absolute;',
     },
 })
-export class UIFloatingDirective implements AfterViewInit, OnDestroy, AsSignal<FloatingDirectiveProps> {
+export class UIFloatingDirective implements AfterViewInit, OnDestroy, AsSignal<FloatingProps> {
     render = inject(Renderer2);
     host = inject(ElementRef);
 
-    readonly props = input.required<FloatingDirectiveProps['props']>({ alias: 'ui-floating' });
-
+    readonly props = input.required<FloatingProps['props']>({ alias: 'ui-floating' });
     floating = new FloatingUtility(this.render);
 
     ngAfterViewInit(): void {
-        const nextProps: FloatingProps = {
+        const nextProps: FloatingUtilityProps = {
             ...this.props(),
             floating: this.host.nativeElement,
         };
@@ -43,7 +42,7 @@ export class UIFloatingDirective implements AfterViewInit, OnDestroy, AsSignal<F
     }
 
     updateFloatingPosition = () => {
-        const nextProps: FloatingProps = {
+        const nextProps: FloatingUtilityProps = {
             ...this.props(),
             floating: this.host.nativeElement,
         };

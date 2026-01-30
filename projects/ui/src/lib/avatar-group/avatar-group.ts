@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, input, signal, ViewEncapsulation } from '@angular/core';
-import { AsSignal, CommonProps } from '../../types/common';
+import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIAvatar, AvatarProps, SizeVariant } from '../avatar/avatar';
 import { UIAvatarGroupOverflow } from './overflow';
 
 export type AvatarItem = Pick<AvatarProps, 'color' | 'image' | 'initials' | 'name' | 'showIcon'>;
 
-export type AvatarGroupProps = CommonProps<'style'> & {
+export interface AvatarGroupProps {
     /**
      * The avatars to display in the group.
      *
@@ -47,7 +47,7 @@ export type AvatarGroupProps = CommonProps<'style'> & {
      * @default stacked
      */
     variant?: 'spread' | 'stacked';
-};
+}
 
 /**
  * The AvatarGroup component is used to display a group of avatars, with support for overflow handling and different
@@ -76,56 +76,52 @@ export type AvatarGroupProps = CommonProps<'style'> & {
     standalone: true,
     imports: [CommonModule, UIAvatar, UIAvatarGroupOverflow],
     template: `
-        <div
-            data-bspk="avatar-group"
-            [attr.data-max]="max()"
-            [attr.data-size]="size()"
-            [attr.data-variant]="variant()"
-            [attr.style]="style()">
-            <div data-wrap>
-                @for (item of visibleItems; track item.id) {
-                    <ui-avatar
-                        [name]="item.name"
-                        [image]="item.image"
-                        [initials]="item.initials"
-                        [color]="item.color"
-                        [showIcon]="item.showIcon"
-                        [id]="item.id"
-                        [size]="size()"
-                        (click)="onAvatarClick()"></ui-avatar>
-                }
-                @if (overflowItems.length > 0) {
-                    <button
-                        #overflowBtn
-                        [attr.aria-activedescendant]="activeElementId() || null"
-                        [attr.aria-controls]="open() ? menuId : null"
-                        [attr.aria-expanded]="open()"
-                        aria-haspopup="menu"
-                        [attr.aria-label]="overflowButtonLabel"
-                        data-bspk="avatar"
-                        data-bspk-owner="avatar-overflow"
-                        [attr.data-size]="size()"
-                        (blur)="closeMenu()"
-                        (click)="toggleMenu()"
-                        (keydown)="handleKeydown($event)"
-                        role="combobox">
-                        <span data-overflow-count>+{{ overflowItems.length }}</span>
-                    </button>
-                    <ui-avatar-group-overflow
-                        [open]="open()"
-                        [activeElementId]="activeElementId()"
-                        [menuId]="menuId"
-                        [items]="overflowItems"
-                        [size]="size() || 'small'"
-                        [menuReference]="overflowBtn" />
-                }
-            </div>
+        <div data-wrap>
+            @for (item of visibleItems; track item.id) {
+                <ui-avatar
+                    [name]="item.name"
+                    [image]="item.image"
+                    [initials]="item.initials"
+                    [color]="item.color"
+                    [showIcon]="item.showIcon"
+                    [id]="item.id"
+                    [size]="size()"
+                    (click)="onAvatarClick()"></ui-avatar>
+            }
+            @if (overflowItems.length > 0) {
+                <button
+                    #overflowBtn
+                    [attr.aria-activedescendant]="activeElementId() || null"
+                    [attr.aria-controls]="open() ? menuId : null"
+                    [attr.aria-expanded]="open()"
+                    aria-haspopup="menu"
+                    [attr.aria-label]="overflowButtonLabel"
+                    data-bspk="avatar"
+                    data-bspk-owner="avatar-overflow"
+                    [attr.data-size]="size()"
+                    (blur)="closeMenu()"
+                    (click)="toggleMenu()"
+                    (keydown)="handleKeydown($event)"
+                    role="combobox">
+                    <span data-overflow-count>+{{ overflowItems.length }}</span>
+                </button>
+                <ui-avatar-group-overflow
+                    [open]="open()"
+                    [activeElementId]="activeElementId()"
+                    [menuId]="menuId"
+                    [items]="overflowItems"
+                    [size]="size() || 'small'"
+                    [menuReference]="overflowBtn" />
+            }
         </div>
     `,
     styleUrl: './avatar-group.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
-        style: `display: contents;`,
+        'data-bspk': 'avatar-group',
+        '[attr.data-max]': 'max()',
+        '[attr.data-size]': 'size()',
+        '[attr.data-variant]': 'variant()',
     },
 })
 export class UIAvatarGroup implements AsSignal<AvatarGroupProps> {
@@ -133,7 +129,6 @@ export class UIAvatarGroup implements AsSignal<AvatarGroupProps> {
     readonly size = input<AvatarGroupProps['size']>('small');
     readonly max = input<AvatarGroupProps['max']>(5);
     readonly variant = input<AvatarGroupProps['variant']>('stacked');
-    readonly style = input<AvatarGroupProps['style']>();
 
     readonly menuId = uniqueId('avatar-group-menu');
 

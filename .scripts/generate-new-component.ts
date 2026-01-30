@@ -42,6 +42,7 @@ if (dirs.length > 0) {
 import { Component } from '@angular/core';
 import { ${className} } from './${componentName}';
 
+/** An example component for ui-${componentName} */
 @Component({
     selector: 'ui-${componentName}-example',
     standalone: true,

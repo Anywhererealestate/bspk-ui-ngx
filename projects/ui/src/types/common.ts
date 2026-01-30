@@ -1,9 +1,26 @@
-import { InputSignal, Signal } from '@angular/core';
+import { InputSignal, Signal, OutputEmitterRef } from '@angular/core';
+
+import * as CSS from 'csstype';
+
+type Output<T> = OutputEmitterRef<T>;
+
+type AsInputOrSignal<V> = undefined extends V
+    ? InputSignal<V | undefined> | Signal<V | undefined>
+    : InputSignal<NonNullable<V>> | Signal<NonNullable<V>>;
+
+type OutputPayload<V> =
+    Extract<NonNullable<V>, (...args: any[]) => any> extends (...args: infer A) => any
+        ? A extends []
+            ? void
+            : A[0]
+        : void;
 
 export type AsSignal<T> = {
-    [K in keyof T]: undefined extends T[K]
-        ? InputSignal<T[K] | undefined> | Signal<T[K] | undefined>
-        : InputSignal<NonNullable<T[K]>> | Signal<NonNullable<T[K]>>;
+    [K in keyof T]: K extends `on${infer R}`
+        ? R extends Capitalize<R>
+            ? Output<OutputPayload<T[K]>>
+            : AsInputOrSignal<T[K]>
+        : AsInputOrSignal<T[K]>;
 };
 
 export type AlertVariant = 'error' | 'informational' | 'success' | 'warning';
@@ -107,6 +124,8 @@ export interface CommonPropsLibrary {
      * Allows for CSS variables to be passed in as well.
      */
     style?: string;
+    /** Inline styles object to apply to the element. */
+    ngStyle?: CSS.Properties;
     /*
      * The aria-describedby attribute for the control.
      */

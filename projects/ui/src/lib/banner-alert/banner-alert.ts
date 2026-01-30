@@ -52,6 +52,13 @@ export interface CallToActionButton {
     onClick: () => void;
 }
 
+/**
+ * A visual and contextual message used to communicate an important message or notification to users relating to a
+ * status or the body content of a page.
+ *
+ * @name BannerAlert
+ * @phase UXReview
+ */
 @Component({
     selector: 'ui-banner-alert',
     imports: [UIButton, IconErrorFill, IconInfoFill, IconCheckCircleFill, IconWarningFill],

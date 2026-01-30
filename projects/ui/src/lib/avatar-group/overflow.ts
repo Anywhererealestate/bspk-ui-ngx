@@ -5,6 +5,7 @@ import { UIFloatingDirective } from '../floating';
 import { UIListItem } from '../list-item/list-item';
 import { UIMenu } from '../menu/menu';
 
+/** A component to display overflow avatars in an avatar group. */
 @Component({
     selector: 'ui-avatar-group-overflow',
     standalone: true,

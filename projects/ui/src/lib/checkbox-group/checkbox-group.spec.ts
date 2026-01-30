@@ -4,6 +4,7 @@ import { TestBed } from '@angular/core/testing';
 import { hasNoBasicA11yIssues } from '@shared/testing/hasNoBasicA11yIssues';
 import { UICheckboxGroup } from './checkbox-group';
 
+/** An example component for ui-checkbox-group */
 @Component({
     selector: 'ui-checkbox-group-example',
     standalone: true,
