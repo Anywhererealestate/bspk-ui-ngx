@@ -1,5 +1,4 @@
 import { Directive, ElementRef, OnDestroy, AfterViewInit, Renderer2, inject } from '@angular/core';
-import { AsSignal } from '../../types/common';
 
 /**
  * Sets the host element's height to match its parent element's clientHeight. Updates on window resize and orientation
