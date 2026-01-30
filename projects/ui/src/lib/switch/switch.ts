@@ -43,12 +43,13 @@ export type SwitchProps = CommonProps<'ariaLabel' | 'disabled' | 'id' | 'name'> 
 })
 export class UISwitch implements AsSignal<SwitchProps> {
     @Output() checkedChange = new EventEmitter<boolean>();
+
     readonly value = input.required<SwitchProps['value']>();
-    readonly checked = input.required<SwitchProps['checked']>();
+    readonly checked = input<SwitchProps['checked']>();
     readonly ariaLabel = input<SwitchProps['ariaLabel']>(undefined);
     readonly name = input.required<SwitchProps['name']>();
     readonly id = input<SwitchProps['id']>(undefined);
-    readonly disabled = input.required<SwitchProps['disabled']>();
+    readonly disabled = input<SwitchProps['disabled']>();
 
     onInputChange(event: Event) {
         const inputElement = event.target as HTMLInputElement;
