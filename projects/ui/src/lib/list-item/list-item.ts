@@ -185,6 +185,7 @@ export class UIListItem implements AsSignal<ListItemProps> {
     readonly width = input<ListItemProps['width']>();
     readonly tabIndex = input<ListItemProps['tabIndex']>();
     readonly id = input<ListItemProps['id']>();
+
     readonly listItemId = computed(() => (this.id() ? `list-item-${this.id()}` : undefined));
     readonly actionable = computed(() => {
         return (
@@ -195,15 +196,14 @@ export class UIListItem implements AsSignal<ListItemProps> {
     });
 
     get tabindex() {
-        // allow explicit tabIndex to override actionable state
-        return this.tabIndex() !== undefined ? this.tabIndex() : this.actionable() ? 0 : -1;
+        return this.tabIndex() ?? (this.actionable() ? 0 : -1);
     }
 
     get isReadonly() {
-        return !!(this.readOnly() || this.ariaReadonly());
+        return Boolean(this.readOnly() || this.ariaReadonly());
     }
     get isDisabled() {
-        return !!(this.disabled() || this.ariaDisabled());
+        return Boolean(this.disabled() || this.ariaDisabled());
     }
 
     get As() {
