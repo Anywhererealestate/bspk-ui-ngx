@@ -35,7 +35,7 @@ export interface TableRow {
 
 export type TableColumnSortingFn = (a: TableCellValue, b: TableCellValue) => number;
 
-export interface TableColumn<R extends TableRow> {
+export interface TableColumn<R extends TableRow = TableRow> {
     /**
      * The key of the column. This is used to access the data in the row.
      *

@@ -1,6 +1,7 @@
 import { Component, computed, signal } from '@angular/core';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { UITag } from '@ui/tag';
+import { TableColumn, UITable } from '../../../ui/src';
 import { META } from '../meta';
 import { ComponentDemo } from '../types';
 import { COMPONENT_PHASE_COLORS } from '../utils';
@@ -8,7 +9,7 @@ import { COMPONENT_PHASE_COLORS } from '../utils';
 @Component({
     selector: 'app-component-page',
     standalone: true,
-    imports: [RouterOutlet, UITag],
+    imports: [RouterOutlet, UITag, UITable],
     template: ` @if (!component()) {
             <h2>Component Not Found</h2>
         } @else {
@@ -21,6 +22,14 @@ import { COMPONENT_PHASE_COLORS } from '../utils';
                 <p>{{ line }}</p>
             }
             <router-outlet name="example"></router-outlet>
+
+            <div style="display: flex; justify-content: space-between; margin-top: var(--spacing-sizing-06);">
+                <h2 title="Props">AccordionProps</h2>
+            </div>
+            <ui-table
+                data-props="true"
+                size="medium"
+                [columns]="{propColumns}" />
         }`,
 })
 export class ComponentPage {
@@ -42,5 +51,38 @@ export class ComponentPage {
             });
         });
     }
+
+    propColumns: TableColumn[] = [
+                {
+                    key: 'name',
+                    label: 'Name',
+                    width: 'auto',
+                    valign: 'top',
+formatter
+                },
+                {
+                    key: 'description-type',
+                    label: 'Description / Type',
+                    width: '1fr',
+                    valign: 'top',
+                    formatter: (row) => (
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sizing-02)' }}>
+                            {row['description-type']}
+                        </div>
+                    ),
+                },
+                {
+                    key: 'default',
+                    label: 'Default',
+                    width: 'auto',
+                    valign: 'top',
+                },
+                !!onChange && {
+                    key: 'controls',
+                    label: 'Controls',
+                    width: '200px',
+                    valign: 'top',
+                },
+            ];
 }
 // title = this.route.snapshot.data['title'] || '';
