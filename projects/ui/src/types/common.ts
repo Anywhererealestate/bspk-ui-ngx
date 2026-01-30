@@ -15,6 +15,12 @@ type OutputPayload<V> =
             : A[0]
         : void;
 
+/**
+ * A mapped type that transforms the properties of a given type T to Signal or Output types.
+ *
+ * - For properties starting with "on" followed by a capital letter, they are transformed into Output types.
+ * - All other properties are transformed into AsInputOrSignal types.
+ */
 export type AsSignal<T> = {
     [K in keyof T]: K extends `on${infer R}`
         ? R extends Capitalize<R>

@@ -125,15 +125,15 @@ export interface AvatarGroupProps {
     },
 })
 export class UIAvatarGroup implements AsSignal<AvatarGroupProps> {
+    readonly menuId = uniqueId('avatar-group-menu');
+
     readonly items = input<AvatarGroupProps['items']>([]);
     readonly size = input<AvatarGroupProps['size']>('small');
     readonly max = input<AvatarGroupProps['max']>(5);
     readonly variant = input<AvatarGroupProps['variant']>('stacked');
 
-    readonly menuId = uniqueId('avatar-group-menu');
-
-    readonly activeElementId = signal<string | null>(null);
     readonly open = signal<boolean>(false);
+    readonly activeElementId = signal<string | null>(null);
 
     readonly itemsWithIds = computed(() => {
         return this.items().map((item, idx) => ({

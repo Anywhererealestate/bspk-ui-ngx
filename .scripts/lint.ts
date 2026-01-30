@@ -49,11 +49,6 @@ files.forEach((dirent) => {
             const hasInputs = / = input[<|(]/.test(content) || / = input.required[<|(]/.test(content);
             const implementsAsSignal = /implements .*AsSignal<.*Props/.test(content);
 
-            const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
-            const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
-
-            const classNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map((m) => m[1]);
-
             if (
                 // class has inputs
                 hasInputs &&
@@ -64,6 +59,10 @@ files.forEach((dirent) => {
                     `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
                 );
             }
+
+            const classNameExpected = `UI${pascalCaseName}${type === 'directive' ? 'Directive' : ''}`;
+            const selectorExpected = type === 'component' ? `ui-${dirent.name}` : `[ui-${dirent.name}]`;
+            const classNameMatches = Array.from(content.matchAll(/export class (\w+)[<|\s]/g)).map((m) => m[1]);
 
             if (!classNameMatches.length) {
                 errors.push(`No class found in file "${filePath}".`);
