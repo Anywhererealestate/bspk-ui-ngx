@@ -22,8 +22,8 @@ const CONTROLS = [
     'textarea',
 ];
 
-// Set to true to overwrite existing components
-const FORCE = true;
+// Set to true to overwrite existing components - be careful with this!
+const FORCE = false;
 
 function main() {
     CONTROLS.map(buildFieldComponentForControl);
