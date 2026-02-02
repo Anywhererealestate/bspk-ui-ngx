@@ -8,6 +8,7 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 import { generateTestWithExample } from './generate-test-with-example';
+import { updateIndex } from './update-index';
 
 // List of control components to generate field wrappers for
 const CONTROLS = [
@@ -24,7 +25,13 @@ const CONTROLS = [
 // Set to true to overwrite existing components
 const FORCE = false;
 
-CONTROLS.map(buildFieldComponentForControl);
+function main() {
+    CONTROLS.map(buildFieldComponentForControl);
+
+    updateIndex();
+}
+
+main();
 
 function buildFieldComponentForControl(componentSlug: string) {
     // ensure component slug is formatted correctly
