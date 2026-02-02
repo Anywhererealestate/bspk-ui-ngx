@@ -1,25 +1,25 @@
 import { Component, computed, input, ViewEncapsulation } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
+import { UICheckboxGroup } from '../checkbox-group';
 import { FieldProps, UIField, describedById, errorMessageId, labelledById } from '../field';
-import { UITextarea } from '../textarea';
 
-export type TextareaFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
+export type CheckboxGroupFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
 
 /**
- * A field wrapper for the UITextarea component.
+ * A field wrapper for the UICheckboxGroup component.
  *
- * This component takes properties from the FormField and UITextarea components.
+ * This component takes properties from the FormField and UICheckboxGroup components.
  *
- * @name UITextareaField
+ * @name UICheckboxGroupField
  * @phase UXReview
  *
  * @generated
  */
 @Component({
-    selector: 'ui-textarea-field',
+    selector: 'ui-checkbox-group-field',
     standalone: true,
-    imports: [UIField, UITextarea],
+    imports: [UIField, UICheckboxGroup],
     template: `
         <ui-field
             [errorMessage]="errorMessage()"
@@ -29,7 +29,7 @@ export type TextareaFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
             [controlId]="controlId()"
             [style]="style()"
             [required]="required()">
-            <ui-textarea
+            <ui-checkbox-group
                 [ariaErrorMessage]="errorMessageId()"
                 (valueChange)="valueChange.emit($event)"
                 [ariaLabel]="ariaLabel()"
@@ -44,18 +44,18 @@ export type TextareaFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
         </ui-field>
     `,
     host: {
-        'data-bspk': 'textarea-field',
+        'data-bspk': 'checkbox-group-field',
         '[id]': 'controlId()+"-field"',
     },
     styleUrl: '../field/field.scss',
     encapsulation: ViewEncapsulation.None,
 })
-export class UITextareaField extends UITextarea implements AsSignal<TextareaFieldProps> {
-    readonly errorMessage = input<TextareaFieldProps['errorMessage']>(undefined);
+export class UICheckboxGroupField extends UICheckboxGroup implements AsSignal<CheckboxGroupFieldProps> {
+    readonly errorMessage = input<CheckboxGroupFieldProps['errorMessage']>(undefined);
     readonly label = input.required<FieldProps['label']>();
-    readonly helperText = input<TextareaFieldProps['helperText']>(undefined);
-    readonly labelTrailing = input<TextareaFieldProps['labelTrailing']>(undefined);
-    readonly style = input<TextareaFieldProps['style']>(undefined);
+    readonly helperText = input<CheckboxGroupFieldProps['helperText']>(undefined);
+    readonly labelTrailing = input<CheckboxGroupFieldProps['labelTrailing']>(undefined);
+    readonly style = input<CheckboxGroupFieldProps['style']>(undefined);
     readonly labelledById = computed(() => labelledById(this.controlId()));
 
     readonly describedById = computed(
@@ -65,5 +65,5 @@ export class UITextareaField extends UITextarea implements AsSignal<TextareaFiel
         () => this.ariaErrorMessage() || (this.errorMessage() && errorMessageId(this.controlId())) || undefined,
     );
 
-    readonly controlId = computed(() => this.id() || uniqueId('UITextareaField-'));
+    readonly controlId = computed(() => this.id() || uniqueId('UICheckboxGroupField-'));
 }
