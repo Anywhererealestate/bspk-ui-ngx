@@ -23,7 +23,7 @@ const CONTROLS = [
 ];
 
 // Set to true to overwrite existing components
-const FORCE = false;
+const FORCE = true;
 
 function main() {
     CONTROLS.map(buildFieldComponentForControl);
@@ -120,6 +120,8 @@ export type ${fieldComponentName}Props = Omit<FieldProps, 'controlId' | 'label'>
             [style]="style()"
             [required]="required()">
             <ui-${componentFileName}
+                [ariaLabelledBy]="labelledById()"
+                [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"
                 (valueChange)="valueChange.emit($event)"
                 [ariaLabel]="ariaLabel()"

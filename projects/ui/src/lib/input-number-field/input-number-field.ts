@@ -30,6 +30,8 @@ export type InputNumberFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
             [style]="style()"
             [required]="required()">
             <ui-input-number
+                [ariaLabelledBy]="labelledById()"
+                [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"
                 (valueChange)="valueChange.emit($event)"
                 [ariaLabel]="ariaLabel()"

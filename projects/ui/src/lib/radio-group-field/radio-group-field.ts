@@ -30,6 +30,8 @@ export type RadioGroupFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
             [style]="style()"
             [required]="required()">
             <ui-radio-group
+                [ariaLabelledBy]="labelledById()"
+                [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"
                 (valueChange)="valueChange.emit($event)"
                 [ariaLabel]="ariaLabel()"

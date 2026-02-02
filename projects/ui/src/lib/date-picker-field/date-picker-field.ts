@@ -30,6 +30,8 @@ export type DatePickerFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
             [style]="style()"
             [required]="required()">
             <ui-date-picker
+                [ariaLabelledBy]="labelledById()"
+                [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"
                 (valueChange)="valueChange.emit($event)"
                 [ariaLabel]="ariaLabel()"

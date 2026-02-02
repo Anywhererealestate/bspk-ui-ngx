@@ -30,6 +30,8 @@ export type TextareaFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
             [style]="style()"
             [required]="required()">
             <ui-textarea
+                [ariaLabelledBy]="labelledById()"
+                [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"
                 (valueChange)="valueChange.emit($event)"
                 [ariaLabel]="ariaLabel()"

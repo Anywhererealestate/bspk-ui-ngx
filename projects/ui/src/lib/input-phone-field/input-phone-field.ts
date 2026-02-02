@@ -30,6 +30,8 @@ export type InputPhoneFieldProps = Omit<FieldProps, 'controlId' | 'label'>;
             [style]="style()"
             [required]="required()">
             <ui-input-phone
+                [ariaLabelledBy]="labelledById()"
+                [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"
                 (valueChange)="valueChange.emit($event)"
                 [ariaLabel]="ariaLabel()"
