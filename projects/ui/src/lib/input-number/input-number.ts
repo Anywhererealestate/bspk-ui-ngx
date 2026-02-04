@@ -1,6 +1,5 @@
 import { Component, ElementRef, input, model, viewChild, ViewEncapsulation } from '@angular/core';
 import { AsSignal, CommonProps, FieldControlProps } from '../../types/common';
-import { UIIcon } from '../icon';
 import { IconAdd, IconRemove } from '../icons';
 
 function isNumber(value: unknown): number | undefined;
@@ -61,7 +60,7 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
  */
 @Component({
     selector: 'ui-input-number',
-    imports: [UIIcon],
+    imports: [IconAdd, IconRemove],
     template: `
         <input
             data-main-input
@@ -92,14 +91,14 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
             (click)="decrementHandler()"
             [disabled]="disabled() || readOnly() || decrementDisabled"
             tabindex="-1">
-            <ui-icon [icon]="iconRemove"></ui-icon>
+            <icon-remove />
         </button>
         <button
             aria-label="Increase value"
             (click)="incrementHandler()"
             [disabled]="disabled() || readOnly() || incrementDisabled"
             tabindex="-1">
-            <ui-icon [icon]="iconAdd"></ui-icon>
+            <icon-add />
         </button>
     `,
     styleUrl: './input-number.scss',
@@ -116,9 +115,6 @@ export type InputNumberProps = CommonProps<'owner' | 'size'> &
     encapsulation: ViewEncapsulation.None,
 })
 export class UIInputNumber implements AsSignal<InputNumberProps> {
-    readonly iconAdd = IconAdd;
-    readonly iconRemove = IconRemove;
-
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
     readonly value = model<InputNumberProps['value']>('');
     readonly name = input.required<InputNumberProps['name']>();
