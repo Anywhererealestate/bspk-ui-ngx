@@ -11,11 +11,12 @@ import {
     AfterViewInit,
     OnDestroy,
     effect,
+    OnInit,
 } from '@angular/core';
 import { getCountryCallingCode, AsYouType } from 'libphonenumber-js';
 import { BspkIcon } from '../../types/bspk-icon';
 import { AsSignal, FieldControlProps } from '../../types/common';
-import { countryCodeData, countryCodes, SupportedCountryCode } from '../../utils/country-codes';
+import { countryCodeData, countryCodes, SupportedCountryCode, guessUserCountryCode } from '../../utils/country-codes';
 import { uniqueId } from '../../utils/random';
 import { scrollLimitStyle, ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { sendAriaLiveMessage } from '../../utils/send-aria-live-message';
@@ -50,31 +51,28 @@ export interface CountryCodeItem extends CountryCodeOption {
     id: string;
 }
 
-export type InputPhoneProps = FieldControlProps<string> &
-    ScrollLimitStyleProps & {
-        /**
-         * The default country code to select when the component is rendered. If not provided, it will attempt to guess
-         * based on the user's locale. If the guessed country code is not supported, it will default to 'US'. Based on
-         * [ISO](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) 2-digit country codes.
-         *
-         * @default US
-         * @type string
-         */
-        initialCountryCode?: SupportedCountryCode;
-        /**
-         * Disables formatting of the phone number input in the UI. values returned by `valueChange` are always
-         * unformatted.
-         *
-         * @type boolean
-         */
-        disableFormatting?: boolean;
-        /**
-         * The size of the component
-         *
-         * @default medium
-         */
-        size?: 'large' | 'medium' | 'small';
-    };
+export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitStyleProps {
+    /**
+     * The default country code to select when the component is rendered. If not provided, it will attempt to guess
+     * based on the user's locale. If the guessed country code is not supported, it will default to 'US'. Based on
+     * [ISO](https://en.wikipedia.org/wiki/List_of_ISO_3166_country_codes) 2-digit country codes.
+     *
+     * @type string
+     */
+    initialCountryCode?: SupportedCountryCode;
+    /**
+     * Disables formatting of the phone number input in the UI. values returned by `valueChange` are always unformatted.
+     *
+     * @type boolean
+     */
+    disableFormatting?: boolean;
+    /**
+     * The size of the component
+     *
+     * @default medium
+     */
+    size?: 'large' | 'medium' | 'small';
+}
 
 /**
  * An input that allows users to enter text phone numbers and select country codes for the phone number.
@@ -179,7 +177,7 @@ export type InputPhoneProps = FieldControlProps<string> &
                 @for (item of menuItems(); track item.id) {
                     <ui-list-item
                         [attr.data-bspk-owner]="'input-phone'"
-                        [attr.aria-selected]="initialCountryCode() === item.value"
+                        [attr.aria-selected]="countryCode() === item.value"
                         [as]="'div'"
                         [active]="keyNavigation.activeElementId === item.id"
                         [label]="item.label"
@@ -194,29 +192,34 @@ export type InputPhoneProps = FieldControlProps<string> &
         }
     `,
 })
-export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, OnDestroy {
+export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, OnDestroy, OnInit {
     keyNavigation = new KeyNavigationUtility();
 
     readonly value = model<InputPhoneProps['value']>('');
     readonly name = input.required<InputPhoneProps['name']>();
+
     readonly size = input<InputPhoneProps['size']>('medium');
     readonly disabled = input<InputPhoneProps['disabled']>(false);
     readonly invalid = input<InputPhoneProps['invalid']>(false);
     readonly readOnly = input<InputPhoneProps['readOnly']>(false);
     readonly required = input<InputPhoneProps['required']>(false);
-    readonly ariaLabel = input<InputPhoneProps['ariaLabel']>(undefined);
-    readonly ariaDescribedBy = input<InputPhoneProps['ariaDescribedBy']>(undefined);
-    readonly ariaErrorMessage = input<InputPhoneProps['ariaErrorMessage']>(undefined);
-    readonly id = input<InputPhoneProps['id']>(undefined);
+    readonly ariaLabel = input<InputPhoneProps['ariaLabel']>();
+    readonly ariaDescribedBy = input<InputPhoneProps['ariaDescribedBy']>();
+    readonly ariaErrorMessage = input<InputPhoneProps['ariaErrorMessage']>();
+    readonly id = input<InputPhoneProps['id']>();
+    readonly initialCountryCode = input<InputPhoneProps['initialCountryCode']>();
     readonly disableFormatting = input<InputPhoneProps['disableFormatting']>(false);
     readonly scrollLimit = input<InputPhoneProps['scrollLimit']>(5);
+
     readonly reference = viewChild('inputEl', { read: ElementRef });
     readonly containerRef = viewChild('inputEl', { read: ElementRef });
+
     readonly safeId = computed(() => this.id() || uniqueId('input-phone'));
     readonly menuId = computed(() => `${this.safeId()}-menu`);
     readonly referenceEl = computed(() => this.reference()?.nativeElement);
+
     readonly open = signal<boolean>(false);
-    readonly initialCountryCode = model<InputPhoneProps['initialCountryCode']>('US');
+    readonly countryCode = signal<SupportedCountryCode>('US');
 
     readonly menuItems = computed<CountryCodeItem[]>(() =>
         SELECT_OPTIONS.map((option: CountryCodeOption, index: number) => ({
@@ -226,12 +229,12 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
     );
 
     readonly selectedCodeData = computed(() => {
-        const selectedValue = this.initialCountryCode() as SupportedCountryCode;
+        const selectedValue = (this.countryCode() || 'US') as SupportedCountryCode;
         return countryCodeData[selectedValue] ?? countryCodeData.US;
     });
 
     readonly callingCode = computed(() => {
-        return getCountryCallingCode(this.initialCountryCode() ?? 'US');
+        return getCountryCallingCode(this.countryCode());
     });
 
     readonly ngMenuStyle = computed(() => {
@@ -247,7 +250,7 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
 
     constructor() {
         effect(() => {
-            const code = this.initialCountryCode();
+            const code = this.countryCode();
 
             if (this.disableFormatting()) return;
 
@@ -260,6 +263,12 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
             this.previousValue.set(reformatted);
             this.value.set(reformatted);
         });
+    }
+
+    ngOnInit(): void {
+        // Set initial country code on init
+        // Priority: initialCountryCode prop > guessed country code > default to 'US'
+        this.countryCode.set(this.initialCountryCode() || guessUserCountryCode() || 'US');
     }
 
     ngAfterViewInit(): void {
@@ -291,7 +300,7 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
     }
 
     onCountryCodeSelect(item: CountryCodeItem): void {
-        this.initialCountryCode.set(item.value);
+        this.countryCode.set(item.value);
         sendAriaLiveMessage(`Selected country code ${item.label}`);
         this.closeMenu();
     }
@@ -341,7 +350,7 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
             return newValue;
         }
 
-        const formatter = new AsYouType(this.initialCountryCode());
+        const formatter = new AsYouType(this.countryCode());
         return formatter.input(newValue);
     }
 
