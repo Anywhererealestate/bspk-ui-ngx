@@ -203,11 +203,11 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
     readonly invalid = input<InputPhoneProps['invalid']>(false);
     readonly readOnly = input<InputPhoneProps['readOnly']>(false);
     readonly required = input<InputPhoneProps['required']>(false);
-    readonly ariaLabel = input<InputPhoneProps['ariaLabel']>();
-    readonly ariaDescribedBy = input<InputPhoneProps['ariaDescribedBy']>();
-    readonly ariaErrorMessage = input<InputPhoneProps['ariaErrorMessage']>();
-    readonly id = input<InputPhoneProps['id']>();
-    readonly initialCountryCode = input<InputPhoneProps['initialCountryCode']>();
+    readonly ariaLabel = input<InputPhoneProps['ariaLabel']>(undefined);
+    readonly ariaDescribedBy = input<InputPhoneProps['ariaDescribedBy']>(undefined);
+    readonly ariaErrorMessage = input<InputPhoneProps['ariaErrorMessage']>(undefined);
+    readonly id = input<InputPhoneProps['id']>(undefined);
+    readonly initialCountryCode = input<InputPhoneProps['initialCountryCode']>(undefined);
     readonly disableFormatting = input<InputPhoneProps['disableFormatting']>(false);
     readonly scrollLimit = input<InputPhoneProps['scrollLimit']>(5);
 
@@ -219,7 +219,7 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
     readonly referenceEl = computed(() => this.reference()?.nativeElement);
 
     readonly open = signal<boolean>(false);
-    readonly countryCode = signal<SupportedCountryCode>('US');
+    readonly countryCode = signal<SupportedCountryCode>('US' as SupportedCountryCode);
 
     readonly menuItems = computed<CountryCodeItem[]>(() =>
         SELECT_OPTIONS.map((option: CountryCodeOption, index: number) => ({
