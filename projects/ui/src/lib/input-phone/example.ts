@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { sendSnackbar } from '@ui/utils/send-snackbar';
 import { UIInputPhone } from './input-phone';
 
 @Component({
@@ -14,19 +13,33 @@ import { UIInputPhone } from './input-phone';
             (valueChange)="update('default', $event)"
             id="default-input-phone"
             name="default-input-phone"
-            ariaLabel="Phone Number" />
+            ariaLabel="Phone Number"
+            initialCountryCode="US" />
 
         <h4>Disabled</h4>
-        <ui-input-phone name="disabled-input-phone" ariaLabel="Phone Number" [disabled]="true" />
+        <ui-input-phone
+            name="disabled-input-phone"
+            ariaLabel="Phone Number"
+            [disabled]="true"
+            initialCountryCode="US" />
 
         <h4>Invalid</h4>
-        <ui-input-phone name="invalid-input-phone" ariaLabel="Phone Number" [invalid]="true" />
+        <ui-input-phone name="invalid-input-phone" ariaLabel="Phone Number" [invalid]="true" initialCountryCode="US" />
 
         <h4>Required</h4>
-        <ui-input-phone name="required-input-phone" ariaLabel="Phone Number" [required]="true" />
+        <ui-input-phone
+            name="required-input-phone"
+            ariaLabel="Phone Number"
+            [required]="true"
+            initialCountryCode="US" />
 
         <h4>Read Only</h4>
-        <ui-input-phone name="read-only-input-phone" ariaLabel="Phone Number" [readOnly]="true" value="2345678900" />
+        <ui-input-phone
+            name="read-only-input-phone"
+            ariaLabel="Phone Number"
+            [readOnly]="true"
+            initialCountryCode="US"
+            value="+1234567890" />
 
         <h4>Different Country Code</h4>
         <ui-input-phone
@@ -44,17 +57,18 @@ import { UIInputPhone } from './input-phone';
             id="unformatted-input-phone"
             name="unformatted-input-phone"
             ariaLabel="Phone Number"
-            [disableFormatting]="true" />
+            [disableFormatting]="true"
+            initialCountryCode="US" />
 
         <h4>Different Sizes</h4>
         <p>Small:</p>
-        <ui-input-phone name="small-input-phone" ariaLabel="Phone Number" [size]="'small'" />
+        <ui-input-phone name="small-input-phone" ariaLabel="Phone Number" [size]="'small'" initialCountryCode="US" />
 
         <p>Medium:</p>
-        <ui-input-phone name="medium-input-phone" ariaLabel="Phone Number" [size]="'medium'" />
+        <ui-input-phone name="medium-input-phone" ariaLabel="Phone Number" [size]="'medium'" initialCountryCode="US" />
 
         <p>Large:</p>
-        <ui-input-phone name="large-input-phone" ariaLabel="Phone Number" [size]="'large'" />
+        <ui-input-phone name="large-input-phone" ariaLabel="Phone Number" [size]="'large'" initialCountryCode="US" />
     `,
 })
 export class UIInputPhoneExample {
@@ -69,6 +83,5 @@ export class UIInputPhoneExample {
             ...current,
             [key]: value || '',
         }));
-        sendSnackbar(`Updated ${key}: ${value ?? ''}`);
     }
 }
