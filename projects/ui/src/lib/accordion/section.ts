@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, output, input, model } from '@angular/core';
+import { Component, output, input, model, TemplateRef } from '@angular/core';
 import { AsSignal, CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { IconKeyboardArrowDown, IconKeyboardArrowUp } from '../icons';
@@ -20,13 +20,13 @@ export interface AccordionSectionProps {
      *
      * May be passed as string or use <span data-leading> for non-string content.
      */
-    leading?: string;
+    leading?: TemplateRef<any> | string;
     /**
      * The trailing element to display in the accordion header.
      *
      * May be passed as string or use <span data-trailing> for non-string content.
      */
-    trailing?: string;
+    trailing?: TemplateRef<any> | string;
     /**
      * If the accordion is initially open.
      *
@@ -67,7 +67,13 @@ export interface AccordionSectionProps {
             (click)="!disabled() && toggleOpen.emit(id()!)">
             <ng-content select="[data-leading]">
                 @if (leading()) {
-                    <span data-leading>{{ leading() }}</span>
+                    @if (leadingValue) {
+                        <span data-leading>
+                            <ng-container [ngTemplateOutlet]="leadingValue"></ng-container>
+                        </span>
+                    } @else {
+                        <span data-leading>{{ leading() }}</span>
+                    }
                 }
             </ng-content>
 
@@ -80,7 +86,13 @@ export interface AccordionSectionProps {
             </span>
             <ng-content select="[data-trailing]">
                 @if (trailing()) {
-                    <span data-trailing>{{ trailing() }}</span>
+                    @if (trailingValue) {
+                        <span data-trailing>
+                            <ng-container [ngTemplateOutlet]="trailingValue"></ng-container>
+                        </span>
+                    } @else {
+                        <span data-trailing>{{ trailing() }}</span>
+                    }
                 }
             </ng-content>
 
@@ -110,4 +122,14 @@ export class UIAccordionSection implements AsSignal<AccordionSectionProps> {
     readonly id = input<AccordionSectionProps['id']>(uniqueId('accordion-section'));
     readonly leading = input<AccordionSectionProps['leading']>(undefined);
     readonly trailing = input<AccordionSectionProps['trailing']>(undefined);
+
+    get leadingValue(): TemplateRef<any> | undefined {
+        const value = this.leading();
+        return value instanceof TemplateRef ? value : undefined;
+    }
+
+    get trailingValue(): TemplateRef<any> | undefined {
+        const value = this.trailing();
+        return value instanceof TemplateRef ? value : undefined;
+    }
 }

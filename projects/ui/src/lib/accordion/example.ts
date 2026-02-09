@@ -53,6 +53,39 @@ import { UIAccordion, UIAccordionSection } from './';
             </ui-accordion>
         </ui-example>
 
+        <h4>section props: id, isOpen, disabled, title, subtitle, leading, trailing</h4>
+        <ui-example>
+            <ng-template #avatarTabby>
+                <ui-avatar name="Tabby Cat" size="small" />
+            </ng-template>
+            <ng-template #tagCats>
+                <ui-tag label="Cats" color="blue" />
+            </ng-template>
+            <ui-accordion>
+                <ui-accordion-section
+                    id="open-section"
+                    title="Open Section"
+                    subtitle="This section is open by default"
+                    leading="Leading"
+                    trailing="Trailing"
+                    [isOpen]="true">
+                    Open Children
+                </ui-accordion-section>
+
+                <ui-accordion-section title="Disabled Section" subtitle="This section is disabled" [disabled]="true">
+                    Disabled Children
+                </ui-accordion-section>
+
+                <ui-accordion-section
+                    title="Regular Section"
+                    [leading]="avatarTabby"
+                    [trailing]="tagCats"
+                    subtitle="This section is closed by default">
+                    Regular Children
+                </ui-accordion-section>
+            </ui-accordion>
+        </ui-example>
+
         <h4>With No Items (hidden)</h4>
         <ui-example>
             <ui-accordion></ui-accordion>
