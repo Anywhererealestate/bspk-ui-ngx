@@ -9,6 +9,7 @@ import {
     inject,
     EnvironmentInjector,
     Renderer2,
+    DOCUMENT,
 } from '@angular/core';
 import { UIButton } from '../button/button';
 import { TooltipUtility } from './tooltip';
@@ -123,7 +124,7 @@ export class UITooltipExample implements AfterViewInit, OnDestroy {
 
     private renderer = inject(Renderer2);
     private env = inject(EnvironmentInjector);
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     ngAfterViewInit() {
         this.interval = setInterval(() => {

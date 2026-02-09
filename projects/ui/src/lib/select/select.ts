@@ -214,7 +214,7 @@ export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy
         };
     });
 
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     constructor() {
         this.value.subscribe((val) => {

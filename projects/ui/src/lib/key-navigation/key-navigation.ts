@@ -91,7 +91,7 @@ export class KeyNavigationUtility implements UtilityBase<KeyNavigationUtilityPro
         ) as KeysCallback;
     });
 
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     constructor() {
         effect(() => {

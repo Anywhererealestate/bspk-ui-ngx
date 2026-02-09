@@ -154,7 +154,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
 
     IconEvent = IconEvent;
 
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     get calendarId() {
         return `${this.id() || 'date-picker'}-calendar`;

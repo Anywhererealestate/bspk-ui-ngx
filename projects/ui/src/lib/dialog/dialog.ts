@@ -133,7 +133,7 @@ export class UIDialog implements OnChanges, OnDestroy, AsSignal<DialogProps> {
     readonly ariaLabel = input<DialogProps['ariaLabel']>(undefined);
     readonly ariaDescription = input<DialogProps['ariaDescription']>(undefined);
 
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     private readonly keydownBound = signal(false);
 

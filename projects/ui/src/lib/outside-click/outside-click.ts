@@ -39,7 +39,7 @@ export class OutsideClickUtility implements UtilityBase<OutsideClickUtilityProps
         handleTabs: false,
     });
 
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     updateProps(next: Partial<OutsideClickUtilityProps>) {
         this.props.set({

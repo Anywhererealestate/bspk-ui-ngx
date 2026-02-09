@@ -126,7 +126,7 @@ export class UIBreadcrumbDropdown implements AsSignal<BreadcrumbDropdownProps>, 
         };
     });
 
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number

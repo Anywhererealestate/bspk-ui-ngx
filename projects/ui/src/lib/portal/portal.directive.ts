@@ -24,7 +24,7 @@ export class UIPortalDirective implements OnDestroy, AsSignal<PortalProps> {
 
     host = inject<ElementRef<HTMLElement>>(ElementRef);
     renderer = inject(Renderer2);
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     constructor() {
         effect(() => {

@@ -104,10 +104,10 @@ export class AppNavContents implements OnInit, OnDestroy {
     open = signal(false);
     reference = signal<HTMLElement | null>(null);
 
-    router = inject(Router);
-    route = inject(ActivatedRoute);
-    private document = inject(Document);
-    host = inject<ElementRef<HTMLElement>>(ElementRef);
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private document = inject(DOCUMENT);
+    private host = inject<ElementRef<HTMLElement>>(ElementRef);
 
     private timeout: ReturnType<typeof setTimeout> | null = null;
     private routeSubscription: Subscription | null = null;

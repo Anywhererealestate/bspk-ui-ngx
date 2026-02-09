@@ -121,7 +121,7 @@ export class UIAvatarGroupOverflow implements AsSignal<AvatarGroupOverflowProps>
     readonly menuReference = input.required<AvatarGroupOverflowProps['menuReference']>();
     readonly items = input.required<AvatarGroupOverflowProps['items']>();
 
-    private document = inject(Document);
+    private document = inject(DOCUMENT);
 
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
