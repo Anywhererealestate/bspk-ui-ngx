@@ -8,6 +8,8 @@ import { UIAvatar } from './avatar';
     standalone: true,
     imports: [CommonModule, UIAvatar],
     template: `
+        <h4>Default</h4>
+        <ui-avatar name="Default Example" />
         <h4>Basic Usage with color</h4>
         <ui-avatar color="blue" initials="JD" name="John Doe" size="xxxxx-large" />
         <ui-avatar color="teal" initials="KA" name="Kate Anders" size="xxxxx-large" />
