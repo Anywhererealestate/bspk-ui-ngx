@@ -55,12 +55,6 @@ import { UIAccordion, UIAccordionSection } from './';
 
         <h4>section props: id, isOpen, disabled, title, subtitle, leading, trailing</h4>
         <ui-example>
-            <ng-template #avatarTabby>
-                <ui-avatar name="Tabby Cat" size="small" />
-            </ng-template>
-            <ng-template #tagCats>
-                <ui-tag label="Cats" color="blue" />
-            </ng-template>
             <ui-accordion>
                 <ui-accordion-section
                     id="open-section"
@@ -76,11 +70,7 @@ import { UIAccordion, UIAccordionSection } from './';
                     Disabled Children
                 </ui-accordion-section>
 
-                <ui-accordion-section
-                    title="Regular Section"
-                    [leading]="avatarTabby"
-                    [trailing]="tagCats"
-                    subtitle="This section is closed by default">
+                <ui-accordion-section title="Regular Section" subtitle="This section is closed by default">
                     Regular Children
                 </ui-accordion-section>
             </ui-accordion>
