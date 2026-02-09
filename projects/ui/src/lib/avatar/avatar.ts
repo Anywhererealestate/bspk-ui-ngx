@@ -153,6 +153,7 @@ export class UIAvatar implements AfterViewInit, AsSignal<AvatarProps> {
     private renderer = inject(Renderer2);
     private env = inject(EnvironmentInjector);
     private host = inject(ElementRef<HTMLElement>);
+    private document = inject(Document);
 
     private tooltipUtility: TooltipUtility | undefined;
 
@@ -173,11 +174,16 @@ export class UIAvatar implements AfterViewInit, AsSignal<AvatarProps> {
 
     ngAfterViewInit() {
         if (!this.hideTooltip()) {
-            this.tooltipUtility = new TooltipUtility(this.renderer, this.env, {
-                label: this.name(),
-                reference: this.host.nativeElement,
-                placement: 'top',
-            });
+            this.tooltipUtility = new TooltipUtility(
+                this.renderer,
+                this.env,
+                {
+                    label: this.name(),
+                    reference: this.host.nativeElement,
+                    placement: 'top',
+                },
+                this.document,
+            );
         }
     }
 

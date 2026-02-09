@@ -1,4 +1,14 @@
-import { Component, computed, inject, signal, ViewEncapsulation, OnInit, ElementRef, effect } from '@angular/core';
+import {
+    Component,
+    computed,
+    inject,
+    signal,
+    ViewEncapsulation,
+    OnInit,
+    ElementRef,
+    effect,
+    DOCUMENT,
+} from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { UIButton } from '@ui/button';
 import { IconDarkMode } from '@ui/icons/dark-mode';
@@ -59,14 +69,15 @@ export class App implements OnInit {
     protected readonly router = inject(Router);
     protected readonly route = inject(ActivatedRoute);
     protected readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
+    protected readonly document = inject(DOCUMENT);
 
     private routeSubscription: Subscription | null = null;
     private fragmentSubscription: Subscription | null = null;
 
     constructor() {
         effect(() => {
-            const current = document.querySelector(`[data-syntax-theme='${this.themeService.value()}']`);
-            const other = document.querySelector(
+            const current = this.document.querySelector(`[data-syntax-theme='${this.themeService.value()}']`);
+            const other = this.document.querySelector(
                 `[data-syntax-theme]:not([data-syntax-theme='${this.themeService.value()}'])`,
             );
             current?.removeAttribute('disabled');
@@ -88,7 +99,7 @@ export class App implements OnInit {
         });
 
         this.fragmentSubscription = this.route.fragment.subscribe((fragment: string | null) => {
-            const element = document.querySelector(`[id="${fragment}"]`);
+            const element = this.document.querySelector(`[id="${fragment}"]`);
             if (fragment && element) requestAnimationFrame(() => element.scrollIntoView({ behavior: 'smooth' }));
         });
     }

@@ -9,7 +9,7 @@ const THEME_KEY = 'theme-preference';
     providedIn: 'root',
 })
 export class ThemeService {
-    document = inject(DOCUMENT);
+    private document = inject(Document);
 
     readonly value = signal<Theme>((localStorage.getItem(THEME_KEY) as Theme) || 'light');
 
