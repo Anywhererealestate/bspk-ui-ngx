@@ -2,7 +2,7 @@
  * This script is intended to be a single entry point for all of the various scripts that may be a little too
  * complicated to run in a single cli command.
  */
-import { execSync, execSync as execSyncBase } from 'child_process';
+import { execSync } from 'child_process';
 import chalk from 'chalk';
 import fs from 'fs';
 
@@ -22,9 +22,9 @@ const SCRIPTS: Record<string, () => void | Promise<void>> = {
      */
     meta() {
         if (args.includes('f') || !fs.existsSync('.tmp/documentation.json'))
-            exec('npx @compodoc/compodoc -p tsconfig.doc.json -e json -d ./.tmp');
+            execSync('npx @compodoc/compodoc -p tsconfig.doc.json -e json -d ./.tmp', { stdio: 'inherit' });
 
-        exec('npx tsx .scripts/generate-meta.ts --write');
+        execSync('npx tsx .scripts/generate-meta.ts --write', { stdio: 'inherit' });
     },
 
     /**
@@ -38,7 +38,7 @@ const SCRIPTS: Record<string, () => void | Promise<void>> = {
      */
     'update-version'() {
         // get the latest tag in the format X.Y.Z - no v or other prefix or suffix
-        const latestVersion = execSyncBase('git fetch --tags && git tag -l --sort=-creatordate | head -n 1', {
+        const latestVersion = execSync('git fetch --tags && git tag -l --sort=-creatordate | head -n 1', {
             encoding: 'utf-8',
         })
             .trim()
@@ -57,12 +57,12 @@ const SCRIPTS: Record<string, () => void | Promise<void>> = {
 
         // update the version in package.json and projects/ui/package.json to match the latest tag
 
-        exec('git add package.json projects/ui/package.json');
+        execSync('git add package.json projects/ui/package.json', { stdio: 'inherit' });
 
         // commit the changes and push to the repo
 
-        exec(`git commit -m "chore: update version to ${latestVersion} [skip ci]"`);
-        exec('git push');
+        execSync(`git commit -m "chore: update version to ${latestVersion} [skip ci]"`, { stdio: 'inherit' });
+        execSync('git push', { stdio: 'inherit' });
     },
 
     /**
@@ -83,7 +83,7 @@ const SCRIPTS: Record<string, () => void | Promise<void>> = {
 
         // get the version of styles from the @bspk/ui package.json
         //  use npm view @bspk/ui version --json to get the latest version of @bspk/styles
-        const uiPackageJson = JSON.parse(execSyncBase('npm view @bspk/ui --json', { encoding: 'utf-8' }).trim());
+        const uiPackageJson = JSON.parse(execSync('npm view @bspk/ui --json', { encoding: 'utf-8' }).trim());
 
         const stylesVersion = uiPackageJson.dependencies['@bspk/styles'].replace(/^(\^|~)/, '');
 
@@ -125,7 +125,6 @@ const SCRIPTS: Record<string, () => void | Promise<void>> = {
 };
 
 const { cyan, yellow } = chalk;
-const exec = (command: string) => execSyncBase(command, { stdio: 'inherit' });
 const args = process.argv.slice(3);
 const scriptName = cyan(process.argv[2]);
 const scriptFn = process.argv[2] in SCRIPTS ? SCRIPTS[process.argv[2] as keyof typeof SCRIPTS] : null;
