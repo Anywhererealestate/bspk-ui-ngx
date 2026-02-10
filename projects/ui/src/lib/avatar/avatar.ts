@@ -123,7 +123,7 @@ export interface AvatarProps {
                 {{ computedInitials }}
             </span>
         }`,
-    styleUrls: ['./avatar.scss'],
+    styleUrl: './avatar.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
         'data-bspk': 'avatar',
