@@ -9,6 +9,8 @@ import {
     signal,
     OnInit,
     OnChanges,
+    inject,
+    DOCUMENT,
 } from '@angular/core';
 import { format, startOfToday, parse } from 'date-fns';
 import { AsSignal, FieldControlProps } from '../../types/common';
@@ -89,10 +91,19 @@ export interface DatePickerProps extends FieldControlProps<Date | string | undef
                 [showClearButton]="false"
                 [size]="size() || 'medium'"
                 [value]="internalValueAsString"
-                (valueChange)="onInputChange($event)"
-                [trailing]="calendarButton"></ui-input>
+                (valueChange)="onInputChange($event)">
+                @if (!disabled() && !readOnly()) {
+                    <ui-button
+                        data-trailing
+                        [icon]="IconEvent"
+                        [iconOnly]="true"
+                        label="Toggle calendar"
+                        variant="tertiary"
+                        (onClick)="toggleCalendar()"></ui-button>
+                }
+            </ui-input>
 
-            <ng-template #calendarButton>
+            <!-- <ng-template #calendarButton>
                 @if (!disabled() && !readOnly()) {
                     <ui-button
                         [icon]="IconEvent"
@@ -101,7 +112,7 @@ export interface DatePickerProps extends FieldControlProps<Date | string | undef
                         variant="tertiary"
                         (onClick)="toggleCalendar()"></ui-button>
                 }
-            </ng-template>
+            </ng-template> -->
             @if (calendarVisible()) {
                 <div
                     aria-label="Choose Date"
@@ -152,6 +163,8 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
 
     IconEvent = IconEvent;
 
+    private document = inject(DOCUMENT);
+
     get calendarId() {
         return `${this.id() || 'date-picker'}-calendar`;
     }
@@ -162,7 +175,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
 
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
-        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+        return parseInt(getComputedStyle(this.document.documentElement).getPropertyValue('--spacing-sizing-01'));
     }
 
     get internalValueAsString(): string {
