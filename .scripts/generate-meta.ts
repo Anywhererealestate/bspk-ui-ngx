@@ -27,7 +27,11 @@ type CompodocInterfaceProp = CompodocInterface['properties'][0];
 type InternalInterface = Record<string, CompodocInterfaceProp>;
 
 // creates a dictionary of interfaces and props for easy lookup, merges all extended interfaces
-const INTERFACES = (() => {
+let INTERFACE_DICTIONARY: Record<string, InternalInterface> = generateInterfaceDictionary();
+
+function generateInterfaceDictionary() {
+    if (INTERFACE_DICTIONARY) return INTERFACE_DICTIONARY;
+
     const findRootProp = (maybeProp: CompodocInterfaceProp): CompodocInterfaceProp => {
         let prop = maybeProp;
 
@@ -77,10 +81,12 @@ const INTERFACES = (() => {
         });
     });
 
-    return interfaceDictionary;
-})();
+    INTERFACE_DICTIONARY = interfaceDictionary;
 
-fs.writeFileSync('.tmp/interfaces.json', JSON.stringify(INTERFACES, null, 4));
+    // fs.writeFileSync('.tmp/interfaces.json', JSON.stringify(INTERFACE_DICTIONARY, null, 4));
+
+    return interfaceDictionary;
+}
 
 export const generatedMetaPath = 'projects/demo/src/meta.ts';
 
@@ -104,6 +110,8 @@ export function generateMeta(): Meta {
             'No components or directives found in documentation JSON. Please ensure Compodoc has run correctly.',
         );
     }
+
+    generateInterfaceDictionary();
 
     const exampleComponents = compodocData.components.filter(
         (comp: any) => comp.name.startsWith('UI') && comp.name.endsWith('Example'),
@@ -210,7 +218,7 @@ export function generateMeta(): Meta {
 export function generateMetaProps(interfaceName: string): ComponentMeta['props'] | null {
     // TODO: handle TYPESCRIPT TYPES like Exclude<"a" | "b" | "c", "b">, Omit<"a" | "b" | "c", "b">, and Record<string, any>, FabContainer, FabIconType
 
-    const interfaceProps = INTERFACES[interfaceName];
+    const interfaceProps = INTERFACE_DICTIONARY[interfaceName];
 
     if (!interfaceProps) return null;
 
