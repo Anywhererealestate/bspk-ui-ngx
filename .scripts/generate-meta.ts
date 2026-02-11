@@ -30,8 +30,6 @@ type InternalInterface = Record<string, CompodocInterfaceProp>;
 let INTERFACE_DICTIONARY: Record<string, InternalInterface> = generateInterfaceDictionary();
 
 function generateInterfaceDictionary() {
-    if (INTERFACE_DICTIONARY) return INTERFACE_DICTIONARY;
-
     const findRootProp = (maybeProp: CompodocInterfaceProp): CompodocInterfaceProp => {
         let prop = maybeProp;
 
