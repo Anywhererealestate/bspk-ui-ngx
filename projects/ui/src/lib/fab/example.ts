@@ -10,7 +10,7 @@ import { UIFab } from './fab';
     standalone: true,
     imports: [CommonModule, UIFab, UISwitchOption],
     template: `
-        <h4>Default</h4>
+        <h4>Default: label and onClick</h4>
         <div style="height: 200px; position: relative; border: 1px solid #ccc; margin-bottom: 16px;">
             <ui-fab label="Default FAB" (onClick)="handleClick('Default')" />
         </div>
