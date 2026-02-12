@@ -14,7 +14,6 @@ export type FabIconType = BspkIcon;
 
 export interface FabProps {
     ariaLabel?: CommonProps['ariaLabel'];
-    owner?: CommonProps['owner'];
     style?: CommonProps['style'];
 
     /** The label of the button. */
