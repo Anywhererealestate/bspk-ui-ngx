@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, input, computed } from '@angular/core';
+import { Component, Output, EventEmitter, input, computed, OnInit } from '@angular/core';
 import { BspkIcon } from '../../types/bspk-icon';
 import { AsSignal } from '../../types/common';
 import { BadgeProps, UIBadge } from '../badge';
@@ -88,7 +88,7 @@ export interface ChipProps {
         (click)="handleOnClick($event)">
         @if (leadingIcon()) {
             <span [attr.aria-hidden]="true" data-chip-icon>
-                <ui-icon [icon]="leadingIcon()!"></ui-icon>
+                <ui-icon [icon]="leadingIcon()!" width="24"></ui-icon>
             </span>
         }
 
@@ -96,7 +96,7 @@ export interface ChipProps {
 
         @if (trailingIcon()) {
             <span [attr.aria-hidden]="true" data-chip-icon>
-                <ui-icon [icon]="trailingIcon()!"></ui-icon>
+                <ui-icon [icon]="trailingIcon()!" width="24"></ui-icon>
             </span>
         }
 
@@ -113,7 +113,7 @@ export interface ChipProps {
         style: 'display: contents;',
     },
 })
-export class UIChip implements AsSignal<ChipProps> {
+export class UIChip implements AsSignal<ChipProps>, OnInit {
     /** The function to call when the chip is clicked. */
     @Output() onClick = new EventEmitter<Event>();
 
@@ -134,5 +134,8 @@ export class UIChip implements AsSignal<ChipProps> {
         if (!this.disabled()) {
             this.onClick.emit(event);
         }
+    }
+    ngOnInit() {
+        console.log('leadingIcon', this.leadingIcon());
     }
 }
