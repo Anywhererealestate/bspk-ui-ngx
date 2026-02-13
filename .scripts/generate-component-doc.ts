@@ -1,7 +1,7 @@
 /**
  * Generates component documentation.
  *
- * $ npx tsx .scripts/generate-component-docs.ts
+ * Utility only
  */
 
 import fs from 'fs';
