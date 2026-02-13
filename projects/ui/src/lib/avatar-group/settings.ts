@@ -1,7 +1,7 @@
 import { ComponentSettings } from '@shared/types';
-import { BadgeProps } from './';
+import { AvatarGroupProps } from './';
 
-export const Badge: ComponentSettings<BadgeProps> = {
+export const AvatarGroup: ComponentSettings<AvatarGroupProps> = {
     defaultValues: {
         count: 5,
         size: 'small',

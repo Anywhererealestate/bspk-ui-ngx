@@ -1,21 +1,23 @@
 /**
  * Generates metadata by parsing @compodoc documentation JSON, and JSDocs.
  *
- * - Documentation site uses meta to build component reference pages
- * - Documentation site component pages use meta to display prop tables, examples, and descriptions
- * - Lint UI uses the metadata to ensure that all components have documentation, examples, and properly documented inputs.
+ * - The metadata is used to generate the component documentation pages in the demo app
+ * - To generate the routes for the demo app
+ * - To provide prop information for the props table in the documentation pages
+ * - To provide information about which phase each component is in for the roadmap page
+ * - To provide information about which components are in the library for the package readme
  *
- * $ npx tsx .scripts/generate-meta.ts --write
+ * $ npx tsx .scripts/meta/main.ts --write
  */
 
 import { execSync } from 'child_process';
-import { removeCodeQuotes, slugify } from './utils';
+import { removeCodeQuotes, slugify } from '../utils';
 import fs from 'fs';
 import path from 'path';
-import { ComponentMeta, ComponentMetaInput, Meta, NavRoute } from '../projects/shared/src/types';
-import { documentation as compodocData } from '../.tmp/documentation';
-import * as settings from '../.tmp/component-settings';
-import { generateComponentDocs } from './generate-component-doc';
+import { ComponentMeta, ComponentMetaInput, Meta, NavRoute } from '../../projects/shared/src/types';
+import { documentation as compodocData } from '../../.tmp/documentation';
+import * as settings from '../../.tmp/component-settings';
+import { generateComponentDocs } from './component-doc';
 
 // remove <p> and </p>\n from text
 const stripCompodocMarkup = (str?: string) => str?.replace(/<\/?p>/g, '').trim() || str;
@@ -222,7 +224,7 @@ function generateMeta(): Meta {
 
     commit = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
 
-    version = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8')).version || '';
+    version = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf-8')).version || '';
 
     return { components, version, hash: branch === 'main' ? commit : branch, interfaces: INTERFACES };
 }
@@ -354,15 +356,6 @@ function writeMetaToFile(): Meta {
     return meta;
 }
 
-// if --write is provided, generate the routes once
-if (process.argv.includes('--write')) {
-    const meta = writeMetaToFile();
-
-    writeComponentDocs(meta.components);
-
-    writeRoutesToFile(meta.components);
-}
-
 // Simple JSDoc parser to extract tags and description
 function jsDocParse(content: string) {
     try {
@@ -411,7 +404,7 @@ function writeComponentDocs(components: ComponentMeta[]): void {
     execSync(`rm -rf projects/demo/src/generated && mkdir -p projects/demo/src/generated/component`);
 
     components.forEach((component) =>
-        generateComponentDocs(component, settings[component.slug as keyof typeof settings]),
+        generateComponentDocs(component, settings[component.name as keyof typeof settings]),
     );
 }
 
@@ -437,4 +430,13 @@ function writeRoutesToFile(components: ComponentMeta[]): void {
     );
 
     console.log(`\n\x1b[32m✅ Generated component routes at ${routePath} 📄\x1b[0m\n`);
+}
+
+// if --write is provided, generate the routes once
+if (process.argv.includes('--write')) {
+    const meta = writeMetaToFile();
+
+    writeComponentDocs(meta.components);
+
+    writeRoutesToFile(meta.components);
 }

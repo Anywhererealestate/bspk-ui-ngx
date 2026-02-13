@@ -5,8 +5,8 @@
  */
 
 import fs from 'fs';
-import { ComponentMeta, ComponentPhase, ComponentSettings } from '../projects/shared/src/types';
-import { COMPONENT_PHASE_COLORS } from './utils';
+import { ComponentMeta, ComponentPhase, ComponentSettings } from '../../projects/shared/src/types';
+import { COMPONENT_PHASE_COLORS } from '../utils';
 
 const TEMPLATE = (
     component: ComponentMeta & {
@@ -148,7 +148,7 @@ export function generateComponentDocs(component: ComponentMeta, overrides?: Comp
     let defaultCode = '';
 
     const missingRequired = component.inputs?.filter(
-        (prop) => prop.required && prop.type !== 'string' && !overrides?.defaultInputs?.[prop.name],
+        (prop) => prop.required && prop.type !== 'string' && !overrides?.defaultValues?.[prop.name],
     );
 
     const inputControlProps = component.inputs.filter((prop) => prop.name === 'checked' || prop.name === 'onChange');
@@ -176,25 +176,23 @@ export function generateComponentDocs(component: ComponentMeta, overrides?: Comp
     } else {
         imports.add(component.className);
 
-        const defaultPropsStr: Record<string, string> = {};
+        const propsStr: Record<string, string> = {};
 
-        const generatedDefaultInputs = getDefaultInputs(component);
-
-        const defaultInputs = { ...generatedDefaultInputs, ...overrides?.defaultInputs };
+        const inputValues = { ...getDefaultInputValues(component), ...overrides?.defaultValues };
 
         // Generate default code snippet with default inputs
-        Object.entries(defaultInputs || {}).forEach(([name, value]) => {
+        Object.entries(inputValues || {}).forEach(([name, value]) => {
             const isString =
                 typeof value === 'string' && !['true', 'false'].includes(value) && /^\d+$/.test(value) === false;
 
-            defaultPropsStr[name] = isString ? `${name}="${value}"` : `[${name}]="${value}"`;
+            propsStr[name] = isString ? `${name}="${value}"` : `[${name}]="${value}"`;
         });
 
-        defaultCode = `<ui-${component?.slug}\n  ${Object.values(defaultPropsStr).join('\n   ')}`;
+        defaultCode = `<ui-${component?.slug}\n  ${Object.values(propsStr).join('\n   ')}`;
 
         if (overrides?.ngContent) {
             let ngContent = '';
-            if (overrides.ngContent === 'string') ngContent = overrides.ngContent;
+            if (typeof overrides.ngContent === 'string') ngContent = overrides.ngContent;
             else if (typeof overrides.ngContent === 'object' && 'template' in overrides.ngContent) {
                 ngContent = overrides.ngContent.template;
                 overrides.ngContent.imports.forEach((imp) => imports.add(imp));
@@ -221,7 +219,7 @@ export function generateComponentDocs(component: ComponentMeta, overrides?: Comp
     );
 }
 
-function getDefaultInputs(component: ComponentMeta): Record<string, any> {
+function getDefaultInputValues(component: ComponentMeta): Record<string, any> {
     const defaultInputs: Record<string, any> = {};
 
     if (component.inputs.length) {

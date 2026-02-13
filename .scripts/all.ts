@@ -8,47 +8,6 @@ import fs from 'fs';
 
 const SCRIPTS: Record<string, () => void | Promise<void>> = {
     /**
-     * Generates the metadata file used for documentation generation.
-     *
-     * This should be run after any changes to the codebase that may affect the documentation, such as adding new
-     * components or changing existing ones. It is also run as part of the release process to ensure that the
-     * documentation is up to date with the latest changes.
-     *
-     * This script checks if the 'f' argument is included or if the documentation.json file does not exist, and if so,
-     * it runs the compodoc command to generate the documentation in JSON format. Then it runs the generate-meta.ts
-     * script to write the metadata file.
-     *
-     * $ npm run - meta
-     */
-    meta() {
-        if (args.includes('f') || !fs.existsSync('.tmp/documentation.json')) {
-            execSync('npx @compodoc/compodoc -p tsconfig.doc.json -e json -d ./.tmp', { stdio: 'inherit' });
-            fs.writeFileSync(
-                '.tmp/documentation.ts',
-                `export const documentation = ${fs.readFileSync('.tmp/documentation.json', 'utf-8')}`,
-            );
-            execSync('npx prettier --write .tmp/documentation.ts', { stdio: 'inherit' });
-        }
-
-        // merge all settings.ts files into a single file for easier importing in the generate-meta script, excluding any settings files in the icons directory since those are not used for generating documentation
-        const output = execSync(`find projects/ui/src/lib -type f -name "settings.ts"`, { encoding: 'utf-8' });
-        fs.writeFileSync(
-            '.tmp/component-settings.ts',
-            `import { ComponentSettings } from "../projects/shared/src/types";` +
-                output
-                    .split('\n')
-                    .filter((line) => line.trim().length && !line.includes('icons'))
-                    .map((filePath) => fs.readFileSync(filePath, 'utf-8'))
-                    .join('')
-                    .replace(/import.*;/g, '')
-                    .replace(/<[^>]+Props>/g, '')
-                    .replace(/\n\n/g, '\n'),
-        );
-
-        execSync('npx tsx .scripts/generate-meta.ts --write', { stdio: 'inherit' });
-    },
-
-    /**
      * Updates the version in package.json and projects/ui/package.json to match the latest tag in the repo, then
      * commits and pushes the changes.
      *

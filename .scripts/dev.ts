@@ -9,7 +9,7 @@ const uiSrcPath = path.join(__dirname, '../projects/ui/src');
 
 console.log('\x1b[33mWatching for changes to regenerate component metadata...\x1b[0m');
 
-const generateMetaScriptPath = path.join(__dirname, 'generate-meta.ts');
+const generateMetaScriptPath = path.join(__dirname, 'meta/main.ts');
 
 let lastEvent = {
     filename: '',
@@ -41,7 +41,7 @@ let previousComponents: string[] = getComponentSlugs();
         clearTimeout(writeTimeout);
 
         writeTimeout = setTimeout(() => {
-            execSync(`npm run - meta f`, { stdio: 'inherit' });
+            execSync(`npm run meta f`, { stdio: 'inherit' });
 
             lastEvent = { filename, eventType };
 

@@ -18,17 +18,16 @@ Settings for generating tests and documentation
 */
 export interface ComponentSettings<P extends Record<string, any> = Record<string, any>> {
     /**
-     * The default input values for the component
+     * The input values which override default values or add a default value for component inputs.
      *
-     * Also includes an optional ngContent property for generating examples with projected content, where the value is
-     * the content to project
+     * These values are used for generating the default usage example, variant examples, and test examples.
      *
      * @example
-     *     defaultInputs = {
+     *     defaultValues = {
      *         singleOpen: true,
      *     };
      */
-    defaultInputs: Record<string, any>;
+    defaultValues: Record<string, any>;
     /**
      * @example
      *     ngContent = `

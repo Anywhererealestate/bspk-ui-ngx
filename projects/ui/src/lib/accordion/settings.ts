@@ -1,8 +1,8 @@
 import { ComponentSettings } from '@shared/types';
 import { AccordionProps } from './';
 
-export const accordion: ComponentSettings<AccordionProps> = {
-    defaultInputs: {
+export const Accordion: ComponentSettings<AccordionProps> = {
+    defaultValues: {
         singleOpen: true,
     },
     ngContent: {
