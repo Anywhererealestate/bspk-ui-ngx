@@ -101,8 +101,6 @@ const INTERFACES = (() => {
     return interfaceDictionary;
 })();
 
-fs.writeFileSync('.tmp/interfaces.json', JSON.stringify(INTERFACES, null, 4));
-
 export const generatedMetaPath = 'projects/demo/src/meta.ts';
 
 function generateMeta(): Meta {

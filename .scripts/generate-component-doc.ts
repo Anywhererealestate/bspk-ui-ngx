@@ -130,8 +130,6 @@ export class ${component.name}Page {
    }
 
 }
-
-export const meta = ${JSON.stringify(component, null, 4)};
 `;
 
 export const COMPONENT_PAGE_OUTPUT_DIR = 'projects/demo/src/generated/component';
