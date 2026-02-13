@@ -1,6 +1,5 @@
 import { Type } from '@angular/core';
 import { Route } from '@angular/router';
-import { ComponentMeta } from './meta';
 
 export type ComponentPhase = 'Backlog' | 'Dev' | 'Stable' | 'Utility' | 'UXReview';
 
@@ -11,7 +10,7 @@ export type PrettyParser = 'css' | 'estree' | 'html' | 'scss' | 'typescript';
 export type NavRoute = Route & {
     hide?: boolean;
     title: string;
-    data?: ComponentMeta;
+    data?: { phase?: ComponentPhase };
 };
 
 /*

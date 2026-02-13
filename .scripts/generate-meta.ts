@@ -9,22 +9,38 @@
  */
 
 import { execSync } from 'child_process';
-import { slugify } from './utils';
+import { removeCodeQuotes, slugify } from './utils';
 import fs from 'fs';
 import path from 'path';
-import { ComponentMeta, Meta } from '../projects/shared/src/types';
-import compodocData from '../.tmp/documentation.json';
+import { ComponentMeta, ComponentMetaInput, Meta, NavRoute } from '../projects/shared/src/types';
+import { documentation as compodocData } from '../.tmp/documentation';
+import * as settings from '../.tmp/component-settings';
+import { generateComponentDocs } from './generate-component-doc';
 
 // remove <p> and </p>\n from text
 const stripCompodocMarkup = (str?: string) => str?.replace(/<\/?p>/g, '').trim() || str;
 
 const __dirname = path.dirname(new URL(import.meta.url).pathname);
 
-type CompodocInterface = (typeof compodocData.interfaces)[0];
+type CompodocInterface = (typeof compodocData.interfaces)[number];
 
-type CompodocInterfaceProp = CompodocInterface['properties'][0];
+type CompodocComponent = (typeof compodocData.components)[number] | (typeof compodocData.directives)[number];
+
+type CompodocComponentInput = CompodocComponent['inputsClass'][number];
+
+type CompodocInterfaceProp = CompodocInterface['properties'][number];
 
 type InternalInterface = Record<string, CompodocInterfaceProp>;
+
+const TYPEALIASES: Record<string, string[]> = compodocData.miscellaneous.typealiases.reduce(
+    (acc, alias) => {
+        // ignore certian type aliases
+        if (!['BspkIcon'].includes(alias.name))
+            acc[alias.name] = alias.rawtype.split('|').map((t) => t.trim().replace(/"/g, '')) || [];
+        return acc;
+    },
+    {} as Record<string, string[]>,
+);
 
 // creates a dictionary of interfaces and props for easy lookup, merges all extended interfaces
 const INTERFACES = (() => {
@@ -37,43 +53,48 @@ const INTERFACES = (() => {
         return maybeProperty ? findRootProp(maybeProperty) : prop;
     };
 
-    const resolveAllExtends = () => {
-        const interfacesWithExtends = compodocData.interfaces.filter((def) => def.extends.length > 0);
-
-        if (!interfacesWithExtends.length) return;
+    const resolveExtends = (_interface: CompodocInterface) => {
+        if (!_interface.extends.length) return;
 
         // Resolve all extends first
-        interfacesWithExtends.forEach((def) => {
-            def.extends.forEach((ext) => {
-                const extendedInterface = compodocData.interfaces.find((i) => i.name === ext);
-
-                if (!extendedInterface) {
-                    console.warn(`Unable to find extended interface ${ext} for interface ${def.name}`);
-                    return [];
-                }
-
-                (def.properties as CompodocInterfaceProp[]).push(...extendedInterface.properties);
-            });
-
-            def.extends = [];
-        });
-
-        resolveAllExtends();
+        _interface.extends = _interface.extends.map(
+            (interfaceName) => compodocData.interfaces.find((i) => i.name === interfaceName)!,
+        ) as unknown as string[];
     };
 
-    resolveAllExtends();
+    compodocData.interfaces.forEach((def) => {
+        resolveExtends(def);
+    });
 
-    const interfaceDictionary: Record<string, InternalInterface> = {};
+    compodocData.interfaces.forEach((def) => {
+        def.extends.forEach((extendedInterface: unknown) => {
+            // Merge properties from extended interface into current interface
+            const extendedProps = (extendedInterface as CompodocInterface).properties.filter(
+                (prop) => !def.properties.some((p) => p.name === prop.name),
+            );
+
+            (def.properties as unknown as CompodocInterfaceProp[]).push(...extendedProps);
+
+            //    .forEach((prop, index, array) => {
+            //        if (!array.some((p) => p.name === prop.name)) {
+            //            def.properties.push(prop);
+            //        }
+            //    });
+        });
+    });
+
+    const interfaceDictionary: Record<string, Record<string, ComponentMetaInput>> = {};
 
     // Build dictionary
     compodocData.interfaces.forEach((def) => {
-        const props = def.properties;
-
         interfaceDictionary[def.name] = {};
 
         def.properties.forEach((property) => {
             let actualProperty = findRootProp(property);
-            interfaceDictionary[def.name][property.name] = actualProperty;
+
+            const propMeta = compodocToMetaProp(actualProperty, def.name);
+            if (propMeta) interfaceDictionary[def.name][property.name] = propMeta;
+            else console.warn(`Unable to generate metadata for property ${property.name} in interface ${def.name}`);
         });
     });
 
@@ -84,7 +105,7 @@ fs.writeFileSync('.tmp/interfaces.json', JSON.stringify(INTERFACES, null, 4));
 
 export const generatedMetaPath = 'projects/demo/src/meta.ts';
 
-export function generateMeta(): Meta {
+function generateMeta(): Meta {
     // const compodocData2 = getDocumentationJson(true);
 
     let components: ComponentMeta[] = [];
@@ -177,20 +198,16 @@ export function generateMeta(): Meta {
                 description: jsdoc?.description || '',
                 phase: jsdoc?.phase as ComponentMeta['phase'],
                 directive: comp.name.endsWith('Directive'),
-                exampleComponent: exampleComp
-                    ? {
-                          name: exampleComp.name,
-                          path: exampleComp.file,
-                      }
-                    : undefined,
-                props: generateMetaProps(name + 'Props') || [],
+                exampleComponent: exampleComp?.name,
+                inputs: generateComponentInputs(comp) || [],
                 associatedTypes: compodocData.interfaces
                     .filter((i) => i.file.startsWith(componentRootDir) && i.name !== `${name}Props`)
                     .map((i) => ({
                         name: i.name,
                         file: i.file,
-                        props: generateMetaProps(i.name) || [],
+                        props: Object.values(INTERFACES[i.name] || {}) || [],
                     })),
+                hasContent: 'template' in comp && comp.template.includes('<ng-content'),
             };
         })
         .sort((a, b) => {
@@ -209,87 +226,143 @@ export function generateMeta(): Meta {
 
     version = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8')).version || '';
 
-    return { components, version, hash: branch === 'main' ? commit : branch };
+    return { components, version, hash: branch === 'main' ? commit : branch, interfaces: INTERFACES };
+}
+
+function generateComponentInputs(component: CompodocComponent): ComponentMetaInput[] | null {
+    const inputs: ComponentMetaInput[] = [];
+
+    const inputsClass: CompodocComponentInput[] = component.inputsClass;
+
+    if ('extends' in component) {
+        inputsClass.push(
+            ...component.extends.flatMap((extendName) => {
+                const found = compodocData.components.find((comp) => comp.name === extendName);
+                return found && 'inputsClass' in found ? (found.inputsClass as CompodocComponentInput[]) : [];
+            }),
+        );
+    }
+
+    inputsClass.forEach((input) => {
+        let propMeta: ComponentMetaInput | undefined;
+
+        if (!('type' in input)) {
+            throw new Error(
+                `Input ${input.name} in component ${component.name} is missing type information in the documentation JSON. Please ensure it is properly documented.`,
+            );
+        }
+
+        // ignore types that are arrays (e.g. string[]) since those are not references to other interfaces
+        if (!input.type.endsWith('[]') && input.type.includes('[')) {
+            // match "InterfaceName['propName']"" getting InterfaceName and propName allowing for generics like "TableProps<R>['columns']" ignoring the geric types
+            const match = input.type.match(/([a-zA-Z0-9_]+)(?:<[^>]+>)?\[['"]([^'"]+)['"]\]/);
+            const [, interfaceName, propName] = match || [];
+
+            if (!interfaceName || !propName) {
+                throw new Error(
+                    `Unable to parse type ${input.type} for input ${input.name} in component ${component.name}`,
+                );
+            }
+
+            propMeta = INTERFACES[interfaceName]?.[propName];
+
+            if (typeof propMeta === 'undefined') {
+                throw new Error(
+                    `Unable to find prop ${propName} in interface ${interfaceName} for input ${input.name} in component ${component.name}`,
+                );
+            }
+        }
+
+        inputs.push({
+            name: input.name,
+            description: stripCompodocMarkup(input.description),
+            type: input.type,
+            required: input.required,
+            ...propMeta,
+        });
+    });
+
+    return inputs;
 }
 
 /** Generates metadata props for a given interface name. */
-export function generateMetaProps(interfaceName: string): ComponentMeta['props'] | null {
+function compodocToMetaProp(prop: CompodocInterfaceProp, interfaceName: string): ComponentMetaInput | null {
     // TODO: handle TYPESCRIPT TYPES like Exclude<"a" | "b" | "c", "b">, Omit<"a" | "b" | "c", "b">, and Record<string, any>, FabContainer, FabIconType
 
-    const interfaceProps = INTERFACES[interfaceName];
+    if (!prop) return prop;
 
-    if (!interfaceProps) return null;
-
-    return (
-        Object.values(interfaceProps).flatMap((prop) => {
-            const name = prop.name;
-
-            if (!prop || typeof prop !== 'object') {
-                console.warn(`Unable to find prop ${name} in interface ${interfaceName}`);
-                return [];
-            }
-
-            const defaultValue = stripCompodocMarkup(
-                'jsdoctags' in prop
-                    ? prop.jsdoctags?.find((tag) => tag.tagName.escapedText === 'default')?.comment
-                    : undefined,
-            );
-
-            const description = (() => {
-                const desc = 'rawdescription' in prop ? prop.rawdescription : undefined;
-
-                // remove ```.*``` blocks from description
-                return desc?.replace(/```[\s\S]*?```/g, '').trim();
-            })();
-
-            const type = (() => {
-                // split, remove surrounding quotes, and trim each type if it's a union type
-
-                let parsedType: string | string[] = prop.type.trim();
-
-                if (
-                    // types that include '|' but are not union types (e.g. generics like Omit<"a" | "b" | "c", "b">) should be left as-is
-                    prop.type.includes('|') &&
-                    // exclude generics
-                    !['Omit<', 'Exclude<', 'Record<'].some((generic) => prop.type.startsWith(generic))
-                ) {
-                    parsedType = parsedType.split('|').map((t) => t.replace(/['"]/g, '').trim());
-                }
-
-                return parsedType.length === 1 ? parsedType[0] : parsedType;
-            })();
-
-            return {
-                name,
-                description,
-                type,
-                default: defaultValue,
-                required: !prop.optional,
-            };
-        }) || []
+    const defaultValue = stripCompodocMarkup(
+        'jsdoctags' in prop ? prop.jsdoctags?.find((tag) => tag.tagName.escapedText === 'default')?.comment : undefined,
     );
+
+    const description = (() => {
+        const desc = 'rawdescription' in prop ? prop.rawdescription : undefined;
+
+        // remove ```.*``` blocks from description
+        return desc?.replace(/```[\s\S]*?```/g, '').trim();
+    })();
+
+    const type = (() => {
+        // split, remove surrounding quotes, and trim each type if it's a union type
+
+        let parsedType: string | string[] = prop.type.trim();
+
+        if (
+            // types that include '|' but are not union types (e.g. generics like Omit<"a" | "b" | "c", "b">) should be left as-is
+            prop.type.includes('|') &&
+            // exclude generics
+            !['Omit<', 'Exclude<', 'Record<'].some((generic) => prop.type.startsWith(generic))
+        ) {
+            parsedType = parsedType.split('|').map((t) => t.replace(/['"]/g, '').trim());
+        }
+
+        // check if primitive type
+        else if (['string', 'number', 'boolean', 'null', 'undefined'].includes(prop.type)) {
+            parsedType = prop.type;
+        } else {
+            // check if type is a type alias
+            parsedType = TYPEALIASES[prop.type] || parsedType;
+        }
+
+        return parsedType.length === 1 ? parsedType[0] : parsedType;
+    })();
+
+    return {
+        name: prop.name,
+        description,
+        type,
+        default: defaultValue,
+        required: !prop.optional,
+    };
 }
 
-export function writeMetaToFile(): Meta {
+function writeMetaToFile(): Meta {
     const meta = generateMeta();
+
     fs.writeFileSync(
         generatedMetaPath,
-        `import { Meta } from '@shared/types';\n\nexport const META: Meta = ` + JSON.stringify(meta, null, 4),
+        `import { Meta } from '@shared/types';\n\nexport const META: Meta = ` +
+            removeCodeQuotes(JSON.stringify(meta, null, 4)) +
+            ';',
     );
 
     execSync(`npx prettier --write "${generatedMetaPath}"`);
+
+    const size = (fs.statSync(generatedMetaPath).size / 1024).toFixed(2);
+    console.log(
+        `\n\x1b[32m✅ Generated component metadata at ${generatedMetaPath} (${size} KB) from .tmp/documentation.json 📄\x1b[0m\n`,
+    );
 
     return meta;
 }
 
 // if --write is provided, generate the routes once
 if (process.argv.includes('--write')) {
-    writeMetaToFile();
+    const meta = writeMetaToFile();
 
-    const size = (fs.statSync(generatedMetaPath).size / 1024).toFixed(2);
-    console.log(
-        `\n\x1b[32m✅ Generated component metadata at ${generatedMetaPath} (${size} KB) from .tmp/documentation.json 📄\x1b[0m\n`,
-    );
+    writeComponentDocs(meta.components);
+
+    writeRoutesToFile(meta.components);
 }
 
 // Simple JSDoc parser to extract tags and description
@@ -334,4 +407,36 @@ function jsDocParse(content: string) {
         console.error(error);
         return {};
     }
+}
+
+function writeComponentDocs(components: ComponentMeta[]): void {
+    execSync(`rm -rf projects/demo/src/generated && mkdir -p projects/demo/src/generated/component`);
+
+    components.forEach((component) =>
+        generateComponentDocs(component, settings[component.slug as keyof typeof settings]),
+    );
+}
+
+function writeRoutesToFile(components: ComponentMeta[]): void {
+    const routePath = `projects/demo/src/generated/routes.ts`;
+
+    const routesData: NavRoute[] = components
+        .filter((component) => component.phase)
+        .map((metadata) => ({
+            title: metadata.name,
+            path: metadata.slug,
+            data: { phase: metadata.phase },
+            loadComponent:
+                `>>() => import('../generated/component/${metadata.slug}').then((m) => m.${metadata.name}Page)<<` as any,
+        }));
+
+    fs.writeFileSync(
+        routePath,
+        `/** This file is auto-generated by .scripts/generate-docs.ts. Do not edit directly. Thanks! */
+     import { NavRoute } from '@shared/types';
+    
+    export const componentItems: NavRoute[] = ${removeCodeQuotes(JSON.stringify(routesData, null, 4))};`,
+    );
+
+    console.log(`\n\x1b[32m✅ Generated component routes at ${routePath} 📄\x1b[0m\n`);
 }

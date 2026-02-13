@@ -43,7 +43,12 @@ export interface AccordionSectionProps {
     disabled?: boolean;
 }
 
-/** A utility component representing a single section within an accordion. */
+/**
+ * A utility component representing a single section within an accordion.
+ *
+ * @name AccordionSection
+ * @phase Utility
+ */
 @Component({
     selector: 'ui-accordion-section',
     standalone: true,
