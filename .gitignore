@@ -48,6 +48,5 @@ nj-bspk-ui
 
 # Generated files
 *.tgz
-meta
 projects/demo/src/meta.ts
 projects/demo/src/generated/
