@@ -136,7 +136,7 @@ export const meta = ${JSON.stringify(component, null, 4)};
 
 export const COMPONENT_PAGE_OUTPUT_DIR = 'projects/demo/src/generated/component';
 
-export function generateComponentDocs(component: ComponentMeta, overrrides?: ComponentSettings): void {
+export function generateComponentDocs(component: ComponentMeta, overrides?: ComponentSettings): void {
     const outputPath = `${COMPONENT_PAGE_OUTPUT_DIR}/${component.slug}.ts`;
 
     const imports = new Set([
@@ -150,21 +150,21 @@ export function generateComponentDocs(component: ComponentMeta, overrrides?: Com
     let defaultCode = '';
 
     const missingRequired = component.inputs?.filter(
-        (prop) => prop.required && prop.type !== 'string' && !overrrides?.defaultInputs?.[prop.name],
+        (prop) => prop.required && prop.type !== 'string' && !overrides?.defaultInputs?.[prop.name],
     );
-
-    const noProps = !component.inputs || component.inputs.length === 0;
 
     const inputControlProps = component.inputs.filter((prop) => prop.name === 'checked' || prop.name === 'onChange');
 
     let skipReason = '';
+
     if (inputControlProps.length > 0)
         skipReason = `component has input props like checked or onChange which require handlers: ${inputControlProps.map((prop) => prop.name).join(', ')}.`;
 
     if (missingRequired && missingRequired.length > 0)
         skipReason = `component has required non-string inputs without default values: ${missingRequired.map((prop) => prop.name).join(', ')}.`;
 
-    if (component.hasContent) skipReason = 'component has ng-content and no default inputs provided.';
+    if (component.hasContent && !overrides?.ngContent)
+        skipReason = 'component has ng-content and no default inputs provided.';
 
     // if (noProps) skipReason = 'component has no props, so default example would be the same as basic component.';
 
@@ -182,16 +182,27 @@ export function generateComponentDocs(component: ComponentMeta, overrrides?: Com
 
         const generatedDefaultInputs = getDefaultInputs(component);
 
-        const defaultInputs = { ...generatedDefaultInputs, ...overrrides?.defaultInputs };
+        const defaultInputs = { ...generatedDefaultInputs, ...overrides?.defaultInputs };
 
         // Generate default code snippet with default inputs
         Object.entries(defaultInputs || {}).forEach(([name, value]) => {
-            const isString = typeof value === 'string' && /^\d+$/.test(value) === false;
+            const isString =
+                typeof value === 'string' && !['true', 'false'].includes(value) && /^\d+$/.test(value) === false;
 
             defaultPropsStr[name] = isString ? `${name}="${value}"` : `[${name}]="${value}"`;
         });
 
-        defaultCode = `<ui-${component?.slug}\n   ${Object.values(defaultPropsStr).join('\n   ')}\n />`;
+        defaultCode = `<ui-${component?.slug}\n  ${Object.values(defaultPropsStr).join('\n   ')}`;
+
+        if (overrides?.ngContent) {
+            let ngContent = '';
+            if (overrides.ngContent === 'string') ngContent = overrides.ngContent;
+            else if (typeof overrides.ngContent === 'object' && 'template' in overrides.ngContent) {
+                ngContent = overrides.ngContent.template;
+                overrides.ngContent.imports.forEach((imp) => imports.add(imp));
+            }
+            if (ngContent) defaultCode += `>${ngContent}\n</ui-${component?.slug}>`;
+        } else defaultCode += '\n/>';
     }
 
     if (defaultCode || component.css) {

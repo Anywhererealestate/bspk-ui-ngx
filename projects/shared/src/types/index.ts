@@ -25,10 +25,10 @@ export interface ComponentSettings<P extends Record<string, any> = Record<string
      *
      * @example
      *     defaultInputs = {
-     *         singleOpen: { value: true },
+     *         singleOpen: true,
      *     };
      */
-    defaultInputs: Record<string, { value: any; isString?: boolean }>;
+    defaultInputs: Record<string, any>;
     /**
      * @example
      *     ngContent = `
