@@ -21,7 +21,7 @@ export interface ControlFieldProps {
     helperText?: string;
     /** The trailing element of the label. */
     labelTrailing?: string;
-    /** Marks the field as required. ok? */
+    /** Marks the field as required. */
     required?: boolean;
 }
 
