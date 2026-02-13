@@ -11,13 +11,13 @@
  */
 
 import { execSync } from 'child_process';
-import { removeCodeQuotes, slugify } from '../utils';
+import { removeCodeQuotes, slugify } from './utils';
 import fs from 'fs';
 import path from 'path';
-import { ComponentMeta, ComponentMetaInput, Meta, NavRoute } from '../../projects/shared/src/types';
-import { documentation as compodocData } from '../../.tmp/documentation';
-import * as settings from '../../.tmp/component-settings';
-import { generateComponentDocs } from './component-doc';
+import { ComponentMeta, ComponentMetaInput, Meta, NavRoute } from '../projects/shared/src/types';
+import { documentation as compodocData } from '../.tmp/documentation';
+import * as settings from '../.tmp/component-settings';
+import { generateComponentDocs } from './meta/component-doc';
 
 // remove <p> and </p>\n from text
 const stripCompodocMarkup = (str?: string) => str?.replace(/<\/?p>/g, '').trim() || str;
@@ -224,7 +224,7 @@ function generateMeta(): Meta {
 
     commit = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
 
-    version = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json'), 'utf-8')).version || '';
+    version = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json'), 'utf-8')).version || '';
 
     return { components, version, hash: branch === 'main' ? commit : branch, interfaces: INTERFACES };
 }
