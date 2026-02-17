@@ -1,16 +1,19 @@
-import { Component, ElementRef, input, model, ViewChild } from '@angular/core';
+import { Component, ElementRef, input, model, OnDestroy, viewChild, ViewEncapsulation } from '@angular/core';
 import { UITxtDirective } from '@ui/txt';
 import { CommonProps } from '@ui/types/common';
+import { UISliderIntervalDots } from './slider-interval-dots';
 
 export type SliderValue = number | [number, number];
 
-export type SliderProps = Pick<CommonProps, 'disabled' | 'readOnly'> & {
+export interface SliderProps {
     /**
      * The label of the slider.
      *
      * @required
      */
     label: string;
+    disabled: CommonProps['disabled'];
+    readOnly: CommonProps['readOnly'];
     /**
      * The numerical value of the slider.
      *
@@ -61,11 +64,17 @@ export type SliderProps = Pick<CommonProps, 'disabled' | 'readOnly'> & {
      * @required
      */
     name: string;
-};
-
+}
+/**
+ * A control element that allows customers to select a value or adjust a setting by moving the handle along a horizontal
+ * track.
+ *
+ * @name Slider
+ * @phase Stable
+ */
 @Component({
     selector: 'ui-slider',
-    imports: [UITxtDirective],
+    imports: [UITxtDirective, UISliderIntervalDots],
     template: `
         <input [attr.name]="name() || null" type="hidden" [value]="hiddenInputValue" />
         <div data-top-labels>
@@ -85,12 +94,19 @@ export type SliderProps = Pick<CommonProps, 'disabled' | 'readOnly'> & {
                 (click)="handleTrackClick($event)"
                 (keydown)="handleTrackKeydown($event)"
                 role="slider"
-                [tabIndex]="disabled() ? -1 : 0"
+                [tabindex]="disabled() ? -1 : 0"
                 #sliderRef>
                 <div data-slider-background></div>
                 <div data-slider-fill [style]="sliderFillStyles"></div>
+                @if (marks()) {
+                    <ui-slider-interval-dots
+                        [min]="min()"
+                        [max]="max()"
+                        [step]="step() || 1"
+                        [value]="arrayValues ? arrayValues : singleValue">
+                    </ui-slider-interval-dots>
+                }
             </div>
-            <!-- Start knob (range only) -->
             @if (arrayValues) {
                 <div
                     data-slider-knob
@@ -102,11 +118,10 @@ export type SliderProps = Pick<CommonProps, 'disabled' | 'readOnly'> & {
                     [attr.aria-valuetext]="arrayValues[0]?.toString()"
                     [style.left]="'calc(' + valuePercents.percent0 + '% - 8px)'"
                     [tabIndex]="disabled() ? -1 : 0"
-                    (pointerdown)="handleKnobMouseDown(0)($event)"
-                    (keydown)="handleKnobKeyDown(0)($event)"></div>
+                    (mousedown)="handleKnobMouseDown(0)($event)"
+                    (keydown)="handleKnobKeyDown(0)($event)"
+                    tabindex="1"></div>
             }
-
-            <!-- End knob (always present) -->
             <div
                 data-slider-knob
                 role="slider"
@@ -118,7 +133,8 @@ export type SliderProps = Pick<CommonProps, 'disabled' | 'readOnly'> & {
                 [style.left]="'calc(' + valuePercents.percent1 + '% - 8px)'"
                 [tabIndex]="disabled() ? -1 : 0"
                 (pointerdown)="handleKnobMouseDown(arrayValues ? 1 : 0)($event)"
-                (keydown)="handleKnobKeyDown(arrayValues ? 1 : 0)($event)"></div>
+                (keydown)="handleKnobKeyDown(arrayValues ? 1 : 0)($event)"
+                tabindex="1"></div>
         </div>
         <div data-bottom-labels>
             <div ui-txt="body-small">
@@ -130,12 +146,15 @@ export type SliderProps = Pick<CommonProps, 'disabled' | 'readOnly'> & {
         </div>
     `,
     styleUrl: './slider.scss',
+    standalone: true,
+    encapsulation: ViewEncapsulation.None,
     host: {
         'data-bspk': 'slider',
         '[attr.data-readonly]': 'readOnly() || null',
     },
 })
-export class Slider {
+export class UISlider implements OnDestroy {
+    readonly sliderRef = viewChild('sliderRef', { read: ElementRef });
     readonly value = model<SliderProps['value']>(0);
 
     readonly disabled = input<SliderProps['disabled']>(false);
@@ -149,8 +168,6 @@ export class Slider {
     readonly formatNumber = input<SliderProps['formatNumber']>(undefined);
 
     private dragRef: number | null = null;
-
-    @ViewChild('sliderRef') sliderRef!: ElementRef;
 
     get arrayValues(): [number, number] | null {
         const value = this.value();
@@ -226,7 +243,7 @@ export class Slider {
         };
     }
 
-    handleTrackClick(event: PointerEvent) {
+    handleTrackClick(event: MouseEvent) {
         if (this.disabled() || this.readOnly()) return;
 
         const clickValue = this.getValueFromPosition(event.clientX);
@@ -239,7 +256,7 @@ export class Slider {
         if (rangeValues) {
             const [val0, val1] = rangeValues;
 
-            if (Math.abs(normalized - val0) < Math.abs(normalized - val1)) {
+            if (Math.abs(clickValue - val0) < Math.abs(clickValue - val1)) {
                 nextValue = [normalized, val1];
                 this.dragRef = 0;
             } else {
@@ -271,7 +288,7 @@ export class Slider {
         window.removeEventListener('mouseup', this.handleMouseUp);
     };
 
-    handleKnobMouseDown = (knobIndex: 0 | 1) => (event: PointerEvent) => {
+    handleKnobMouseDown = (knobIndex: 0 | 1) => (event: MouseEvent) => {
         if (this.disabled() || this.readOnly()) return;
         event.stopPropagation();
         this.dragRef = knobIndex;
@@ -305,8 +322,13 @@ export class Slider {
         this.value.set(nextValue);
     };
 
+    ngOnDestroy() {
+        window.removeEventListener('mousemove', this.handleMouseMove);
+        window.removeEventListener('mouseup', this.handleMouseUp);
+    }
+
     private getValueFromPosition(clientX: number): number {
-        const slider = this.sliderRef;
+        const slider = this.sliderRef();
         if (!slider) return this.min();
         const { left, width } = slider.nativeElement.getBoundingClientRect();
         let percent = (clientX - left) / width;
@@ -315,19 +337,11 @@ export class Slider {
     }
 
     private normalizeSliderValue(val: number) {
-        const clamp = (val: number) => Math.min(Math.max(val, this.min()), this.max());
+        const clamp = (value: number) => Math.min(Math.max(value, this.min()), this.max());
         let newValue = clamp(val);
 
         newValue = Math.round(newValue / (this.step() || 1)) * (this.step() || 1);
 
-        // Fix floating-point precision issues
-        newValue = parseFloat(newValue.toFixed(10));
-
         return clamp(newValue);
-    }
-
-    ngOnDestroy() {
-        window.removeEventListener('mousemove', this.handleMouseMove);
-        window.removeEventListener('mouseup', this.handleMouseUp);
     }
 }

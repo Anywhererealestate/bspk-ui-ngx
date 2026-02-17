@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { Component, signal } from '@angular/core';
-import { Slider } from './slider';
+import { UISlider } from './slider';
 
 @Component({
     selector: 'ui-slider-example',
     standalone: true,
-    imports: [CommonModule, Slider],
+    imports: [UISlider],
     template: `
         <h4>Default</h4>
         <ui-slider
