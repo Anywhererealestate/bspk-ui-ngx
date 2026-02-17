@@ -36,6 +36,8 @@ export interface TabOption {
      * The value of the tab sent to valueChange when selected.
      *
      * If not provided, the label will be used as the value.
+     *
+     * @type string
      */
     value: string;
     /**
