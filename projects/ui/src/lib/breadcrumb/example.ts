@@ -16,7 +16,7 @@ import { UIBreadcrumb, BreadcrumbItem } from './';
         <ui-breadcrumb ariaLabel="Standard breadcrumb with 5 items" [items]="fiveItems" />
 
         <h4>5 Items, variant = subtle</h4>
-        <ui-breadcrumb ariaLabel="Standard breadcrumb with 5 items" [items]="fiveItems" [variant]="'subtle'" />
+        <ui-breadcrumb ariaLabel="breadcrumb with 5 items - variant = subtle" [items]="fiveItems" [variant]="'subtle'" />
 
         <h4>5 Items, variant = subtle-inverse</h4>
         <p>
