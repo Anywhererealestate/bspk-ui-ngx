@@ -9,9 +9,11 @@ import {
     signal,
     OnInit,
     OnChanges,
+    inject,
+    DOCUMENT,
 } from '@angular/core';
 import { format, startOfToday, parse } from 'date-fns';
-import { AsSignal, CommonProps } from '../../types/common';
+import { AsSignal, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button';
 import { UICalendar } from '../calendar';
 import { UIFloatingDirective } from '../floating';
@@ -25,18 +27,7 @@ function parseDate(value?: string): Date | undefined {
     return isNaN(parsed.getTime()) ? undefined : parsed;
 }
 
-export interface DatePickerProps extends Pick<
-    CommonProps,
-    | 'ariaDescribedBy'
-    | 'ariaErrorMessage'
-    | 'ariaLabel'
-    | 'disabled'
-    | 'id'
-    | 'invalid'
-    | 'name'
-    | 'readOnly'
-    | 'required'
-> {
+export interface DatePickerProps extends FieldControlProps<Date | string | undefined> {
     /**
      * If the calendar should close when a date is selected.
      *
@@ -60,7 +51,7 @@ export interface DatePickerProps extends Pick<
     /**
      * The size of the element.
      *
-     * @default 'medium'
+     * @default medium
      */
     size?: 'large' | 'medium' | 'small';
 }
@@ -88,6 +79,7 @@ export interface DatePickerProps extends Pick<
                 #reference
                 [ariaDescribedBy]="ariaDescribedBy()"
                 [ariaErrorMessage]="ariaErrorMessage()"
+                [ariaLabelledBy]="ariaLabelledBy()"
                 [ariaLabel]="ariaLabel()"
                 [disabled]="disabled()"
                 [id]="id()"
@@ -99,10 +91,19 @@ export interface DatePickerProps extends Pick<
                 [showClearButton]="false"
                 [size]="size() || 'medium'"
                 [value]="internalValueAsString"
-                (valueChange)="onInputChange($event)"
-                [trailing]="calendarButton"></ui-input>
+                (valueChange)="onInputChange($event)">
+                @if (!disabled() && !readOnly()) {
+                    <ui-button
+                        data-trailing
+                        [icon]="IconEvent"
+                        [iconOnly]="true"
+                        label="Toggle calendar"
+                        variant="tertiary"
+                        (onClick)="toggleCalendar()"></ui-button>
+                }
+            </ui-input>
 
-            <ng-template #calendarButton>
+            <!-- <ng-template #calendarButton>
                 @if (!disabled() && !readOnly()) {
                     <ui-button
                         [icon]="IconEvent"
@@ -111,7 +112,7 @@ export interface DatePickerProps extends Pick<
                         variant="tertiary"
                         (onClick)="toggleCalendar()"></ui-button>
                 }
-            </ng-template>
+            </ng-template> -->
             @if (calendarVisible()) {
                 <div
                     aria-label="Choose Date"
@@ -152,7 +153,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
     readonly ariaLabel = input<DatePickerProps['ariaLabel']>('Enter or choose date');
     readonly ariaDescribedBy = input<DatePickerProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<DatePickerProps['ariaErrorMessage']>(undefined);
-
+    readonly ariaLabelledBy = input<DatePickerProps['ariaLabelledBy']>(undefined);
     // State
     readonly calendarVisible = signal(false);
     readonly floatingStyles = signal<Record<string, string>>({});
@@ -161,6 +162,8 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
     readonly internalValue = signal<Date | string | undefined>(this.value());
 
     IconEvent = IconEvent;
+
+    private document = inject(DOCUMENT);
 
     get calendarId() {
         return `${this.id() || 'date-picker'}-calendar`;
@@ -172,7 +175,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
 
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
-        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+        return parseInt(getComputedStyle(this.document.documentElement).getPropertyValue('--spacing-sizing-01'));
     }
 
     get internalValueAsString(): string {

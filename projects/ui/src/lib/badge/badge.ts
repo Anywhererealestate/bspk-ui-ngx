@@ -58,10 +58,9 @@ export interface BadgeProps {
             [attr.data-attachment]="hasProjectedContent ? true : undefined">
             {{ typeof count() === 'number' && count()! > 99 ? '99+' : count() }}
         </sup>`,
-    styleUrls: ['./badge.scss'],
+    styleUrl: './badge.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
-        'data-bspk': 'badge-wrapper',
         'data-attachment-wrapper': '',
     },
 })

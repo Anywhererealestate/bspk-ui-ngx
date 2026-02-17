@@ -10,6 +10,7 @@ import {
     inject,
     EnvironmentInjector,
     ElementRef,
+    DOCUMENT,
 } from '@angular/core';
 import { AsSignal, CommonProps } from '../../types/common';
 import { ColorVariant } from '../../utils/color-variants';
@@ -27,7 +28,9 @@ export type SizeVariant =
     | 'xxxx-large'
     | 'xxxxx-large';
 
-export interface AvatarProps extends Pick<CommonProps, 'disabled'> {
+export interface AvatarProps {
+    disabled?: CommonProps['disabled'];
+
     /**
      * The name of the person or entity represented by the avatar. This is used for accessibility purposes.
      *
@@ -88,17 +91,16 @@ export interface AvatarProps extends Pick<CommonProps, 'disabled'> {
  * An avatar is a visual representation of a user or entity. It can be used to display an initials, icon, or image.
  *
  * @example
- *     <Avatar
- *     color="blue"
- *     showIcon
- *     image="/avatar-01.png"
- *     initials="AR"
- *     name="Andre Giant"
- *     size="large"
- *     disabled={false}
- *     onClick={() => action('Launch avatar popover')}
- *     showIcon={false}
- *     hideTooltip={true}
+ *     <ui-avatar
+ *     [color]="'blue'"
+ *     [image]="'/avatar-01.png'"
+ *     [initials]="'AR'"
+ *     [name]="'Andre Giant'"
+ *     [size]="'large'"
+ *     [disabled]="false"
+ *     (onClick)="action('Launch avatar popover')"
+ *     [showIcon]="false"
+ *     [hideTooltip]="true"
  *     />;
  *
  * @exampleDescription The image if provided is displayed first, followed by the icon if provided, and finally the initials. If no initials are provided, the first two letters of the name will be used as initials.
@@ -121,7 +123,7 @@ export interface AvatarProps extends Pick<CommonProps, 'disabled'> {
                 {{ computedInitials }}
             </span>
         }`,
-    styleUrls: ['./avatar.scss'],
+    styleUrl: './avatar.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
         'data-bspk': 'avatar',
@@ -144,7 +146,7 @@ export class UIAvatar implements AfterViewInit, AsSignal<AvatarProps> {
     readonly size = input<AvatarProps['size']>('small');
     readonly color = input<AvatarProps['color']>('grey');
     readonly initials = input<AvatarProps['initials']>();
-    readonly showIcon = input<AvatarProps['showIcon']>(false);
+    readonly showIcon = input<AvatarProps['showIcon']>(true);
     readonly image = input<AvatarProps['image']>();
     readonly hideTooltip = input<AvatarProps['hideTooltip']>(false);
     readonly disabled = input<AvatarProps['disabled']>(false);
@@ -152,6 +154,7 @@ export class UIAvatar implements AfterViewInit, AsSignal<AvatarProps> {
     private renderer = inject(Renderer2);
     private env = inject(EnvironmentInjector);
     private host = inject(ElementRef<HTMLElement>);
+    private document = inject(DOCUMENT);
 
     private tooltipUtility: TooltipUtility | undefined;
 
@@ -172,11 +175,16 @@ export class UIAvatar implements AfterViewInit, AsSignal<AvatarProps> {
 
     ngAfterViewInit() {
         if (!this.hideTooltip()) {
-            this.tooltipUtility = new TooltipUtility(this.renderer, this.env, {
-                label: this.name(),
-                reference: this.host.nativeElement,
-                placement: 'top',
-            });
+            this.tooltipUtility = new TooltipUtility(
+                this.renderer,
+                this.env,
+                {
+                    label: this.name(),
+                    reference: this.host.nativeElement,
+                    placement: 'top',
+                },
+                this.document,
+            );
         }
     }
 

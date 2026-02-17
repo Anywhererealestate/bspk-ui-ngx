@@ -9,6 +9,8 @@ import {
     viewChild,
     AfterViewInit,
     OnDestroy,
+    inject,
+    DOCUMENT,
 } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import { keydownHandler } from '../../utils/keydown-handler';
@@ -24,6 +26,11 @@ import { UIMenu } from '../menu';
 import { UIOutsideClickDirective } from '../outside-click';
 import { BreadcrumbItem } from './utils';
 
+/**
+ * Props for the BreadcrumbDropdown component.
+ *
+ * @ignore
+ */
 export interface BreadcrumbDropdownProps extends ScrollLimitStyleProps {
     items: BreadcrumbItem[];
     id?: string;
@@ -32,8 +39,7 @@ export interface BreadcrumbDropdownProps extends ScrollLimitStyleProps {
 /**
  * The BreadcrumbDropdown component is used to display a dropdown menu within a breadcrumb navigation.
  *
- * @name BreadcrumbDropdown
- * @parent Breadcrumb
+ * @ignore
  */
 @Component({
     selector: 'ui-breadcrumb-dropdown',
@@ -120,9 +126,11 @@ export class UIBreadcrumbDropdown implements AsSignal<BreadcrumbDropdownProps>, 
         };
     });
 
+    private document = inject(DOCUMENT);
+
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
-        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+        return parseInt(getComputedStyle(this.document.documentElement).getPropertyValue('--spacing-sizing-01'));
     }
 
     get referenceEl() {

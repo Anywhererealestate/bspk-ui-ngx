@@ -7,7 +7,8 @@ import {
     ChangeDetectionStrategy,
     ViewEncapsulation,
     input,
-    viewChild,
+    OnInit,
+    inject,
 } from '@angular/core';
 
 import { BspkIcon } from '../../types/bspk-icon';
@@ -20,10 +21,20 @@ export type ButtonWidth = 'fill' | 'hug';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 
-export interface ButtonProps extends Pick<
-    CommonProps,
-    'ariaControls' | 'ariaExpanded' | 'ariaHaspopup' | 'ariaLabel' | 'class' | 'disabled' | 'owner' | 'style'
-> {
+export interface ButtonProps {
+    ariaControls?: CommonProps['ariaControls'];
+    ariaExpanded?: CommonProps['ariaExpanded'];
+    ariaHaspopup?: CommonProps['ariaHaspopup'];
+    ariaLabel?: CommonProps['ariaLabel'];
+    class?: CommonProps['class'];
+    disabled?: CommonProps['disabled'];
+    owner?: CommonProps['owner'];
+    style?: CommonProps['style'];
+    /**
+     * The type of the button element.
+     *
+     * @default button
+     */
     type?: 'button' | 'reset' | 'submit';
     /**
      * The label of the button.
@@ -82,15 +93,13 @@ export interface ButtonProps extends Pick<
  * A clickable component that allows users to perform an action, make a choice or trigger a change in state.
  *
  * @example
- *     ```html
  *     <bspk-button
- *       label="Click Me"
- *       size="medium"
- *       variant="primary"
- *       (onClick)="handleClick($event)"
- *       icon="iconTemplate">
+ *     label="Click Me"
+ *     size="medium"
+ *     variant="primary"
+ *     (onClick)="handleClick($event)"
+ *     icon="iconTemplate">
  *     </bspk-button>
- *     ```;
  *
  * @name Button
  * @phase Dev
@@ -132,7 +141,7 @@ export interface ButtonProps extends Pick<
         </ng-content>
         <span [attr.aria-hidden]="true" [attr.data-touch-target]="true"></span>
     </button>`,
-    styleUrls: ['./button.scss'],
+    styleUrl: './button.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, UIIcon, UITooltipDirective],
     encapsulation: ViewEncapsulation.None,
@@ -140,7 +149,7 @@ export interface ButtonProps extends Pick<
         style: 'display: contents;',
     },
 })
-export class UIButton implements AsSignal<ButtonProps> {
+export class UIButton implements AsSignal<ButtonProps>, OnInit {
     /** Event emitted when the button is clicked. */
     @Output() onClick = new EventEmitter<MouseEvent>();
 
@@ -155,8 +164,6 @@ export class UIButton implements AsSignal<ButtonProps> {
 
     /** Event emitted when mouse leaves the button. */
     @Output() onMouseLeave = new EventEmitter<MouseEvent>();
-
-    readonly buttonElement = viewChild.required<ElementRef<HTMLButtonElement>>('buttonElement');
 
     readonly style = input<ButtonProps['style']>();
     readonly label = input.required<ButtonProps['label']>();
@@ -176,8 +183,10 @@ export class UIButton implements AsSignal<ButtonProps> {
     readonly owner = input<ButtonProps['owner']>();
     readonly class = input<ButtonProps['class']>();
 
+    host = inject<ElementRef<HTMLElement>>(ElementRef);
+
     get nativeElement(): HTMLButtonElement {
-        return this.buttonElement().nativeElement!;
+        return this.host.nativeElement.firstElementChild as HTMLButtonElement;
     }
 
     get shouldShowLabel(): boolean {
@@ -196,6 +205,15 @@ export class UIButton implements AsSignal<ButtonProps> {
         }
 
         return classes.join(' ');
+    }
+
+    ngOnInit() {
+        // Pass through data- attributes from host to native button element
+        this.host.nativeElement.getAttributeNames().forEach((attr) => {
+            if (attr.startsWith('data-')) {
+                this.nativeElement.setAttribute(attr, this.host.nativeElement.getAttribute(attr)!);
+            }
+        });
     }
 
     handleClick(event: MouseEvent): void {

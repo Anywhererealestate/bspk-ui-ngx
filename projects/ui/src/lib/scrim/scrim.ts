@@ -1,7 +1,9 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
 import { AsSignal, CommonProps } from '../../types/common';
 
-export interface ScrimProps extends Pick<CommonProps, 'owner'> {
+export interface ScrimProps {
+    owner?: CommonProps['owner'];
+
     /**
      * Whether the Scrim should be visible.
      *
@@ -23,7 +25,7 @@ export interface ScrimProps extends Pick<CommonProps, 'owner'> {
     selector: 'ui-scrim',
     standalone: true,
     template: '',
-    styleUrls: ['./scrim.scss'],
+    styleUrl: './scrim.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
         'aria-hidden': 'true',

@@ -34,8 +34,6 @@ export type AlertVariant = 'error' | 'informational' | 'success' | 'warning';
 /** Sets a ref to the given element. */
 export type SetRef<T> = (instance: T | null) => void;
 
-export interface DataProps extends Record<`data-${string}`, string> {}
-
 export type ButtonSize = 'large' | 'medium' | 'small' | 'x-small';
 
 export interface CallToActionButton {
@@ -56,14 +54,6 @@ export interface CallToActionButton {
 }
 
 export interface CommonProps {
-    /**
-     * Indicates that the element is in an invalid state and displays the error theme.
-     *
-     * If set to true, an accompanying error message should be provided.
-     *
-     * @default false
-     */
-    invalid?: boolean;
     /** The id of the element. If not provided one will be generated. */
     id?: string;
     /**
@@ -96,12 +86,6 @@ export interface CommonProps {
      * @default false
      */
     readOnly?: boolean;
-    /**
-     * The [name](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name) of the control.
-     *
-     * @required
-     */
-    name: string;
     /**
      * The value of the control.
      *
@@ -175,37 +159,37 @@ export interface CommonProps {
     class?: string;
 }
 
-export interface FieldControlProps<ValueType = string> extends Pick<
-    CommonProps,
-    | 'ariaDescribedBy'
-    | 'ariaErrorMessage'
-    | 'ariaLabel'
-    | 'ariaLabelledBy'
-    | 'disabled'
-    | 'id'
-    | 'invalid'
-    | 'name'
-    | 'readOnly'
-    | 'required'
-> {
+export interface FieldControlProps<ValueType = string> {
+    ariaDescribedBy?: CommonProps['ariaDescribedBy'];
+    ariaErrorMessage?: CommonProps['ariaErrorMessage'];
+    ariaLabel?: CommonProps['ariaLabel'];
+    ariaLabelledBy?: CommonProps['ariaLabelledBy'];
+    disabled?: CommonProps['disabled'];
+    id?: CommonProps['id'];
+    readOnly?: CommonProps['readOnly'];
+    required?: CommonProps['required'];
+
+    /**
+     * The [name](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#name) of the control.
+     *
+     * @required
+     */
+    name: string;
+    /**
+     * Indicates that the element is in an invalid state and displays the error theme.
+     *
+     * If set to true, an accompanying error message should be provided.
+     *
+     * @default false
+     */
+    invalid?: boolean;
     /**
      * The value of the field control.
      *
      * @required
      */
-    value: ValueType | undefined;
+    value?: ValueType | undefined;
 }
-
-export type Brand =
-    | 'anywhere'
-    | 'better-homes-gardens'
-    | 'cartus'
-    | 'century-21'
-    | 'coldwell-banker'
-    | 'corcoran'
-    | 'denali-boss'
-    | 'era'
-    | 'sothebys';
 
 // All the WAI-ARIA 1.1 role attribute values from https://www.w3.org/TR/wai-aria-1.1/#role_definitions
 export type AriaRole =

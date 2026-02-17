@@ -10,6 +10,9 @@ import {
     viewChild,
     AfterViewInit,
     OnDestroy,
+    output,
+    DOCUMENT,
+    inject,
 } from '@angular/core';
 import { AsSignal, CommonProps, FieldControlProps } from '../../types/common';
 import { keydownHandler } from '../../utils/keydown-handler';
@@ -22,13 +25,17 @@ import { UIListItem } from '../list-item/list-item';
 import { UIMenu } from '../menu/menu';
 import { UIOutsideClickDirective } from '../outside-click';
 
-export interface SelectOption extends Pick<CommonProps, 'disabled'> {
+export interface SelectOption {
+    disabled?: CommonProps['disabled'];
+
     label: string;
     value: string;
 }
 export type SelectItem = SelectOption & { id: string; ariaLabel?: string; ariaSelected?: boolean };
 
-export interface SelectProps extends Pick<CommonProps, 'size'>, FieldControlProps<string> {
+export interface SelectProps extends FieldControlProps<string> {
+    size?: CommonProps['size'];
+
     /**
      * Array of options to display in the select
      *
@@ -165,6 +172,8 @@ export interface SelectProps extends Pick<CommonProps, 'size'>, FieldControlProp
 export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy {
     keyNavigation = new KeyNavigationUtility();
 
+    valueChange = output<string>();
+
     readonly value = model<SelectProps['value']>('');
     readonly name = input.required<SelectProps['name']>();
 
@@ -178,6 +187,7 @@ export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy
     readonly menuWidth = input<SelectProps['menuWidth']>(undefined);
     readonly ariaDescribedBy = input<SelectProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<SelectProps['ariaErrorMessage']>(undefined);
+    readonly ariaLabelledBy = input<SelectProps['ariaLabelledBy']>(undefined);
     readonly items = input.required<SelectProps['items']>();
 
     readonly reference = viewChild('reference', { read: ElementRef });
@@ -204,9 +214,17 @@ export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy
         };
     });
 
+    private document = inject(DOCUMENT);
+
+    constructor() {
+        this.value.subscribe((val) => {
+            this.valueChange.emit(val || '');
+        });
+    }
+
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
-        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+        return parseInt(getComputedStyle(this.document.documentElement).getPropertyValue('--spacing-sizing-01'));
     }
 
     get selectedItem(): SelectItem | undefined {

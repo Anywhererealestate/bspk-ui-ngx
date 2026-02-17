@@ -10,7 +10,10 @@ import { UITxtDirective } from '../txt';
 import { UIBreadcrumbDropdown } from './breadcrumb-dropdown';
 import { BreadcrumbItem } from './utils';
 
-export interface BreadcrumbProps extends Pick<CommonProps, 'ariaLabel' | 'id'>, ScrollLimitStyleProps {
+export interface BreadcrumbProps extends ScrollLimitStyleProps {
+    ariaLabel?: CommonProps['ariaLabel'];
+    id?: CommonProps['id'];
+
     /**
      * The array of breadcrumb items.
      *
@@ -40,24 +43,22 @@ export interface BreadcrumbProps extends Pick<CommonProps, 'ariaLabel' | 'id'>, 
  * Used to indicate the current page's location within a navigational hierarchy.
  *
  * @example
- *     ```html
  *     <ui-breadcrumb
- *         [items]="[
- *             { label: 'Brioche', href: '#brioche' },
- *             { label: 'Whole Wheat', href: '#whole-wheat' },
- *             { label: 'Sourdough', href: '#sourdough' },
- *             { label: 'Rye', href: '#rye' },
- *             { label: 'Multigrain', href: '#multigrain' },
- *             { label: 'Baguette', href: '#baguette' },
- *             { label: 'Focaccia', href: '#focaccia' },
- *             { label: 'Ciabatta', href: '#ciabatta' },
- *             { label: 'Pita', href: '#pita' },
- *             { label: 'Naan', href: '#naan' },
- *             { label: 'Flatbread', href: '#flatbread' }
- *         ]"
- *         [scrollLimit]="5">
+ *     [items]="[
+ *     { label: 'Brioche', href: '#brioche' },
+ *     { label: 'Whole Wheat', href: '#whole-wheat' },
+ *     { label: 'Sourdough', href: '#sourdough' },
+ *     { label: 'Rye', href: '#rye' },
+ *     { label: 'Multigrain', href: '#multigrain' },
+ *     { label: 'Baguette', href: '#baguette' },
+ *     { label: 'Focaccia', href: '#focaccia' },
+ *     { label: 'Ciabatta', href: '#ciabatta' },
+ *     { label: 'Pita', href: '#pita' },
+ *     { label: 'Naan', href: '#naan' },
+ *     { label: 'Flatbread', href: '#flatbread' }
+ *     ]"
+ *     [scrollLimit]="5">
  *     </ui-breadcrumb>
- *     ```;
  *
  * @name Breadcrumb
  * @phase Dev
@@ -68,7 +69,7 @@ export interface BreadcrumbProps extends Pick<CommonProps, 'ariaLabel' | 'id'>, 
         <nav [attr.aria-label]="ariaLabel() || 'Breadcrumb'" [attr.data-bspk]="'breadcrumb'" [attr.id]="id()">
             <ol>
                 <li>
-                    <a ui-link [href]="firstItem().href">{{ firstItem().label }}</a>
+                    <a ui-link size="small" variant="subtle" [href]="firstItem().href">{{ firstItem().label }}</a>
                     <icon-chevron-right aria-hidden="true" width="24" />
                 </li>
                 @if (items().length > 5) {
@@ -78,18 +79,18 @@ export interface BreadcrumbProps extends Pick<CommonProps, 'ariaLabel' | 'id'>, 
                 } @else {
                     @for (item of middleItems(); track item.href) {
                         <li>
-                            <a ui-link [href]="item.href">{{ item.label }}</a>
+                            <a ui-link size="small" variant="subtle" [href]="item.href">{{ item.label }}</a>
                             <icon-chevron-right aria-hidden="true" width="24" />
                         </li>
                     }
                 }
-                <li [attr.aria-current]="'page'" [ui-txt]="'body-base'">
+                <li [attr.aria-current]="'page'" [ui-txt]="'labels-small'">
                     {{ lastItem().label }}
                 </li>
             </ol>
         </nav>
     }`,
-    styleUrls: ['./breadcrumb.scss'],
+    styleUrl: './breadcrumb.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [CommonModule, UITxtDirective, UIBreadcrumbDropdown, IconChevronRight, UILinkDirective],
     encapsulation: ViewEncapsulation.None,

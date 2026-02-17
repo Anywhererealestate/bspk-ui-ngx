@@ -5,14 +5,17 @@ import { AsSignal, CommonProps } from '../../types/common';
 import { UIIcon } from '../icon';
 import { UITooltipDirective } from '../tooltip';
 
-export type FabSize = 'medium' | 'small';
+export type FabSize = 'medium' | 'x-large';
 export type FabVariant = 'neutral' | 'primary' | 'secondary';
 export type FabPlacement = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right';
 export type FabContainer = 'local' | 'page';
 
 export type FabIconType = BspkIcon;
 
-export interface FabProps extends Pick<CommonProps, 'ariaLabel' | 'owner' | 'style'> {
+export interface FabProps {
+    ariaLabel?: CommonProps['ariaLabel'];
+    style?: CommonProps['style'];
+
     /** The label of the button. */
     label?: string;
     /**
@@ -24,7 +27,7 @@ export interface FabProps extends Pick<CommonProps, 'ariaLabel' | 'owner' | 'sty
     /**
      * The size of the button.
      *
-     * @default small
+     * @default medium
      */
     size?: FabSize;
     /**
@@ -63,12 +66,10 @@ export interface FabProps extends Pick<CommonProps, 'ariaLabel' | 'owner' | 'sty
  * bottom right of a screen.
  *
  * @example
- *     ```html
  *     <ui-fab
- *         label="Floating Action Button"
- *         [icon]="iconCloud"
- *         (onClick)="handleClick()" />
- *     ```;
+ *     label="Floating Action Button"
+ *     [icon]="iconCloud"
+ *     (onClick)="handleClick()" />
  *
  * @name Fab
  * @phase Dev
@@ -134,7 +135,7 @@ export class UIFab implements AsSignal<FabProps> {
     readonly label = input<FabProps['label']>('');
     readonly icon = input<FabProps['icon']>();
     readonly tooltip = input<FabProps['tooltip']>();
-    readonly size = input<FabProps['size']>('small');
+    readonly size = input<FabProps['size']>('medium');
     readonly variant = input<FabProps['variant']>('primary');
     readonly placement = input<FabProps['placement']>('bottom-right');
     readonly container = input<FabProps['container']>('local');

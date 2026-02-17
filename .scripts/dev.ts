@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { generatedMetaPath, writeMetaToFile } from './generate-meta';
-import { generateComponentRoutes, getExamples } from './generate-component-routes';
+import { execSync } from 'child_process';
 
 console.log('\x1b[33mStarting dev environment with live metadata and route generation...\x1b[0m');
 
@@ -10,64 +9,56 @@ const uiSrcPath = path.join(__dirname, '../projects/ui/src');
 
 console.log('\x1b[33mWatching for changes to regenerate component metadata...\x1b[0m');
 
-const generateMetaScriptPath = path.join(__dirname, 'generate-meta.ts');
-const generateRoutesScriptPath = path.join(__dirname, 'generate-component-routes.ts');
+const generateMetaScriptPath = path.join(__dirname, 'meta.ts');
 
 let lastEvent = {
     filename: '',
     eventType: '',
 };
 let writeTimeout: ReturnType<typeof setTimeout> = setTimeout(() => {}, 0);
-let previousExamples = getExamples();
 
-[uiSrcPath, generateMetaScriptPath, generateRoutesScriptPath].forEach((proj) => {
+const getComponentSlugs = () =>
+    fs.readdirSync(uiSrcPath).filter((file) => fs.statSync(path.join(uiSrcPath, file)).isDirectory());
+
+let previousComponents: string[] = getComponentSlugs();
+
+[uiSrcPath, generateMetaScriptPath].forEach((proj) => {
     fs.watch(proj, { recursive: true }, (eventType, filename) => {
-        const nextExamples = getExamples();
+        const nextComponents: string[] = getComponentSlugs();
 
-        const hasExampleChanges = previousExamples.join(',') !== nextExamples.join(',');
-
-        console.log({
-            eventType,
-            filename,
-            hasExampleChanges,
-        });
+        const hasComponentChanges = previousComponents.join(',') !== nextComponents.join(',');
 
         if (
             !filename ||
             filename === 'meta.ts' ||
             filename === 'generated.ts' ||
             (lastEvent.filename === filename && lastEvent.eventType === eventType) ||
-            // no example changes
-            !hasExampleChanges
+            // no component changes
+            !hasComponentChanges
         )
             return;
 
         clearTimeout(writeTimeout);
 
         writeTimeout = setTimeout(() => {
-            const meta = writeMetaToFile(true);
+            execSync(`npm run meta f`, { stdio: 'inherit' });
 
             lastEvent = { filename, eventType };
 
-            console.log(
-                `\n\x1b[32m✅ Regenerated component metadata at ${generatedMetaPath} ${eventType} on ${filename} 📄\x1b[0m\n`,
-            );
+            if (hasComponentChanges) {
+                const newComponents = nextComponents.filter((ex) => !previousComponents.includes(ex));
+                const removedComponents = previousComponents.filter((ex) => !nextComponents.includes(ex));
 
-            if (hasExampleChanges) {
-                generateComponentRoutes(meta);
+                console.log(`\n\x1b[33m🔄 Detected change to components, regenerating component routes...\x1b[0m`);
 
-                const newExamples = nextExamples.filter((ex) => !previousExamples.includes(ex));
-                const removedExamples = previousExamples.filter((ex) => !nextExamples.includes(ex));
+                if (newComponents.length)
+                    console.log(`\x1b[32m➕ New components added: ${newComponents.join(', ')}\x1b[0m`);
 
-                console.log(`\n\x1b[33m🔄 Detected change to examples, regenerating component routes...\x1b[0m`);
-
-                if (newExamples.length) console.log(`\x1b[32m➕ New examples added: ${newExamples.join(', ')}\x1b[0m`);
-
-                if (removedExamples.length)
-                    console.log(`\x1b[31m➖ Examples removed: ${removedExamples.join(', ')}\x1b[0m`);
+                if (removedComponents.length)
+                    console.log(`\x1b[31m➖ Components removed: ${removedComponents.join(', ')}\x1b[0m`);
             }
 
-            previousExamples = nextExamples;
+            previousComponents = nextComponents;
         }, 100);
     });
 });

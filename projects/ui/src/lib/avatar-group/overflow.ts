@@ -1,11 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, viewChild, ElementRef, ViewEncapsulation, model } from '@angular/core';
+import { Component, input, viewChild, ElementRef, ViewEncapsulation, model, DOCUMENT, inject } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import { UIAvatar, AvatarProps } from '../avatar/avatar';
 import { UIFloatingDirective } from '../floating';
 import { UIListItem } from '../list-item/list-item';
 import { UIMenu } from '../menu/menu';
 
+/**
+ * Props for the AvatarGroupOverflow component.
+ *
+ * @ignore
+ */
 export interface AvatarGroupOverflowProps {
     /**
      * The unique identifier for the overflow menu.
@@ -47,7 +52,11 @@ export interface AvatarGroupOverflowProps {
     size?: AvatarProps['size'];
 }
 
-/** A component to display overflow avatars in an avatar group. */
+/**
+ * A component to display overflow avatars in an avatar group.
+ *
+ * @ignore
+ */
 @Component({
     selector: 'ui-avatar-group-overflow',
     standalone: true,
@@ -112,9 +121,11 @@ export class UIAvatarGroupOverflow implements AsSignal<AvatarGroupOverflowProps>
     readonly menuReference = input.required<AvatarGroupOverflowProps['menuReference']>();
     readonly items = input.required<AvatarGroupOverflowProps['items']>();
 
+    private document = inject(DOCUMENT);
+
     get offset() {
         // Reads the CSS variable value at runtime, offsetOptions requires a number
-        return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--spacing-sizing-01'));
+        return parseInt(getComputedStyle(this.document.documentElement).getPropertyValue('--spacing-sizing-01'));
     }
 
     get maxMenuHeight() {

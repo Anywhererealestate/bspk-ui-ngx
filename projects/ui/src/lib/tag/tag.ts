@@ -43,14 +43,13 @@ export interface TagProps {
         @if (variant() === 'corner-wrap') {
             <div data-triangle></div>
         }`,
-    styleUrls: ['./tag.scss'],
+    styleUrl: './tag.scss',
     encapsulation: ViewEncapsulation.None,
     host: {
         'data-bspk': 'tag',
         '[attr.data-color]': 'color()',
         '[attr.data-size]': 'size()',
         '[attr.data-variant]': 'variant()',
-        style: 'cursor: pointer;',
     },
 })
 export class UITag implements AsSignal<TagProps> {

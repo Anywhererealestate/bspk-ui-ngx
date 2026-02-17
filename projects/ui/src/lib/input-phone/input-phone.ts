@@ -11,11 +11,13 @@ import {
     AfterViewInit,
     OnDestroy,
     effect,
+    output,
+    OnInit,
 } from '@angular/core';
 import { getCountryCallingCode, AsYouType } from 'libphonenumber-js';
 import { BspkIcon } from '../../types/bspk-icon';
 import { AsSignal, FieldControlProps } from '../../types/common';
-import { countryCodeData, countryCodes, SupportedCountryCode } from '../../utils/country-codes';
+import { countryCodeData, countryCodes, SupportedCountryCode, guessUserCountryCode } from '../../utils/country-codes';
 import { uniqueId } from '../../utils/random';
 import { scrollLimitStyle, ScrollLimitStyleProps } from '../../utils/scroll-limit-style';
 import { sendAriaLiveMessage } from '../../utils/send-aria-live-message';
@@ -60,8 +62,7 @@ export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitS
      */
     initialCountryCode?: SupportedCountryCode;
     /**
-     * Disables formatting of the phone number input in the UI. values returned by `valueChange` are always
-     * unformatted.
+     * Disables formatting of the phone number input in the UI. values returned by `valueChange` are always unformatted.
      *
      * @type boolean
      */
@@ -94,7 +95,7 @@ export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitS
  *     </div>
  *
  * @name InputPhone
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-input-phone',
@@ -126,9 +127,10 @@ export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitS
             [required]="required() || false"
             [placeholder]="''"
             [value]="value()"
-            (valueChange)="onValueChange($event)"
+            (valueChange)="handleValueChange($event)"
             [ariaLabel]="ariaLabel() || 'Phone number input'"
             [ariaDescribedBy]="ariaDescribedBy()"
+            [ariaLabelledBy]="ariaLabelledBy()"
             [ariaErrorMessage]="ariaErrorMessage()"
             [autoComplete]="'off'"
             [inputMode]="'tel'"
@@ -192,7 +194,9 @@ export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitS
         }
     `,
 })
-export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, OnDestroy {
+export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, OnInit, OnDestroy {
+    valueChange = output<string>();
+
     keyNavigation = new KeyNavigationUtility();
 
     readonly value = model<InputPhoneProps['value']>('');
@@ -204,6 +208,8 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
     readonly readOnly = input<InputPhoneProps['readOnly']>(false);
     readonly required = input<InputPhoneProps['required']>(false);
     readonly ariaLabel = input<InputPhoneProps['ariaLabel']>(undefined);
+    readonly ariaLabelledBy = input<InputPhoneProps['ariaLabelledBy']>(undefined);
+
     readonly ariaDescribedBy = input<InputPhoneProps['ariaDescribedBy']>(undefined);
     readonly ariaErrorMessage = input<InputPhoneProps['ariaErrorMessage']>(undefined);
     readonly id = input<InputPhoneProps['id']>(undefined);
@@ -263,6 +269,12 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
             this.previousValue.set(reformatted);
             this.value.set(reformatted);
         });
+    }
+
+    ngOnInit(): void {
+        // Set initial country code on init
+        // Priority: initialCountryCode prop > guessed country code > default to 'US'
+        this.countryCode.set(this.initialCountryCode() || guessUserCountryCode() || 'US');
     }
 
     ngAfterViewInit(): void {
@@ -329,11 +341,12 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
         }
     }
 
-    onValueChange(newValue?: string): void {
+    handleValueChange(newValue?: string): void {
         const formatted = this.formatValueIfNeeded(newValue || '');
 
         this.previousValue.set(formatted);
         this.value.set(formatted);
+        this.valueChange.emit(formatted);
     }
 
     private formatValueIfNeeded(newValue: string): string {

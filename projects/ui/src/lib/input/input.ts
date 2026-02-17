@@ -7,17 +7,27 @@ import {
     model,
     viewChild,
     ViewEncapsulation,
-    TemplateRef,
     signal,
+    output,
 } from '@angular/core';
 import { AsSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
 
-export interface InputProps extends Pick<CommonProps, 'owner' | 'size'>, FieldControlProps {
-    /** The trailing element to display in the field. */
-    trailing?: TemplateRef<any> | string;
-    /** The leading element to display in the field. */
+export interface InputProps extends FieldControlProps {
+    owner?: CommonProps['owner'];
+    size?: CommonProps['size'];
+    /**
+     * The trailing element to display in the field.
+     *
+     * May be passed as string or use <span data-trailing> for non-string content.
+     */
+    trailing?: string;
+    /**
+     * The leading element to display in the field.
+     *
+     * May be passed as string or use <span data-leading> for non-string content.
+     */
     leading?: string;
     /** The placeholder of the field. */
     placeholder?: string;
@@ -26,11 +36,8 @@ export interface InputProps extends Pick<CommonProps, 'owner' | 'size'>, FieldCo
      *
      * @default text
      */
-    type?: 'number' | 'password' | 'tel' | 'text'; /**
-     * The inputmode attribute for the input.
-     *
-     * @default undefined
-     */
+    type?: 'number' | 'password' | 'tel' | 'text';
+    /** The inputmode attribute for the input. */
     inputMode?: 'decimal' | 'email' | 'none' | 'numeric' | 'search' | 'tel' | 'text' | 'url';
     /**
      * Specifies if user agent has any permission to provide automated assistance in filling out form field values
@@ -90,15 +97,13 @@ export interface InputProps extends Pick<CommonProps, 'owner' | 'size'>, FieldCo
             (input)="handleInput($event)"
             (focus)="hasFocus.set(true)"
             (blur)="hasFocus.set(false)"
+            (change)="valueChange.emit($event.target.value)"
             #inputEl />
-        <ng-content select="[data-trailing]"></ng-content>
-        @if (trailing()) {
-            @if (trailingValue) {
-                <ng-container [ngTemplateOutlet]="trailingValue"></ng-container>
-            } @else {
+        <ng-content select="[data-trailing]">
+            @if (trailing()) {
                 <span data-trailing>{{ trailing() }}</span>
             }
-        }
+        </ng-content>
         @if (displayClearButton()) {
             <ui-button
                 data-clear-button
@@ -122,6 +127,8 @@ export interface InputProps extends Pick<CommonProps, 'owner' | 'size'>, FieldCo
     encapsulation: ViewEncapsulation.None,
 })
 export class UIInput implements AsSignal<InputProps> {
+    valueChange = output<string>();
+
     public IconCancel = IconCancel;
     readonly hasFocus = signal(false);
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
@@ -136,32 +143,27 @@ export class UIInput implements AsSignal<InputProps> {
         return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
     });
 
-    readonly value = model<InputProps['value']>(undefined);
+    readonly value = model<InputProps['value']>();
     readonly name = input.required<InputProps['name']>();
 
-    readonly inputMode = input<InputProps['inputMode']>(undefined);
+    readonly inputMode = input<InputProps['inputMode']>();
     readonly showClearButton = input<InputProps['showClearButton']>(true);
     readonly disabled = input<InputProps['disabled']>(false);
     readonly invalid = input<InputProps['invalid']>(false);
-    readonly placeholder = input<InputProps['placeholder']>(undefined);
+    readonly placeholder = input<InputProps['placeholder']>();
     readonly readOnly = input<InputProps['readOnly']>(false);
     readonly required = input<InputProps['required']>(false);
     readonly type = input<InputProps['type']>('text');
     readonly size = input<InputProps['size']>('medium');
-    readonly leading = input<InputProps['leading']>(undefined);
-    readonly trailing = input<InputProps['trailing']>(undefined);
-    readonly autoComplete = input<InputProps['autoComplete']>(undefined);
-    readonly id = input<InputProps['id']>(undefined);
-    readonly owner = input<InputProps['owner']>(undefined);
-    readonly ariaLabel = input<InputProps['ariaLabel']>(undefined);
-    readonly ariaLabelledBy = input<InputProps['ariaLabelledBy']>(undefined);
-    readonly ariaDescribedBy = input<InputProps['ariaDescribedBy']>(undefined);
-    readonly ariaErrorMessage = input<InputProps['ariaErrorMessage']>(undefined);
-
-    get trailingValue(): TemplateRef<any> | undefined {
-        const value = this.trailing();
-        return value instanceof TemplateRef ? value : undefined;
-    }
+    readonly leading = input<InputProps['leading']>();
+    readonly trailing = input<InputProps['trailing']>();
+    readonly autoComplete = input<InputProps['autoComplete']>('off');
+    readonly id = input<InputProps['id']>();
+    readonly owner = input<InputProps['owner']>();
+    readonly ariaLabel = input<InputProps['ariaLabel']>();
+    readonly ariaLabelledBy = input<InputProps['ariaLabelledBy']>();
+    readonly ariaDescribedBy = input<InputProps['ariaDescribedBy']>();
+    readonly ariaErrorMessage = input<InputProps['ariaErrorMessage']>();
 
     onClearMouseDown(event: MouseEvent) {
         event.preventDefault();
@@ -174,9 +176,5 @@ export class UIInput implements AsSignal<InputProps> {
 
     handleInput(event: Event) {
         this.value.set((event.target as HTMLInputElement).value);
-    }
-
-    isTemplateRef(value: any): value is TemplateRef<any> {
-        return value instanceof TemplateRef;
     }
 }
