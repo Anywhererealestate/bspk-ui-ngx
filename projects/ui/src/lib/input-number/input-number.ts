@@ -114,7 +114,7 @@ export interface InputNumberProps extends FieldControlProps {
 })
 export class UIInputNumber implements AsSignal<InputNumberProps> {
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
-    readonly value = input<InputNumberProps['value']>('');
+    readonly value = model<InputNumberProps['value']>('');
     readonly name = input.required<InputNumberProps['name']>();
     readonly disabled = input<InputNumberProps['disabled']>(false);
     readonly invalid = input<InputNumberProps['invalid']>(false);
@@ -155,7 +155,7 @@ export class UIInputNumber implements AsSignal<InputNumberProps> {
 
     get existingValue(): number {
         if (this.value() === undefined && Number(this.min())) {
-            this.valueChange.emit(this.min()!.toString());
+            this.value.set(this.min()!.toString());
         }
         return this.value() ? Number(this.value()) : 0;
     }
@@ -165,7 +165,7 @@ export class UIInputNumber implements AsSignal<InputNumberProps> {
         if (this.min() !== undefined && newValue < this.min()!) {
             return;
         }
-        this.valueChange.emit(newValue.toString());
+        this.value.set(newValue.toString());
     }
 
     incrementHandler() {
@@ -173,17 +173,17 @@ export class UIInputNumber implements AsSignal<InputNumberProps> {
         if (this.max() !== undefined && newValue > this.max()!) {
             return;
         }
-        this.valueChange.emit(newValue.toString());
+        this.value.set(newValue.toString());
     }
 
     handleBlur(event: Event) {
         const next = isNumber((event.target as HTMLInputElement).value, this.min() || 0);
         (event.target as HTMLInputElement).value = next?.toString() || '';
-        this.valueChange.emit(next !== undefined ? next.toString() : '');
+        this.value.set(next !== undefined ? next.toString() : '');
     }
 
     handleInput(event: Event) {
         const next = isNumber((event.target as HTMLInputElement).value, this.min() || 0);
-        this.valueChange.emit(next !== undefined ? next.toString() : '');
+        this.value.set(next !== undefined ? next.toString() : '');
     }
 }

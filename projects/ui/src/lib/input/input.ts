@@ -132,7 +132,7 @@ export class UIInput implements AsSignal<InputProps> {
         return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
     });
 
-    readonly value = input<InputProps['value']>();
+    readonly value = model<InputProps['value']>();
     readonly name = input.required<InputProps['name']>();
 
     readonly inputMode = input<InputProps['inputMode']>();
@@ -159,11 +159,11 @@ export class UIInput implements AsSignal<InputProps> {
     }
 
     clearInput() {
-        this.valueChange.emit('');
+        this.value.set('');
         this.inputEl().nativeElement.focus();
     }
 
     handleInput(event: Event) {
-        this.valueChange.emit((event.target as HTMLInputElement).value);
+        this.value.set((event.target as HTMLInputElement).value);
     }
 }
