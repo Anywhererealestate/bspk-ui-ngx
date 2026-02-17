@@ -27,10 +27,7 @@ import { UICalendar } from './calendar';
             (checkedChange)="focusTrapEnabled.set($event)"
             label="Enable Focus Trap" />
 
-        <ui-calendar
-            [focusTrap]="focusTrapEnabled()"
-            [value]="initialDate()"
-            (valueChange)="handleChange($event, 'With Focus Trap')" />
+        <ui-calendar [focusTrap]="focusTrapEnabled()" (valueChange)="handleChange($event, 'With Focus Trap')" />
 
         <h4>With Custom ID</h4>
         <ui-calendar id="custom-calendar" (valueChange)="handleChange($event, 'With Custom ID')" />
@@ -44,10 +41,7 @@ export class UICalendarExample {
     readonly initialDate = signal(new Date(2026, 0, 15)); // January 15, 2026
 
     handleChange(date: Date | undefined, label = 'Default') {
-        if (date) {
-            sendSnackbar(`onChange (${label}): ${date.toDateString()}`);
-        } else {
-            sendSnackbar(`onChange (${label}): No date selected`);
-        }
+        if (date) sendSnackbar(`valueChange (${label}): ${date.toDateString()}`);
+        else sendSnackbar(`valueChange (${label}): undefined`);
     }
 }

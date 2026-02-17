@@ -10,7 +10,6 @@ import {
     viewChild,
     AfterViewInit,
     OnDestroy,
-    output,
     DOCUMENT,
     inject,
 } from '@angular/core';
@@ -172,9 +171,6 @@ export interface SelectProps extends FieldControlProps<string> {
 export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy {
     keyNavigation = new KeyNavigationUtility();
 
-    /** Emits when the value of the select changes. The emitted value is the current value of the select as a string. */
-    valueChange = output<string>();
-
     readonly value = model<SelectProps['value']>('');
     readonly name = input.required<SelectProps['name']>();
 
@@ -219,7 +215,7 @@ export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy
 
     constructor() {
         this.value.subscribe((val) => {
-            this.valueChange.emit(val || '');
+            this.value.set(val || '');
         });
     }
 

@@ -62,7 +62,7 @@ export interface DatePickerProps extends FieldControlProps<Date | string | undef
  * @example
  *     <ui-date-picker
  *     [value]="selectedDate"
- *     (onChange)="handleDateChange($event)"
+ *     (valueChange)="handleDateChange($event)"
  *     ></ui-date-picker>
  *
  * @name DatePicker
@@ -137,7 +137,7 @@ export interface DatePickerProps extends FieldControlProps<Date | string | undef
 })
 export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps> {
     // Inputs
-    readonly value = model<Date | string | undefined>(undefined);
+    readonly value = model<DatePickerProps['value']>(undefined);
     readonly disabled = input<DatePickerProps['disabled']>();
     readonly readOnly = input<DatePickerProps['readOnly']>();
     readonly closeCalendarOnChange = input<DatePickerProps['closeCalendarOnChange']>(true);

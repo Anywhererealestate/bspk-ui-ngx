@@ -53,7 +53,7 @@ export interface CalendarProps {
  * Allows customers to select the date, month, and year.
  *
  * @example
- *     <ui-calendar (onChange)="handleChange($event)" />
+ *     <ui-calendar (valueChange)="handleChange($event)" />
  *
  * @name Calendar
  * @phase Dev
