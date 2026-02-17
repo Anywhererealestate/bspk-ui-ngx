@@ -95,7 +95,7 @@ export interface TextareaProps extends FieldControlProps {
 })
 export class UITextarea implements AsSignal<TextareaProps> {
     readonly name = input.required<TextareaProps['name']>();
-    readonly value = model<string | undefined>('');
+    readonly value = model<TextareaProps['value']>('');
 
     readonly ariaLabel = input<TextareaProps['ariaLabel']>(undefined);
     readonly disabled = input<TextareaProps['disabled']>(false);

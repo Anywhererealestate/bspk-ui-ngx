@@ -293,14 +293,44 @@ function generateComponentInputsOutputs(component: Component): {
         });
     });
 
-    outputs.push(
-        ...outputsClass.map((prop) => ({
+    outputsClass.forEach((prop) => {
+        let propMeta: ComponentMetaOutput | undefined;
+
+        if (!('type' in prop)) {
+            throw new Error(
+                `Output ${prop.name} in component ${component.name} is missing type information in the documentation JSON. Please ensure it is properly documented.`,
+            );
+        }
+
+        // ignore types that are arrays (e.g. string[]) since those are not references to other interfaces
+        if (!prop.type.endsWith('[]') && prop.type.includes('[')) {
+            // match "InterfaceName['propName']"" getting InterfaceName and propName allowing for generics like "TableProps<R>['columns']" ignoring the geric types
+            const match = prop.type.match(/([a-zA-Z0-9_]+)(?:<[^>]+>)?\[['"]([^'"]+)['"]\]/);
+            const [, interfaceName, propName] = match || [];
+
+            if (!interfaceName || !propName) {
+                throw new Error(
+                    `Unable to parse type ${prop.type} for output ${prop.name} in component ${component.name}`,
+                );
+            }
+
+            propMeta = INTERFACES[interfaceName]?.[propName];
+
+            if (typeof propMeta === 'undefined') {
+                throw new Error(
+                    `Unable to find prop ${propName} in interface ${interfaceName} for output ${prop.name} in component ${component.name}`,
+                );
+            }
+        }
+
+        outputs.push({
             name: prop.name,
-            description: 'description' in prop ? stripCompodocMarkup(prop.description) : undefined,
-            type: 'type' in prop ? prop.type : undefined,
-            required: 'required' in prop ? prop.required : undefined,
-        })),
-    );
+            description:
+                propMeta?.description || ('description' in prop ? stripCompodocMarkup(prop.description) : undefined),
+            type: propMeta?.type || prop.type,
+            required: propMeta?.required || ('required' in prop ? prop.required : undefined),
+        });
+    });
 
     return { inputs, outputs };
 }
@@ -365,6 +395,8 @@ function writeMetaToFile(): Meta {
             removeCodeQuotes(JSON.stringify(meta, null, 4)) +
             ';',
     );
+
+    fs.writeFileSync('.tmp/meta.json', JSON.stringify(meta, null, 2));
 
     execSync(`npx prettier --write "${generatedMetaPath}"`);
 

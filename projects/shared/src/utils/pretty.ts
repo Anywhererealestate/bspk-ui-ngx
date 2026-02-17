@@ -10,7 +10,7 @@ export async function pretty(source: string, options?: Options) {
         singleQuote: true,
         trailingComma: 'all' as const,
         tabWidth: 4,
-        printWidth: 100,
+        printWidth: 80,
         parser: 'typescript',
         plugins: [prettierPluginTypescript, prettierPluginEstree, prettierPluginCss, prettierPluginHtml],
         ...options,
@@ -20,7 +20,8 @@ export async function pretty(source: string, options?: Options) {
         prettyOptions.singleAttributePerLine = false;
         prettyOptions.htmlWhitespaceSensitivity = 'ignore';
         prettyOptions.bracketSameLine = false;
-        prettyOptions.printWidth = 100; // prevent prettier from breaking up html attributes into multiple lines since that makes them harder to read in the documentation
+        prettyOptions.printWidth = 60;
+        // prevent prettier from breaking up html attributes into multiple lines since that makes them harder to read in the documentation
     }
 
     return await format(source, prettyOptions).catch((err) => {

@@ -20,7 +20,7 @@ import { UIFab } from '../../../ui/src';
             size="medium"
             style="margin-top: -10px; margin-right: -10px"
             variant="neutral" />
-        <pre><code>{{source()}}</code></pre>
+        <pre><code [attr.class]="'language-' + language()">{{source()}}</code></pre>
     `,
     host: {
         'data-syntax': '',
@@ -61,8 +61,7 @@ export class Syntax implements AfterViewInit {
 
         if (makePretty) {
             pretty(this.source(), { parser: this.language() }).then((next) => {
-                this.source.set(`${next}`);
-                // this.state.update((state) => ({ ...state, prettyPrinted: true }));
+                this.source.set(next);
 
                 requestAnimationFrame(() => {
                     hljs.highlightElement(this.codeElement!);

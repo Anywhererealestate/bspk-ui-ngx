@@ -24,7 +24,7 @@ import { UICalendar } from './calendar';
             value="enabled"
             name="enableFocusTrap"
             [checked]="focusTrapEnabled()"
-            (checkedChange)="focusTrapEnabled.set($event)"
+            (checkedChange)="focusTrapEnabled.set(!!$event)"
             label="Enable Focus Trap" />
 
         <ui-calendar [focusTrap]="focusTrapEnabled()" (valueChange)="handleChange($event, 'With Focus Trap')" />
