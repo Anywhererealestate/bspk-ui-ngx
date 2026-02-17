@@ -25,7 +25,7 @@ import { UIBreadcrumb, BreadcrumbItem } from './';
         </p>
         <div style="background-color: var(--surface-neutral-inverse); padding: 16px">
             <ui-breadcrumb
-                ariaLabel="Standard breadcrumb with 5 items"
+                ariaLabel="Standard breadcrumb with 5 items  - variant = subtle-inverse"
                 [items]="fiveItems"
                 [variant]="'subtle-inverse'" />
         </div>
