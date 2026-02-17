@@ -94,6 +94,7 @@ export interface TextareaProps extends FieldControlProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UITextarea implements AsSignal<TextareaProps> {
+    /** Emits when the value of the textarea changes. The emitted value is the current value of the textarea as a string. */
     valueChange = output<string>();
 
     readonly name = input.required<TextareaProps['name']>();

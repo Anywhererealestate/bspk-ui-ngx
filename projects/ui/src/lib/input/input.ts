@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    computed,
-    ElementRef,
-    input,
-    model,
-    viewChild,
-    ViewEncapsulation,
-    signal,
-    output,
-} from '@angular/core';
+import { Component, computed, ElementRef, input, viewChild, ViewEncapsulation, signal, output } from '@angular/core';
 import { AsSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
@@ -93,17 +83,18 @@ export interface InputProps extends FieldControlProps {
             [readOnly]="readOnly() || null"
             [required]="required() || null"
             [type]="type()"
-            [value]="value() || ''"
+            (value)="value()"
             (input)="handleInput($event)"
             (focus)="hasFocus.set(true)"
             (blur)="hasFocus.set(false)"
-            (change)="valueChange.emit($event.target.value)"
+            (change)="handleInput($event)"
             #inputEl />
         <ng-content select="[data-trailing]">
             @if (trailing()) {
                 <span data-trailing>{{ trailing() }}</span>
             }
         </ng-content>
+        {{ displayClearButton() }}
         @if (displayClearButton()) {
             <ui-button
                 data-clear-button
@@ -127,6 +118,7 @@ export interface InputProps extends FieldControlProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIInput implements AsSignal<InputProps> {
+    /** Emits when the value of the input changes. The emitted value is the current value of the input as a string. */
     valueChange = output<string>();
 
     public IconCancel = IconCancel;
@@ -143,7 +135,7 @@ export class UIInput implements AsSignal<InputProps> {
         return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
     });
 
-    readonly value = model<InputProps['value']>();
+    readonly value = input<InputProps['value']>();
     readonly name = input.required<InputProps['name']>();
 
     readonly inputMode = input<InputProps['inputMode']>();
@@ -170,11 +162,11 @@ export class UIInput implements AsSignal<InputProps> {
     }
 
     clearInput() {
-        this.value.set('');
+        this.valueChange.emit('');
         this.inputEl().nativeElement.focus();
     }
 
     handleInput(event: Event) {
-        this.value.set((event.target as HTMLInputElement).value);
+        this.valueChange.emit((event.target as HTMLInputElement).value);
     }
 }

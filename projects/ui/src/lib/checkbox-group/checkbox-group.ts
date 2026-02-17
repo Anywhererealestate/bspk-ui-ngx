@@ -105,6 +105,7 @@ export interface CheckboxGroupProps extends FieldControlProps<string[]> {
     `,
 })
 export class UICheckboxGroup implements AsSignal<CheckboxGroupProps> {
+    /** Emits when the value of the checkbox group changes. */
     valueChange = output<string[]>();
 
     readonly name = input.required<CheckboxGroupProps['name']>();

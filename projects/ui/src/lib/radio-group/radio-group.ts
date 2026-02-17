@@ -88,6 +88,10 @@ export interface RadioGroupProps extends FieldControlProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIRadioGroup implements AsSignal<RadioGroupProps> {
+    /**
+     * Emits when the value of the radio group changes. The emitted value is the value of the selected radio option as a
+     * string. If no option is selected, an empty string is emitted.
+     */
     valueChange = output<string>();
 
     readonly id = input<RadioGroupProps['id']>(undefined);

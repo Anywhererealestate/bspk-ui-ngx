@@ -1,4 +1,4 @@
-import { Component, ElementRef, input, model, output, viewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, input, output, viewChild, ViewEncapsulation } from '@angular/core';
 import { AsSignal, CommonProps, FieldControlProps } from '../../types/common';
 import { IconAdd, IconRemove } from '../icons';
 
@@ -113,10 +113,14 @@ export interface InputNumberProps extends FieldControlProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIInputNumber implements AsSignal<InputNumberProps> {
+    /**
+     * Emits when the value of the input number changes. The emitted value is the current value of the input as a
+     * string.
+     */
     valueChange = output<string>();
 
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
-    readonly value = model<InputNumberProps['value']>('');
+    readonly value = input<InputNumberProps['value']>('');
     readonly name = input.required<InputNumberProps['name']>();
     readonly disabled = input<InputNumberProps['disabled']>(false);
     readonly invalid = input<InputNumberProps['invalid']>(false);
@@ -157,7 +161,7 @@ export class UIInputNumber implements AsSignal<InputNumberProps> {
 
     get existingValue(): number {
         if (this.value() === undefined && Number(this.min())) {
-            this.value.set(this.min()!.toString());
+            this.valueChange.emit(this.min()!.toString());
         }
         return this.value() ? Number(this.value()) : 0;
     }
@@ -167,7 +171,7 @@ export class UIInputNumber implements AsSignal<InputNumberProps> {
         if (this.min() !== undefined && newValue < this.min()!) {
             return;
         }
-        this.value.set(newValue.toString());
+        this.valueChange.emit(newValue.toString());
     }
 
     incrementHandler() {
@@ -175,17 +179,17 @@ export class UIInputNumber implements AsSignal<InputNumberProps> {
         if (this.max() !== undefined && newValue > this.max()!) {
             return;
         }
-        this.value.set(newValue.toString());
+        this.valueChange.emit(newValue.toString());
     }
 
     handleBlur(event: Event) {
         const next = isNumber((event.target as HTMLInputElement).value, this.min() || 0);
         (event.target as HTMLInputElement).value = next?.toString() || '';
-        this.value.set(next !== undefined ? next.toString() : '');
+        this.valueChange.emit(next !== undefined ? next.toString() : '');
     }
 
     handleInput(event: Event) {
         const next = isNumber((event.target as HTMLInputElement).value, this.min() || 0);
-        this.value.set(next !== undefined ? next.toString() : '');
+        this.valueChange.emit(next !== undefined ? next.toString() : '');
     }
 }

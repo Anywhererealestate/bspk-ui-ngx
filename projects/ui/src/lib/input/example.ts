@@ -10,9 +10,14 @@ import { UIInput } from './input';
     imports: [CommonModule, UIInput, UIButton],
     template: `
         <h4>Default</h4>
-        <ui-input name="default" ariaLabel="Input Label" />
+        <ui-input
+            name="default"
+            ariaLabel="Input Label"
+            [value]="values()['default1']"
+            (valueChange)="update('default1', $event)" />
 
         <h4>Default with preset Value</h4>
+
         <ui-input
             [value]="values()['default']"
             (valueChange)="update('default', $event)"

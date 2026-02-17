@@ -142,10 +142,10 @@ export class UITabListUtility<O extends TabOption = TabOption> implements AsSign
     /** The function to call when the tab is clicked. */
     @Output() valueChange = new EventEmitter<string>();
 
-    readonly options = input<TabListProps<O>['options']>([]);
     readonly value = input.required<TabListProps<O>['value']>();
-    readonly width = input<TabListProps<O>['width']>('hug');
     readonly label = input.required<TabListProps<O>['label']>();
+    readonly options = input<TabListProps<O>['options']>([]);
+    readonly width = input<TabListProps<O>['width']>('hug');
     readonly id = input<TabListProps<O>['id']>(undefined);
     readonly iconsOnly = input<TabListProps<O>['iconsOnly']>(false);
     // eslint-disable-next-line @angular-eslint/no-input-rename

@@ -195,6 +195,7 @@ export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitS
     `,
 })
 export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, OnInit, OnDestroy {
+    /** Emits when the value of the input phone changes. The emitted value is the current value of the input as a string. */
     valueChange = output<string>();
 
     keyNavigation = new KeyNavigationUtility();
