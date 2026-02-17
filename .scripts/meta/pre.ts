@@ -12,7 +12,7 @@ import fs from 'fs';
 import { toPascalCase } from '../utils';
 
 /** Functionality that needs to run before running meta script */
-export function preMeta(force = false) {
+export function preMeta(force = true) {
     if (force || !fs.existsSync('.tmp/documentation.json')) {
         execSync('npx @compodoc/compodoc -p tsconfig.doc.json -e json -d ./.tmp', { stdio: 'inherit' });
         fs.writeFileSync(
