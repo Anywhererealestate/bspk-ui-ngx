@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, computed, input, model, output } from '@angular/core';
+import { Component, ViewEncapsulation, computed, input, model } from '@angular/core';
 import { CommonProps, FieldControlProps, AsSignal } from '../../types/common';
 
 export interface TextareaProps extends FieldControlProps {
@@ -30,6 +30,12 @@ export interface TextareaProps extends FieldControlProps {
      * @maximum 10
      */
     maxRows?: number;
+    /**
+     * The value of the textarea field.
+     *
+     * @type string
+     */
+    value?: string;
 }
 
 /**
@@ -94,10 +100,8 @@ export interface TextareaProps extends FieldControlProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UITextarea implements AsSignal<TextareaProps> {
-    valueChange = output<string>();
-
     readonly name = input.required<TextareaProps['name']>();
-    readonly value = model<string | undefined>('');
+    readonly value = model<TextareaProps['value']>('');
 
     readonly ariaLabel = input<TextareaProps['ariaLabel']>(undefined);
     readonly disabled = input<TextareaProps['disabled']>(false);
@@ -119,7 +123,7 @@ export class UITextarea implements AsSignal<TextareaProps> {
 
     constructor() {
         this.value.subscribe((val) => {
-            this.valueChange.emit(val || '');
+            this.value.set(val || '');
         });
     }
 
