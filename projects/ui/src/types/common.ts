@@ -186,8 +186,6 @@ export interface FieldControlProps<ValueType = string> {
     /**
      * The value of the field control.
      *
-     * This should use the model signal.
-     *
      * @required
      */
     value?: ValueType | undefined;

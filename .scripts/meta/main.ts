@@ -323,8 +323,16 @@ function generateComponentInputsOutputs(component: Component): {
             }
         }
 
+        let name = prop.name;
+
+        if (inputs.some((i) => i.name === prop.name)) {
+            // this is a model so we change the name to "name+Change"
+            // and type to the value of the input with the same name if it exists
+            name = `${prop.name}Change`;
+        }
+
         outputs.push({
-            name: prop.name,
+            name,
             description:
                 propMeta?.description || ('description' in prop ? stripCompodocMarkup(prop.description) : undefined),
             type: propMeta?.type || prop.type,
