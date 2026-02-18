@@ -324,18 +324,23 @@ function generateComponentInputsOutputs(component: Component): {
         }
 
         let name = prop.name;
+        let type = propMeta?.type || prop.type;
+        let description =
+            stripCompodocMarkup(propMeta?.description) ||
+            ('description' in prop ? stripCompodocMarkup(prop.description) : undefined);
 
         if (inputs.some((i) => i.name === prop.name)) {
             // this is a model so we change the name to "name+Change"
             // and type to the value of the input with the same name if it exists
             name = `${prop.name}Change`;
+            description = `Emits when the value changes. ${description ? `\n\n${description}` : ''}`;
+            type = `(value: ${[type].flat().join(' | ')}) => void`;
         }
 
         outputs.push({
             name,
-            description:
-                propMeta?.description || ('description' in prop ? stripCompodocMarkup(prop.description) : undefined),
-            type: propMeta?.type || prop.type,
+            description,
+            type,
             required: propMeta?.required || ('required' in prop ? prop.required : undefined),
         });
     });

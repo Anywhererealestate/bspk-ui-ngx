@@ -41,6 +41,13 @@ export interface InputProps extends FieldControlProps {
      * @default true
      */
     showClearButton?: boolean;
+    /**
+     * The value of the input field.
+     *
+     * @type string
+     */
+
+    value?: string;
 }
 
 /**

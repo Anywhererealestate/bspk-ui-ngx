@@ -30,6 +30,12 @@ export interface TextareaProps extends FieldControlProps {
      * @maximum 10
      */
     maxRows?: number;
+    /**
+     * The value of the textarea field.
+     *
+     * @type string
+     */
+    value?: string;
 }
 
 /**
