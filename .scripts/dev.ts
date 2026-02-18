@@ -24,17 +24,19 @@ let previousComponents: string[] = getComponentSlugs();
 
 [uiSrcPath, generateMetaScriptPath].forEach((proj) => {
     fs.watch(proj, { recursive: true }, (eventType, filename) => {
+        if (!filename) return;
+
         const nextComponents: string[] = getComponentSlugs();
 
         const hasComponentChanges = previousComponents.join(',') !== nextComponents.join(',');
 
         if (
-            !filename ||
-            filename === 'meta.ts' ||
-            filename === 'generated.ts' ||
-            (lastEvent.filename === filename && lastEvent.eventType === eventType) ||
+            !hasComponentChanges &&
+            (filename === 'meta.ts' ||
+                filename === 'generated.ts' ||
+                filename.includes('/generated/') ||
+                (lastEvent.filename === filename && lastEvent.eventType === eventType))
             // no component changes
-            !hasComponentChanges
         )
             return;
 
@@ -49,16 +51,16 @@ let previousComponents: string[] = getComponentSlugs();
                 const newComponents = nextComponents.filter((ex) => !previousComponents.includes(ex));
                 const removedComponents = previousComponents.filter((ex) => !nextComponents.includes(ex));
 
-                console.log(`\n\x1b[33m🔄 Detected change to components, regenerating component routes...\x1b[0m`);
-
-                if (newComponents.length)
-                    console.log(`\x1b[32m➕ New components added: ${newComponents.join(', ')}\x1b[0m`);
-
-                if (removedComponents.length)
-                    console.log(`\x1b[31m➖ Components removed: ${removedComponents.join(', ')}\x1b[0m`);
+                console.log('\x1b[1m\x1b[44m\x1b[36m');
+                console.log('╔═══════════════════════════════════════════════════════════');
+                console.log(`║  🔔 DETECTED FILE COMPONENT CHANGES: ${filename}`);
+                console.log(`║  NEW: ${newComponents.join(', ')}`);
+                console.log(`║  REMOVED: ${removedComponents.join(', ')}`);
+                console.log('╚═══════════════════════════════════════════════════════════');
+                console.log('\x1b[0m');
             }
 
             previousComponents = nextComponents;
-        }, 100);
+        }, 10);
     });
 });
