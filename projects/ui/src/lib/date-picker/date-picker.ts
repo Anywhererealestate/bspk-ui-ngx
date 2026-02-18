@@ -32,7 +32,7 @@ export interface DatePickerProps extends FieldControlProps {
      *
      * @default true
      */
-    closeCalendarOnChange?: boolean;
+    closeOnChange?: boolean;
     /**
      * The currently selected date
      *
@@ -140,7 +140,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
     readonly value = model<DatePickerProps['value']>(undefined);
     readonly disabled = input<DatePickerProps['disabled']>();
     readonly readOnly = input<DatePickerProps['readOnly']>();
-    readonly closeCalendarOnChange = input<DatePickerProps['closeCalendarOnChange']>(true);
+    readonly closeOnChange = input<DatePickerProps['closeOnChange']>(true);
     readonly name = input<DatePickerProps['name']>('DatePickerInput');
     readonly placeholder = input<DatePickerProps['placeholder']>('mm/dd/yyyy');
     readonly invalid = input<DatePickerProps['invalid']>(false);
@@ -228,7 +228,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
         const formatted = format(date, 'MM/dd/yyyy');
         this.internalValue.set(formatted);
         this.activeDate.set(date);
-        if (this.closeCalendarOnChange()) {
+        if (this.closeOnChange()) {
             this.calendarVisible.set(false);
         }
         this.value.set(formatted);
