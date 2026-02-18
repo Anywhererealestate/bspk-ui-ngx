@@ -34,9 +34,7 @@ export interface DatePickerProps extends FieldControlProps {
      */
     closeOnChange?: boolean;
     /**
-     * The currently selected date
-     *
-     * String formatted as 'MM/dd/yyyy'.
+     * The currently selected date formatted as 'MM/dd/yyyy'.
      *
      * @type string
      */
