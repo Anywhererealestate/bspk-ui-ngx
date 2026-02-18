@@ -1,6 +1,6 @@
 import { Component, ElementRef, input, model, OnDestroy, viewChild, ViewEncapsulation } from '@angular/core';
 import { UITxtDirective } from '@ui/txt';
-import { CommonProps } from '@ui/types/common';
+import { AsSignal, CommonProps } from '@ui/types/common';
 import { UISliderIntervalDots } from './slider-interval-dots';
 
 export type SliderValue = number | [number, number];
@@ -22,12 +22,6 @@ export interface SliderProps {
      * @required
      */
     value: number | [number, number];
-    /**
-     * Invoked with the new value when value changes.
-     *
-     * @required
-     */
-    onChange: (newValue: number) => void;
     /**
      * The minimum value of the slider.
      *
@@ -153,7 +147,7 @@ export interface SliderProps {
         '[attr.data-readonly]': 'readOnly() || null',
     },
 })
-export class UISlider implements OnDestroy {
+export class UISlider implements AsSignal<SliderProps>, OnDestroy {
     readonly sliderRef = viewChild('sliderRef', { read: ElementRef });
     readonly value = model<SliderProps['value']>(0);
 

@@ -1,6 +1,16 @@
 import { Component, input, computed } from '@angular/core';
-import { SliderValue } from './slider'; // adjust path
+import { SliderProps } from './slider'; // adjust path
 
+type SliderIntervalDotsProps = Pick<SliderProps, 'max' | 'min' | 'value'> & {
+    step: number;
+};
+
+/**
+ * SliderIntervalDots component displays interval dots along a slider track.
+ *
+ * @name SliderIntervalDots
+ * @parent Slider
+ */
 @Component({
     selector: 'ui-slider-interval-dots',
     standalone: true,
@@ -14,10 +24,10 @@ import { SliderValue } from './slider'; // adjust path
     `,
 })
 export class UISliderIntervalDots {
-    readonly min = input<number>(0);
-    readonly max = input<number>(100);
-    readonly step = input<number>(1);
-    readonly value = input<SliderValue>(0);
+    readonly min = input<SliderIntervalDotsProps['min']>(0);
+    readonly max = input<SliderIntervalDotsProps['max']>(100);
+    readonly step = input<SliderIntervalDotsProps['step']>(1);
+    readonly value = input<SliderIntervalDotsProps['value']>(0);
 
     readonly dots = computed(() => {
         const min = this.min();
