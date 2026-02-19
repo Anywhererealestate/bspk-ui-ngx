@@ -73,17 +73,19 @@ interface FlexUtilityProps {
 })
 export class UIFlexDirective implements AsSignal<FlexUtilityProps> {
     readonly computedStyle = computed(() => {
+        const flex = typeof this.flex() === 'string' ? {} : (this.flex() as FlexProps);
+
         return {
             display: 'flex',
-            flexDirection: this.flex()?.direction,
-            justifyContent: this.normalizeJustify(this.flex()?.justify),
-            alignItems: this.normalizeAlign(this.flex()?.align),
-            flexWrap: this.flex()?.wrap,
-            gap: this.normalizeGap(this.flex()?.gap),
+            flexDirection: flex?.direction,
+            justifyContent: this.normalizeJustify(flex?.justify),
+            alignItems: this.normalizeAlign(flex?.align),
+            flexWrap: flex?.wrap,
+            gap: this.normalizeGap(flex?.gap),
         };
     });
 
-    readonly flex = input<FlexProps>({}, { alias: 'ui-flex' });
+    readonly flex = input<FlexUtilityProps['flex']>({}, { alias: 'ui-flex' });
 
     private normalizeJustify(v: FlexProps['justify']): string {
         switch (v) {

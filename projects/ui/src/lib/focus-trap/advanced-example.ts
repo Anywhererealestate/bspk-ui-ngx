@@ -6,6 +6,12 @@ import { UIFlexDirective } from '../flex';
 import { UISwitchOption } from '../switch-option';
 import { UIFocusTrapDirective } from './focus-trap.directive';
 
+/**
+ * Advanced example of using the focus trap directive with multiple focusable elements and a toggle to enable/disable
+ * the trap.
+ *
+ * @ignore
+ */
 @Component({
     selector: 'ui-focus-trap-advanced-example',
     imports: [UIFocusTrapDirective, UIButton, UISwitchOption, UICard, UIFlexDirective],
