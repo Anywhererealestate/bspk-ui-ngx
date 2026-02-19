@@ -145,6 +145,7 @@ export interface SliderProps {
     host: {
         'data-bspk': 'slider',
         '[attr.data-readonly]': 'readOnly() || null',
+        '[attr.data-disabled]': 'disabled() || null',
     },
 })
 export class UISlider implements AsSignal<SliderProps>, OnDestroy {
@@ -152,13 +153,13 @@ export class UISlider implements AsSignal<SliderProps>, OnDestroy {
     readonly value = model<SliderProps['value']>(0);
 
     readonly disabled = input<SliderProps['disabled']>(false);
-    readonly min = input<SliderProps['min']>(0);
-    readonly max = input<SliderProps['max']>(100);
+    readonly min = input.required<SliderProps['min']>();
+    readonly max = input.required<SliderProps['max']>();
     readonly step = input<SliderProps['step']>(1);
     readonly marks = input<SliderProps['marks']>(false);
     readonly readOnly = input<SliderProps['readOnly']>(false);
-    readonly name = input<SliderProps['name']>('slider');
-    readonly label = input<SliderProps['label']>('slider');
+    readonly name = input.required<SliderProps['name']>();
+    readonly label = input.required<SliderProps['label']>();
     readonly formatNumber = input<SliderProps['formatNumber']>(undefined);
 
     private dragRef: number | null = null;

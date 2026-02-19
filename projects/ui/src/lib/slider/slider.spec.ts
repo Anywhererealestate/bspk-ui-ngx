@@ -3,7 +3,7 @@ import { hasNoBasicA11yIssues } from '@shared/testing/hasNoBasicA11yIssues';
 import { spyOn } from 'jest-mock';
 import { UISliderExample } from './example';
 
-describe('Select', () => {
+describe('Slider', () => {
     let component: UISliderExample;
     let fixture: ComponentFixture<UISliderExample>;
     let errorSpy: any;

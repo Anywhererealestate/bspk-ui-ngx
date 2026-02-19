@@ -8,8 +8,7 @@ type SliderIntervalDotsProps = Pick<SliderProps, 'max' | 'min' | 'value'> & {
 /**
  * SliderIntervalDots component displays interval dots along a slider track.
  *
- * @name SliderIntervalDots
- * @parent Slider
+ * @ignore
  */
 @Component({
     selector: 'ui-slider-interval-dots',
