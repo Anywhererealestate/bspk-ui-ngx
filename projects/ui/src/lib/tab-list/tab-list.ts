@@ -1,7 +1,5 @@
 import {
     Component,
-    EventEmitter,
-    Output,
     ViewEncapsulation,
     input,
     computed,
@@ -38,6 +36,8 @@ export interface TabOption {
      * The value of the tab sent to valueChange when selected.
      *
      * If not provided, the label will be used as the value.
+     *
+     * @type string
      */
     value: string;
     /**
@@ -139,13 +139,10 @@ export interface TabListProps<O extends TabOption = TabOption> extends TabListBa
     template: '',
 })
 export class UITabListUtility<O extends TabOption = TabOption> implements AsSignal<TabListProps<O>> {
-    /** The function to call when the tab is clicked. */
-    @Output() valueChange = new EventEmitter<string>();
-
-    readonly options = input<TabListProps<O>['options']>([]);
-    readonly value = input.required<TabListProps<O>['value']>();
+    readonly value = model.required<TabListProps<O>['value']>();
     readonly width = input<TabListProps<O>['width']>('hug');
     readonly label = input.required<TabListProps<O>['label']>();
+    readonly options = input<TabListProps<O>['options']>([]);
     readonly id = input<TabListProps<O>['id']>(undefined);
     readonly iconsOnly = input<TabListProps<O>['iconsOnly']>(false);
     // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -216,7 +213,7 @@ export class UITabListUtility<O extends TabOption = TabOption> implements AsSign
     onItemClick(item: TabOption & { id: string }) {
         if (item.disabled) return;
         this.activeId.set(item.id);
-        if (!item.disabled) this.valueChange.emit(item.value);
+        if (!item.disabled) this.value.set(item.value);
     }
 
     handleKeyDownEvent(event: KeyboardEvent) {
@@ -236,11 +233,11 @@ export class UITabListUtility<O extends TabOption = TabOption> implements AsSign
                 },
                 Enter: () => {
                     const active = this.optionsWithIds().find((o) => o.id === this.activeId());
-                    if (active && !active.disabled) this.valueChange.emit(active.value);
+                    if (active && !active.disabled) this.value.set(active.value);
                 },
                 Space: () => {
                     const active = this.optionsWithIds().find((o) => o.id === this.activeId());
-                    if (active && !active.disabled) this.valueChange.emit(active.value);
+                    if (active && !active.disabled) this.value.set(active.value);
                 },
             },
             {

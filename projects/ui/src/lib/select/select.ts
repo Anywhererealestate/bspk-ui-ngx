@@ -10,7 +10,6 @@ import {
     viewChild,
     AfterViewInit,
     OnDestroy,
-    output,
     DOCUMENT,
     inject,
 } from '@angular/core';
@@ -33,7 +32,7 @@ export interface SelectOption {
 }
 export type SelectItem = SelectOption & { id: string; ariaLabel?: string; ariaSelected?: boolean };
 
-export interface SelectProps extends FieldControlProps<string> {
+export interface SelectProps extends FieldControlProps {
     size?: CommonProps['size'];
 
     /**
@@ -75,6 +74,8 @@ export interface SelectProps extends FieldControlProps<string> {
      * Used in conjunction with scrollListItemsStyle utility.
      */
     scrollLimit?: number;
+    /** The value of the select control. */
+    value?: string;
 }
 
 /**
@@ -172,8 +173,6 @@ export interface SelectProps extends FieldControlProps<string> {
 export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy {
     keyNavigation = new KeyNavigationUtility();
 
-    valueChange = output<string>();
-
     readonly value = model<SelectProps['value']>('');
     readonly name = input.required<SelectProps['name']>();
 
@@ -218,7 +217,7 @@ export class UISelect implements AsSignal<SelectProps>, AfterViewInit, OnDestroy
 
     constructor() {
         this.value.subscribe((val) => {
-            this.valueChange.emit(val || '');
+            this.value.set(val || '');
         });
     }
 
