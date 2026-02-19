@@ -1,15 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    computed,
-    ElementRef,
-    input,
-    model,
-    viewChild,
-    ViewEncapsulation,
-    signal,
-    output,
-} from '@angular/core';
+import { Component, computed, ElementRef, input, model, viewChild, ViewEncapsulation, signal } from '@angular/core';
 import { AsSignal, ButtonSize, CommonProps, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { IconCancel } from '../icons/cancel';
@@ -51,6 +41,13 @@ export interface InputProps extends FieldControlProps {
      * @default true
      */
     showClearButton?: boolean;
+    /**
+     * The value of the input field.
+     *
+     * @type string
+     */
+
+    value?: string;
 }
 
 /**
@@ -93,11 +90,11 @@ export interface InputProps extends FieldControlProps {
             [readOnly]="readOnly() || null"
             [required]="required() || null"
             [type]="type()"
-            [value]="value() || ''"
+            [value]="value()"
             (input)="handleInput($event)"
             (focus)="hasFocus.set(true)"
             (blur)="hasFocus.set(false)"
-            (change)="valueChange.emit($event.target.value)"
+            (change)="value.set($event.target.value)"
             #inputEl />
         <ng-content select="[data-trailing]">
             @if (trailing()) {
@@ -127,8 +124,6 @@ export interface InputProps extends FieldControlProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIInput implements AsSignal<InputProps> {
-    valueChange = output<string>();
-
     public IconCancel = IconCancel;
     readonly hasFocus = signal(false);
     readonly inputEl = viewChild.required<ElementRef<HTMLInputElement>>('inputEl');
@@ -143,7 +138,7 @@ export class UIInput implements AsSignal<InputProps> {
         return validSizes.includes(sizeValue as ButtonSize) ? (sizeValue as ButtonSize) : 'medium';
     });
 
-    readonly value = model<InputProps['value']>();
+    readonly value = model<InputProps['value']>('');
     readonly name = input.required<InputProps['name']>();
 
     readonly inputMode = input<InputProps['inputMode']>();

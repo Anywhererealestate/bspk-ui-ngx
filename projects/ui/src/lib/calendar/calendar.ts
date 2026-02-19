@@ -1,14 +1,14 @@
 import {
     Component,
     input,
-    Output,
-    EventEmitter,
     ViewEncapsulation,
     ElementRef,
     viewChild,
     AfterViewInit,
     OnInit,
     effect,
+    model,
+    signal,
 } from '@angular/core';
 import {
     addMonths,
@@ -54,7 +54,7 @@ export interface CalendarProps {
  * Allows customers to select the date, month, and year.
  *
  * @example
- *     <ui-calendar (onChange)="handleChange($event)" />
+ *     <ui-calendar (valueChange)="handleChange($event)" />
  *
  * @name Calendar
  * @phase Dev
@@ -69,7 +69,7 @@ export interface CalendarProps {
                     label="Previous Year"
                     variant="tertiary"
                     size="large"
-                    (click)="setActiveDate(addYears(activeDate, -1))"
+                    (click)="this.activeDate.set(addYears(activeDate(), -1))"
                     (keydown)="onFirstButtonKeydown($event)"
                     #firstButton
                     [icon]="IconKeyboardDoubleArrowLeft"
@@ -79,16 +79,16 @@ export interface CalendarProps {
                     label="Previous Month"
                     variant="tertiary"
                     size="large"
-                    (click)="setActiveDate(addMonths(activeDate, -1))"
+                    (click)="this.activeDate.set(addMonths(activeDate(), -1))"
                     [iconOnly]="true"
                     [icon]="IconChevronLeft">
                 </ui-button>
-                <span data-title>{{ format(activeDate, 'MMMM yyyy') }}</span>
+                <span data-title>{{ format(activeDate(), 'MMMM yyyy') }}</span>
                 <ui-button
                     label="Next Month"
                     variant="tertiary"
                     size="large"
-                    (click)="setActiveDate(addMonths(activeDate, 1))"
+                    (click)="this.activeDate.set(addMonths(activeDate(), 1))"
                     [iconOnly]="true"
                     [icon]="IconChevronRight">
                 </ui-button>
@@ -96,7 +96,7 @@ export interface CalendarProps {
                     label="Next Year"
                     variant="tertiary"
                     size="large"
-                    (click)="setActiveDate(addYears(activeDate, 1))"
+                    (click)="this.activeDate.set(addYears(activeDate(), 1))"
                     #lastButton
                     [iconOnly]="true"
                     [icon]="IconKeyboardDoubleArrowRight">
@@ -121,11 +121,11 @@ export interface CalendarProps {
                             @for (date of week; track date?.getTime() ?? -1) {
                                 <td
                                     [attr.aria-label]="format(date, 'do MMMM yyyy')"
-                                    [attr.data-selected]="isSameDay(date, activeDate) ? true : null"
+                                    [attr.data-selected]="isSameDay(date, activeDate()) ? true : null"
                                     [id]="generateOptionId(date)"
-                                    (click)="onChange.emit(date)"
-                                    [attr.role]="isSameDay(date, activeDate) ? 'gridcell' : null"
-                                    [attr.tabindex]="isSameDay(date, activeDate) ? 0 : -1">
+                                    (click)="value.set(date); activeDate.set(date)"
+                                    [attr.role]="isSameDay(date, activeDate()) ? 'gridcell' : null"
+                                    [attr.tabindex]="isSameDay(date, activeDate()) ? 0 : -1">
                                     {{ format(date, 'd') }}
                                 </td>
                             }
@@ -143,18 +143,16 @@ export interface CalendarProps {
     },
 })
 export class UICalendar implements AfterViewInit, OnInit, AsSignal<CalendarProps> {
-    @Output() onChange = new EventEmitter<Date>();
-
     IconKeyboardDoubleArrowLeft = IconKeyboardDoubleArrowLeft;
     IconKeyboardDoubleArrowRight = IconKeyboardDoubleArrowRight;
     IconChevronLeft = IconChevronLeft;
     IconChevronRight = IconChevronRight;
 
-    readonly value = input<CalendarProps['value']>(undefined);
+    readonly value = model<CalendarProps['value']>(undefined);
     readonly focusTrap = input<CalendarProps['focusTrap']>(false);
     readonly id = input<CalendarProps['id']>(undefined);
 
-    activeDate: Date = startOfToday();
+    readonly activeDate = signal<Date>(startOfToday());
 
     format = format;
     isSameDay = isSameDay;
@@ -162,7 +160,7 @@ export class UICalendar implements AfterViewInit, OnInit, AsSignal<CalendarProps
     addMonths = addMonths;
 
     private readonly firstButton = viewChild<ElementRef<HTMLButtonElement>>('firstButton');
-    private readonly lastButton = viewChild<ElementRef<HTMLButtonElement>>('lastButton');
+    //  private readonly lastButton = viewChild<ElementRef<HTMLButtonElement>>('lastButton');
     private readonly grid = viewChild<ElementRef<HTMLElement>>('grid');
 
     constructor() {
@@ -172,8 +170,8 @@ export class UICalendar implements AfterViewInit, OnInit, AsSignal<CalendarProps
     }
 
     get rows(): Date[][] {
-        const start = startOfWeek(startOfMonth(this.activeDate), { weekStartsOn: 0 });
-        const end = endOfWeek(endOfMonth(this.activeDate), { weekStartsOn: 0 });
+        const start = startOfWeek(startOfMonth(this.activeDate()), { weekStartsOn: 0 });
+        const end = endOfWeek(endOfMonth(this.activeDate()), { weekStartsOn: 0 });
         const days = eachDayOfInterval({ start, end });
         const weeks: Date[][] = [];
         for (let i = 0; i < days.length; i += COLUMNS_COUNT) {
@@ -187,12 +185,12 @@ export class UICalendar implements AfterViewInit, OnInit, AsSignal<CalendarProps
     }
 
     ngOnInit() {
-        this.activeDate = this.value() && isValid(this.value()) ? (this.value() as Date) : startOfToday();
+        this.activeDate.set(this.value() && isValid(this.value()) ? this.value()! : startOfToday());
     }
 
     setFocus() {
         setTimeout(() => {
-            const selectedDateId = this.generateOptionId(this.activeDate);
+            const selectedDateId = this.generateOptionId(this.activeDate());
             const selectedDateElement = this.grid()?.nativeElement?.querySelector<HTMLElement>(`#${selectedDateId}`);
             selectedDateElement?.focus();
         }, 0);
@@ -200,10 +198,6 @@ export class UICalendar implements AfterViewInit, OnInit, AsSignal<CalendarProps
 
     ngAfterViewInit() {
         if (this.focusTrap()) this.setFocus();
-    }
-
-    setActiveDate(date: Date) {
-        this.activeDate = date;
     }
 
     generateOptionId(date: Date): string {
@@ -221,14 +215,14 @@ export class UICalendar implements AfterViewInit, OnInit, AsSignal<CalendarProps
     onGridKeydown(event: KeyboardEvent) {
         // Use the shared calendar keydown handler from utils
         getCalendarKeydownHandler(
-            this.activeDate,
+            this.activeDate(),
             (date: Date) => {
-                this.setActiveDate(date);
+                this.activeDate.set(date);
             },
             this.rows,
             () => {
                 setTimeout(() => {
-                    const selectedDateId = this.generateOptionId(this.activeDate);
+                    const selectedDateId = this.generateOptionId(this.activeDate());
                     const selectedDateElement = this.grid()?.nativeElement?.querySelector<HTMLElement>(
                         `#${selectedDateId}`,
                     );

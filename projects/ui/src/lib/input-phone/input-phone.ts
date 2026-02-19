@@ -11,7 +11,6 @@ import {
     AfterViewInit,
     OnDestroy,
     effect,
-    output,
     OnInit,
 } from '@angular/core';
 import { getCountryCallingCode, AsYouType } from 'libphonenumber-js';
@@ -52,7 +51,7 @@ export interface CountryCodeItem extends CountryCodeOption {
     id: string;
 }
 
-export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitStyleProps {
+export interface InputPhoneProps extends FieldControlProps, ScrollLimitStyleProps {
     /**
      * The default country code to select when the component is rendered. If not provided, it will attempt to guess
      * based on the user's locale. If the guessed country code is not supported, it will default to 'US'. Based on
@@ -73,6 +72,12 @@ export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitS
      * @default medium
      */
     size?: 'large' | 'medium' | 'small';
+    /**
+     * The value of the input phone field. This should be an unformatted phone number string (e.g. "4155552671").
+     *
+     * @type string
+     */
+    value?: string;
 }
 
 /**
@@ -195,8 +200,6 @@ export interface InputPhoneProps extends FieldControlProps<string>, ScrollLimitS
     `,
 })
 export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, OnInit, OnDestroy {
-    valueChange = output<string>();
-
     keyNavigation = new KeyNavigationUtility();
 
     readonly value = model<InputPhoneProps['value']>('');
@@ -346,7 +349,6 @@ export class UIInputPhone implements AsSignal<InputPhoneProps>, AfterViewInit, O
 
         this.previousValue.set(formatted);
         this.value.set(formatted);
-        this.valueChange.emit(formatted);
     }
 
     private formatValueIfNeeded(newValue: string): string {

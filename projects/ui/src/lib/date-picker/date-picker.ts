@@ -1,8 +1,6 @@
 import {
     Component,
     input,
-    Output,
-    EventEmitter,
     ViewEncapsulation,
     ElementRef,
     viewChild,
@@ -11,6 +9,7 @@ import {
     OnChanges,
     inject,
     DOCUMENT,
+    model,
 } from '@angular/core';
 import { format, startOfToday, parse } from 'date-fns';
 import { AsSignal, FieldControlProps } from '../../types/common';
@@ -27,17 +26,15 @@ function parseDate(value?: string): Date | undefined {
     return isNaN(parsed.getTime()) ? undefined : parsed;
 }
 
-export interface DatePickerProps extends FieldControlProps<Date | string | undefined> {
+export interface DatePickerProps extends FieldControlProps {
     /**
      * If the calendar should close when a date is selected.
      *
      * @default true
      */
-    closeCalendarOnChange?: boolean;
+    closeOnChange?: boolean;
     /**
-     * The currently selected date
-     *
-     * String formatted as 'MM/dd/yyyy'.
+     * The currently selected date formatted as 'MM/dd/yyyy'.
      *
      * @type string
      */
@@ -63,7 +60,7 @@ export interface DatePickerProps extends FieldControlProps<Date | string | undef
  * @example
  *     <ui-date-picker
  *     [value]="selectedDate"
- *     (onChange)="handleDateChange($event)"
+ *     (valueChange)="handleDateChange($event)"
  *     ></ui-date-picker>
  *
  * @name DatePicker
@@ -128,7 +125,7 @@ export interface DatePickerProps extends FieldControlProps<Date | string | undef
                         [focusTrap]="true"
                         [id]="calendarId"
                         [value]="activeDate()"
-                        (onChange)="onCalendarChange($event)"></ui-calendar>
+                        (valueChange)="onCalendarChange($event)"></ui-calendar>
                 </div>
             }
         </div>
@@ -137,13 +134,11 @@ export interface DatePickerProps extends FieldControlProps<Date | string | undef
     encapsulation: ViewEncapsulation.None,
 })
 export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps> {
-    @Output() readonly valueChange = new EventEmitter<string>();
-
     // Inputs
-    readonly value = input<Date | string | undefined>(undefined);
+    readonly value = model<DatePickerProps['value']>(undefined);
     readonly disabled = input<DatePickerProps['disabled']>();
     readonly readOnly = input<DatePickerProps['readOnly']>();
-    readonly closeCalendarOnChange = input<DatePickerProps['closeCalendarOnChange']>(true);
+    readonly closeOnChange = input<DatePickerProps['closeOnChange']>(true);
     readonly name = input<DatePickerProps['name']>('DatePickerInput');
     readonly placeholder = input<DatePickerProps['placeholder']>('mm/dd/yyyy');
     readonly invalid = input<DatePickerProps['invalid']>(false);
@@ -215,7 +210,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
     };
 
     onInputChange(value: string | undefined) {
-        this.valueChange.emit(value ?? '');
+        this.value.set(value ?? '');
         this.internalValue.set(value);
         const parsed = value ? parseDate(value) : undefined;
         if (parsed) {
@@ -223,13 +218,17 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
         }
     }
 
-    onCalendarChange(date: Date) {
+    onCalendarChange(date: Date | undefined) {
+        if (!date) {
+            this.value.set(undefined);
+            return;
+        }
         const formatted = format(date, 'MM/dd/yyyy');
         this.internalValue.set(formatted);
         this.activeDate.set(date);
-        if (this.closeCalendarOnChange()) {
+        if (this.closeOnChange()) {
             this.calendarVisible.set(false);
         }
-        this.valueChange.emit(formatted);
+        this.value.set(formatted);
     }
 }
