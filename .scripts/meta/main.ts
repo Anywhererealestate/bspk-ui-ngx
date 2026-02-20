@@ -502,7 +502,7 @@ function writeComponentMetaFiles(components: ComponentMeta[]) {
 
         const code = [
             ...componentsToGenerate.map((c) => c.code),
-            `export const meta: ComponentMeta = ${removeCodeQuotes(JSON.stringify(data, null, 4))};`,
+            `\nexport const meta: ComponentMeta = ${removeCodeQuotes(JSON.stringify(data, null, 4))};`,
         ].join('\n');
 
         const imports: string[] = [
