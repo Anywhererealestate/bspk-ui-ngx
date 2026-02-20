@@ -7,11 +7,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const metaPath = '.tmp/meta.json';
+const ngxMetaPath = '.tmp/meta.json';
 const reactMetaPath = '../bspk-ui/.tmp/data.json';
 
-if (!fs.existsSync(metaPath)) {
-    throw new Error(`Component meta file not found at ${metaPath}. Please run your meta script first.`);
+if (!fs.existsSync(ngxMetaPath)) {
+    throw new Error(`Component meta file not found at ${ngxMetaPath}. Please run your meta script first.`);
 }
 if (!fs.existsSync(reactMetaPath)) {
     throw new Error(
@@ -27,7 +27,7 @@ function mapNgxToReactName(ngxName: string): string {
         .join('');
 }
 
-const angularMeta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
+const ngxMeta = JSON.parse(fs.readFileSync(ngxMetaPath, 'utf-8'));
 const reactMeta = JSON.parse(fs.readFileSync(reactMetaPath, 'utf-8'));
 const typesMeta = reactMeta.typesMeta || [];
 
@@ -43,7 +43,7 @@ const propNameMap: Record<string, string> = {
     valueChange: 'onChange',
 };
 
-(angularMeta.components || []).forEach((component: any) => {
+(ngxMeta.components || []).forEach((component: any) => {
     const ngxName = component.slug || component.name;
     const reactName = mapNgxToReactName(ngxName);
 
@@ -72,12 +72,12 @@ const propNameMap: Record<string, string> = {
 
     if (ngxProps.length === 0 && reactProps.length === 0) {
         console.log(
-            `\x1b[33m  No exported props found in either Angular or React for "${ngxName}" / "${reactName}"\x1b[0m`,
+            `\x1b[33m  No exported props found in either NGX or React for "${ngxName}" / "${reactName}"\x1b[0m`,
         );
         return;
     }
     if (ngxProps.length === 0) {
-        console.log(`\x1b[33m  No exported props found in Angular for "${ngxName}"\x1b[0m`);
+        console.log(`\x1b[33m  No exported props found in NGX for "${ngxName}"\x1b[0m`);
     }
     if (reactProps.length === 0) {
         console.log(`\x1b[33m  No exported props found in React for "${reactName}"\x1b[0m`);
@@ -98,9 +98,7 @@ const propNameMap: Record<string, string> = {
         );
     } else if (ngxProps.length > 0) {
         successComponents.push(`\x1b[32mui-${ngxName} to ${reactName}\x1b[0m`);
-        console.log(
-            `\x1b[38;5;208m  All props match between React component "${reactName}" and Angular component "ui-${ngxName}".\x1b[0m`,
-        );
+        console.log(`\x1b[38;5;208m  All props match between NGX "ui-${ngxName}" and React "${reactName}".\x1b[0m`);
     }
 });
 
@@ -114,7 +112,7 @@ if (successComponents.length > 0) {
 }
 
 if (errorComponents.length > 0) {
-    console.error('\n\nThe following components have prop mismatches between Angular and React:');
+    console.error('\n\nThe following components have prop mismatches between NGX and React:');
     errorComponents.forEach((comp) => console.error(`\x1b[37m  - ${comp}`));
 }
 
