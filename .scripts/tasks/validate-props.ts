@@ -56,7 +56,7 @@ const propNameMap: Record<string, string> = {
     const normalizedNgxProps = ngxProps.map((p) => propNameMap[p] || p);
 
     // Log all Angular props for this component (original names)
-    console.log(`\x1b[34mAngular "${ngxName}" props:\x1b[0m`, ngxProps);
+    console.log(`\x1b[34mNGX "ui-${ngxName}" props:\x1b[0m`, ngxProps);
 
     // Find React props from typesMeta
     const reactPropsTypeName = reactName + 'Props';
@@ -92,14 +92,14 @@ const propNameMap: Record<string, string> = {
 
     if (onlyInNgx.length || onlyInReact.length) {
         errorComponents.push(
-            `Props mismatch in ${ngxName} (React: ${reactName}):\n` +
-                (onlyInNgx.length ? `  Only in NGX: ${onlyInNgx.join(', ')}\n` : '') +
-                (onlyInReact.length ? `  Only in React: ${onlyInReact.join(', ')}\n` : ''),
+            `Props mismatch (NGX: ui-${ngxName}) / (React: ${reactName}):\n` +
+                (onlyInNgx.length ? `\x1b[34m    NGX only: ${onlyInNgx.join(', ')}\n` : '') +
+                (onlyInReact.length ? `\x1b[35m    React only: ${onlyInReact.join(', ')}\n` : ''),
         );
     } else if (ngxProps.length > 0) {
-        successComponents.push(`\x1b[32m${ngxName} (React: ${reactName})\x1b[0m`);
+        successComponents.push(`\x1b[32mui-${ngxName} to ${reactName}\x1b[0m`);
         console.log(
-            `\x1b[36m  All props match between React component "${reactName}" and Angular component "${ngxName}".\x1b[0m`,
+            `\x1b[38;5;208m  All props match between React component "${reactName}" and Angular component "ui-${ngxName}".\x1b[0m`,
         );
     }
 });
@@ -109,13 +109,13 @@ if (successComponents.length === 0 && errorComponents.length === 0 && missingCom
 }
 
 if (successComponents.length > 0) {
-    console.log(`\x1b[32m\n\nValidated Props for components:\x1b[0m`);
+    console.log(`\x1b[32m\n\nValidated Props match for components:\x1b[0m`);
     successComponents.forEach((comp) => console.log(` - ${comp}`));
 }
 
 if (errorComponents.length > 0) {
     console.error('\n\nThe following components have prop mismatches between Angular and React:');
-    errorComponents.forEach((comp) => console.error(` - ${comp}`));
+    errorComponents.forEach((comp) => console.error(`\x1b[37m  - ${comp}`));
 }
 
 if (missingComponents.length > 0) {
