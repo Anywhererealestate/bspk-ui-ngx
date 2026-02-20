@@ -7,11 +7,11 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const metaDir = 'projects/demo/src/generated/components';
+const metaPath = '.tmp/meta.json';
 const reactMetaPath = '../bspk-ui/.tmp/data.json';
 
-if (!fs.existsSync(metaDir)) {
-    throw new Error(`Component meta directory not found at ${metaDir}. Please run your meta script first.`);
+if (!fs.existsSync(metaPath)) {
+    throw new Error(`Component meta file not found at ${metaPath}. Please run your meta script first.`);
 }
 if (!fs.existsSync(reactMetaPath)) {
     throw new Error(
@@ -19,7 +19,6 @@ if (!fs.existsSync(reactMetaPath)) {
     );
 }
 
-// Map Angular meta file name (ui-checkbox) to React component name (Checkbox)
 function mapNgxToReactName(ngxName: string): string {
     const base = ngxName.startsWith('ui-') ? ngxName.slice(3) : ngxName;
     return base
@@ -28,23 +27,13 @@ function mapNgxToReactName(ngxName: string): string {
         .join('');
 }
 
-const metaFiles = fs.readdirSync(metaDir).filter((f) => f.endsWith('.ts'));
+const angularMeta = JSON.parse(fs.readFileSync(metaPath, 'utf-8'));
 const reactMeta = JSON.parse(fs.readFileSync(reactMetaPath, 'utf-8'));
 const typesMeta = reactMeta.typesMeta || [];
 
 const errorComponents: string[] = [];
 const successComponents: string[] = [];
 const missingComponents: string[] = [];
-
-function extractArrayFromFile(content: string, arrayName: string): string[] {
-    // Find the array assignment for componentInputs/componentOutputs
-    const arrayMatch = content.match(new RegExp(`${arrayName}\\s*=\\s*(\\[.*?\\]);`, 's'));
-    if (!arrayMatch) return [];
-    const arrayStr = arrayMatch[1];
-    // Use a global regex to extract all "name" values from the array string
-    const names = Array.from(arrayStr.matchAll(/"name"\s*:\s*"([^"]+)"/g)).map((m) => m[1]);
-    return names;
-}
 
 const propNameMap: Record<string, string> = {
     ariaLabel: 'aria-label',
@@ -54,24 +43,22 @@ const propNameMap: Record<string, string> = {
     valueChange: 'onChange',
 };
 
-metaFiles.forEach((metaFile) => {
-    const ngxName = metaFile.replace('.ts', '');
+(angularMeta.components || []).forEach((component: any) => {
+    const ngxName = component.slug || component.name;
     const reactName = mapNgxToReactName(ngxName);
 
-    // Read Angular meta file
-    const metaContent = fs.readFileSync(path.join(metaDir, metaFile), 'utf-8');
-    const ngxInputs = extractArrayFromFile(metaContent, 'componentInputs');
-    const ngxOutputs = extractArrayFromFile(metaContent, 'componentOutputs');
+    // Get Angular prop names from meta JSON
+    const ngxInputs = (component.inputs || []).map((input: any) => input.name);
+    const ngxOutputs = (component.outputs || []).map((output: any) => output.name);
     const ngxProps = [...ngxInputs, ...ngxOutputs];
 
     // For comparison, normalize Angular prop names using the mapping (e.g. ariaLabel -> aria-label)
     const normalizedNgxProps = ngxProps.map((p) => propNameMap[p] || p);
 
-    // Log all Angular props for this component
+    // Log all Angular props for this component (original names)
     console.log(`\x1b[34mAngular "${ngxName}" props:\x1b[0m`, ngxProps);
 
     // Find React props from typesMeta
-    // Try both "ComponentProps" and "Props" naming conventions
     const reactPropsTypeName = reactName + 'Props';
     const typeMeta =
         typesMeta.find((t: any) => t.name === reactPropsTypeName) ||
