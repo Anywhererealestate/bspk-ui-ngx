@@ -1,7 +1,7 @@
 /**
  * Compare Angular (from generated meta) and React exported prop names for each component.
  *
- * $ npx tsx .scripts/tasks/validate-props-files.ts
+ * $ npx tsx .scripts/tasks/validate-props.ts
  */
 
 import * as fs from 'fs';
