@@ -51,6 +51,7 @@ const propNameMap: Record<string, string> = {
     ariaDescribedBy: 'aria-describedby',
     ariaErrorMessage: 'aria-errormessage',
     ariaSelected: 'aria-selected',
+    valueChange: 'onChange',
 };
 
 metaFiles.forEach((metaFile) => {
