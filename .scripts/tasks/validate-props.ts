@@ -7,7 +7,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const metaDir = 'projects/demo/src/generated/component';
+const metaDir = 'projects/demo/src/generated/components';
 const reactMetaPath = '../bspk-ui/.tmp/data.json';
 
 if (!fs.existsSync(metaDir)) {
