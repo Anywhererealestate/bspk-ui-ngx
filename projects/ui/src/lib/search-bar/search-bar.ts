@@ -47,7 +47,6 @@ export type SearchBarProps = {
         UIOutsideClickDirective,
         UIMenu,
         UIListItem,
-        IconSearch,
     ],
     template: `
         <div #reference data-bspk="search-bar">

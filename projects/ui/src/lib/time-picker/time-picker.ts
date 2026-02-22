@@ -10,10 +10,9 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import { AsSignal, FieldControlProps } from '../../types/common';
-import { uniqueId } from '../../utils/random';
 import { UIButton } from '../button/button';
 import { UIFloatingDirective } from '../floating';
-import { IconSchedule as IconScheduleComponent } from '../icons/schedule';
+import { IconSchedule } from '../icons/schedule';
 import { UIInput } from '../input';
 import { UIOutsideClickDirective } from '../outside-click';
 import {
@@ -25,7 +24,10 @@ import {
     stringValueToParts,
 } from './utils';
 
-export type TimePickerProps = FieldControlProps & { size?: 'large' | 'medium' | 'small' };
+export type TimePickerProps = FieldControlProps & {
+    size?: 'large' | 'medium' | 'small';
+    value?: string;
+};
 
 /**
  * Input that allows typing a time or opening a time picker panel to select hour/minute/AM-PM.
@@ -70,7 +72,7 @@ export type TimePickerProps = FieldControlProps & { size?: 'large' | 'medium' | 
                 (focus)="onInputFocus()" />
             @if (!disabled() && !readOnly()) {
                 <ui-button
-                    [icon]="IconSchedule"
+                    [icon]="iconScheduleRef"
                     [iconOnly]="true"
                     label="Open time picker"
                     variant="tertiary"
@@ -128,7 +130,7 @@ export class UITimePicker implements AsSignal<TimePickerProps> {
     readonly disabled = input<TimePickerProps['disabled']>(false);
     readonly readOnly = input<TimePickerProps['readOnly']>(false);
     readonly invalid = input<TimePickerProps['invalid']>(false);
-    readonly name = input<TimePickerProps['name']>(undefined);
+    readonly name = input<NonNullable<TimePickerProps['name']>>('');
     readonly size = input<TimePickerProps['size']>('medium');
     readonly id = input<TimePickerProps['id']>(undefined);
     readonly required = input<TimePickerProps['required']>(false);
@@ -155,14 +157,14 @@ export class UITimePicker implements AsSignal<TimePickerProps> {
         strategy: 'fixed' as const,
     }));
 
-    protected readonly IconSchedule = IconScheduleComponent;
-    protected readonly HOUR_OPTIONS = HOUR_OPTIONS;
-    protected readonly MINUTE_OPTIONS = MINUTE_OPTIONS;
-    protected readonly MERIDIEM_OPTIONS = MERIDIEM_OPTIONS;
-
     readonly pendingHours = signal<string>('12');
     readonly pendingMinutes = signal<string>('00');
     readonly pendingMeridiem = signal<Meridiem>('AM');
+
+    readonly iconScheduleRef = IconSchedule;
+    protected readonly HOUR_OPTIONS = HOUR_OPTIONS;
+    protected readonly MINUTE_OPTIONS = MINUTE_OPTIONS;
+    protected readonly MERIDIEM_OPTIONS = MERIDIEM_OPTIONS;
 
     onInputChange(v: string | undefined): void {
         this.value.set(v ?? '');
