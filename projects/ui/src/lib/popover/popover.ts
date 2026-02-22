@@ -12,12 +12,12 @@ import { Placement } from '@floating-ui/dom';
 import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIButton } from '../button/button';
-import { UIFocusTrapDirective } from '../focus-trap';
 import { UIFloatingDirective } from '../floating';
+import { UIFocusTrapDirective } from '../focus-trap';
 import * as Icons from '../icons';
+import { UIOutsideClickDirective } from '../outside-click';
 import { UIPortalDirective } from '../portal';
 import { UITxtDirective } from '../txt';
-import { UIOutsideClickDirective } from '../outside-click';
 
 export interface CallToActionButton {
     label: string;
@@ -62,33 +62,36 @@ export interface PopoverProps {
     template: `
         <div
             #triggerRef
+            role="button"
+            tabindex="0"
             (click)="toggle()"
+            (keydown)="triggerKeydown($event)"
             style="display: inline-block;"
             [attr.aria-describedby]="open() ? popoverId : null">
             <ng-content select="[ui-popover-trigger]" />
         </div>
         @if (open()) {
             <div
-                ui-portal
+                [ui-portal]="portalContainer()"
                 [ui-floating]="floatingProps()"
                 [ui-outside-click]="{ callback: close.bind(this) }"
-                [ui-focus-trap]="true"
+                [ui-focus-trap]="focusTrapEnabled()"
                 [attr.data-bspk]="'popover'"
                 [attr.data-placement]="placement()"
                 [id]="popoverId"
                 [style]="style()">
                 <header>
-                    <span ui-txt [variant]="'heading-h6'">{{ header() }}</span>
+                    <span [ui-txt]="'heading-h6'">{{ header() }}</span>
                     <ui-button
                         data-close
-                        iconOnly
+                        [iconOnly]="true"
                         label="Close"
                         [icon]="iconClose"
                         (click)="close()"
                         variant="tertiary" />
                 </header>
                 <div data-content>
-                    <div ui-txt [variant]="'body-small'">{{ content() }}</div>
+                    <div [ui-txt]="'body-small'">{{ content() }}</div>
                     <div data-cta-row>
                         @if (secondaryCallToAction()?.label) {
                             <ui-button
@@ -132,8 +135,6 @@ export class UIPopover implements AsSignal<PopoverProps> {
     readonly open = signal(false);
     readonly popoverId: string = uniqueId('popover-');
 
-    protected readonly iconClose = Icons.IconClose;
-
     readonly floatingProps = computed(() => ({
         reference: this.triggerRef()?.nativeElement ?? null,
         placement: this.placement(),
@@ -142,6 +143,10 @@ export class UIPopover implements AsSignal<PopoverProps> {
         strategy: 'absolute' as const,
     }));
 
+    readonly portalContainer = computed<HTMLElement | null>(() => null);
+    readonly focusTrapEnabled = computed(() => true);
+    protected readonly iconClose = Icons.IconClose;
+
     toggle(): void {
         if (this.disabled()) return;
         this.open.update((o) => !o);
@@ -149,5 +154,12 @@ export class UIPopover implements AsSignal<PopoverProps> {
 
     close(): void {
         this.open.set(false);
+    }
+
+    triggerKeydown(event: KeyboardEvent): void {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            this.toggle();
+        }
     }
 }

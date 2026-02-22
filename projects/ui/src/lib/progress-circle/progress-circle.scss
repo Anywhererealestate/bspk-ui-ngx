@@ -1,0 +1,48 @@
+:host {
+    --animation-speed: 1.5s;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sizing-02);
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+}
+
+:host([data-label-position='top']) {
+    flex-direction: column-reverse;
+}
+
+:host([data-label-position='left']) {
+    flex-direction: row-reverse;
+}
+
+:host([data-label-position='right']) {
+    flex-direction: row;
+}
+
+:host svg {
+    color: var(--foreground-brand-secondary);
+    animation: spin var(--animation-speed) linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+:host([data-size='small']) svg {
+    width: 32px;
+}
+
+:host([data-size='medium']) svg {
+    width: 40px;
+}
+
+:host([data-size='large']) svg {
+    width: 48px;
+}
