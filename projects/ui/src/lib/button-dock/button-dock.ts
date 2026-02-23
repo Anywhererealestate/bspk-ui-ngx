@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 import { UIButton } from '../button';
 
 export type ButtonDockArrangement = 'fill' | 'hug';
@@ -65,7 +66,7 @@ export interface ButtonDockProps {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIButtonDock {
+export class UIButtonDock implements AsSignal<ButtonDockProps> {
     @Output() primaryClick = new EventEmitter<void>();
     @Output() secondaryClick = new EventEmitter<void>();
 

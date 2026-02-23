@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 import { UIFileUploadItem, FileUploadItemStatus } from './file-upload-item';
 
 export interface FileUploadSelectedFile {
     file: File;
     status?: FileUploadItemStatus;
     errorMessage?: string;
+}
+
+export interface FileUploadProps {
+    files?: FileUploadSelectedFile[];
+    multiple?: boolean;
+    accept?: string;
+    disabled?: boolean;
 }
 
 /**
@@ -55,7 +63,7 @@ export interface FileUploadSelectedFile {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIFileUpload {
+export class UIFileUpload implements AsSignal<FileUploadProps> {
     @Output() add = new EventEmitter<File[]>();
     @Output() remove = new EventEmitter<number>();
 

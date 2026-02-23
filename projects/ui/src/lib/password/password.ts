@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { AsSignal } from '../../types/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
 import { uniqueId } from '@ui/utils/random';
 import { UIInput } from '../input';
@@ -51,7 +52,7 @@ export interface PasswordProps {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIPassword {
+export class UIPassword implements AsSignal<PasswordProps> {
     @Output() change = new EventEmitter<string>();
 
     readonly id = input<string>(uniqueId('password'));

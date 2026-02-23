@@ -1,7 +1,8 @@
 import { Component, input, computed } from '@angular/core';
-import { SliderProps } from './slider'; // adjust path
+import { AsSignal } from '../../types/common';
+import { SliderProps } from './slider';
 
-type SliderIntervalDotsProps = Pick<SliderProps, 'max' | 'min' | 'value'> & {
+export type SliderIntervalDotsProps = Pick<SliderProps, 'max' | 'min' | 'value'> & {
     step: number;
 };
 
@@ -22,7 +23,7 @@ type SliderIntervalDotsProps = Pick<SliderProps, 'max' | 'min' | 'value'> & {
         }
     `,
 })
-export class UISliderIntervalDots {
+export class UISliderIntervalDots implements AsSignal<SliderIntervalDotsProps> {
     readonly min = input<SliderIntervalDotsProps['min']>(0);
     readonly max = input<SliderIntervalDotsProps['max']>(100);
     readonly step = input<SliderIntervalDotsProps['step']>(1);

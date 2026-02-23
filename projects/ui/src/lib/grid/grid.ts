@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 
 export type GridColumns = (number | string)[] | number;
 export type GridSizing = string | '0' | 'auto';
@@ -50,7 +51,7 @@ function numToSizingVar(numStr?: string): string | undefined {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIGrid {
+export class UIGrid implements AsSignal<GridProps> {
     readonly columns = input<GridColumns>(1);
     readonly gap = input<GridSizing | undefined>();
     readonly minColumnWidth = input<string>('auto');

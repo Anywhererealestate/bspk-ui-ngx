@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
+
+export interface PageHeaderProps {
+    title: string;
+}
 
 /**
  * A page header with optional breadcrumb, title, avatar, actions, and subheader via content projection.
@@ -51,7 +56,7 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@a
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class UIPageHeader {
+export class UIPageHeader implements AsSignal<PageHeaderProps> {
   readonly title = input.required<string>();
 
   readonly hasBreadcrumb = true;

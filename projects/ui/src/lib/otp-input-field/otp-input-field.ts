@@ -1,8 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 import { uniqueId } from '@ui/utils/random';
 import { UIField } from '../field';
 import { UIOTPInput } from '../otp-input';
+
+export interface OTPInputFieldProps {
+    label: string;
+    helperText?: string;
+    labelTrailing?: string;
+    errorMessage?: string;
+    id?: string;
+    name?: string;
+    length?: number;
+    size?: 'large' | 'medium' | 'small';
+    defaultValue?: string;
+    disabled?: boolean;
+    readOnly?: boolean;
+    required?: boolean;
+    alphanumeric?: boolean;
+    secure?: boolean;
+    ariaLabel?: string;
+}
 
 /**
  * A field wrapper that combines a label, helper/error text, and an OTP input.
@@ -50,7 +69,7 @@ import { UIOTPInput } from '../otp-input';
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIOTPInputField {
+export class UIOTPInputField implements AsSignal<OTPInputFieldProps> {
     @Output() change = new EventEmitter<string>();
 
     readonly label = input.required<string>();

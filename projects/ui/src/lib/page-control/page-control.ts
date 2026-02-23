@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 
 type DotSize = 'medium' | 'small' | 'x-small';
 const MAX_DOT_COUNT = 5 as const;
@@ -67,7 +68,7 @@ export interface PageControlProps {
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class UIPageControl {
+export class UIPageControl implements AsSignal<PageControlProps> {
   readonly currentPage = input.required<number | string>();
   readonly numPages = input.required<number | string>();
   readonly variant = input<PageControlVariant>('flat');

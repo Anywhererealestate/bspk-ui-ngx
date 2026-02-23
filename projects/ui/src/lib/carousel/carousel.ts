@@ -9,6 +9,7 @@ import {
     input,
     signal,
 } from '@angular/core';
+import { AsSignal } from '../../types/common';
 
 export interface CarouselProps {
     length: number;
@@ -71,7 +72,7 @@ export interface CarouselProps {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UICarousel {
+export class UICarousel implements AsSignal<CarouselProps> {
     @Output() change = new EventEmitter<number>();
 
     readonly length = input.required<number>();

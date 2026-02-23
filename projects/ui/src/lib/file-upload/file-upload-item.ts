@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 
 export type FileUploadItemStatus = 'error' | 'idle' | 'success' | 'uploading';
 
@@ -68,7 +69,7 @@ function formatBytes(bytes?: number): string | undefined {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIFileUploadItem {
+export class UIFileUploadItem implements AsSignal<FileUploadItemProps> {
     @Output() remove = new EventEmitter<void>();
 
     readonly name = input.required<string>();

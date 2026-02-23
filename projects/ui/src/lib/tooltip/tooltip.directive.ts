@@ -47,6 +47,11 @@ export interface TooltipProps {
     disabled?: boolean;
 }
 
+/** Props for the tooltip directive (single value binding). */
+export interface TooltipDirectiveProps {
+    value?: TooltipProps | string | { truncated: true; label?: string };
+}
+
 /**
  * Brief message that provide additional guidance and helps users perform an action if needed.
  *
@@ -74,7 +79,7 @@ export interface TooltipProps {
         '(blur)': 'handleCloseEvent()',
     },
 })
-export class UITooltipDirective implements OnDestroy, OnInit {
+export class UITooltipDirective implements OnDestroy, OnInit, AsSignal<TooltipDirectiveProps> {
     /**
      * The value of the tooltip directive. Can be a string for simple usage or an object for more control.
      *

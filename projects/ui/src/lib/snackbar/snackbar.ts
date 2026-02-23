@@ -1,5 +1,5 @@
 import { Component, ViewEncapsulation, input, output, effect, ElementRef, viewChild } from '@angular/core';
-import { CommonProps } from '../../types/common';
+import { AsSignal, CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIButton } from '../button';
 import { UIFocusTrapDirective } from '../focus-trap';
@@ -72,7 +72,7 @@ export interface SnackbarProps {
     styleUrl: './snackbar.scss',
     encapsulation: ViewEncapsulation.None,
 })
-export class UISnackbar {
+export class UISnackbar implements AsSignal<SnackbarProps> {
     readonly text = input.required<string>();
     readonly closeButton = input<boolean>(true);
     readonly closeButtonLabel = input<string>('Dismiss');
@@ -82,6 +82,10 @@ export class UISnackbar {
     readonly id = input<string | undefined>(undefined);
 
     readonly close = output<void>();
+    /** Alias for AsSignal<SnackbarProps>; use (close) in templates. */
+    get onClose() {
+        return this.close;
+    }
     readonly boxRef = viewChild<ElementRef<HTMLDivElement>>('boxRef');
 
     protected readonly generatedId = uniqueId('snackbar');

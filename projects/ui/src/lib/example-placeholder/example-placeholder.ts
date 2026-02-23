@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 import { UITxtDirective } from '../txt';
 
 export type ExamplePlaceholderDim = number | string;
@@ -60,7 +61,7 @@ function dimension(value: ExamplePlaceholderDim): string {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIExamplePlaceholder {
+export class UIExamplePlaceholder implements AsSignal<ExamplePlaceholderProps> {
     readonly width = input<ExamplePlaceholderDim>('100%');
     readonly height = input<ExamplePlaceholderDim>(100);
     readonly label = input<string | undefined>();

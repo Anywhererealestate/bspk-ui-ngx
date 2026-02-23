@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 import { uniqueId } from '@ui/utils/random';
 import { UIInlineAlert } from '../inline-alert';
 
@@ -64,7 +65,7 @@ export interface FieldsetProps {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIFieldset {
+export class UIFieldset implements AsSignal<FieldsetProps> {
     readonly label = input.required<string>();
     readonly helperText = input<string | undefined>();
     readonly labelTrailing = input<string | undefined>();

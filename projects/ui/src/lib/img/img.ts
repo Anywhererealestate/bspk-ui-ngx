@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 
 export interface ImgProps {
     src: string;
@@ -28,7 +29,7 @@ export interface ImgProps {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIImg {
+export class UIImg implements AsSignal<ImgProps> {
     readonly src = input.required<string>();
     readonly alt = input.required<string>();
     readonly loading = input<'eager' | 'lazy' | undefined>();

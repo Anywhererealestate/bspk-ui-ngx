@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 
 export interface TopNavigationProps {
     /** The content of the top navigation. */
@@ -21,4 +22,6 @@ export interface TopNavigationProps {
     styleUrl: './top-navigation.scss',
     encapsulation: ViewEncapsulation.None,
 })
-export class UITopNavigation {}
+export class UITopNavigation implements AsSignal<TopNavigationProps> {
+    readonly children = input<TopNavigationProps['children']>();
+}

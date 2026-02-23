@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal } from '../../types/common';
 import { UIButton } from '../button';
 import { UIFlexDirective } from '../flex';
 import { UITxtDirective } from '../txt';
@@ -59,7 +60,7 @@ export interface EmptyStateProps {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIEmptyState {
+export class UIEmptyState implements AsSignal<EmptyStateProps> {
     @Output() callToActionClick = new EventEmitter<void>();
 
     readonly header = input.required<string>();

@@ -10,6 +10,7 @@ import {
     signal,
     viewChildren,
 } from '@angular/core';
+import { AsSignal } from '../../types/common';
 import { uniqueId } from '@ui/utils/random';
 
 export type OTPSize = 'large' | 'medium' | 'small';
@@ -108,7 +109,7 @@ export interface OTPInputProps {
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class UIOTPInput {
+export class UIOTPInput implements AsSignal<OTPInputProps> {
     change = output<string>();
 
     readonly id = input<string>(uniqueId('otp-input'));
