@@ -94,7 +94,11 @@ function generateMeta() {
                 const componentRootDir = path.dirname(comp.file) + '/';
 
                 if (!jsdoc?.phase) {
-                    console.warn(`Component ${comp.name} is missing a phase in its JSDoc comment, skipping.`);
+                    console.warn(
+                        `Component ${comp.name} is missing a phase in its JSDoc comment, skipping (${comp.file}).`,
+                    );
+
+                    console.log({ content, jsdoc });
                     return [];
                 }
 
@@ -217,7 +221,7 @@ function generateComponentInputsOutputs(component: Component): {
         }
 
         // ignore types that are arrays (e.g. string[]) since those are not references to other interfaces
-        if (!prop.type.endsWith('[]') && prop.type.includes('[')) {
+        if (!prop.type.includes('[]') && prop.type.includes('[')) {
             // match "InterfaceName['propName']"" getting InterfaceName and propName allowing for generics like "TableProps<R>['columns']" ignoring the geric types
             const match = prop.type.match(/([a-zA-Z0-9_]+)(?:<[^>]+>)?\[['"]([^'"]+)['"]\]/);
             const [, interfaceName, propName] = match || [];
