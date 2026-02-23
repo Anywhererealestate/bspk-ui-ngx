@@ -56,7 +56,7 @@ export class UITimePickerField implements AsSignal<TimePickerFieldProps> {
     readonly style = input<TimePickerFieldProps['style']>(undefined);
     readonly required = input<TimePickerFieldProps['required']>(false);
     readonly id = input<TimePickerFieldProps['id']>(undefined);
-    readonly name = input<TimePickerFieldProps['name']>();
+    readonly name = input.required<TimePickerFieldProps['name']>();
     readonly value = model<TimePickerFieldProps['value']>(undefined);
     readonly disabled = input<TimePickerFieldProps['disabled']>(false);
     readonly readOnly = input<TimePickerFieldProps['readOnly']>(false);

@@ -1,221 +1,232 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, QueryList, ViewChildren, ViewEncapsulation, computed, input, output } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ElementRef,
+    QueryList,
+    ViewChildren,
+    ViewEncapsulation,
+    computed,
+    input,
+    output,
+} from '@angular/core';
 
 export type OTPSize = 'large' | 'medium' | 'small';
 
 export interface OTPInputProps {
-  id?: string;
-  name?: string;
-  length?: number;
-  size?: OTPSize;
-  defaultValue?: string;
-  disabled?: boolean;
-  readOnly?: boolean;
-  required?: boolean;
-  invalid?: boolean;
-  alphanumeric?: boolean;
-  secure?: boolean;
-  ariaLabel?: string;
-  ariaDescribedBy?: string;
-  ariaErrorMessage?: string;
+    id?: string;
+    name?: string;
+    length?: number;
+    size?: OTPSize;
+    defaultValue?: string;
+    disabled?: boolean;
+    readOnly?: boolean;
+    required?: boolean;
+    invalid?: boolean;
+    alphanumeric?: boolean;
+    secure?: boolean;
+    ariaLabel?: string;
+    ariaDescribedBy?: string;
+    ariaErrorMessage?: string;
 }
 
 let __otpId = 0;
 function nextOtpId() {
-  __otpId += 1;
-  return `otp-${__otpId}`;
+    __otpId += 1;
+    return `otp-${__otpId}`;
 }
 
 @Component({
-  standalone: true,
-  selector: 'ui-otp-input',
-  imports: [CommonModule],
-  template: `
-    <div
-      data-bspk="otp-input"
-      role="group"
-      [attr.aria-labelledby]="id() + '-label'"
-      [attr.data-disabled]="disabled() ? '' : null"
-      [attr.data-invalid]="invalid() ? '' : null"
-      [attr.data-readonly]="readOnly() ? '' : null"
-      [attr.data-secure]="secure() ? '' : null"
-      [attr.data-size]="size()"
-    >
-      <span
-        data-digits
-        role="group"
-        (mousedown.capture)="onMouseDownCapture($event)"
-        style="display:flex; gap:var(--spacing-sizing-02);"
-      >
-        <input
-          #digitInput
-          *ngFor="let i of indices(); trackBy: trackByIndex"
-          data-digit
-          [attr.data-index]="i"
-          [attr.data-main-input]="true"
-          [attr.id]="i === 0 ? id() : null"
-          [attr.name]="i === 0 ? name() : (name() ? name() + '-' + i : null)"
-          [attr.aria-label]="(ariaLabel() || 'OTP input') + ' digit ' + (i + 1)"
-          [attr.aria-describedby]="i === 0 ? (ariaDescribedBy() || null) : null"
-          [attr.aria-errormessage]="i === 0 ? (ariaErrorMessage() || null) : null"
-          [attr.aria-invalid]="i === 0 && invalid() ? 'true' : null"
-          [disabled]="disabled()"
-          [readOnly]="readOnly()"
-          [required]="required()"
-          [attr.inputmode]="alphanumeric() ? 'text' : 'numeric'"
-          [attr.maxLength]="1"
-          [attr.autocomplete]="'off'"
-          [tabIndex]="canBeFocused(i) ? 0 : -1"
-          [type]="secure() ? 'password' : 'text'"
-          [value]="values()[i] || ''"
-          (focus)="selectAll($event)"
-          (input)="onInput(i, $event)"
-          (keydown)="onKeydown(i, $event)"
-          (paste)="onPaste(i, $event)"
-        />
-      </span>
+    standalone: true,
+    selector: 'ui-otp-input',
+    imports: [CommonModule],
+    template: `
+        <div
+            data-bspk="otp-input"
+            role="group"
+            [attr.aria-labelledby]="id() + '-label'"
+            [attr.data-disabled]="disabled() ? '' : null"
+            [attr.data-invalid]="invalid() ? '' : null"
+            [attr.data-readonly]="readOnly() ? '' : null"
+            [attr.data-secure]="secure() ? '' : null"
+            [attr.data-size]="size()">
+            <span
+                data-digits
+                role="group"
+                (mousedown.capture)="onMouseDownCapture($event)"
+                style="display:flex; gap:var(--spacing-sizing-02);">
+                <input
+                    #digitInput
+                    *ngFor="let i of indices(); trackBy: trackByIndex"
+                    data-digit
+                    [attr.data-index]="i"
+                    [attr.data-main-input]="true"
+                    [attr.id]="i === 0 ? id() : null"
+                    [attr.name]="i === 0 ? name() : name() ? name() + '-' + i : null"
+                    [attr.aria-label]="(ariaLabel() || 'OTP input') + ' digit ' + (i + 1)"
+                    [attr.aria-describedby]="i === 0 ? ariaDescribedBy() || null : null"
+                    [attr.aria-errormessage]="i === 0 ? ariaErrorMessage() || null : null"
+                    [attr.aria-invalid]="i === 0 && invalid() ? 'true' : null"
+                    [disabled]="disabled()"
+                    [readOnly]="readOnly()"
+                    [required]="required()"
+                    [attr.inputmode]="alphanumeric() ? 'text' : 'numeric'"
+                    [attr.maxLength]="1"
+                    [attr.autocomplete]="'off'"
+                    [tabIndex]="canBeFocused(i) ? 0 : -1"
+                    [type]="secure() ? 'password' : 'text'"
+                    [value]="values()[i] || ''"
+                    (focus)="selectAll($event)"
+                    (input)="onInput(i, $event)"
+                    (keydown)="onKeydown(i, $event)"
+                    (paste)="onPaste(i, $event)" />
+            </span>
 
-      <span *ngIf="secure()" data-digits data-secure-dots style="display:flex; gap:var(--spacing-sizing-02); margin-top:var(--spacing-sizing-02);">
-        <span *ngFor="let i of indices(); trackBy: trackByIndex" data-dot>
-          {{ (values()[i] || '').trim() ? '•' : '' }}
-        </span>
-      </span>
-    </div>
-  `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.None,
+            <span
+                *ngIf="secure()"
+                data-digits
+                data-secure-dots
+                style="display:flex; gap:var(--spacing-sizing-02); margin-top:var(--spacing-sizing-02);">
+                <span *ngFor="let i of indices(); trackBy: trackByIndex" data-dot>
+                    {{ (values()[i] || '').trim() ? '•' : '' }}
+                </span>
+            </span>
+        </div>
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    encapsulation: ViewEncapsulation.None,
 })
 export class UIOTPInput {
-  readonly id = input<string>(() => nextOtpId());
-  readonly name = input<string | undefined>(undefined);
+    readonly id = input<string>(() => nextOtpId());
+    readonly name = input.required<string | undefined>(undefined);
 
-  readonly length = input<number>(6);
-  readonly size = input<OTPSize>('medium');
+    readonly length = input<number>(6);
+    readonly size = input<OTPSize>('medium');
 
-  readonly defaultValue = input<string>('');
-  readonly disabled = input<boolean>(false);
-  readonly readOnly = input<boolean>(false);
-  readonly required = input<boolean>(false);
-  readonly invalid = input<boolean>(false);
-  readonly alphanumeric = input<boolean>(false);
-  readonly secure = input<boolean>(false);
+    readonly defaultValue = input<string>('');
+    readonly disabled = input<boolean>(false);
+    readonly readOnly = input<boolean>(false);
+    readonly required = input<boolean>(false);
+    readonly invalid = input<boolean>(false);
+    readonly alphanumeric = input<boolean>(false);
+    readonly secure = input<boolean>(false);
 
-  readonly ariaLabel = input<string>('OTP input');
-  readonly ariaDescribedBy = input<string | undefined>(undefined);
-  readonly ariaErrorMessage = input<string | undefined>(undefined);
+    readonly ariaLabel = input<string>('OTP input');
+    readonly ariaDescribedBy = input<string | undefined>(undefined);
+    readonly ariaErrorMessage = input<string | undefined>(undefined);
 
-  // Output (matches React: call when full length achieved)
-  change = output<string>();
+    // Output (matches React: call when full length achieved)
+    change = output<string>();
 
-  @ViewChildren('digitInput') inputs!: QueryList<ElementRef<HTMLInputElement>>;
+    @ViewChildren('digitInput') inputs!: QueryList<ElementRef<HTMLInputElement>>;
 
-  private readonly _values = input<string[]>([]);
-  readonly values = computed(() => this._values().length ? this._values() : (this.defaultValue() || '').split(''));
+    private readonly _values = input<string[]>([]);
+    readonly values = computed(() => (this._values().length ? this._values() : (this.defaultValue() || '').split('')));
 
-  readonly indices = computed(() => Array.from({ length: this.length() }, (_, i) => i));
-  trackByIndex = (_: number, i: number) => i;
+    readonly indices = computed(() => Array.from({ length: this.length() }, (_, i) => i));
+    trackByIndex = (_: number, i: number) => i;
 
-  private setValues(next: string[]) {
-    this._values.set(next);
-    const joined = next.join('').trim();
-    if (joined.length === this.length()) this.change.emit(joined);
-  }
-
-  onMouseDownCapture(event: MouseEvent) {
-    const t = event.target as HTMLElement | null;
-    if (t?.tagName !== 'INPUT') {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  }
-
-  selectAll(event: FocusEvent) {
-    (event.target as HTMLInputElement | null)?.select?.();
-  }
-
-  onInput(index: number, event: Event) {
-    const inputEl = event.target as HTMLInputElement;
-    const digitAdded = inputEl.value;
-
-    const prev = [...this.values()];
-    prev[index] = digitAdded;
-    this.setValues(prev);
-
-    if (digitAdded) this.focusIndex(index + 1);
-  }
-
-  onKeydown(index: number, event: KeyboardEvent) {
-    const key = event.key;
-
-    // enforce numeric when !alphanumeric
-    if (
-      key.length === 1 &&
-      !event.ctrlKey &&
-      !event.metaKey &&
-      !event.altKey &&
-      !event.shiftKey &&
-      !this.alphanumeric() &&
-      !/^[0-9]$/.test(key)
-    ) {
-      event.preventDefault();
-      return;
+    private setValues(next: string[]) {
+        this._values.set(next);
+        const joined = next.join('').trim();
+        if (joined.length === this.length()) this.change.emit(joined);
     }
 
-    if (key === 'Backspace') {
-      const prev = [...this.values()];
-      prev[index] = '';
-      this.setValues(prev);
-      this.focusIndex(Math.max(0, index - 1));
-      event.preventDefault();
-      return;
+    onMouseDownCapture(event: MouseEvent) {
+        const t = event.target as HTMLElement | null;
+        if (t?.tagName !== 'INPUT') {
+            event.preventDefault();
+            event.stopPropagation();
+        }
     }
 
-    if (key === 'ArrowLeft' || key === 'ArrowUp') {
-      this.focusIndex(Math.max(0, index - 1));
-      event.preventDefault();
-      return;
+    selectAll(event: FocusEvent) {
+        (event.target as HTMLInputElement | null)?.select?.();
     }
 
-    if (key === 'ArrowRight' || key === 'ArrowDown') {
-      // if current is empty, stay
-      const curVal = (this.values()[index] || '').trim();
-      if (!curVal) {
-        this.focusIndex(index);
-      } else {
-        this.focusIndex(Math.min(this.length() - 1, index + 1));
-      }
-      event.preventDefault();
-      return;
+    onInput(index: number, event: Event) {
+        const inputEl = event.target as HTMLInputElement;
+        const digitAdded = inputEl.value;
+
+        const prev = [...this.values()];
+        prev[index] = digitAdded;
+        this.setValues(prev);
+
+        if (digitAdded) this.focusIndex(index + 1);
     }
-  }
 
-  onPaste(index: number, event: ClipboardEvent) {
-    const text = event.clipboardData?.getData('text') ?? '';
-    if (!text) return;
+    onKeydown(index: number, event: KeyboardEvent) {
+        const key = event.key;
 
-    const pasted = text.split('');
-    const next = [...this.values()];
-    for (let i = 0; i < pasted.length; i++) {
-      if (index + i < this.length()) next[index + i] = pasted[i];
+        // enforce numeric when !alphanumeric
+        if (
+            key.length === 1 &&
+            !event.ctrlKey &&
+            !event.metaKey &&
+            !event.altKey &&
+            !event.shiftKey &&
+            !this.alphanumeric() &&
+            !/^[0-9]$/.test(key)
+        ) {
+            event.preventDefault();
+            return;
+        }
+
+        if (key === 'Backspace') {
+            const prev = [...this.values()];
+            prev[index] = '';
+            this.setValues(prev);
+            this.focusIndex(Math.max(0, index - 1));
+            event.preventDefault();
+            return;
+        }
+
+        if (key === 'ArrowLeft' || key === 'ArrowUp') {
+            this.focusIndex(Math.max(0, index - 1));
+            event.preventDefault();
+            return;
+        }
+
+        if (key === 'ArrowRight' || key === 'ArrowDown') {
+            // if current is empty, stay
+            const curVal = (this.values()[index] || '').trim();
+            if (!curVal) {
+                this.focusIndex(index);
+            } else {
+                this.focusIndex(Math.min(this.length() - 1, index + 1));
+            }
+            event.preventDefault();
+            return;
+        }
     }
-    this.setValues(next);
 
-    const last = Math.min(index + pasted.length, this.length() - 1);
-    this.focusIndex(last);
-    event.preventDefault();
-  }
+    onPaste(index: number, event: ClipboardEvent) {
+        const text = event.clipboardData?.getData('text') ?? '';
+        if (!text) return;
 
-  canBeFocused(index: number): boolean {
-    if (index === 0) return true;
-    const vals = this.values();
-    if (vals[index]) return true;
-    if (index === vals.filter((v) => (v || '').trim()).length) return true;
-    return false;
-  }
+        const pasted = text.split('');
+        const next = [...this.values()];
+        for (let i = 0; i < pasted.length; i++) {
+            if (index + i < this.length()) next[index + i] = pasted[i];
+        }
+        this.setValues(next);
 
-  private focusIndex(index: number) {
-    const arr = this.inputs?.toArray?.() ?? [];
-    const ref = arr[index];
-    ref?.nativeElement?.focus?.();
-  }
+        const last = Math.min(index + pasted.length, this.length() - 1);
+        this.focusIndex(last);
+        event.preventDefault();
+    }
+
+    canBeFocused(index: number): boolean {
+        if (index === 0) return true;
+        const vals = this.values();
+        if (vals[index]) return true;
+        if (index === vals.filter((v) => (v || '').trim()).length) return true;
+        return false;
+    }
+
+    private focusIndex(index: number) {
+        const arr = this.inputs?.toArray?.() ?? [];
+        const ref = arr[index];
+        ref?.nativeElement?.focus?.();
+    }
 }

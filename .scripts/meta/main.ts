@@ -21,15 +21,23 @@ import {
     MetaComponent,
     NavRoute,
 } from '../../projects/shared/src/types';
-import { CompodocDocumentation, Component, ComponentInput, ComponentOutput } from './types';
+import {
+    CompodocDocumentation,
+    CompodocInterfaceProperty,
+    Component,
+    ComponentInput,
+    ComponentOutput,
+    Interface,
+    InterfaceProp,
+} from './types';
 import { stripCompodocMarkup } from './utils';
 
 const compodocData: CompodocDocumentation = JSON.parse(fs.readFileSync('.tmp/documentation.json', 'utf-8'));
 
-const { INTERFACES, TYPEALIASES, COMPONENT_SELECTORS } = JSON.parse(fs.readFileSync('.tmp/compodoc.json', 'utf-8')) as {
-    INTERFACES: Record<string, Record<string, ComponentMetaInput>>;
+const { TYPEALIASES, COMPONENT_SELECTORS, INTERFACES } = JSON.parse(fs.readFileSync('.tmp/compodoc.json', 'utf-8')) as {
     TYPEALIASES: Record<string, string[]>;
     COMPONENT_SELECTORS: Record<string, string>;
+    INTERFACES: Record<string, Record<string, InterfaceProp>>;
 };
 
 const GENERATED_OUTPUT_PATH = 'projects/demo/src/generated';
@@ -661,4 +669,41 @@ function componentSettings() {
         .sort();
 
     return (slug: string) => componentSettings[slug] || null;
+}
+
+/** Generates metadata props for a given interface name. */
+function compodocToMetaProp(
+    prop: InterfaceProp,
+    interfaceName: string,
+    TYPEALIASES: Record<string, string[]>,
+): ComponentMetaInput | null {
+    // TODO: handle TYPESCRIPT TYPES like Exclude<"a" | "b" | "c", "b">, Omit<"a" | "b" | "c", "b">, and Record<string, any>, FabContainer, FabIconType
+
+    if (!prop) return prop;
+
+    const defaultValue = stripCompodocMarkup(
+        'jsdoctags' in prop
+            ? prop.jsdoctags?.find((tag) => tag.tagName?.escapedText === 'default')?.comment
+            : undefined,
+    );
+
+    const description = (() => {
+        const desc = 'rawdescription' in prop ? prop.rawdescription : undefined;
+
+        // remove ```.*``` blocks from description
+        return desc?.replace(/```[\s\S]*?```/g, '').trim();
+    })();
+
+    const type =
+        typeof prop.type === 'string' && prop.type.includes('|')
+            ? prop.type.split('|').map((t) => t.replace(/['"]/g, '').trim())
+            : prop.type;
+
+    return {
+        name: prop.name,
+        description,
+        type,
+        default: defaultValue,
+        required: !prop.optional,
+    };
 }

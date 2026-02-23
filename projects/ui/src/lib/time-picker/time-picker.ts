@@ -111,7 +111,7 @@ export class UITimePicker implements AsSignal<TimePickerProps> {
     readonly disabled = input<TimePickerProps['disabled']>(false);
     readonly readOnly = input<TimePickerProps['readOnly']>(false);
     readonly invalid = input<TimePickerProps['invalid']>(false);
-    readonly name = input<NonNullable<TimePickerProps['name']>>('');
+    readonly name = input.required<NonNullable<TimePickerProps['name']>>();
     readonly size = input<TimePickerProps['size']>('medium');
     readonly id = input<TimePickerProps['id']>(undefined);
     readonly required = input<TimePickerProps['required']>(false);

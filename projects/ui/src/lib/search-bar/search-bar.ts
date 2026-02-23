@@ -88,7 +88,7 @@ export class UISearchBar implements AsSignal<SearchBarProps> {
     readonly noResultsMessage = input<SearchBarProps['noResultsMessage']>(undefined);
     readonly disabled = input<SearchBarProps['disabled']>(false);
     readonly size = input<SearchBarProps['size']>('medium');
-    readonly name = input<SearchBarProps['name']>(undefined);
+    readonly name = input.required<SearchBarProps['name']>();
     readonly ariaLabel = input<SearchBarProps['ariaLabel']>(undefined);
     readonly scrollLimit = input<SearchBarProps['scrollLimit']>(undefined);
 

@@ -50,7 +50,7 @@ export class UIPassword {
     @Output() change = new EventEmitter<string>();
 
     readonly id = input<string>(nextPwdId());
-    readonly name = input<string | undefined>(undefined);
+    readonly name = input.required<string | undefined>(undefined);
 
     readonly value = input<string | undefined>(undefined);
     readonly defaultValue = input<string | undefined>(undefined);

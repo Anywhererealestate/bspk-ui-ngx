@@ -45,76 +45,15 @@ export function preMeta(force = false) {
         {} as Record<string, string[]>,
     );
 
-    // creates a dictionary of interfaces and props for easy lookup, merges all extended interfaces
-    const INTERFACES = (() => {
-        const findRootProp = (maybeProp: InterfaceProp): InterfaceProp => {
-            let prop = maybeProp;
-
-            const maybeInterface = compodocData.interfaces.find((i) => i.name === maybeProp.type);
-            const maybeProperty = maybeInterface?.properties.find((p) => p.name === maybeProp.name);
-
-            return maybeProperty ? findRootProp(maybeProperty) : prop;
-        };
-
-        const resolveExtends = (_interface: Interface) => {
-            if (!_interface.extends.length) return;
-
-            // Resolve all extends first
-            _interface.extends = _interface.extends.map(
-                (interfaceName) => compodocData.interfaces.find((i) => i.name === interfaceName)!,
-            ) as unknown as string[];
-        };
-
-        compodocData.interfaces.forEach((def) => {
-            resolveExtends(def);
-        });
-
-        compodocData.interfaces.forEach((def) => {
-            def.extends.filter(Boolean).forEach((extendedInterface: unknown) => {
-                const nextInterface =
-                    typeof extendedInterface === 'string'
-                        ? compodocData.interfaces.find((i) => i.name === extendedInterface)
-                        : (extendedInterface as Interface);
-
-                if (!nextInterface) {
-                    console.warn(`Unable to find extended interface ${extendedInterface} for interface ${def.name}`);
-                    return;
-                }
-
-                // Merge properties from extended interface into current interface, ensuring no duplicates
-                const extendedProps = nextInterface.properties.filter(
-                    (prop) => !def.properties.some((p) => p.name === prop.name),
-                );
-
-                (def.properties as unknown as InterfaceProp[]).push(...extendedProps);
-            });
-        });
-
-        const interfaceDictionary: Record<string, Record<string, ComponentMetaInput>> = {};
-
-        // Build dictionary
-        compodocData.interfaces.forEach((def) => {
-            interfaceDictionary[def.name] = {};
-
-            def.properties.forEach((property) => {
-                let actualProperty = findRootProp(property);
-
-                const propMeta = compodocToMetaProp(actualProperty, def.name, TYPEALIASES);
-                if (propMeta) interfaceDictionary[def.name][property.name] = propMeta;
-                else console.warn(`Unable to generate metadata for property ${property.name} in interface ${def.name}`);
-            });
-        });
-
-        return interfaceDictionary;
-    })();
+    const INTERFACES = createInterfaceDictionary(compodocData.interfaces);
 
     fs.writeFileSync(
         '.tmp/compodoc.json',
         JSON.stringify(
             {
                 COMPONENT_SELECTORS,
-                INTERFACES,
                 TYPEALIASES,
+                INTERFACES,
             },
             null,
             4,
@@ -129,59 +68,92 @@ if (process.argv.includes('--write')) {
     preMeta(process.argv.includes('f'));
 }
 
-/** Generates metadata props for a given interface name. */
-function compodocToMetaProp(
-    prop: InterfaceProp,
-    interfaceName: string,
-    TYPEALIASES: Record<string, string[]>,
-): ComponentMetaInput | null {
-    // TODO: handle TYPESCRIPT TYPES like Exclude<"a" | "b" | "c", "b">, Omit<"a" | "b" | "c", "b">, and Record<string, any>, FabContainer, FabIconType
+// creates a dictionary of interfaces and props for easy lookup,
+// merges all extended interfaces, and resolves the root prop for any prop that references another prop (e.g. "TableProps['columns']" will resolve to the actual "columns" prop in the TableProps interface)
+function createInterfaceDictionary<T extends Interface>(
+    interfaces: T[],
+    TYPEALIASES: Record<string, string[]> = {},
+): Record<string, Record<string, InterfaceProp>> {
+    const dict: Record<string, Record<string, InterfaceProp>> = {};
 
-    if (!prop) return prop;
+    // first we create a dictionary of interfaces and their props for easy lookup
+    interfaces.forEach((i) => {
+        const props: Record<string, InterfaceProp> = {};
+        if (i.properties) {
+            i.properties.forEach((prop) => {
+                props[prop.name] = { ...prop };
+            });
+        }
+        dict[i.name] = props;
+    });
 
-    const defaultValue = stripCompodocMarkup(
-        'jsdoctags' in prop
-            ? prop.jsdoctags?.find((tag) => tag.tagName?.escapedText === 'default')?.comment
-            : undefined,
-    );
+    const mergeExtendedInterfaces = (
+        interfaceName: string,
+        visited = new Set<string>(),
+    ): Record<string, InterfaceProp> => {
+        if (visited.has(interfaceName)) {
+            console.warn(`Circular reference detected for interface ${interfaceName}`);
+            return {};
+        }
+        visited.add(interfaceName);
 
-    const description = (() => {
-        const desc = 'rawdescription' in prop ? prop.rawdescription : undefined;
-
-        // remove ```.*``` blocks from description
-        return desc?.replace(/```[\s\S]*?```/g, '').trim();
-    })();
-
-    const type = (() => {
-        // split, remove surrounding quotes, and trim each type if it's a union type
-
-        let parsedType: string | string[] = prop.type.trim();
-
-        if (
-            // types that include '|' but are not union types (e.g. generics like Omit<"a" | "b" | "c", "b">) should be left as-is
-            prop.type.includes('|') &&
-            // exclude generics
-            !['Omit<', 'Exclude<', 'Record<'].some((generic) => prop.type.startsWith(generic))
-        ) {
-            parsedType = parsedType.split('|').map((t) => t.replace(/['"]/g, '').trim());
+        const i = interfaces.find((intf) => intf.name === interfaceName);
+        if (!i) {
+            console.warn(`Unable to find interface ${interfaceName} for merging`);
+            return {};
         }
 
-        // check if primitive type
-        else if (['string', 'number', 'boolean', 'null', 'undefined'].includes(prop.type)) {
-            parsedType = prop.type;
-        } else {
-            // check if type is a type alias
-            parsedType = TYPEALIASES[prop.type] || parsedType;
+        let mergedProps: Record<string, InterfaceProp> = { ...dict[interfaceName] };
+
+        if (i.extends) {
+            i.extends.forEach((extendName) => {
+                const extendedProps = mergeExtendedInterfaces(extendName, visited);
+                mergedProps = { ...mergedProps, ...extendedProps };
+            });
         }
 
-        return parsedType.length === 1 ? parsedType[0] : parsedType;
-    })();
-
-    return {
-        name: prop.name,
-        description,
-        type,
-        default: defaultValue,
-        required: !prop.optional,
+        return mergedProps;
     };
+
+    // merge extended interfaces
+    interfaces.forEach((i) => {
+        dict[i.name] = mergeExtendedInterfaces(i.name);
+    });
+
+    const findRootPropType = (prop: InterfaceProp) => {
+        let nextProp: InterfaceProp = prop;
+
+        if (Array.isArray(prop.type) || ['string', 'number', 'boolean', 'null', 'undefined'].includes(prop.type))
+            return prop;
+
+        if (dict[prop.type]?.[prop.name]) {
+            nextProp = { ...prop, ...findRootPropType(dict[prop.type][prop.name]) };
+        } else if (prop.type.endsWith('[]')) {
+            const itemType = prop.type.slice(0, -2);
+            if (TYPEALIASES[itemType]) {
+                nextProp.type = TYPEALIASES[itemType];
+            }
+        } else if (TYPEALIASES[prop.type]) {
+            nextProp.type = TYPEALIASES[prop.type];
+        } else if (prop.type.includes('[') && prop.type.includes(']')) {
+            const match = prop.type.match(/([a-zA-Z0-9_]+)(?:<[^>]+>)?\[['"]([^'"]+)['"]\]/);
+            const [, refInterfaceName, refPropName] = match || [];
+            if (dict[refInterfaceName]?.[refPropName]) {
+                nextProp = { ...prop, ...findRootPropType(dict[refInterfaceName][refPropName]) };
+            }
+        }
+
+        return nextProp;
+    };
+
+    // resolve root prop for any prop that references another prop
+    // (e.g. "TableProps['columns']" will resolve to the actual "columns" prop in the TableProps interface)
+    // if the prop type references another prop, we replace it with the referenced prop's type and description (if the original prop doesn't have a description)
+    Object.entries(dict).forEach(([interfaceName, props]) => {
+        Object.entries(props).forEach(([propName, prop]) => {
+            dict[interfaceName][propName] = findRootPropType(prop);
+        });
+    });
+
+    return dict;
 }

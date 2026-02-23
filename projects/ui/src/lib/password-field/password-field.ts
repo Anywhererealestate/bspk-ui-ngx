@@ -61,7 +61,7 @@ export class UIPasswordField implements AsSignal<PasswordFieldProps> {
     readonly style = input<PasswordFieldProps['style']>(undefined);
     readonly required = input<PasswordFieldProps['required']>(false);
     readonly id = input<PasswordFieldProps['id']>(undefined);
-    readonly name = input<PasswordFieldProps['name']>(undefined);
+    readonly name = input.required<PasswordFieldProps['name']>(undefined);
     readonly value = model<PasswordFieldProps['value']>(undefined);
     readonly disabled = input<PasswordFieldProps['disabled']>(false);
     readonly readOnly = input<PasswordFieldProps['readOnly']>(false);
@@ -70,12 +70,8 @@ export class UIPasswordField implements AsSignal<PasswordFieldProps> {
 
     readonly labelledById = computed(() => labelledById(this.controlId()));
 
-    readonly describedById = computed(
-        () => (this.helperText() && describedById(this.controlId())) || undefined,
-    );
-    readonly errorMessageId = computed(
-        () => (this.errorMessage() && errorMessageId(this.controlId())) || undefined,
-    );
+    readonly describedById = computed(() => (this.helperText() && describedById(this.controlId())) || undefined);
+    readonly errorMessageId = computed(() => (this.errorMessage() && errorMessageId(this.controlId())) || undefined);
 
     readonly controlId = computed(() => this.id() || uniqueId('UIPasswordField-'));
 }

@@ -13,7 +13,7 @@ export interface CompodocInterfaceProperty {
     name: string;
     deprecated: boolean;
     deprecationMessage: string;
-    type: string;
+    type: string | string[];
     indexKey?: string;
     optional: boolean;
     description?: string;
@@ -33,8 +33,8 @@ export interface CompodocInterface {
     properties: CompodocInterfaceProperty[];
     indexSignatures: unknown[];
     kind?: number;
-    methods: unknown[];
-    extends: (string | CompodocInterface)[];
+    methods: string[];
+    extends: string[];
 }
 
 export interface CompodocInputOutput {
@@ -102,6 +102,6 @@ export interface CompodocDocumentation {
 
 export type Interface = CompodocInterface;
 export type Component = CompodocComponentDirective;
-export type ComponentInput = Component['inputsClass'][number];
-export type ComponentOutput = Component['outputsClass'][number];
-export type InterfaceProp = Interface['properties'][number];
+export type ComponentInput = CompodocInputOutput;
+export type ComponentOutput = CompodocInputOutput;
+export type InterfaceProp = CompodocInterfaceProperty;
