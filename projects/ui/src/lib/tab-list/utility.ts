@@ -17,7 +17,7 @@ export const TAB_BADGE_SIZES: Record<TabSize, 'small' | 'x-small'> = {
  *
  * See TabGroup or SegmentedControl for examples.
  *
- * @name UITabListUtility
+ * @name TabListUtility
  * @phase Dev
  */
 @Component({
