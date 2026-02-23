@@ -14,7 +14,7 @@ export interface PasswordFieldProps extends PasswordProps, ControlFieldProps {
  * This component takes properties from the Field and Password components.
  *
  * @name PasswordField
- * @phase UXReview
+ * @phase Dev
  *
  * @generated
  */

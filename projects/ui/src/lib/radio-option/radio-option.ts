@@ -13,10 +13,14 @@ export interface RadioOptionProps extends RadioProps {
 /**
  * A control that allows users to choose one or more items from a list or turn an feature on or off.
  *
- * If only a radio button is needed, consider using the Radio component directly.
+ * ```html
+ * <ui-radio-option label="Option A" [checked]="selected() === 'a'" value="a">
+ *   <ui-radio data-leading [checked]="selected() === 'a'" value="a" (checkedChange)="selected.set('a')" />
+ * </ui-radio-option>
+ * ```
  *
  * @name RadioOption
- * @phase Utility
+ * @phase Dev
  */
 @Component({
     selector: 'ui-radio-option',

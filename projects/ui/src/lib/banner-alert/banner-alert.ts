@@ -71,7 +71,7 @@ export interface CallToActionButton {
  * ```
  *
  * @name BannerAlert
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-banner-alert',

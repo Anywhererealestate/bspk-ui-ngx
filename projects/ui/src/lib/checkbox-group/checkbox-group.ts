@@ -59,10 +59,12 @@ export interface CheckboxGroupProps extends FieldControlProps {
 /**
  * A group of checkboxes that allows users to choose one or more items from a list or turn an feature on or off.
  *
- * For a more complete example with field usage, see the CheckboxGroupField component.
+ * ```html
+ * <ui-checkbox-group [options]="options()" [(value)]="selected" (valueChange)="onChange($event)" />
+ * ```
  *
  * @name CheckboxGroup
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-checkbox-group',

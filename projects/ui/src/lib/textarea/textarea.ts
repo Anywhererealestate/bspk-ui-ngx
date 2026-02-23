@@ -52,7 +52,7 @@ export interface TextareaProps extends FieldControlProps {
  * ```
  *
  * @name Textarea
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-textarea',

@@ -18,6 +18,20 @@ export interface CarouselProps {
     ariaLabel?: string;
 }
 
+/**
+ * A horizontal carousel that displays slides with optional dot navigation.
+ *
+ * ```html
+ * <ui-carousel [length]="3" [showDots]="true" ariaLabel="Image carousel">
+ *   <div>Slide 1</div>
+ *   <div>Slide 2</div>
+ *   <div>Slide 3</div>
+ * </ui-carousel>
+ * ```
+ *
+ * @name Carousel
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-carousel',

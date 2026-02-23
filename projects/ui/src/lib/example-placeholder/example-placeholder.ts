@@ -15,6 +15,16 @@ function dimension(value: ExamplePlaceholderDim): string {
     return typeof value === 'number' ? `${value}px` : value;
 }
 
+/**
+ * A placeholder box used in examples to show dimensions or loading layout.
+ *
+ * ```html
+ * <ui-example-placeholder [width]="320" [height]="200" label="320 × 200" />
+ * ```
+ *
+ * @name ExamplePlaceholder
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-example-placeholder',

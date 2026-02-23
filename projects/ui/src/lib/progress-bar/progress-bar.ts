@@ -42,8 +42,12 @@ export interface ProgressBarProps {
  * A progress bar is a horizontal visual indicator that let’s the user know the progression of a task or operation
  * occurring in the background.
  *
+ * ```html
+ * <ui-progress-bar [value]="0.65" [label]="'65%'" />
+ * ```
+ *
  * @name ProgressBar
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-progress-bar',

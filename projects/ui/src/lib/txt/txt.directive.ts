@@ -53,7 +53,7 @@ export interface TxtProps {
  * ```
  *
  * @name Txt
- * @phase UXReview
+ * @phase Dev
  */
 @Directive({
     selector: '[ui-txt]',

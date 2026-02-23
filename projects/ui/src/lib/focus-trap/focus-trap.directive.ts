@@ -34,7 +34,7 @@ export interface FocusTrapProps {
  * ```
  *
  * @name FocusTrap
- * @phase Utility
+ * @phase Dev
  */
 @Directive({
     selector: '[ui-focus-trap]',

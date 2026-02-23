@@ -133,7 +133,7 @@ export interface TabListProps<O extends TabOption = TabOption> extends TabListBa
  * See TabGroup or SegmentedControl for examples.
  *
  * @name TabList
- * @phase Utility
+ * @phase Dev
  */
 @Component({
     template: '',
@@ -262,7 +262,7 @@ export interface UITabListProps {
  * See TabGroup or SegmentedControl for examples.
  *
  * @name TabList
- * @phase Utility
+ * @phase Dev
  */
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector

@@ -24,7 +24,7 @@ export interface ProgressCircleProps {
  * Rotating circle or pill that indicates the status or state of completion for a process.
  *
  * @name ProgressCircle
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-progress-circle',

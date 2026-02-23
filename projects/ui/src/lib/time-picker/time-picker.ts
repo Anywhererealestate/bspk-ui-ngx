@@ -24,7 +24,7 @@ export interface TimePickerProps extends FieldControlProps {
  * Input that allows typing a time or opening a time picker panel to select hour/minute/AM-PM.
  *
  * @name TimePicker
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-time-picker',

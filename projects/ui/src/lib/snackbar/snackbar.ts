@@ -1,12 +1,4 @@
-import {
-    Component,
-    ViewEncapsulation,
-    input,
-    output,
-    effect,
-    ElementRef,
-    viewChild,
-} from '@angular/core';
+import { Component, ViewEncapsulation, input, output, effect, ElementRef, viewChild } from '@angular/core';
 import { CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIButton } from '../button';
@@ -14,7 +6,8 @@ import { UIFocusTrapDirective } from '../focus-trap';
 import { UIPortalDirective } from '../portal';
 import { UITruncated } from '../truncated';
 
-export interface SnackbarProps extends Pick<CommonProps, 'id'> {
+export interface SnackbarProps {
+    id: CommonProps['id'];
     /** Text to be shown in the snackbar. */
     text: string;
     /** Whether to show a close button. @default true */
@@ -34,8 +27,16 @@ export interface SnackbarProps extends Pick<CommonProps, 'id'> {
 /**
  * Snackbars provide brief feedback about user actions.
  *
+ * ```html
+ * <ui-snackbar
+ *     text="Changes saved."
+ *     [open]="snackbarOpen()"
+ *     [closeButton]="true"
+ *     (close)="snackbarOpen.set(false)" />
+ * ```
+ *
  * @name Snackbar
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-snackbar',
@@ -60,10 +61,7 @@ export interface SnackbarProps extends Pick<CommonProps, 'id'> {
                             <ui-truncated data-label>{{ text() }}</ui-truncated>
                         </div>
                         @if (closeButton()) {
-                            <ui-button
-                                [label]="closeButtonLabel()"
-                                variant="tertiary"
-                                (click)="close.emit()">
+                            <ui-button [label]="closeButtonLabel()" variant="tertiary" (click)="close.emit()">
                             </ui-button>
                         }
                     </div>

@@ -8,6 +8,21 @@ export interface FileUploadSelectedFile {
     errorMessage?: string;
 }
 
+/**
+ * A file upload control that lets users select one or more files and displays a list of selected items.
+ *
+ * ```html
+ * <ui-file-upload
+ *   [multiple]="true"
+ *   accept=".pdf,.doc"
+ *   [files]="selectedFiles()"
+ *   (add)="onFilesAdded($event)"
+ *   (remove)="onFileRemove($event)" />
+ * ```
+ *
+ * @name FileUpload
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-file-upload',

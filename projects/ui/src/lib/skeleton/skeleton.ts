@@ -31,8 +31,15 @@ function toCssSize(value: number | string): string {
 /**
  * A visual placeholder for an element while it is in a loading state.
  *
+ * ```html
+ * <ui-skeleton variant="rectangular" [width]="200" [height]="100" />
+ * <ui-skeleton variant="circular" [width]="40" [loaded]="loaded()">
+ *   <img src="avatar.jpg" alt="User" />
+ * </ui-skeleton>
+ * ```
+ *
  * @name Skeleton
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-skeleton',

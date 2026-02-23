@@ -12,7 +12,7 @@ export interface ProgressionStepperBarProps {
  * Progress bar showing step completion.
  *
  * @name ProgressionStepperBar
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-progression-stepper-bar',

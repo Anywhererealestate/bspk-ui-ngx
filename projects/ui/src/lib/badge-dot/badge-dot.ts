@@ -34,8 +34,14 @@ export interface BadgeDotProps {
 /**
  * A non-numeric badge used to indicate something new or its current status.
  *
+ * ```html
+ * <ui-badge-dot color="primary" [size]="8" [outline]="true">
+ *   <button>Messages</button>
+ * </ui-badge-dot>
+ * ```
+ *
  * @name BadgeDot
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-badge-dot',

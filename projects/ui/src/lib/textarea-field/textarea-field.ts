@@ -12,7 +12,7 @@ export interface TextareaFieldProps extends ControlFieldProps, TextareaProps {}
  * This component takes properties from the Field and Textarea components.
  *
  * @name TextareaField
- * @phase UXReview
+ * @phase Dev
  *
  * @generated
  */

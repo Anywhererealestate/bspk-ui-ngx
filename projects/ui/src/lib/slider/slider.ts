@@ -64,7 +64,7 @@ export interface SliderProps {
  * track.
  *
  * @name Slider
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-slider',

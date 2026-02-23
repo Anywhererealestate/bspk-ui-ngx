@@ -31,6 +31,19 @@ export interface OTPInputProps {
     ariaErrorMessage?: string;
 }
 
+/**
+ * A one-time code input that splits the value into individual digit fields.
+ *
+ * ```html
+ * <ui-otp-input
+ *   [length]="6"
+ *   [defaultValue]="''"
+ *   (change)="onCodeComplete($event)" />
+ * ```
+ *
+ * @name OTPInput
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-otp-input',

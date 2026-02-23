@@ -31,6 +31,16 @@ export interface PageControlProps {
   variant?: PageControlVariant;
 }
 
+/**
+ * A compact page indicator showing the current position in a set of pages (e.g. dots).
+ *
+ * ```html
+ * <ui-page-control [currentPage]="2" [numPages]="5" variant="outlined" />
+ * ```
+ *
+ * @name PageControl
+ * @phase Dev
+ */
 @Component({
   standalone: true,
   selector: 'ui-page-control',

@@ -15,8 +15,18 @@ export interface PasswordProps {
 }
 
 /**
- * Minimal password input wrapper. React versions often add "show/hide" with icons. Icons are removed, so this stays as
- * a password-type input only.
+ * A password input control that wraps the standard input with type password.
+ *
+ * ```html
+ * <ui-password
+ *   name="password"
+ *   [value]="passwordValue()"
+ *   placeholder="Enter password"
+ *   (change)="passwordValue.set($event)" />
+ * ```
+ *
+ * @name Password
+ * @phase Dev
  */
 @Component({
     standalone: true,

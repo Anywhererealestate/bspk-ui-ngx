@@ -20,6 +20,20 @@ function numToSizingVar(numStr?: string): string | undefined {
     return `var(--spacing-sizing-${token})`;
 }
 
+/**
+ * A grid layout container with configurable columns and gap.
+ *
+ * ```html
+ * <ui-grid [columns]="3" gap="4">
+ *   <div>Cell 1</div>
+ *   <div>Cell 2</div>
+ *   <div>Cell 3</div>
+ * </ui-grid>
+ * ```
+ *
+ * @name Grid
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-grid',

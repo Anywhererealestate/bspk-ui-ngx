@@ -11,8 +11,13 @@ export interface PortalProps {
 /**
  * Utility directive to render an element in a different part of the DOM.
  *
+ * ```html
+ * <div ui-portal>Rendered in body by default</div>
+ * <div [ui-portal]="customContainer">Rendered in custom container</div>
+ * ```
+ *
  * @name Portal
- * @phase Utility
+ * @phase Dev
  */
 @Directive({
     selector: '[ui-portal]',

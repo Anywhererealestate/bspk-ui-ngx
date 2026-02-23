@@ -2,8 +2,19 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
 
 /**
- * React PageHeader accepts breadcrumb/avatar as props (React nodes).
- * Angular equivalent uses projection slots so consumers can pass UIAvatar/UIBreadcrumb or custom content.
+ * A page header with optional breadcrumb, title, avatar, actions, and subheader via content projection.
+ *
+ * ```html
+ * <ui-page-header [title]="'Page Title'">
+ *   <span breadcrumb>Home / Section</span>
+ *   <ui-avatar avatar [src]="userImg"></ui-avatar>
+ *   <div actions><ui-button label="Action"></ui-button></div>
+ *   <p subHeader>Subtitle or description</p>
+ * </ui-page-header>
+ * ```
+ *
+ * @name PageHeader
+ * @phase Dev
  */
 @Component({
   standalone: true,

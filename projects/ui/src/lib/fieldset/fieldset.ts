@@ -12,6 +12,18 @@ export interface FieldsetProps {
     controlId?: string;
 }
 
+/**
+ * A fieldset that groups a label, optional helper/error text, and projected form controls.
+ *
+ * ```html
+ * <ui-fieldset label="Email" [required]="true" helperText="We'll never share your email.">
+ *   <input type="email" />
+ * </ui-fieldset>
+ * ```
+ *
+ * @name Fieldset
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-fieldset',

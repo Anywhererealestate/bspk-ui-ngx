@@ -102,7 +102,7 @@ export interface SelectProps extends FieldControlProps {
  * ```
  *
  * @name Select
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-select',

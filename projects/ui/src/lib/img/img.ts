@@ -8,6 +8,16 @@ export interface ImgProps {
     decoding?: 'async' | 'auto' | 'sync';
 }
 
+/**
+ * An image element with consistent styling and optional loading/decoding attributes.
+ *
+ * ```html
+ * <ui-img src="/path/to/image.jpg" alt="Description" loading="lazy" />
+ * ```
+ *
+ * @name Img
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-img',

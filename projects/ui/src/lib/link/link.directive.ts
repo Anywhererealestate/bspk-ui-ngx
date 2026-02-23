@@ -42,7 +42,7 @@ export interface LinkProps {
  * ```
  *
  * @name Link
- * @phase Stable
+ * @phase Dev
  */
 @Directive({
     selector: 'a[ui-link]',

@@ -37,8 +37,13 @@ function getFill(num: number, value?: number): 'full' | 'half' | undefined {
 /**
  * Descriptive and interactive controls that allow customers to indicate their feelings about an experience or product.
  *
+ * ```html
+ * <ui-rating [value]="4" size="medium" [interactive]="true" (valueChange)="onRate($event)" />
+ * <ui-rating [value]="4.5" [interactive]="false" />
+ * ```
+ *
  * @name Rating
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-rating',

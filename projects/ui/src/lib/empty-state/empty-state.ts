@@ -18,7 +18,20 @@ export interface EmptyStateProps {
     callToAction?: EmptyStateCallToAction;
 }
 
-/** React uses: Flex + Txt + optional Button. Icon usage: none. */
+/**
+ * An empty state layout with optional header, body text, and call-to-action button.
+ *
+ * ```html
+ * <ui-empty-state
+ *   header="No results"
+ *   body="Try adjusting your search or filters."
+ *   [callToAction]="{ label: 'Clear filters' }"
+ *   (callToActionClick)="clearFilters()" />
+ * ```
+ *
+ * @name EmptyState
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-empty-state',

@@ -18,7 +18,20 @@ export interface ButtonDockProps {
     mode?: ButtonDockMode;
 }
 
-/** React renders two <Button> with enforced: size="medium", variant primary/secondary. Icons are not used here. */
+/**
+ * A dock that renders two buttons with enforced size medium and primary/secondary variants.
+ *
+ * ```html
+ * <ui-button-dock
+ *   [primaryButton]="{ label: 'Submit' }"
+ *   [secondaryButton]="{ label: 'Cancel' }"
+ *   (primaryClick)="onSubmit()"
+ *   (secondaryClick)="onCancel()" />
+ * ```
+ *
+ * @name ButtonDock
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-button-dock',

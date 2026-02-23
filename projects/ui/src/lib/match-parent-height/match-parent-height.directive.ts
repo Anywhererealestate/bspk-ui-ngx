@@ -11,7 +11,7 @@ import { Directive, ElementRef, OnDestroy, AfterViewInit, Renderer2, inject } fr
  * ```
  *
  * @name MatchParentHeight
- * @phase Utility
+ * @phase Dev
  */
 @Directive({
     selector: '[ui-match-parent-height]',

@@ -10,7 +10,7 @@ export interface TimePickerFieldProps extends TimePickerProps, ControlFieldProps
  * A field wrapper for the TimePicker component.
  *
  * @name TimePickerField
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-time-picker-field',

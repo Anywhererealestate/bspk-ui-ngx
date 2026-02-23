@@ -2,24 +2,29 @@ import { Component, ViewEncapsulation, input } from '@angular/core';
 import { AsSignal, CommonProps } from '../../types/common';
 import { UIListItem } from '../list-item';
 
-export interface ToggleOptionProps extends Pick<CommonProps, 'disabled'> {
+export interface ToggleOptionProps {
+    disabled?: CommonProps['disabled'];
     /**
      * The label of the option. Also used as the aria-label of the control.
      *
      * @required
      */
     label: string;
-    /**
-     * The description of the option.
-     */
+    /** The description of the option. */
     description?: string;
 }
 
 /**
  * A utility component that wraps a checkbox, radio, or switch with a list-item layout.
  *
+ * ```html
+ * <ui-toggle-option label="Enable notifications" [description]="'Get updates by email'">
+ *     <ui-switch data-leading [checked]="on()" (checkedChange)="on.set($event)"></ui-switch>
+ * </ui-toggle-option>
+ * ```
+ *
  * @name ToggleOption
- * @phase Utility
+ * @phase Dev
  */
 @Component({
     selector: 'ui-toggle-option',

@@ -9,7 +9,7 @@ export interface TopNavigationProps {
  * Top navigation wrapper.
  *
  * @name TopNavigation
- * @phase Backlog
+ * @phase Dev
  */
 @Component({
     selector: 'ui-top-navigation',

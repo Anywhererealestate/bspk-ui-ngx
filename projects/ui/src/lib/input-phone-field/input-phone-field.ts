@@ -9,10 +9,12 @@ export interface InputPhoneFieldProps extends ControlFieldProps, InputPhoneProps
 /**
  * A field wrapper for the UIInputPhone component.
  *
- * This component takes properties from the Field and InputPhone components.
+ * ```html
+ * <ui-input-phone-field label="Phone" name="phone" [(value)]="phone" />
+ * ```
  *
  * @name InputPhoneField
- * @phase UXReview
+ * @phase Dev
  *
  * @generated
  */

@@ -9,8 +9,14 @@ interface OutsideClickProps {
 /**
  * A directive to detect clicks outside a specified element and execute a callback.
  *
+ * ```html
+ * <div [ui-outside-click]="{ callback: onOutsideClick }">
+ *   <button>Inside</button>
+ * </div>
+ * ```
+ *
  * @name OutsideClick
- * @phase Utility
+ * @phase Dev
  */
 @Directive({
     selector: '[ui-outside-click]',

@@ -20,8 +20,15 @@ export interface SkeletonTextProps {
 /**
  * A visual placeholder for text while it is in a loading state.
  *
+ * ```html
+ * <ui-skeleton-text [lines]="3" variant="body-base" />
+ * <ui-skeleton-text [loaded]="hasContent()">
+ *   <p>Loaded text content</p>
+ * </ui-skeleton-text>
+ * ```
+ *
  * @name SkeletonText
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-skeleton-text',

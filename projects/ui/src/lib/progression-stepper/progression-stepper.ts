@@ -20,7 +20,7 @@ type StepStatus = 'complete' | 'current' | 'incomplete';
  * A progress stepper is a horizontal visual indicator that shows the progression of the current process.
  *
  * @name ProgressionStepper
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-progression-stepper',

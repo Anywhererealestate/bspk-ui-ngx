@@ -47,7 +47,7 @@ export interface PopoverProps {
  * Brief message that provides additional guidance and helps users perform an action if needed.
  *
  * @name Popover
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-popover',

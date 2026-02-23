@@ -26,8 +26,12 @@ export interface ChipGroupProps {
 /**
  * A component that manages the layout of a group of chips.
  *
+ * ```html
+ * <ui-chip-group [items]="chipItems()" />
+ * ```
+ *
  * @name ChipGroup
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-chip-group',

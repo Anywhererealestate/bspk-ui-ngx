@@ -13,8 +13,13 @@ export interface TruncatedProps {
 /**
  * A utility component that displays a tooltip with the full text when hovered and text is truncated.
  *
+ * ```html
+ * <ui-truncated>Some long text that may be truncated in a small container.</ui-truncated>
+ * <ui-truncated [label]="customTooltip">Short text</ui-truncated>
+ * ```
+ *
  * @name Truncated
- * @phase Utility
+ * @phase Dev
  */
 @Component({
     selector: 'ui-truncated',

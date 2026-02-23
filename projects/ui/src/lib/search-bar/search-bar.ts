@@ -29,7 +29,7 @@ export interface SearchBarProps {
  * Input that allows search queries and shows filtered results in a floating menu.
  *
  * @name SearchBar
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-search-bar',

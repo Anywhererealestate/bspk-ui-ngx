@@ -22,6 +22,20 @@ function formatBytes(bytes?: number): string | undefined {
     return `${v.toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
 }
 
+/**
+ * A single file item in a file upload list, showing name, size, status, and a remove action.
+ *
+ * ```html
+ * <ui-file-upload-item
+ *   [name]="file.name"
+ *   [sizeBytes]="file.size"
+ *   status="idle"
+ *   (remove)="removeFile()" />
+ * ```
+ *
+ * @name FileUploadItem
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-file-upload-item',

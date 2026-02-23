@@ -19,7 +19,7 @@ export interface ScrimProps {
  * attention to a modal or sheet.
  *
  * @name Scrim
- * @phase Utility
+ * @phase Dev
  */
 @Component({
     selector: 'ui-scrim',

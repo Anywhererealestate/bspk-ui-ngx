@@ -4,6 +4,19 @@ import { uniqueId } from '@ui/utils/random';
 import { UIField } from '../field';
 import { UIOTPInput } from '../otp-input';
 
+/**
+ * A field wrapper that combines a label, helper/error text, and an OTP input.
+ *
+ * ```html
+ * <ui-otp-input-field
+ *   label="Verification code"
+ *   [length]="6"
+ *   (change)="onCode($event)" />
+ * ```
+ *
+ * @name OTPInputField
+ * @phase Dev
+ */
 @Component({
     standalone: true,
     selector: 'ui-otp-input-field',
