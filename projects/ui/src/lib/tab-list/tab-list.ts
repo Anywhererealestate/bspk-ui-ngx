@@ -167,7 +167,7 @@ export class UITabListUtility<O extends TabOption = TabOption> implements AsSign
         return found ? found.value : opts[0]?.value;
     });
 
-    readonly activeId = signal<string | undefined>(undefined);
+    readonly activeId = signal<string | undefined>('');
 
     readonly focusableId = computed(() => {
         const opts = this.optionsWithIds();

@@ -36,21 +36,23 @@ export interface PageControlProps {
   selector: 'ui-page-control',
   imports: [CommonModule],
   template: `
-    <span
-      *ngIf="shouldRender()"
-      role="img"
-      data-bspk="page-control"
-      [attr.data-variant]="variant() || null"
-      [attr.aria-label]="ariaLabel()"
-    >
+    @if (shouldRender()) {
       <span
-        *ngFor="let dot of dots(); let i = index"
-        aria-hidden="true"
-        [attr.data-dot]="dot.pageIndex"
-        [attr.data-size]="dot.size"
-        [attr.data-active]="dot.pageIndex + 1 === current() ? '' : null"
-      ></span>
-    </span>
+        role="img"
+        data-bspk="page-control"
+        [attr.data-variant]="variant() || null"
+        [attr.aria-label]="ariaLabel()"
+      >
+        @for (dot of dots(); track dot.pageIndex) {
+          <span
+            aria-hidden="true"
+            [attr.data-dot]="dot.pageIndex"
+            [attr.data-size]="dot.size"
+            [attr.data-active]="dot.pageIndex + 1 === current() ? '' : null"
+          ></span>
+        }
+      </span>
+    }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

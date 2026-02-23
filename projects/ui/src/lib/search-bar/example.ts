@@ -6,15 +6,11 @@ import { UISearchBar } from './search-bar';
     standalone: true,
     imports: [UISearchBar],
     template: `
-        <ui-search-bar
-            [(value)]="value"
-            [items]="items"
-            placeholder="Search"
-            [ariaLabel]="'Search'" />
+        <ui-search-bar name="example" [(value)]="value" [items]="items" placeholder="Search" [ariaLabel]="'Search'" />
     `,
 })
 export class UISearchBarExample {
-    readonly value = signal<string | undefined>(undefined);
+    readonly value = signal<string | undefined>('');
     readonly items = [
         { label: 'Apple Pie' },
         { label: 'Banana Split' },

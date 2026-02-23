@@ -1,13 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import { uniqueId } from '@ui/utils/random';
 import { UIField } from '../field';
 import { UIOTPInput } from '../otp-input';
-
-let __otpFieldId = 0;
-function nextOtpFieldId() {
-    __otpFieldId += 1;
-    return `otp-field-${__otpFieldId}`;
-}
 
 @Component({
     standalone: true,
@@ -43,13 +38,15 @@ function nextOtpFieldId() {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIOTPInputField {
-    readonly label = input.required<string>();
-    readonly helperText = input<string | undefined>(undefined);
-    readonly labelTrailing = input<string | undefined>(undefined);
-    readonly errorMessage = input<string | undefined>(undefined);
+    @Output() change = new EventEmitter<string>();
 
-    readonly id = input<string>(() => nextOtpFieldId());
-    readonly name = input.required<string | undefined>(undefined);
+    readonly label = input.required<string>();
+    readonly helperText = input<string | undefined>();
+    readonly labelTrailing = input<string | undefined>();
+    readonly errorMessage = input<string | undefined>();
+
+    readonly id = input<string>(uniqueId('UIOTPInputField'));
+    readonly name = input.required<string | undefined>();
 
     readonly length = input<number>(6);
     readonly size = input<'large' | 'medium' | 'small'>('medium');
@@ -60,8 +57,6 @@ export class UIOTPInputField {
     readonly alphanumeric = input<boolean>(false);
     readonly secure = input<boolean>(false);
     readonly ariaLabel = input<string>('OTP input');
-
-    @Output() change = new EventEmitter<string>();
 
     get describedById(): string {
         return `${this.id()}-description`;

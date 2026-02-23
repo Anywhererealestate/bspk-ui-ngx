@@ -269,7 +269,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
 })
 export class UITooltip implements AsSignal<TooltipProps> {
     readonly arrow = viewChild<ElementRef>('arrow');
-    readonly id = signal<string | undefined>(undefined);
+    readonly id = signal<string | undefined>(uniqueId('tooltip'));
     readonly disabled = model<TooltipProps['disabled']>(false);
     readonly label = model<TooltipProps['label']>();
     readonly placement = model<TooltipProps['placement']>();

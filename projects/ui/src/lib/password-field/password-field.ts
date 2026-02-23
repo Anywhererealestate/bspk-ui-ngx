@@ -61,7 +61,7 @@ export class UIPasswordField implements AsSignal<PasswordFieldProps> {
     readonly style = input<PasswordFieldProps['style']>(undefined);
     readonly required = input<PasswordFieldProps['required']>(false);
     readonly id = input<PasswordFieldProps['id']>(undefined);
-    readonly name = input.required<PasswordFieldProps['name']>(undefined);
+    readonly name = input.required<PasswordFieldProps['name']>();
     readonly value = model<PasswordFieldProps['value']>(undefined);
     readonly disabled = input<PasswordFieldProps['disabled']>(false);
     readonly readOnly = input<PasswordFieldProps['readOnly']>(false);

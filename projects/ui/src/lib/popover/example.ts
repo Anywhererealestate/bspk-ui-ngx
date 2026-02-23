@@ -20,10 +20,10 @@ import { UIPopover } from './popover';
 })
 export class UIPopoverExample {
     onAction(): void {
-        console.log('Action clicked');
+        // Action clicked
     }
 
     onSecondary(): void {
-        console.log('Secondary clicked');
+        // Secondary clicked
     }
 }

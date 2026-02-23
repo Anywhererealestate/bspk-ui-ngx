@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import { uniqueId } from '@ui/utils/random';
 import { UIInput } from '../input';
 
 export interface PasswordProps {
@@ -11,12 +12,6 @@ export interface PasswordProps {
     readOnly?: boolean;
     required?: boolean;
     placeholder?: string;
-}
-
-let __pwdId = 0;
-function nextPwdId() {
-    __pwdId += 1;
-    return `pwd-${__pwdId}`;
 }
 
 /**
@@ -49,19 +44,19 @@ function nextPwdId() {
 export class UIPassword {
     @Output() change = new EventEmitter<string>();
 
-    readonly id = input<string>(nextPwdId());
-    readonly name = input.required<string | undefined>(undefined);
+    readonly id = input<string>(uniqueId('password'));
+    readonly name = input.required<string | undefined>();
 
-    readonly value = input<string | undefined>(undefined);
-    readonly defaultValue = input<string | undefined>(undefined);
+    readonly value = input<string | undefined>();
+    readonly defaultValue = input<string | undefined>();
 
     readonly disabled = input<boolean>(false);
     readonly readOnly = input<boolean>(false);
     readonly required = input<boolean>(false);
-    readonly placeholder = input<string | undefined>(undefined);
+    readonly placeholder = input<string | undefined>();
 
-    readonly ariaLabelledBy = input<string | undefined>(undefined);
-    readonly ariaDescribedBy = input<string | undefined>(undefined);
-    readonly ariaErrorMessage = input<string | undefined>(undefined);
-    readonly ariaLabel = input<string | undefined>(undefined);
+    readonly ariaLabelledBy = input<string | undefined>();
+    readonly ariaDescribedBy = input<string | undefined>();
+    readonly ariaErrorMessage = input<string | undefined>();
+    readonly ariaLabel = input<string | undefined>();
 }

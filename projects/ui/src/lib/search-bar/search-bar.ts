@@ -92,7 +92,7 @@ export class UISearchBar implements AsSignal<SearchBarProps> {
     readonly ariaLabel = input<SearchBarProps['ariaLabel']>(undefined);
     readonly scrollLimit = input<SearchBarProps['scrollLimit']>(undefined);
 
-    readonly value = model<string | undefined>(undefined);
+    readonly value = model<string | undefined>();
 
     readonly reference = viewChild<ElementRef<HTMLElement>>('reference');
     readonly open = signal(false);

@@ -11,9 +11,11 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@a
   imports: [CommonModule],
   template: `
     <span data-bspk="page-header">
-      <div *ngIf="hasBreadcrumb" data-breadcrumb>
-        <ng-content select="[breadcrumb]"></ng-content>
-      </div>
+      @if (hasBreadcrumb) {
+        <div data-breadcrumb>
+          <ng-content select="[breadcrumb]"></ng-content>
+        </div>
+      }
 
       <div data-header [attr.data-has-avatar]="hasAvatar ? '' : null">
         <div data-title>
@@ -21,14 +23,18 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@a
           <h1>{{ title() }}</h1>
         </div>
 
-        <div *ngIf="hasActions" data-page-actions>
-          <ng-content select="[actions]"></ng-content>
-        </div>
+        @if (hasActions) {
+          <div data-page-actions>
+            <ng-content select="[actions]"></ng-content>
+          </div>
+        }
       </div>
 
-      <div *ngIf="hasSubHeader" data-subheader>
-        <ng-content select="[subHeader]"></ng-content>
-      </div>
+      @if (hasSubHeader) {
+        <div data-subheader>
+          <ng-content select="[subHeader]"></ng-content>
+        </div>
+      }
     </span>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,9 +43,8 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@a
 export class UIPageHeader {
   readonly title = input.required<string>();
 
-  // Best-effort flags. If you want strict detection, we can add @ContentChild refs locally.
-  get hasBreadcrumb() { return true; }
-  get hasAvatar() { return true; }
-  get hasActions() { return true; }
-  get hasSubHeader() { return true; }
+  readonly hasBreadcrumb = true;
+  readonly hasAvatar = true;
+  readonly hasActions = true;
+  readonly hasSubHeader = true;
 }

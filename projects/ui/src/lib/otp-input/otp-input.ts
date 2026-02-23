@@ -3,13 +3,14 @@ import {
     ChangeDetectionStrategy,
     Component,
     ElementRef,
-    QueryList,
-    ViewChildren,
     ViewEncapsulation,
     computed,
     input,
     output,
+    signal,
+    viewChildren,
 } from '@angular/core';
+import { uniqueId } from '@ui/utils/random';
 
 export type OTPSize = 'large' | 'medium' | 'small';
 
@@ -28,12 +29,6 @@ export interface OTPInputProps {
     ariaLabel?: string;
     ariaDescribedBy?: string;
     ariaErrorMessage?: string;
-}
-
-let __otpId = 0;
-function nextOtpId() {
-    __otpId += 1;
-    return `otp-${__otpId}`;
 }
 
 @Component({
@@ -55,50 +50,56 @@ function nextOtpId() {
                 role="group"
                 (mousedown.capture)="onMouseDownCapture($event)"
                 style="display:flex; gap:var(--spacing-sizing-02);">
-                <input
-                    #digitInput
-                    *ngFor="let i of indices(); trackBy: trackByIndex"
-                    data-digit
-                    [attr.data-index]="i"
-                    [attr.data-main-input]="true"
-                    [attr.id]="i === 0 ? id() : null"
-                    [attr.name]="i === 0 ? name() : name() ? name() + '-' + i : null"
-                    [attr.aria-label]="(ariaLabel() || 'OTP input') + ' digit ' + (i + 1)"
-                    [attr.aria-describedby]="i === 0 ? ariaDescribedBy() || null : null"
-                    [attr.aria-errormessage]="i === 0 ? ariaErrorMessage() || null : null"
-                    [attr.aria-invalid]="i === 0 && invalid() ? 'true' : null"
-                    [disabled]="disabled()"
-                    [readOnly]="readOnly()"
-                    [required]="required()"
-                    [attr.inputmode]="alphanumeric() ? 'text' : 'numeric'"
-                    [attr.maxLength]="1"
-                    [attr.autocomplete]="'off'"
-                    [tabIndex]="canBeFocused(i) ? 0 : -1"
-                    [type]="secure() ? 'password' : 'text'"
-                    [value]="values()[i] || ''"
-                    (focus)="selectAll($event)"
-                    (input)="onInput(i, $event)"
-                    (keydown)="onKeydown(i, $event)"
-                    (paste)="onPaste(i, $event)" />
+                @for (i of indices(); track i) {
+                    <input
+                        #digitInput
+                        data-digit
+                        [attr.data-index]="i"
+                        [attr.data-main-input]="true"
+                        [attr.id]="i === 0 ? id() : null"
+                        [attr.name]="i === 0 ? name() : name() ? name() + '-' + i : null"
+                        [attr.aria-label]="(ariaLabel() || 'OTP input') + ' digit ' + (i + 1)"
+                        [attr.aria-describedby]="i === 0 ? ariaDescribedBy() || null : null"
+                        [attr.aria-errormessage]="i === 0 ? ariaErrorMessage() || null : null"
+                        [attr.aria-invalid]="i === 0 && invalid() ? 'true' : null"
+                        [disabled]="disabled()"
+                        [readOnly]="readOnly()"
+                        [required]="required()"
+                        [attr.inputmode]="alphanumeric() ? 'text' : 'numeric'"
+                        [attr.maxLength]="1"
+                        [attr.autocomplete]="'off'"
+                        [tabIndex]="canBeFocused(i) ? 0 : -1"
+                        [type]="secure() ? 'password' : 'text'"
+                        [value]="values()[i] || ''"
+                        (focus)="selectAll($event)"
+                        (input)="onInput(i, $event)"
+                        (keydown)="onKeydown(i, $event)"
+                        (paste)="onPaste(i, $event)" />
+                }
             </span>
 
-            <span
-                *ngIf="secure()"
-                data-digits
-                data-secure-dots
-                style="display:flex; gap:var(--spacing-sizing-02); margin-top:var(--spacing-sizing-02);">
-                <span *ngFor="let i of indices(); trackBy: trackByIndex" data-dot>
-                    {{ (values()[i] || '').trim() ? '•' : '' }}
+            @if (secure()) {
+                <span
+                    data-digits
+                    data-secure-dots
+                    style="display:flex; gap:var(--spacing-sizing-02); margin-top:var(--spacing-sizing-02);">
+                    @for (i of indices(); track i) {
+                        <span data-dot>
+                            {{ (values()[i] || '').trim() ? '•' : '' }}
+                        </span>
+                    }
                 </span>
-            </span>
+            }
         </div>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
 export class UIOTPInput {
-    readonly id = input<string>(() => nextOtpId());
-    readonly name = input.required<string | undefined>(undefined);
+    change = output<string>();
+
+    readonly id = input<string>(uniqueId('otp-input'));
+    readonly name = input.required<string | undefined>();
 
     readonly length = input<number>(6);
     readonly size = input<OTPSize>('medium');
@@ -112,27 +113,18 @@ export class UIOTPInput {
     readonly secure = input<boolean>(false);
 
     readonly ariaLabel = input<string>('OTP input');
-    readonly ariaDescribedBy = input<string | undefined>(undefined);
-    readonly ariaErrorMessage = input<string | undefined>(undefined);
+    readonly ariaDescribedBy = input<string | undefined>();
+    readonly ariaErrorMessage = input<string | undefined>();
 
-    // Output (matches React: call when full length achieved)
-    change = output<string>();
+    readonly inputs = viewChildren<ElementRef<HTMLInputElement>>('digitInput');
 
-    @ViewChildren('digitInput') inputs!: QueryList<ElementRef<HTMLInputElement>>;
-
-    private readonly _values = input<string[]>([]);
     readonly values = computed(() => (this._values().length ? this._values() : (this.defaultValue() || '').split('')));
-
     readonly indices = computed(() => Array.from({ length: this.length() }, (_, i) => i));
+
+    private readonly _values = signal<string[]>([]);
     trackByIndex = (_: number, i: number) => i;
 
-    private setValues(next: string[]) {
-        this._values.set(next);
-        const joined = next.join('').trim();
-        if (joined.length === this.length()) this.change.emit(joined);
-    }
-
-    onMouseDownCapture(event: MouseEvent) {
+    onMouseDownCapture(event: Event) {
         const t = event.target as HTMLElement | null;
         if (t?.tagName !== 'INPUT') {
             event.preventDefault();
@@ -224,8 +216,14 @@ export class UIOTPInput {
         return false;
     }
 
+    private setValues(next: string[]) {
+        this._values.set(next);
+        const joined = next.join('').trim();
+        if (joined.length === this.length()) this.change.emit(joined);
+    }
+
     private focusIndex(index: number) {
-        const arr = this.inputs?.toArray?.() ?? [];
+        const arr = this.inputs() ?? [];
         const ref = arr[index];
         ref?.nativeElement?.focus?.();
     }
