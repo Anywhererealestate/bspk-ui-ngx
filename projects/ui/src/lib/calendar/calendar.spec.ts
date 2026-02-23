@@ -4,17 +4,17 @@ import { spyOn } from 'jest-mock';
 import { UICalendarExample } from './example';
 
 describe('Calendar', () => {
-    let component:  UICalendarExample;
-    let fixture: ComponentFixture< UICalendarExample>;
+    let component: UICalendarExample;
+    let fixture: ComponentFixture<UICalendarExample>;
     let errorSpy: any;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ UICalendarExample],
+            imports: [UICalendarExample],
         }).compileComponents();
 
         errorSpy = spyOn(console, 'error');
-        fixture = TestBed.createComponent( UICalendarExample);
+        fixture = TestBed.createComponent(UICalendarExample);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

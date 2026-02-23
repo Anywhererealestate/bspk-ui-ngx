@@ -4,17 +4,17 @@ import { spyOn } from 'jest-mock';
 import { UIAccordionExample } from './example';
 
 describe('Accordion', () => {
-    let component:  UIAccordionExample;
-    let fixture: ComponentFixture< UIAccordionExample>;
+    let component: UIAccordionExample;
+    let fixture: ComponentFixture<UIAccordionExample>;
     let errorSpy: any;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ UIAccordionExample],
+            imports: [UIAccordionExample],
         }).compileComponents();
 
         errorSpy = spyOn(console, 'error');
-        fixture = TestBed.createComponent( UIAccordionExample);
+        fixture = TestBed.createComponent(UIAccordionExample);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

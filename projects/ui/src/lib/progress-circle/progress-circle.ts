@@ -3,7 +3,7 @@ import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UITxtDirective } from '../txt';
 
-export type ProgressCircleProps = {
+export interface ProgressCircleProps {
     /** The label of the progress circle. */
     label: string;
     /**
@@ -18,7 +18,7 @@ export type ProgressCircleProps = {
      * @default bottom
      */
     labelPosition?: 'bottom' | 'left' | 'right' | 'top';
-};
+}
 
 /**
  * Rotating circle or pill that indicates the status or state of completion for a process.
@@ -32,34 +32,27 @@ export type ProgressCircleProps = {
     imports: [UITxtDirective],
     template: `
         <svg
-                [attr.aria-hidden]="true"
-                data-animated
-                fill="none"
-                [attr.viewBox]="'0 0 200 200'"
-                [attr.stroke-width]="strokeWidth * 2">
-                <defs>
-                    <linearGradient [id]="labelId + 'spinner-secondHalf'">
-                        <stop offset="50%" stop-color="currentColor" stop-opacity="0" />
-                        <stop offset="100%" stop-color="currentColor" stop-opacity="0.375" />
-                    </linearGradient>
-                    <linearGradient [id]="labelId + 'spinner-firstHalf'">
-                        <stop offset="0%" stop-color="currentColor" stop-opacity="1" />
-                        <stop offset="100%" stop-color="currentColor" stop-opacity="0.375" />
-                    </linearGradient>
-                </defs>
-                <g [attr.stroke-width]="strokeWidth * 2">
-                    <path
-                        [attr.d]="pathSecondHalf"
-                        [attr.stroke]="'url(#' + labelId + 'spinner-secondHalf)'" />
-                    <path
-                        [attr.d]="pathFirstHalf"
-                        [attr.stroke]="'url(#' + labelId + 'spinner-firstHalf)'" />
-                    <path
-                        [attr.d]="pathCap"
-                        stroke="currentColor"
-                        stroke-linecap="round" />
-                </g>
-            </svg>
+            [attr.aria-hidden]="true"
+            data-animated
+            fill="none"
+            [attr.viewBox]="'0 0 200 200'"
+            [attr.stroke-width]="strokeWidth * 2">
+            <defs>
+                <linearGradient [id]="labelId + 'spinner-secondHalf'">
+                    <stop offset="50%" stop-color="currentColor" stop-opacity="0" />
+                    <stop offset="100%" stop-color="currentColor" stop-opacity="0.375" />
+                </linearGradient>
+                <linearGradient [id]="labelId + 'spinner-firstHalf'">
+                    <stop offset="0%" stop-color="currentColor" stop-opacity="1" />
+                    <stop offset="100%" stop-color="currentColor" stop-opacity="0.375" />
+                </linearGradient>
+            </defs>
+            <g [attr.stroke-width]="strokeWidth * 2">
+                <path [attr.d]="pathSecondHalf" [attr.stroke]="'url(#' + labelId + 'spinner-secondHalf)'" />
+                <path [attr.d]="pathFirstHalf" [attr.stroke]="'url(#' + labelId + 'spinner-firstHalf)'" />
+                <path [attr.d]="pathCap" stroke="currentColor" stroke-linecap="round" />
+            </g>
+        </svg>
         <span [id]="labelId" [ui-txt]="txtVariant()">{{ label() || 'Loading ...' }}</span>
     `,
     host: {

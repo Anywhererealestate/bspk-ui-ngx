@@ -1,14 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    computed,
-    ElementRef,
-    input,
-    model,
-    signal,
-    viewChild,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, computed, ElementRef, input, model, signal, viewChild, ViewEncapsulation } from '@angular/core';
 import { AsSignal, FieldControlProps } from '../../types/common';
 import { UIButton } from '../button/button';
 import { UIFloatingDirective } from '../floating';
@@ -24,10 +15,10 @@ import {
     stringValueToParts,
 } from './utils';
 
-export type TimePickerProps = FieldControlProps & {
+export interface TimePickerProps extends FieldControlProps {
     size?: 'large' | 'medium' | 'small';
     value?: string;
-};
+}
 
 /**
  * Input that allows typing a time or opening a time picker panel to select hour/minute/AM-PM.
@@ -38,14 +29,7 @@ export type TimePickerProps = FieldControlProps & {
 @Component({
     selector: 'ui-time-picker',
     standalone: true,
-    imports: [
-        CommonModule,
-        UIInput,
-        UIButton,
-        UIFloatingDirective,
-        UIOutsideClickDirective,
-        IconSchedule,
-    ],
+    imports: [CommonModule, UIInput, UIButton, UIFloatingDirective, UIOutsideClickDirective, IconSchedule],
     template: `
         <div
             #reference
@@ -89,10 +73,7 @@ export type TimePickerProps = FieldControlProps & {
                 [ui-outside-click]="{ callback: closePanel.bind(this) }"
                 #panel>
                 <div data-time-picker-panel>
-                    <select
-                        [value]="pendingHours()"
-                        (change)="setHours($any($event.target).value)"
-                        aria-label="Hour">
+                    <select [value]="pendingHours()" (change)="setHours($any($event.target).value)" aria-label="Hour">
                         @for (h of HOUR_OPTIONS; track h) {
                             <option [value]="h">{{ h }}</option>
                         }
@@ -198,11 +179,7 @@ export class UITimePicker implements AsSignal<TimePickerProps> {
     }
 
     applyAndClose(): void {
-        const next = partsToStringValue(
-            this.pendingHours(),
-            this.pendingMinutes(),
-            this.pendingMeridiem(),
-        );
+        const next = partsToStringValue(this.pendingHours(), this.pendingMinutes(), this.pendingMeridiem());
         this.value.set(next);
         this.open.set(false);
     }

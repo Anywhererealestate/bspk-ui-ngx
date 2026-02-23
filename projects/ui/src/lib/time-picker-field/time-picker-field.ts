@@ -56,7 +56,7 @@ export class UITimePickerField implements AsSignal<TimePickerFieldProps> {
     readonly style = input<TimePickerFieldProps['style']>(undefined);
     readonly required = input<TimePickerFieldProps['required']>(false);
     readonly id = input<TimePickerFieldProps['id']>(undefined);
-    readonly name = input<TimePickerFieldProps['name']>(undefined);
+    readonly name = input<TimePickerFieldProps['name']>();
     readonly value = model<TimePickerFieldProps['value']>(undefined);
     readonly disabled = input<TimePickerFieldProps['disabled']>(false);
     readonly readOnly = input<TimePickerFieldProps['readOnly']>(false);
@@ -65,11 +65,7 @@ export class UITimePickerField implements AsSignal<TimePickerFieldProps> {
     readonly size = input<TimePickerFieldProps['size']>('medium');
 
     readonly labelledById = computed(() => labelledById(this.controlId()));
-    readonly describedById = computed(
-        () => (this.helperText() && describedById(this.controlId())) || undefined,
-    );
-    readonly errorMessageId = computed(
-        () => (this.errorMessage() && errorMessageId(this.controlId())) || undefined,
-    );
+    readonly describedById = computed(() => (this.helperText() && describedById(this.controlId())) || undefined);
+    readonly errorMessageId = computed(() => (this.errorMessage() && errorMessageId(this.controlId())) || undefined);
     readonly controlId = computed(() => this.id() || uniqueId('UITimePickerField-'));
 }

@@ -21,88 +21,18 @@ import {
     MetaComponent,
     NavRoute,
 } from '../../projects/shared/src/types';
-import { documentation as compodocData } from '../../.tmp/documentation';
+import { CompodocDocumentation, Component, ComponentInput, ComponentOutput } from './types';
+import { stripCompodocMarkup } from './utils';
 
-type Interface = (typeof compodocData.interfaces)[number];
-type Component = (typeof compodocData.components)[number] | (typeof compodocData.directives)[number];
-type ComponentInput = Component['inputsClass'][number];
-type ComponentOutput = Component['outputsClass'][number];
-type InterfaceProp = Interface['properties'][number];
+const compodocData: CompodocDocumentation = JSON.parse(fs.readFileSync('.tmp/documentation.json', 'utf-8'));
+
+const { INTERFACES, TYPEALIASES, COMPONENT_SELECTORS } = JSON.parse(fs.readFileSync('.tmp/compodoc.json', 'utf-8')) as {
+    INTERFACES: Record<string, Record<string, ComponentMetaInput>>;
+    TYPEALIASES: Record<string, string[]>;
+    COMPONENT_SELECTORS: Record<string, string>;
+};
 
 const GENERATED_OUTPUT_PATH = 'projects/demo/src/generated';
-
-const COMPONENT_SELECTORS: Record<string, string> = [...compodocData.components, ...compodocData.directives]
-    .filter((comp) => !!comp.selector)
-    .reduce(
-        (acc: Record<string, string>, comp) => {
-            acc[comp.selector!.replace(/.*\[/g, '').replace(/\].*/g, '')] = comp.name;
-            return acc;
-        },
-        {} as Record<string, string>,
-    );
-
-const TYPEALIASES: Record<string, string[]> = compodocData.miscellaneous.typealiases.reduce(
-    (acc, alias) => {
-        // ignore certian type aliases
-        if (!['BspkIcon'].includes(alias.name))
-            acc[alias.name] = alias.rawtype.split('|').map((t) => t.trim().replace(/"/g, '')) || [];
-        return acc;
-    },
-    {} as Record<string, string[]>,
-);
-
-// creates a dictionary of interfaces and props for easy lookup, merges all extended interfaces
-const INTERFACES = (() => {
-    const findRootProp = (maybeProp: InterfaceProp): InterfaceProp => {
-        let prop = maybeProp;
-
-        const maybeInterface = compodocData.interfaces.find((i) => i.name === maybeProp.type);
-        const maybeProperty = maybeInterface?.properties.find((p) => p.name === maybeProp.name);
-
-        return maybeProperty ? findRootProp(maybeProperty) : prop;
-    };
-
-    const resolveExtends = (_interface: Interface) => {
-        if (!_interface.extends.length) return;
-
-        // Resolve all extends first
-        _interface.extends = _interface.extends.map(
-            (interfaceName) => compodocData.interfaces.find((i) => i.name === interfaceName)!,
-        ) as unknown as string[];
-    };
-
-    compodocData.interfaces.forEach((def) => {
-        resolveExtends(def);
-    });
-
-    compodocData.interfaces.forEach((def) => {
-        def.extends.forEach((extendedInterface: unknown) => {
-            // Merge properties from extended interface into current interface, ensuring no duplicates
-            const extendedProps = (extendedInterface as Interface).properties.filter(
-                (prop) => !def.properties.some((p) => p.name === prop.name),
-            );
-
-            (def.properties as unknown as InterfaceProp[]).push(...extendedProps);
-        });
-    });
-
-    const interfaceDictionary: Record<string, Record<string, ComponentMetaInput>> = {};
-
-    // Build dictionary
-    compodocData.interfaces.forEach((def) => {
-        interfaceDictionary[def.name] = {};
-
-        def.properties.forEach((property) => {
-            let actualProperty = findRootProp(property);
-
-            const propMeta = compodocToMetaProp(actualProperty, def.name);
-            if (propMeta) interfaceDictionary[def.name][property.name] = propMeta;
-            else console.warn(`Unable to generate metadata for property ${property.name} in interface ${def.name}`);
-        });
-    });
-
-    return interfaceDictionary;
-})();
 
 export const generatedMetaPath = 'projects/demo/src/meta.ts';
 
@@ -137,7 +67,7 @@ function generateMeta() {
                         exComp.name === `${comp.name.replace(/Directive$/, '')}Example`,
                 );
 
-                const content = comp.sourceCode;
+                const content = comp.sourceCode!;
 
                 const jsdoc = content
                     .match(/\/\*\*\s*\n([^*]|(\*(?!\/)))*\*\//g)
@@ -165,7 +95,7 @@ function generateMeta() {
                 let basicUsage: ComponentMeta['basicUsage'] = undefined;
 
                 const { description, exampleHtml, exampleTypeScript } = parseRawDescription(
-                    comp.rawdescription,
+                    comp.rawdescription || '',
                     inputs,
                 );
 
@@ -196,7 +126,7 @@ function generateMeta() {
                         }
 
                         if ('styleUrl' in comp && comp.styleUrl) {
-                            const stylePath = path.join(componentRootDir, comp.styleUrl);
+                            const stylePath = path.join(componentRootDir, comp.styleUrl as string);
 
                             if (fs.existsSync(stylePath)) return fs.readFileSync(stylePath, 'utf-8');
                         }
@@ -218,7 +148,7 @@ function generateMeta() {
                             file: i.file,
                             props: Object.values(INTERFACES[i.name] || {}) || [],
                         })),
-                    hasContent: 'template' in comp && comp.template.includes('<ng-content'),
+                    hasContent: typeof comp.template === 'string' && comp.template.includes('<ng-content'),
                     basicUsage,
                 } as ComponentMeta;
             })
@@ -252,7 +182,7 @@ function generateComponentInputsOutputs(component: Component): {
     const inputsClass: ComponentInput[] = component.inputsClass;
     const outputsClass: ComponentOutput[] = component.outputsClass;
 
-    if ('extends' in component) {
+    if ('extends' in component && Array.isArray(component.extends)) {
         component.extends.forEach((extendName) => {
             const found = compodocData.components.find((comp) => comp.name === extendName);
             if (!found) return;
@@ -274,7 +204,7 @@ function generateComponentInputsOutputs(component: Component): {
 
         if (!('type' in prop)) {
             throw new Error(
-                `Input ${prop.name} in component ${component.name} is missing type information in the documentation JSON. Please ensure it is properly documented.`,
+                `Input ${prop} in component ${component.name} is missing type information in the documentation JSON. Please ensure it is properly documented.`,
             );
         }
 
@@ -310,12 +240,6 @@ function generateComponentInputsOutputs(component: Component): {
 
     outputsClass.forEach((prop) => {
         let propMeta: ComponentMetaOutput | undefined;
-
-        if (!('type' in prop)) {
-            throw new Error(
-                `Output ${prop.name} in component ${component.name} is missing type information in the documentation JSON. Please ensure it is properly documented.`,
-            );
-        }
 
         // ignore types that are arrays (e.g. string[]) since those are not references to other interfaces
         if (!prop.type.endsWith('[]') && prop.type.includes('[')) {
@@ -361,57 +285,6 @@ function generateComponentInputsOutputs(component: Component): {
     });
 
     return { inputs, outputs };
-}
-
-/** Generates metadata props for a given interface name. */
-function compodocToMetaProp(prop: InterfaceProp, interfaceName: string): ComponentMetaInput | null {
-    // TODO: handle TYPESCRIPT TYPES like Exclude<"a" | "b" | "c", "b">, Omit<"a" | "b" | "c", "b">, and Record<string, any>, FabContainer, FabIconType
-
-    if (!prop) return prop;
-
-    const defaultValue = stripCompodocMarkup(
-        'jsdoctags' in prop ? prop.jsdoctags?.find((tag) => tag.tagName.escapedText === 'default')?.comment : undefined,
-    );
-
-    const description = (() => {
-        const desc = 'rawdescription' in prop ? prop.rawdescription : undefined;
-
-        // remove ```.*``` blocks from description
-        return desc?.replace(/```[\s\S]*?```/g, '').trim();
-    })();
-
-    const type = (() => {
-        // split, remove surrounding quotes, and trim each type if it's a union type
-
-        let parsedType: string | string[] = prop.type.trim();
-
-        if (
-            // types that include '|' but are not union types (e.g. generics like Omit<"a" | "b" | "c", "b">) should be left as-is
-            prop.type.includes('|') &&
-            // exclude generics
-            !['Omit<', 'Exclude<', 'Record<'].some((generic) => prop.type.startsWith(generic))
-        ) {
-            parsedType = parsedType.split('|').map((t) => t.replace(/['"]/g, '').trim());
-        }
-
-        // check if primitive type
-        else if (['string', 'number', 'boolean', 'null', 'undefined'].includes(prop.type)) {
-            parsedType = prop.type;
-        } else {
-            // check if type is a type alias
-            parsedType = TYPEALIASES[prop.type] || parsedType;
-        }
-
-        return parsedType.length === 1 ? parsedType[0] : parsedType;
-    })();
-
-    return {
-        name: prop.name,
-        description,
-        type,
-        default: defaultValue,
-        required: !prop.optional,
-    };
 }
 
 function writeMetaToFile(): Meta {
@@ -770,14 +643,6 @@ export function findComponentSelectors(code: string, COMPONENT_SELECTORS: Record
             return COMPONENT_SELECTORS[selector];
         })
         .filter((value, index, self) => value && self.indexOf(value) === index);
-}
-
-/**
- * Removes <p> and </p> tags from the provided string, which are commonly added by Compodoc in the description fields.
- * Also trims the resulting string. If the input is undefined, it returns undefined.
- */
-function stripCompodocMarkup(str?: string) {
-    return str?.replace(/<\/?p>/g, '').trim() || str;
 }
 
 function componentSettings() {

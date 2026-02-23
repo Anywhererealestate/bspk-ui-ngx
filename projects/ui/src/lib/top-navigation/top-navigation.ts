@@ -1,9 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
-export type TopNavigationProps = {
+export interface TopNavigationProps {
     /** The content of the top navigation. */
     children?: string;
-};
+}
 
 /**
  * Top navigation wrapper.

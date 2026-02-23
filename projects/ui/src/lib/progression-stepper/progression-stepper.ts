@@ -2,17 +2,17 @@ import { Component, computed, input, ViewEncapsulation } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import * as Icons from '../icons';
 
-export type ProgressionStepperItem = {
+export interface ProgressionStepperItem {
     name: string;
     subtext?: string;
     touchLink?: { label: string; onClick: () => void };
-};
+}
 
-export type ProgressionStepperProps = {
+export interface ProgressionStepperProps {
     steps: ProgressionStepperItem[];
     completedStep?: number;
     variant?: 'horizontal' | 'vertical' | 'widget';
-};
+}
 
 type StepStatus = 'complete' | 'current' | 'incomplete';
 
@@ -28,42 +28,42 @@ type StepStatus = 'complete' | 'current' | 'incomplete';
     imports: [Icons.IconCheck],
     template: `
         @if (steps().length) {
-        <div [attr.data-bspk]="'progression-stepper'" [attr.data-variant]="variant()">
-            @if (variant() === 'widget') {
-                <label>
-                    <span data-title>{{ currentStep()?.name }}</span>
-                    <span data-subtitle>{{ subtitle() }}</span>
-                </label>
-            }
-            <ol>
-                @for (step of steps(); track $index) {
-                    <li
-                        [attr.aria-current]="stepStatus($index) === 'current' ? 'step' : null"
-                        [attr.data-status]="stepStatus($index)"
-                        [attr.data-step]="$index + 1">
-                        <span data-line-circle>
-                            <span data-line="before"></span>
-                            <span data-circle>
-                                @if (stepStatus($index) === 'complete') {
-                                    <icon-check [attr.aria-hidden]="true"></icon-check>
-                                } @else if (variant() !== 'widget' || stepStatus($index) === 'current') {
-                                    <span>{{ $index + 1 }}</span>
-                                }
-                            </span>
-                            <span data-line="after"></span>
-                        </span>
-                        @if (variant() !== 'widget') {
-                            <span data-content>
-                                <span data-name>{{ step.name }}</span>
-                                @if (step.subtext) {
-                                    <span data-subtext>{{ step.subtext }}</span>
-                                }
-                            </span>
-                        }
-                    </li>
+            <div [attr.data-bspk]="'progression-stepper'" [attr.data-variant]="variant()">
+                @if (variant() === 'widget') {
+                    <div>
+                        <span data-title>{{ currentStep()?.name }}</span>
+                        <span data-subtitle>{{ subtitle() }}</span>
+                    </div>
                 }
-            </ol>
-        </div>
+                <ol>
+                    @for (step of steps(); track $index) {
+                        <li
+                            [attr.aria-current]="stepStatus($index) === 'current' ? 'step' : null"
+                            [attr.data-status]="stepStatus($index)"
+                            [attr.data-step]="$index + 1">
+                            <span data-line-circle>
+                                <span data-line="before"></span>
+                                <span data-circle>
+                                    @if (stepStatus($index) === 'complete') {
+                                        <icon-check [attr.aria-hidden]="true"></icon-check>
+                                    } @else if (variant() !== 'widget' || stepStatus($index) === 'current') {
+                                        <span>{{ $index + 1 }}</span>
+                                    }
+                                </span>
+                                <span data-line="after"></span>
+                            </span>
+                            @if (variant() !== 'widget') {
+                                <span data-content>
+                                    <span data-name>{{ step.name }}</span>
+                                    @if (step.subtext) {
+                                        <span data-subtext>{{ step.subtext }}</span>
+                                    }
+                                </span>
+                            }
+                        </li>
+                    }
+                </ol>
+            </div>
         }
     `,
     host: {
@@ -84,9 +84,7 @@ export class UIProgressionStepper implements AsSignal<ProgressionStepperProps> {
         return Math.max(0, Math.min(prop, steps.length));
     });
 
-    readonly currentStepNumber = computed(() =>
-        Math.min(this.completedStepNumber() + 1, this.steps().length),
-    );
+    readonly currentStepNumber = computed(() => Math.min(this.completedStepNumber() + 1, this.steps().length));
 
     readonly currentStep = computed(() => {
         const steps = this.steps();

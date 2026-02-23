@@ -1,26 +1,20 @@
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    computed,
-    ElementRef,
-    input,
-    model,
-    signal,
-    viewChild,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, computed, ElementRef, input, model, signal, viewChild, ViewEncapsulation } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIFloatingDirective } from '../floating';
-import { IconSearch } from '../icons/search';
 import { UIInput } from '../input';
 import { UIListItem } from '../list-item';
 import { UIMenu } from '../menu';
 import { UIOutsideClickDirective } from '../outside-click';
 
-export type SearchBarOption = { label: string; leading?: string; trailing?: string };
+export interface SearchBarOption {
+    label: string;
+    leading?: string;
+    trailing?: string;
+}
 
-export type SearchBarProps = {
+export interface SearchBarProps {
     placeholder?: string;
     items?: SearchBarOption[];
     noResultsMessage?: string;
@@ -29,7 +23,7 @@ export type SearchBarProps = {
     name?: string;
     ariaLabel?: string;
     scrollLimit?: number;
-};
+}
 
 /**
  * Input that allows search queries and shows filtered results in a floating menu.
@@ -40,14 +34,7 @@ export type SearchBarProps = {
 @Component({
     selector: 'ui-search-bar',
     standalone: true,
-    imports: [
-        CommonModule,
-        UIInput,
-        UIFloatingDirective,
-        UIOutsideClickDirective,
-        UIMenu,
-        UIListItem,
-    ],
+    imports: [CommonModule, UIInput, UIFloatingDirective, UIOutsideClickDirective, UIMenu, UIListItem],
     template: `
         <div #reference data-bspk="search-bar">
             <ui-input
