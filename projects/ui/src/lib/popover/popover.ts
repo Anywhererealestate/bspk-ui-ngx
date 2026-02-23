@@ -19,7 +19,8 @@ import { UIOutsideClickDirective } from '../outside-click';
 import { UIPortalDirective } from '../portal';
 import { UITxtDirective } from '../txt';
 
-export interface CallToActionButton {
+/** CTA button config for popover (label + optional size). Distinct from banner-alert's CallToActionButton. */
+export interface PopoverCallToActionButton {
     label: string;
     size?: 'large' | 'medium' | 'small' | 'x-small';
 }
@@ -32,9 +33,9 @@ export interface PopoverProps {
     /** Popover body content. */
     content: string;
     /** Primary CTA label (click emitted via callToActionClick). */
-    callToAction?: CallToActionButton;
+    callToAction?: PopoverCallToActionButton;
     /** Secondary CTA label (click emitted via secondaryCallToActionClick). */
-    secondaryCallToAction?: CallToActionButton;
+    secondaryCallToAction?: PopoverCallToActionButton;
     /** When true, trigger is disabled and popover cannot open. */
     disabled?: boolean;
     /** When true, panel width matches trigger width. */

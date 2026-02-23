@@ -31,7 +31,7 @@ type StepStatus = 'complete' | 'current' | 'incomplete';
             <div [attr.data-bspk]="'progression-stepper'" [attr.data-variant]="variant()">
                 @if (variant() === 'widget') {
                     <div>
-                        <span data-title>{{ currentStep()?.name }}</span>
+                        <span data-title>{{ currentStep().name }}</span>
                         <span data-subtitle>{{ subtitle() }}</span>
                     </div>
                 }

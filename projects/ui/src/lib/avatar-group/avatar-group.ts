@@ -140,7 +140,7 @@ export class UIAvatarGroup implements AsSignal<AvatarGroupProps> {
     readonly variant = input<AvatarGroupProps['variant']>('stacked');
 
     readonly open = signal<boolean>(false);
-    readonly activeElementId = signal<string | undefined>();
+    readonly activeElementId = signal<string | undefined>(undefined);
 
     readonly itemsWithIds = computed(() => {
         return this.items().map((item, idx) => ({

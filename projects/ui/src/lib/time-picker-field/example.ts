@@ -8,5 +8,5 @@ import { UITimePickerField } from './time-picker-field';
     template: ` <ui-time-picker-field [(value)]="value" name="time" label="Time" helperText="Select a time." /> `,
 })
 export class UITimePickerFieldExample {
-    readonly value = signal<string | undefined>('');
+    readonly value = signal<string | undefined>(undefined);
 }

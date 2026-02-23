@@ -20,5 +20,5 @@ import { UIPasswordField } from './password-field';
     `,
 })
 export class UIPasswordFieldExample {
-    readonly value = signal<string | undefined>('');
+    readonly value = signal<string | undefined>(undefined);
 }

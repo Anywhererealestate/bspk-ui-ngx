@@ -10,7 +10,7 @@ import { UISearchBar } from './search-bar';
     `,
 })
 export class UISearchBarExample {
-    readonly value = signal<string | undefined>('');
+    readonly value = signal<string | undefined>(undefined);
     readonly items = [
         { label: 'Apple Pie' },
         { label: 'Banana Split' },

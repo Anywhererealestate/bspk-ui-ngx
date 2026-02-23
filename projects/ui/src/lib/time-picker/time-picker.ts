@@ -29,7 +29,7 @@ export interface TimePickerProps extends FieldControlProps {
 @Component({
     selector: 'ui-time-picker',
     standalone: true,
-    imports: [CommonModule, UIInput, UIButton, UIFloatingDirective, UIOutsideClickDirective, IconSchedule],
+    imports: [CommonModule, UIInput, UIButton, UIFloatingDirective, UIOutsideClickDirective],
     template: `
         <div
             #reference
