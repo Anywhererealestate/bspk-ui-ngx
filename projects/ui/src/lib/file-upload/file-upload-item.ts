@@ -75,7 +75,7 @@ function fileSizeFormat(fileSizeMb?: number): string | undefined {
  * being uploaded.
  *
  * @name FileUploadItem
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     standalone: true,

@@ -26,14 +26,14 @@ function numToSizingVar(numStr?: string): string | undefined {
  *
  * ```html
  * <ui-grid [columns]="3" gap="4">
- *   <div>Cell 1</div>
- *   <div>Cell 2</div>
- *   <div>Cell 3</div>
+ *     <div>Cell 1</div>
+ *     <div>Cell 2</div>
+ *     <div>Cell 3</div>
  * </ui-grid>
  * ```
  *
  * @name Grid
- * @phase Dev
+ * @phase Utility
  */
 @Component({
     standalone: true,

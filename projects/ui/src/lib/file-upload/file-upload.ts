@@ -164,7 +164,7 @@ export interface FileUploadProps {
  * ```
  *
  * @name FileUpload
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     standalone: true,

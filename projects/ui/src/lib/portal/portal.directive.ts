@@ -17,7 +17,7 @@ export interface PortalProps {
  * ```
  *
  * @name Portal
- * @phase Dev
+ * @phase Utility
  */
 @Directive({
     selector: '[ui-portal]',

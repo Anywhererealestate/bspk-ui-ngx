@@ -62,7 +62,7 @@ interface FlexUtilityProps {
  * ```
  *
  * @name Flex
- * @phase Dev
+ * @phase Utility
  */
 @Directive({
     selector: '[ui-flex]',
