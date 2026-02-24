@@ -60,7 +60,6 @@ export interface SkeletonTextProps {
             <ng-content></ng-content>
         }
     `,
-    styleUrl: './skeleton-text.scss',
     encapsulation: ViewEncapsulation.None,
 })
 export class UISkeletonText implements AsSignal<SkeletonTextProps> {

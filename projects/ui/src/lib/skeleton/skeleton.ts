@@ -58,7 +58,6 @@ function toCssSize(value: number | string): string {
             <ng-content></ng-content>
         }
     `,
-    styleUrl: './skeleton.scss',
     encapsulation: ViewEncapsulation.None,
 })
 export class UISkeleton implements AsSignal<SkeletonProps> {
