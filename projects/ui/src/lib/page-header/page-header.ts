@@ -4,6 +4,14 @@ import { AsSignal } from '../../types/common';
 
 export interface PageHeaderProps {
     title: string;
+    /** Actions slot (use [actions] projection). */
+    actions?: unknown;
+    /** Breadcrumb slot (use [breadcrumb] projection). */
+    breadcrumb?: unknown;
+    /** Avatar slot (use [avatar] projection). */
+    avatar?: unknown;
+    /** Subheader slot (use [subHeader] projection). */
+    subHeader?: unknown;
 }
 
 /**
@@ -58,6 +66,10 @@ export interface PageHeaderProps {
 })
 export class UIPageHeader implements AsSignal<PageHeaderProps> {
   readonly title = input.required<string>();
+  readonly actions = input<unknown>();
+  readonly breadcrumb = input<unknown>();
+  readonly avatar = input<unknown>();
+  readonly subHeader = input<unknown>();
 
   readonly hasBreadcrumb = true;
   readonly hasAvatar = true;

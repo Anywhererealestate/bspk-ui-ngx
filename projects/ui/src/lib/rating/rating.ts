@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, input, output, computed } from '@angular/core';
+import { Component, ViewEncapsulation, input, computed, model } from '@angular/core';
 import { AsSignal } from '../../types/common';
 import { IconStarFill } from '../icons/star-fill';
 
@@ -38,7 +38,7 @@ function getFill(num: number, value?: number): 'full' | 'half' | undefined {
  * Descriptive and interactive controls that allow customers to indicate their feelings about an experience or product.
  *
  * ```html
- * <ui-rating [value]="4" size="medium" [interactive]="true" (valueChange)="onRate($event)" />
+ * <ui-rating [(value)]="value" size="medium" [interactive]="true" />
  * <ui-rating [value]="4.5" [interactive]="false" />
  * ```
  *
@@ -65,7 +65,7 @@ function getFill(num: number, value?: number): 'full' | 'half' | undefined {
                         data-star
                         role="radio"
                         [attr.tabindex]="isSelected(i) ? 0 : -1"
-                        (click)="valueChange.emit(i + 1)">
+                        (click)="value.set(i + 1)">
                         <icon-star-fill></icon-star-fill>
                         @if (getFill(i + 1) === 'half') {
                             <div data-fill-half>
@@ -94,17 +94,17 @@ function getFill(num: number, value?: number): 'full' | 'half' | undefined {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIRating implements AsSignal<RatingProps> {
-    readonly value = input<number>(0);
+    readonly value = model<number>(0);
+
     readonly size = input<RatingSize>('medium');
     readonly interactive = input<boolean>(true);
-    readonly valueChange = output<number>();
 
     readonly indices = computed(() => Array.from({ length: MAX_STARS }, (_, i) => i));
     readonly isInteractive = computed(() => this.interactive());
 
     readonly ariaLabel = computed(() => {
         const v = this.value();
-        return v ? `${v} out of ${MAX_STARS} stars` : (this.isInteractive() ? 'Select a star rating' : 'Rating');
+        return v ? `${v} out of ${MAX_STARS} stars` : this.isInteractive() ? 'Select a star rating' : 'Rating';
     });
 
     getFill(num: number): 'full' | 'half' | undefined {

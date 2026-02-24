@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input } from '@angular/core';
-import { AsSignal } from '../../types/common';
 import { uniqueId } from '@ui/utils/random';
+import { AsSignal } from '../../types/common';
 import { UIInlineAlert } from '../inline-alert';
 
 export interface FieldsetProps {
@@ -18,7 +18,7 @@ export interface FieldsetProps {
  *
  * ```html
  * <ui-fieldset label="Email" [required]="true" helperText="We'll never share your email.">
- *   <input type="email" />
+ *     <input type="email" />
  * </ui-fieldset>
  * ```
  *

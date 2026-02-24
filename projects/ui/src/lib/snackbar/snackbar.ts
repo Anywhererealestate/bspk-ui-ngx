@@ -14,6 +14,8 @@ export interface SnackbarProps {
     closeButton?: boolean;
     /** Label for the close button. @default Dismiss */
     closeButtonLabel?: string;
+    /** Optional icon content (use snackbar-icon slot for projection). */
+    icon?: unknown;
     /** Time in ms after which the snackbar will auto dismiss. */
     timeout?: number;
     /** If the snackbar is open. @default false */
@@ -79,6 +81,7 @@ export class UISnackbar implements AsSignal<SnackbarProps> {
     readonly timeout = input<number | undefined>(undefined);
     readonly disableFocusTrap = input<boolean>(false);
     readonly id = input<string | undefined>(undefined);
+    readonly icon = input<unknown>(undefined);
 
     readonly boxRef = viewChild<ElementRef<HTMLDivElement>>('boxRef');
 

@@ -17,6 +17,14 @@ export interface CarouselProps {
     defaultValue?: number; // uncontrolled start
     showDots?: boolean;
     ariaLabel?: string;
+    /** A label for the carousel (used for aria-label). */
+    label?: string;
+    /** Width of each item (px or CSS value). @default 80% */
+    itemWidth?: number | string;
+    /** Gap between items in pixels. @default 16 */
+    gap?: number;
+    /** Additional styles for the carousel container. */
+    style?: Record<string, number | string>;
 }
 
 /**
@@ -24,9 +32,9 @@ export interface CarouselProps {
  *
  * ```html
  * <ui-carousel [length]="3" [showDots]="true" ariaLabel="Image carousel">
- *   <div>Slide 1</div>
- *   <div>Slide 2</div>
- *   <div>Slide 3</div>
+ *     <div>Slide 1</div>
+ *     <div>Slide 2</div>
+ *     <div>Slide 3</div>
  * </ui-carousel>
  * ```
  *
@@ -65,7 +73,7 @@ export interface CarouselProps {
     host: {
         'data-bspk': 'carousel',
         role: 'region',
-        '[attr.aria-label]': 'ariaLabel()',
+        '[attr.aria-label]': 'label() ?? ariaLabel() ?? "Carousel"',
         style: 'display:block;',
         '(keydown)': 'onKeydown($event)',
     },
@@ -80,6 +88,10 @@ export class UICarousel implements AsSignal<CarouselProps> {
     readonly defaultValue = input<number>(0);
     readonly showDots = input<boolean>(true);
     readonly ariaLabel = input<string>('Carousel');
+    readonly label = input<string | undefined>();
+    readonly itemWidth = input<number | string>('80%');
+    readonly gap = input<number>(16);
+    readonly style = input<Record<string, number | string> | undefined>();
 
     readonly activeIndex = computed(() => {
         const controlled = this.value();

@@ -10,8 +10,8 @@ import {
     signal,
     viewChildren,
 } from '@angular/core';
-import { AsSignal } from '../../types/common';
 import { uniqueId } from '@ui/utils/random';
+import { AsSignal } from '../../types/common';
 
 export type OTPSize = 'large' | 'medium' | 'small';
 
@@ -36,10 +36,7 @@ export interface OTPInputProps {
  * A one-time code input that splits the value into individual digit fields.
  *
  * ```html
- * <ui-otp-input
- *   [length]="6"
- *   [defaultValue]="''"
- *   (change)="onCodeComplete($event)" />
+ * <ui-otp-input [length]="6" [defaultValue]="''" (change)="onCodeComplete($event)" />
  * ```
  *
  * @name OTPInput

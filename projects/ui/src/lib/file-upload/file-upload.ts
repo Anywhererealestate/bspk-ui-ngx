@@ -11,9 +11,20 @@ export interface FileUploadSelectedFile {
 
 export interface FileUploadProps {
     files?: FileUploadSelectedFile[];
+    /** @default true */
     multiple?: boolean;
     accept?: string;
     disabled?: boolean;
+    /** Whether to enable drag and drop. @default false */
+    dragAndDrop?: boolean;
+    /** Subtitle for the upload area (e.g. accepted types, max size). */
+    uploadSubtitle?: string;
+    /** Alias for multiple; whether to allow multiple files. @default false */
+    multipleFiles?: boolean;
+    /** Max file size in MB. @default 2 */
+    maxFileSize?: number;
+    /** Label for cancel button on items. @default Cancel */
+    cancelButtonLabel?: string;
 }
 
 /**
@@ -72,6 +83,11 @@ export class UIFileUpload implements AsSignal<FileUploadProps> {
     readonly multiple = input<boolean>(true);
     readonly accept = input<string | undefined>();
     readonly disabled = input<boolean>(false);
+    readonly dragAndDrop = input<boolean>(false);
+    readonly uploadSubtitle = input<string | undefined>();
+    readonly multipleFiles = input<boolean | undefined>();
+    readonly maxFileSize = input<number>(2);
+    readonly cancelButtonLabel = input<string>('Cancel');
 
     onFilesSelected(evt: Event) {
         const inputEl = evt.target as HTMLInputElement | null;

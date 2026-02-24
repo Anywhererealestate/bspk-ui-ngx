@@ -3,8 +3,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsula
 import { AsSignal } from '../../types/common';
 import { UIButton } from '../button';
 
-export type ButtonDockArrangement = 'fill' | 'hug';
-export type ButtonDockMode = 'inline' | 'stacked';
+export type ButtonDockArrangement = 'fill' | 'hug' | 'spread';
+export type ButtonDockMode = 'fixed' | 'inline' | 'stacked';
 
 export interface ButtonDockButton {
     label: string;
@@ -24,10 +24,10 @@ export interface ButtonDockProps {
  *
  * ```html
  * <ui-button-dock
- *   [primaryButton]="{ label: 'Submit' }"
- *   [secondaryButton]="{ label: 'Cancel' }"
- *   (primaryClick)="onSubmit()"
- *   (secondaryClick)="onCancel()" />
+ *     [primaryButton]="{ label: 'Submit' }"
+ *     [secondaryButton]="{ label: 'Cancel' }"
+ *     (primaryClick)="onSubmit()"
+ *     (secondaryClick)="onCancel()" />
  * ```
  *
  * @name ButtonDock

@@ -14,9 +14,7 @@ export interface RadioOptionProps extends RadioProps {
  * A control that allows users to choose one or more items from a list or turn an feature on or off.
  *
  * ```html
- * <ui-radio-option label="Option A" [checked]="selected() === 'a'" value="a">
- *   <ui-radio data-leading [checked]="selected() === 'a'" value="a" (checkedChange)="selected.set('a')" />
- * </ui-radio-option>
+ * <ui-radio-option name="optionGroupName" label="Option A" [(checked)]="selected" value="a" />
  * ```
  *
  * @name RadioOption
@@ -37,13 +35,12 @@ export interface RadioOptionProps extends RadioProps {
                 [id]="id()"
                 [name]="name()"
                 [value]="value()"
-                [checked]="checked()"
+                [(checked)]="checked"
                 [disabled]="disabled()"
                 [required]="required()"
                 [invalid]="invalid()"
                 [readOnly]="readOnly()"
-                [ariaLabel]="ariaLabel() || computedAriaLabel()"
-                (checkedChange)="checked.set($event)">
+                [ariaLabel]="ariaLabel() || computedAriaLabel()">
             </ui-radio>
         </span>
     </ui-list-item>`,

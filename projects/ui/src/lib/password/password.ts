@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { AsSignal } from '../../types/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
 import { uniqueId } from '@ui/utils/random';
+import { AsSignal } from '../../types/common';
 import { UIInput } from '../input';
 
 export interface PasswordProps {
@@ -20,10 +20,10 @@ export interface PasswordProps {
  *
  * ```html
  * <ui-password
- *   name="password"
- *   [value]="passwordValue()"
- *   placeholder="Enter password"
- *   (change)="passwordValue.set($event)" />
+ *     name="password"
+ *     [value]="passwordValue()"
+ *     placeholder="Enter password"
+ *     (change)="passwordValue.set($event)" />
  * ```
  *
  * @name Password

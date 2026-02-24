@@ -23,8 +23,18 @@ export interface SkeletonTextProps {
  * ```html
  * <ui-skeleton-text [lines]="3" variant="body-base" />
  * <ui-skeleton-text [loaded]="hasContent()">
- *   <p>Loaded text content</p>
+ *     <p>Loaded text content</p>
  * </ui-skeleton-text>
+ * ```
+ *
+ * ```typescript
+ * hasContent = signal(false);
+ *
+ * constructor() {
+ *   // Simulate loading content
+ *   setTimeout(() => this.hasContent.set(true), 3000);
+ *
+ * }
  * ```
  *
  * @name SkeletonText

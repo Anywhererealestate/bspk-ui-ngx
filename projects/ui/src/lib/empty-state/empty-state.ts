@@ -13,6 +13,8 @@ export interface EmptyStateCallToAction {
 }
 
 export interface EmptyStateProps {
+    /** Image/icon slot (use default projection). */
+    children?: unknown;
     header: string;
     body: string;
     bodyAlign?: EmptyStateBodyAlign;
@@ -63,6 +65,7 @@ export interface EmptyStateProps {
 export class UIEmptyState implements AsSignal<EmptyStateProps> {
     @Output() callToActionClick = new EventEmitter<void>();
 
+    readonly children = input<unknown>();
     readonly header = input.required<string>();
     readonly body = input.required<string>();
     readonly bodyAlign = input<EmptyStateBodyAlign>('center');

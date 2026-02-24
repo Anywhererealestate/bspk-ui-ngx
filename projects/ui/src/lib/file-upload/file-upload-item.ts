@@ -9,6 +9,10 @@ export interface FileUploadItemProps {
     sizeBytes?: number;
     status?: FileUploadItemStatus;
     errorMessage?: string;
+    /** Upload progress 0–100. */
+    progress?: number;
+    /** Label for cancel/remove button tooltip. @default Cancel */
+    cancelButtonLabel?: string;
 }
 
 function formatBytes(bytes?: number): string | undefined {
@@ -53,7 +57,7 @@ function formatBytes(bytes?: number): string | undefined {
                     }
                 </div>
 
-                <button type="button" (click)="remove.emit()" aria-label="Remove file">
+                <button type="button" (click)="remove.emit()" [attr.aria-label]="cancelButtonLabel()">
                     <!-- icon removed -->
                     Remove
                 </button>
@@ -76,6 +80,8 @@ export class UIFileUploadItem implements AsSignal<FileUploadItemProps> {
     readonly sizeBytes = input<number | undefined>();
     readonly status = input<FileUploadItemStatus>('idle');
     readonly errorMessage = input<string | undefined>();
+    readonly progress = input<number | undefined>();
+    readonly cancelButtonLabel = input<string>('Cancel');
 
     get sizeLabel(): string | undefined {
         return formatBytes(this.sizeBytes());
