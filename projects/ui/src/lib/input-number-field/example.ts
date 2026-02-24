@@ -5,10 +5,8 @@ import { UIInputNumberField } from './input-number-field';
     selector: 'ui-input-number-field-example',
     standalone: true,
     imports: [UIInputNumberField],
-    template: `
-        <ui-input-number-field [(value)]="value" name="amount" label="Amount" helperText="Enter a number." />
-    `,
+    template: ` <ui-input-number-field [(value)]="value" name="amount" label="Amount" helperText="Enter a number." /> `,
 })
 export class UIInputNumberFieldExample {
-    readonly value = signal<number | undefined>(undefined);
+    readonly value = signal('123');
 }
