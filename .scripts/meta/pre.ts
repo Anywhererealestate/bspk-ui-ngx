@@ -15,9 +15,9 @@ import { stripCompodocMarkup } from './utils';
 
 /** Functionality that needs to run before running meta script */
 export function preMeta(force = false) {
-    execSync(`rm -rf projects/demo/src/generated && mkdir -p projects/demo/src/generated/components`, {
-        stdio: 'inherit',
-    });
+    // execSync(`rm -rf projects/demo/src/generated && mkdir -p projects/demo/src/generated/components`, {
+    //     stdio: 'inherit',
+    // });
 
     if (force || !fs.existsSync('.tmp/documentation.json')) {
         execSync('npx @compodoc/compodoc -p tsconfig.doc.json -e json -d ./.tmp --silent', { stdio: 'inherit' });
