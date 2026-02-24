@@ -9,6 +9,8 @@ export interface CheckboxGroupFieldProps extends ControlFieldProps, CheckboxGrou
 /**
  * A field wrapper for the UICheckboxGroup component.
  *
+ * This component takes properties from the Field and UICheckboxGroup components.
+ *
  * ```html
  * <ui-checkbox-group-field name="checkbox-group-name" label="Options" [options]="options" [(value)]="selected" />
  * ```

@@ -9,6 +9,8 @@ export interface InputNumberFieldProps extends InputNumberProps, ControlFieldPro
 /**
  * A field wrapper for the UIInputNumber component.
  *
+ * This component takes properties from the Field and UIInputNumber components.
+ *
  * ```html
  * <ui-input-number-field label="Amount" name="amount" [(value)]="amount" />
  * ```

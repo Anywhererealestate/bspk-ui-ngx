@@ -9,6 +9,8 @@ export interface TimePickerFieldProps extends TimePickerProps, ControlFieldProps
 /**
  * A field wrapper for the TimePicker component.
  *
+ * This component takes properties from the Field and UITimePicker components.
+ *
  * @name TimePickerField
  * @phase Dev
  */
