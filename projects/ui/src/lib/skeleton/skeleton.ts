@@ -22,6 +22,12 @@ export interface SkeletonProps {
      * @default 100
      */
     height?: number | string;
+    /**
+     * When true, show projected content instead of the skeleton.
+     *
+     * @default false
+     */
+    loaded?: boolean;
 }
 
 function toCssSize(value: number | string): string {
@@ -61,20 +67,20 @@ function toCssSize(value: number | string): string {
     encapsulation: ViewEncapsulation.None,
 })
 export class UISkeleton implements AsSignal<SkeletonProps> {
-    readonly variant = input<SkeletonVariant>('rectangular');
-    readonly width = input<number | string>(200);
-    readonly height = input<number | string>(100);
-    readonly loaded = model<boolean>(false);
+    readonly variant = input<SkeletonProps['variant']>('rectangular');
+    readonly width = input<SkeletonProps['width']>(200);
+    readonly height = input<SkeletonProps['height']>(100);
+    readonly loaded = model<SkeletonProps['loaded']>(false);
 
     showSkeleton(): boolean {
         return !this.loaded();
     }
 
     widthCss(): string {
-        return toCssSize(this.width());
+        return toCssSize(this.width() ?? 200);
     }
 
     heightCss(): string {
-        return toCssSize(this.height());
+        return toCssSize(this.height() ?? 100);
     }
 }

@@ -62,21 +62,21 @@ function dimension(value: ExamplePlaceholderDim): string {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIExamplePlaceholder implements AsSignal<ExamplePlaceholderProps> {
-    readonly width = input<ExamplePlaceholderDim>('100%');
-    readonly height = input<ExamplePlaceholderDim>(100);
-    readonly label = input<string | undefined>();
+    readonly width = input<ExamplePlaceholderProps['width']>('100%');
+    readonly height = input<ExamplePlaceholderProps['height']>(100);
+    readonly label = input<ExamplePlaceholderProps['label']>();
 
-    readonly widthCss = computed(() => dimension(this.width()));
-    readonly heightCss = computed(() => dimension(this.height()));
+    readonly widthCss = computed(() => dimension(this.width() ?? '100%'));
+    readonly heightCss = computed(() => dimension(this.height() ?? 100));
 
     /** Angular doesn't give a cheap "has ng-content" flag; treat empty label + default slot as dims. */
     readonly hasProjectedContent = false;
 
     get widthLabel(): string {
-        return dimension(this.width());
+        return dimension(this.width() ?? '100%');
     }
 
     get heightLabel(): string {
-        return dimension(this.height());
+        return dimension(this.height() ?? 100);
     }
 }

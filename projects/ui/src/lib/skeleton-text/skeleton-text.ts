@@ -15,6 +15,12 @@ export interface SkeletonTextProps {
      * @default 3
      */
     lines?: number;
+    /**
+     * When true, show projected content instead of the skeleton.
+     *
+     * @default false
+     */
+    loaded?: boolean;
 }
 
 /**
@@ -64,11 +70,11 @@ export interface SkeletonTextProps {
 })
 export class UISkeletonText implements AsSignal<SkeletonTextProps> {
     readonly variant = input<SkeletonTextProps['variant']>('body-base');
-    readonly lines = input<number>(3);
+    readonly lines = input<SkeletonTextProps['lines']>(3);
     /** When true, show content instead of skeleton. */
-    readonly loaded = input<boolean>(false);
+    readonly loaded = input<SkeletonTextProps['loaded']>(false);
 
-    readonly lineIndices = computed(() => Array.from({ length: Math.max(1, this.lines()) }, (_, i) => i));
+    readonly lineIndices = computed(() => Array.from({ length: Math.max(1, this.lines() ?? 3) }, (_, i) => i));
 
     showSkeleton(): boolean {
         return !this.loaded();

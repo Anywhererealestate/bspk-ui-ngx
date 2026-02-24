@@ -66,11 +66,11 @@ export interface PageHeaderProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIPageHeader implements AsSignal<PageHeaderProps> {
-    readonly title = input.required<string>();
-    readonly actions = input<unknown>();
-    readonly breadcrumb = input<unknown>();
-    readonly avatar = input<unknown>();
-    readonly subHeader = input<unknown>();
+    readonly title = input.required<PageHeaderProps['title']>();
+    readonly actions = input<PageHeaderProps['actions']>();
+    readonly breadcrumb = input<PageHeaderProps['breadcrumb']>();
+    readonly avatar = input<PageHeaderProps['avatar']>();
+    readonly subHeader = input<PageHeaderProps['subHeader']>();
 
     readonly hasBreadcrumb = true;
     readonly hasAvatar = true;

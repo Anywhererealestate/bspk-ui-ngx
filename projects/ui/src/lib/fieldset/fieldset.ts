@@ -66,13 +66,13 @@ export interface FieldsetProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIFieldset implements AsSignal<FieldsetProps> {
-    readonly label = input.required<string>();
-    readonly helperText = input<string | undefined>();
-    readonly labelTrailing = input<string | undefined>();
-    readonly errorMessage = input<string | undefined>();
-    readonly required = input<boolean>(false);
+    readonly label = input.required<FieldsetProps['label']>();
+    readonly helperText = input<FieldsetProps['helperText']>();
+    readonly labelTrailing = input<FieldsetProps['labelTrailing']>();
+    readonly errorMessage = input<FieldsetProps['errorMessage']>();
+    readonly required = input<FieldsetProps['required']>(false);
 
-    readonly controlId = input<string | undefined>();
+    readonly controlId = input<FieldsetProps['controlId']>();
 
     readonly labelledById = computed(() => `${this.baseId()}-label`);
     readonly describedById = computed(() => `${this.baseId()}-description`);

@@ -70,9 +70,9 @@ export interface PageControlProps {
   encapsulation: ViewEncapsulation.None,
 })
 export class UIPageControl implements AsSignal<PageControlProps> {
-  readonly currentPage = input.required<number | string>();
-  readonly numPages = input.required<number | string>();
-  readonly variant = input<PageControlVariant>('flat');
+  readonly currentPage = input.required<PageControlProps['currentPage']>();
+  readonly numPages = input.required<PageControlProps['numPages']>();
+  readonly variant = input<PageControlProps['variant']>('flat');
 
   readonly current = computed(() => Number(this.currentPage()));
   readonly total = computed(() => Number(this.numPages()));

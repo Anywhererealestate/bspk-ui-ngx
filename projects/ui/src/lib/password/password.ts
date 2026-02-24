@@ -14,13 +14,17 @@ import { UIInput } from '../input';
 
 export interface PasswordProps {
     id?: string;
-    name?: string;
+    name?: string | undefined;
     value?: string;
     defaultValue?: string;
     disabled?: boolean;
     readOnly?: boolean;
     required?: boolean;
     placeholder?: string;
+    ariaLabelledBy?: string;
+    ariaDescribedBy?: string;
+    ariaErrorMessage?: string;
+    ariaLabel?: string;
 }
 
 /**
@@ -63,19 +67,19 @@ export interface PasswordProps {
 export class UIPassword implements AsSignal<PasswordProps> {
     @Output() change = new EventEmitter<string>();
 
-    readonly id = input<string>(uniqueId('password'));
-    readonly name = input.required<string | undefined>();
+    readonly id = input<PasswordProps['id']>(uniqueId('password'));
+    readonly name = input.required<PasswordProps['name']>();
 
-    readonly value = model<string>('');
-    readonly defaultValue = input<string | undefined>();
+    readonly value = model<PasswordProps['value']>('');
+    readonly defaultValue = input<PasswordProps['defaultValue']>();
 
-    readonly disabled = input<boolean>(false);
-    readonly readOnly = input<boolean>(false);
-    readonly required = input<boolean>(false);
-    readonly placeholder = input<string | undefined>();
+    readonly disabled = input<PasswordProps['disabled']>(false);
+    readonly readOnly = input<PasswordProps['readOnly']>(false);
+    readonly required = input<PasswordProps['required']>(false);
+    readonly placeholder = input<PasswordProps['placeholder']>();
 
-    readonly ariaLabelledBy = input<string | undefined>();
-    readonly ariaDescribedBy = input<string | undefined>();
-    readonly ariaErrorMessage = input<string | undefined>();
-    readonly ariaLabel = input<string | undefined>();
+    readonly ariaLabelledBy = input<PasswordProps['ariaLabelledBy']>();
+    readonly ariaDescribedBy = input<PasswordProps['ariaDescribedBy']>();
+    readonly ariaErrorMessage = input<PasswordProps['ariaErrorMessage']>();
+    readonly ariaLabel = input<PasswordProps['ariaLabel']>();
 }

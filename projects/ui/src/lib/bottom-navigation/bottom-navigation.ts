@@ -3,22 +3,19 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@a
 import { AsSignal } from '@ui/types/common';
 import { TabListBaseProps, UITabList } from '../tab-list';
 
-export type BottomNavigationMode = 'fixed' | 'inline';
-export type BottomNavigationVariant = 'flat' | 'outlined';
-
 export interface BottomNavigationProps extends TabListBaseProps {
     /**
      * If the bottom navigation should render inline or fixed to the bottom of the viewport.
      *
      * @default inline
      */
-    mode?: BottomNavigationMode;
+    mode?: 'fixed' | 'inline';
     /**
      * The variant of the bottom navigation.
      *
      * @default flat
      */
-    variant?: BottomNavigationVariant;
+    variant?: 'flat' | 'outlined';
 }
 
 /**
@@ -48,6 +45,6 @@ export interface BottomNavigationProps extends TabListBaseProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIBottomNavigation extends UITabList implements AsSignal<BottomNavigationProps> {
-    readonly mode = input<BottomNavigationMode>('inline');
-    readonly variant = input<BottomNavigationVariant>('flat');
+    readonly mode = input<BottomNavigationProps['mode']>('inline');
+    readonly variant = input<BottomNavigationProps['variant']>('flat');
 }

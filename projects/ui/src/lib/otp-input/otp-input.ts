@@ -17,7 +17,7 @@ export type OTPSize = 'large' | 'medium' | 'small';
 
 export interface OTPInputProps {
     id?: string;
-    name?: string;
+    name?: string | undefined;
     length?: number;
     size?: OTPSize;
     defaultValue?: string;
@@ -116,28 +116,29 @@ export interface OTPInputProps {
 export class UIOTPInput implements AsSignal<OTPInputProps> {
     change = output<string>();
 
-    readonly id = input<string>(uniqueId('otp-input'));
-    readonly name = input.required<string | undefined>();
+    readonly id = input<OTPInputProps['id']>(uniqueId('otp-input'));
+    readonly name = input.required<OTPInputProps['name']>();
 
-    readonly length = input<number>(6);
-    readonly size = input<OTPSize>('medium');
+    readonly length = input<OTPInputProps['length']>(6);
+    readonly size = input<OTPInputProps['size']>('medium');
 
-    readonly defaultValue = input<string>('');
-    readonly disabled = input<boolean>(false);
-    readonly readOnly = input<boolean>(false);
-    readonly required = input<boolean>(false);
-    readonly invalid = input<boolean>(false);
-    readonly alphanumeric = input<boolean>(false);
-    readonly secure = input<boolean>(false);
+    readonly defaultValue = input<OTPInputProps['defaultValue']>('');
+    readonly disabled = input<OTPInputProps['disabled']>(false);
+    readonly readOnly = input<OTPInputProps['readOnly']>(false);
+    readonly required = input<OTPInputProps['required']>(false);
+    readonly invalid = input<OTPInputProps['invalid']>(false);
+    readonly alphanumeric = input<OTPInputProps['alphanumeric']>(false);
+    readonly secure = input<OTPInputProps['secure']>(false);
 
-    readonly ariaLabel = input<string>('OTP input');
-    readonly ariaDescribedBy = input<string | undefined>();
-    readonly ariaErrorMessage = input<string | undefined>();
+    readonly ariaLabel = input<OTPInputProps['ariaLabel']>('OTP input');
+    readonly ariaDescribedBy = input<OTPInputProps['ariaDescribedBy']>();
+    readonly ariaErrorMessage = input<OTPInputProps['ariaErrorMessage']>();
 
     readonly inputs = viewChildren<ElementRef<HTMLInputElement>>('digitInput');
 
+    readonly safeLength = computed(() => this.length() ?? 6);
     readonly values = computed(() => (this._values().length ? this._values() : (this.defaultValue() || '').split('')));
-    readonly indices = computed(() => Array.from({ length: this.length() }, (_, i) => i));
+    readonly indices = computed(() => Array.from({ length: this.safeLength() }, (_, i) => i));
 
     private readonly _values = signal<string[]>([]);
     trackByIndex = (_: number, i: number) => i;
@@ -203,7 +204,7 @@ export class UIOTPInput implements AsSignal<OTPInputProps> {
             if (!curVal) {
                 this.focusIndex(index);
             } else {
-                this.focusIndex(Math.min(this.length() - 1, index + 1));
+                this.focusIndex(Math.min(this.safeLength() - 1, index + 1));
             }
             event.preventDefault();
             return;
@@ -217,11 +218,11 @@ export class UIOTPInput implements AsSignal<OTPInputProps> {
         const pasted = text.split('');
         const next = [...this.values()];
         for (let i = 0; i < pasted.length; i++) {
-            if (index + i < this.length()) next[index + i] = pasted[i];
+            if (index + i < this.safeLength()) next[index + i] = pasted[i];
         }
         this.setValues(next);
 
-        const last = Math.min(index + pasted.length, this.length() - 1);
+        const last = Math.min(index + pasted.length, this.safeLength() - 1);
         this.focusIndex(last);
         event.preventDefault();
     }

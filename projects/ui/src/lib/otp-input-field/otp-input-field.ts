@@ -49,7 +49,7 @@ export interface OTPInputFieldProps {
     imports: [CommonModule, UIField, UIOTPInput],
     template: `
         <ui-field
-            [controlId]="id()"
+            [controlId]="id() || ''"
             [errorMessage]="errorMessage()"
             [helperText]="helperText()"
             [label]="label()"
@@ -79,23 +79,23 @@ export interface OTPInputFieldProps {
 export class UIOTPInputField implements AsSignal<OTPInputFieldProps> {
     @Output() change = new EventEmitter<string>();
 
-    readonly label = input.required<string>();
-    readonly helperText = input<string | undefined>();
-    readonly labelTrailing = input<string | undefined>();
-    readonly errorMessage = input<string | undefined>();
+    readonly label = input.required<OTPInputFieldProps['label']>();
+    readonly helperText = input<OTPInputFieldProps['helperText']>();
+    readonly labelTrailing = input<OTPInputFieldProps['labelTrailing']>();
+    readonly errorMessage = input<OTPInputFieldProps['errorMessage']>();
 
-    readonly id = input<string>(uniqueId('UIOTPInputField'));
-    readonly name = input.required<string | undefined>();
+    readonly id = input<OTPInputFieldProps['id']>(uniqueId('UIOTPInputField'));
+    readonly name = input.required<OTPInputFieldProps['name']>();
 
-    readonly length = input<number>(6);
-    readonly size = input<'large' | 'medium' | 'small'>('medium');
-    readonly defaultValue = input<string>('');
-    readonly disabled = input<boolean>(false);
-    readonly readOnly = input<boolean>(false);
-    readonly required = input<boolean>(false);
-    readonly alphanumeric = input<boolean>(false);
-    readonly secure = input<boolean>(false);
-    readonly ariaLabel = input<string>('OTP input');
+    readonly length = input<OTPInputFieldProps['length']>(6);
+    readonly size = input<OTPInputFieldProps['size']>('medium');
+    readonly defaultValue = input<OTPInputFieldProps['defaultValue']>('');
+    readonly disabled = input<OTPInputFieldProps['disabled']>(false);
+    readonly readOnly = input<OTPInputFieldProps['readOnly']>(false);
+    readonly required = input<OTPInputFieldProps['required']>(false);
+    readonly alphanumeric = input<OTPInputFieldProps['alphanumeric']>(false);
+    readonly secure = input<OTPInputFieldProps['secure']>(false);
+    readonly ariaLabel = input<OTPInputFieldProps['ariaLabel']>('OTP input');
 
     get describedById(): string {
         return `${this.id()}-description`;

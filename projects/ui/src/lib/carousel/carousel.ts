@@ -23,6 +23,12 @@ export interface CarouselProps {
      */
     label: string;
     /**
+     * The current active slide index (0-based).
+     *
+     * @default 0
+     */
+    activeIndex?: number;
+    /**
      * The width of each item/child.
      *
      * If number is provided, it is treated as pixels.
@@ -80,19 +86,19 @@ export interface CarouselProps {
                     [iconOnly]="true"
                     variant="tertiary"
                     [disabled]="activeIndex() === 0"
-                    (onClick)="setIndex(activeIndex() - 1)" />
-                <ui-page-control [currentPage]="activeIndex() + 1" [numPages]="slideCount()" />
+                    (onClick)="setIndex(safeActiveIndex() - 1)" />
+                <ui-page-control [currentPage]="safeActiveIndex() + 1" [numPages]="slideCount()" />
                 <ui-button
                     label="Next"
                     [ariaLabel]="'Next Slide'"
                     [icon]="IconChevronRight"
                     [iconOnly]="true"
                     variant="tertiary"
-                    [disabled]="activeIndex() >= slideCount() - 1"
-                    (onClick)="setIndex(activeIndex() + 1)" />
+                    [disabled]="safeActiveIndex() >= slideCount() - 1"
+                    (onClick)="setIndex(safeActiveIndex() + 1)" />
             </div>
         }
-        <span aria-live="polite" data-sr-only>Slide {{ activeIndex() + 1 }} of {{ slideCount() }}</span>
+        <span aria-live="polite" data-sr-only>Slide {{ safeActiveIndex() + 1 }} of {{ slideCount() }}</span>
     `,
     host: {
         'data-bspk': 'carousel',
@@ -115,7 +121,9 @@ export class UICarousel implements AsSignal<CarouselProps> {
     readonly slides = contentChildren(UICarouselSlideDirective);
     readonly slideCount = computed(() => this.slides().length);
 
-    readonly activeIndex = model<number>(0);
+    readonly activeIndex = model<CarouselProps['activeIndex']>(0);
+
+    readonly safeActiveIndex = computed(() => this.activeIndex() ?? 0);
 
     readonly itemWidthCss = computed(() => {
         const v = this.itemWidth();
@@ -144,11 +152,11 @@ export class UICarousel implements AsSignal<CarouselProps> {
     onKeydown(event: Event) {
         if (!(event instanceof KeyboardEvent)) return;
         if (event.key === 'ArrowLeft') {
-            this.setIndex(this.activeIndex() - 1);
+            this.setIndex(this.safeActiveIndex() - 1);
             event.preventDefault();
         }
         if (event.key === 'ArrowRight') {
-            this.setIndex(this.activeIndex() + 1);
+            this.setIndex(this.safeActiveIndex() + 1);
             event.preventDefault();
         }
     }

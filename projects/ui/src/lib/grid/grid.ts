@@ -52,9 +52,9 @@ function numToSizingVar(numStr?: string): string | undefined {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIGrid implements AsSignal<GridProps> {
-    readonly columns = input<GridColumns>(1);
-    readonly gap = input<GridSizing | undefined>();
-    readonly minColumnWidth = input<string>('auto');
+    readonly columns = input<GridProps['columns']>(1);
+    readonly gap = input<GridProps['gap']>();
+    readonly minColumnWidth = input<GridProps['minColumnWidth']>('auto');
 
     readonly gridTemplateColumns = computed(() => {
         const min = this.minColumnWidth();

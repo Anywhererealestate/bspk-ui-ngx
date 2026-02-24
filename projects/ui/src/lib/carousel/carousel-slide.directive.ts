@@ -1,5 +1,10 @@
 import { Directive, ElementRef, inject, model } from '@angular/core';
 
+export interface CarouselSlideProps {
+    /** Whether this slide is the active one. */
+    active?: boolean;
+}
+
 /**
  * Mark a slide for use inside ui-carousel. Add to each direct child of the carousel.
  *
@@ -26,7 +31,7 @@ import { Directive, ElementRef, inject, model } from '@angular/core';
     },
 })
 export class UICarouselSlideDirective {
-    readonly active = model<boolean>(false);
+    readonly active = model<CarouselSlideProps['active']>(false);
 
     readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
 }
