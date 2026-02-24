@@ -51,6 +51,12 @@ export interface EmptyStateProps {
  *     (callToActionClick)="clearFilters()" />
  * ```
  *
+ * ```typescript
+ *     clearFilters() {
+ *         console.log('clearFilters');
+ *     }
+ * ```
+ *
  * @name EmptyState
  * @phase Dev
  */

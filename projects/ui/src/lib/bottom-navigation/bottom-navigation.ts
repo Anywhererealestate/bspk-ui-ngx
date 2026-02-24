@@ -7,7 +7,17 @@ export type BottomNavigationMode = 'fixed' | 'inline';
 export type BottomNavigationVariant = 'flat' | 'outlined';
 
 export interface BottomNavigationProps extends TabListBaseProps {
+    /**
+     * If the bottom navigation should render inline or fixed to the bottom of the viewport.
+     *
+     * @default inline
+     */
     mode?: BottomNavigationMode;
+    /**
+     * The variant of the bottom navigation.
+     *
+     * @default flat
+     */
     variant?: BottomNavigationVariant;
 }
 

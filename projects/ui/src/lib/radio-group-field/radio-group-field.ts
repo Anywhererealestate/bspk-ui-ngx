@@ -22,7 +22,7 @@ export interface RadioGroupFieldProps extends ControlFieldProps, RadioGroupProps
  *     { label: 'Option 3', value: 'option-3' },
  * ];
  *
- * selected: string = '';
+ * selected = '';
  * ```
  *
  * @name RadioGroupField

@@ -41,6 +41,15 @@ export interface ButtonDockProps {
  *     (secondaryClick)="onCancel()" />
  * ```
  *
+ * ```typescript
+ *     onSubmit() {
+ *         console.log('onSubmit');
+ *     }
+ *     onCancel() {
+ *         console.log('onCancel');
+ *     }
+ * ```
+ *
  * @name ButtonDock
  * @phase Dev
  */
