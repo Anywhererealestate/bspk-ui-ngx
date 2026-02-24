@@ -3,11 +3,6 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input,
 import { AsSignal } from '../../types/common';
 
 export interface CarouselProps {
-    length: number;
-    value?: number; // controlled index (0-based)
-    defaultValue?: number; // uncontrolled start
-    showDots?: boolean;
-    ariaLabel?: string;
     /** A label for the carousel (used for aria-label). */
     label?: string;
     /** Width of each item (px or CSS value). @default 80% */
