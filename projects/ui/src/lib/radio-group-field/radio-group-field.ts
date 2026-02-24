@@ -9,12 +9,24 @@ export interface RadioGroupFieldProps extends ControlFieldProps, RadioGroupProps
 /**
  * A field wrapper for the UIRadioGroup component.
  *
- * This component takes properties from the Field and RadioGroup components.
+ * This component takes properties from the Field and UIRadioGroup components.
+ *
+ * ```html
+ * <ui-radio-group-field name="radio-group-name" label="Choose one" [options]="options" [(value)]="selected" />
+ * ```
+ *
+ * ```typescript
+ * options = [
+ *     { label: 'Option 1', value: 'option-1' },
+ *     { label: 'Option 2', value: 'option-2' },
+ *     { label: 'Option 3', value: 'option-3' },
+ * ];
+ *
+ * selected = '';
+ * ```
  *
  * @name RadioGroupField
- * @phase UXReview
- *
- * @generated
+ * @phase Dev
  */
 @Component({
     selector: 'ui-radio-group-field',

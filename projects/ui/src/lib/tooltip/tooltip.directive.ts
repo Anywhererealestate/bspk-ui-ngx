@@ -47,6 +47,11 @@ export interface TooltipProps {
     disabled?: boolean;
 }
 
+/** Props for the tooltip directive (single value binding). */
+export interface TooltipDirectiveProps {
+    value?: TooltipProps | string | { truncated: true; label?: string };
+}
+
 /**
  * Brief message that provide additional guidance and helps users perform an action if needed.
  *
@@ -74,7 +79,7 @@ export interface TooltipProps {
         '(blur)': 'handleCloseEvent()',
     },
 })
-export class UITooltipDirective implements OnDestroy, OnInit {
+export class UITooltipDirective implements OnDestroy, OnInit, AsSignal<TooltipDirectiveProps> {
     /**
      * The value of the tooltip directive. Can be a string for simple usage or an object for more control.
      *
@@ -85,7 +90,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
      * Note: When using the truncated option, the directive will add a data-truncated attribute to the host element.
      * This can be used for styling purposes.
      */
-    readonly value = model<TooltipProps | string | { truncated: true } | undefined>(undefined, {
+    readonly value = model<TooltipProps | string | { truncated: true; label?: string } | undefined>(undefined, {
         alias: 'ui-tooltip',
     });
 
@@ -186,7 +191,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
         this.autoUpdateCleanup?.();
 
         const { label, truncated } = this.props();
-        if (!label) return;
+        if (!truncated && !label) return;
 
         if (truncated) this.removeComponent();
         if (this.tooltipEl) this.renderer.setStyle(this.tooltipEl, 'display', 'none');
@@ -232,11 +237,12 @@ export class UITooltipDirective implements OnDestroy, OnInit {
     }
 
     ngOnInit(): void {
-        if (!this.referenceEl || !this.props().label) return;
+        if (!this.referenceEl) return;
 
         if (this.props().truncated) {
             this.renderer.setAttribute(this.referenceEl, 'data-truncated', 'true');
         } else {
+            if (!this.props().label) return;
             this.renderer.setAttribute(this.referenceEl, 'aria-labelledby', this.tooltipId);
             this.addComponent(this.props());
         }
@@ -268,7 +274,7 @@ export class UITooltipDirective implements OnDestroy, OnInit {
 })
 export class UITooltip implements AsSignal<TooltipProps> {
     readonly arrow = viewChild<ElementRef>('arrow');
-    readonly id = signal<string | undefined>(undefined);
+    readonly id = signal<string | undefined>(uniqueId('tooltip'));
     readonly disabled = model<TooltipProps['disabled']>(false);
     readonly label = model<TooltipProps['label']>();
     readonly placement = model<TooltipProps['placement']>();

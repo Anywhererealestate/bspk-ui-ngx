@@ -9,10 +9,14 @@ export interface InputFieldProps extends InputProps, ControlFieldProps {}
 /**
  * A field wrapper for the Input component.
  *
- * This component takes properties from the Field and Input components.
+ * This component takes properties from the Field and UIInput components.
+ *
+ * ```html
+ * <ui-input-field label="Email" name="email" [(value)]="email" />
+ * ```
  *
  * @name InputField
- * @phase UXReview
+ * @phase Dev
  *
  * @generated
  */

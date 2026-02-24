@@ -20,6 +20,10 @@ export interface KeyNavigationUtilityProps {
      * the elements in the DOM. Ensure the elements are not disabled.
      */
     ids?: string[];
+    /** Navigation axis. @default horizontal */
+    axis?: 'horizontal' | 'vertical';
+    /** Whether to loop focus. @default true */
+    loop?: boolean;
     /**
      * An optional callback function that is invoked when an arrow key is pressed. This function receives the key name,
      * the keyboard event, and the next active element ID. If the function returns `true`, the default navigation
@@ -34,7 +38,7 @@ export interface KeyNavigationUtilityProps {
      */
     defaultActiveId?: string;
     /** The ID of the currently active element. */
-    activeElementId: string | null;
+    activeElementId?: string | null;
 }
 
 export interface ArrowKeyNavigationCallbackParams {

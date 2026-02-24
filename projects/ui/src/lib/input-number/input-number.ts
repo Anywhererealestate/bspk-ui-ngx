@@ -66,7 +66,7 @@ export interface InputNumberProps extends FieldControlProps {
  * ```
  *
  * @name InputNumber
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-input-number',

@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation, input } from '@angular/core';
 import { AsSignal } from '../../types/common';
-import { TabListBaseProps, TabOption, UITabList, UITabListUtility } from '../tab-list/tab-list';
+import { TabListBaseProps, TabOption, UITabList, UITabListUtility } from '../tab-list';
 
 export type TabGroupSize = 'large' | 'medium' | 'small';
 

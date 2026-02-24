@@ -9,6 +9,11 @@ export interface FloatingProps {
 /**
  * A directive to position an element relative to a reference element using floating UI logic.
  *
+ * ```html
+ * <div #ref>Reference</div>
+ * <div [ui-floating]="{ reference: ref, placement: 'bottom' }">Floating content</div>
+ * ```
+ *
  * @name Floating
  * @phase Utility
  */

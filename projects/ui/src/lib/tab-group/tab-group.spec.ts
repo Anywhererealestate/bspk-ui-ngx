@@ -4,17 +4,17 @@ import { spyOn } from 'jest-mock';
 import { UITabGroupExample } from './example';
 
 describe('TabGroup', () => {
-    let component:  UITabGroupExample;
-    let fixture: ComponentFixture< UITabGroupExample>;
+    let component: UITabGroupExample;
+    let fixture: ComponentFixture<UITabGroupExample>;
     let errorSpy: any;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ UITabGroupExample],
+            imports: [UITabGroupExample],
         }).compileComponents();
 
         errorSpy = spyOn(console, 'error');
-        fixture = TestBed.createComponent( UITabGroupExample);
+        fixture = TestBed.createComponent(UITabGroupExample);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

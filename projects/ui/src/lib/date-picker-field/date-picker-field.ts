@@ -9,10 +9,14 @@ export interface DatePickerFieldProps extends ControlFieldProps, DatePickerProps
 /**
  * A field wrapper for the UIDatePicker component.
  *
- * This component takes properties from the Field and DatePicker components.
+ * This component takes properties from the Field and UIDatePicker components.
+ *
+ * ```html
+ * <ui-date-picker-field label="Date" name="date" [(value)]="dateValue" />
+ * ```
  *
  * @name DatePickerField
- * @phase UXReview
+ * @phase Dev
  *
  * @generated
  */

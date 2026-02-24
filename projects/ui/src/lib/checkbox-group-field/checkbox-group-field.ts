@@ -9,10 +9,23 @@ export interface CheckboxGroupFieldProps extends ControlFieldProps, CheckboxGrou
 /**
  * A field wrapper for the UICheckboxGroup component.
  *
- * This component takes properties from the Field and CheckboxGroup components.
+ * This component takes properties from the Field and UICheckboxGroup components.
+ *
+ * ```html
+ * <ui-checkbox-group-field name="checkbox-group-name" label="Options" [options]="options" [(value)]="selected" />
+ * ```
+ *
+ * ```typescript
+ * options = [
+ *     { label: 'Option 1', value: 'option1' },
+ *     { label: 'Option 2', value: 'option2' },
+ *     { label: 'Option 3', value: 'option3' },
+ * ];
+ * selected: string[] = [];
+ * ```
  *
  * @name CheckboxGroupField
- * @phase UXReview
+ * @phase Dev
  *
  * @generated
  */
@@ -30,6 +43,7 @@ export interface CheckboxGroupFieldProps extends ControlFieldProps, CheckboxGrou
             [style]="style()"
             [required]="required()">
             <ui-checkbox-group
+                [options]="options()"
                 [ariaLabelledBy]="labelledById()"
                 [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"

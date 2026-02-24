@@ -19,21 +19,6 @@ export interface BreadcrumbProps extends ScrollLimitStyleProps {
      *
      * If **less than 2** items are provided, the component will not render.
      *
-     * @example
-     *     [
-     *         { label: 'Level 1', href: '#level-1' },
-     *         { label: 'Level 2', href: '#level-2' },
-     *         { label: 'Level 3', href: '#level-3' },
-     *         { label: 'Level 4', href: '#level-4' },
-     *         { label: 'Level 5', href: '#level-5' },
-     *         { label: 'Level 6', href: '#level-6' },
-     *         { label: 'Level 7', href: '#level-7' },
-     *         { label: 'Level 8', href: '#level-8' },
-     *         { label: 'Level 9', href: '#level-9' },
-     *         { label: 'Level 10', href: '#level-10' },
-     *     ];
-     *
-     * @type Array<BreadcrumbItem>
      * @required
      */
     items: BreadcrumbItem[];

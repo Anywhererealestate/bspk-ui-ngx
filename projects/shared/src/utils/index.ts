@@ -25,13 +25,15 @@ export function slugify(value: string[] | string) {
     let slug = [value]
         .flat()
         .join('-')
-        .replace(/([a-z0-9])([A-Z])/g, '$1-$2') // aB -> a-B, 0B -> 0-B
-        .replace(/([A-Z]+)([A-Z][a-z0-9]+)/g, '$1-$2') // ABc -> A-Bc, AZAscend -> A-Z-Ascend
-        .replace(/([A-Z])(\d)/g, '$1-$2') // A2 -> A-2
-        .replace(/([0-9])([A-Z])/g, '$1-$2') // 2F -> 2-F
-        .replace(/([a-z])([0-9])/g, '$1-$2') // y2 -> y-2
-        .replace(/([A-Z])([A-Z])/g, '$1-$2') // AZ -> A-Z
-        .replace(/^-/, '') // Remove leading dash if present
+        .normalize('NFD') // Normalize to decompose accents
+        .replace(/[\u0300-\u036f&()']/g, '') // Remove accents
+        // Handle camelCase by inserting hyphens between lowercase and uppercase
+        .replace(/([a-zA-Z])([A-Z][a-z])/g, '$1-$2')
+        // do it again for the next uppercase letter
+        .replace(/([a-zA-Z])([A-Z][a-z])/g, '$1-$2')
+        .replace(/[^a-zA-Z0-9]+/g, '-') // Replace non-alphanumeric characters with hyphens
+        .replace(/^-+|-+$/g, '') // Trim leading or trailing hyphens
+        .replace(/--+/g, '-') // Replace multiple hyphens with a single hyphen
         .toLowerCase();
 
     const slugSegments = slug.split('-');

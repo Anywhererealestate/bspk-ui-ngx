@@ -15,21 +15,6 @@ export interface RadioGroupProps extends FieldControlProps {
     /**
      * The options for the radios.
      *
-     * @example
-     *     [
-     *         {
-     *             value: '1',
-     *             label: 'Option 1',
-     *         },
-     *         {
-     *             value: '2',
-     *             label: 'Option 2',
-     *             description: 'Description here',
-     *         },
-     *         { value: '3', label: 'Option 3' },
-     *     ];
-     *
-     * @type Array<RadioGroupOption>
      * @required
      */
     options: RadioGroupOption[];
@@ -59,14 +44,14 @@ export interface RadioGroupProps extends FieldControlProps {
     selector: 'ui-radio-group',
     standalone: true,
     imports: [UIRadioOption],
+    styleUrl: './radio-group.scss',
     template: `
         <div
             [attr.aria-describedby]="ariaDescribedBy() || null"
             [attr.aria-errormessage]="ariaErrorMessage() || null"
             [attr.id]="id()"
             role="radiogroup"
-            data-bspk="radio-group"
-            style="display: flex; flex-direction: column; gap: 0; max-width: 100%; --list-item-height: auto;">
+            data-bspk="radio-group">
             @for (option of options(); track option.value) {
                 <ui-radio-option
                     [label]="option.label"
@@ -85,11 +70,6 @@ export interface RadioGroupProps extends FieldControlProps {
     `,
     host: {
         'data-bspk': 'radio-group',
-        'style.display': 'flex',
-        'style.flex-direction': 'column',
-        'style.gap': '0',
-        'style.max-width': '100%',
-        'style.--list-item-height': 'auto',
     },
     encapsulation: ViewEncapsulation.None,
 })

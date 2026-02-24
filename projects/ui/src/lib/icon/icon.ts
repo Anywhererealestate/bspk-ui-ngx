@@ -17,8 +17,12 @@ export interface IconProps {
 /**
  * A component to display an icon from the BSPK icon library.
  *
+ * ```html
+ * <ui-icon [icon]="IconAdd" width="24" />
+ * ```
+ *
  * @name Icon
- * @phase UXReview
+ * @phase Dev
  * @see https://bspk.anywhere.re/icons for available icons.
  */
 @Component({

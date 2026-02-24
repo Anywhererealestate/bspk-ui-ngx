@@ -48,7 +48,7 @@ export interface FieldProps extends ControlFieldProps {
  * ```
  *
  * @name Field
- * @phase Utility
+ * @phase Dev
  */
 @Component({
     selector: 'ui-field',

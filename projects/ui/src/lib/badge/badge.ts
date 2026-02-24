@@ -5,9 +5,6 @@ export interface BadgeProps {
     /**
      * The content of the badge. If larger than 99, the badge will display '99+'.
      *
-     * @example
-     *     5;
-     *
      * @default 1
      *
      * @type number

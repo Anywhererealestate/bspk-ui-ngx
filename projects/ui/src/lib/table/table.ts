@@ -25,7 +25,7 @@ export interface TableProps<R extends TableRow> {
     /**
      * The column definitions of the table.
      *
-     * @type Array<TableColumn>
+     * @type TableColumn[]
      */
     columns: TableColumn<R>[];
     /** The title of the table. */

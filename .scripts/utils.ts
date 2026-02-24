@@ -1,5 +1,4 @@
 import * as path from 'path';
-import { toPascalCase } from '../projects/shared/src/utils';
 
 export { slugify, toKebabCase, toPascalCase, toTitleCase } from '../projects/shared/src/utils';
 

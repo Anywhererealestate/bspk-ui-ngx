@@ -24,13 +24,9 @@ describe('Scripts Utils', () => {
                 <span ui-text="Another Text"></span>
             </div>
         `;
-        const usages = findComponentSelectors(
-            exampleCode,
-            {
-                'ui-text': 'UITextDirective',
-            },
-            true,
-        );
+        const usages = findComponentSelectors(exampleCode, {
+            'ui-text': 'UITextDirective',
+        });
         expect(usages).toEqual(['UITextDirective']);
     });
 });

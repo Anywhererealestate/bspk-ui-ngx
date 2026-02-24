@@ -100,5 +100,8 @@ aria-roledescription
 
 noopener
 
+# UI components
+UIOTP
+
 # ICONS & THEMES
 Horiz

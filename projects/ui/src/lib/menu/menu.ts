@@ -10,8 +10,7 @@ export interface MenuProps {
     /**
      * The width of the menu.
      *
-     * @type HTMLElement.style.width
-     * @exampleType string
+     * @type string
      */
     width?: HTMLElement['style']['width'];
 }

@@ -18,15 +18,6 @@ export interface AvatarGroupProps {
     /**
      * The avatars to display in the group.
      *
-     * @example
-     *     [
-     *         { name: 'Fezzik', image: '/avatar-01.png' },
-     *         { name: 'Inigo Montoya', initials: 'IM', color: 'blue' },
-     *         { name: 'Miracle Max', initials: 'MM', color: 'green' },
-     *         { name: 'Princess Buttercup', showIcon: true },
-     *     ];
-     *
-     * @type Array<AvatarItem>
      * @required
      */
     items: AvatarItem[];

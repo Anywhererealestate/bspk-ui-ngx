@@ -58,6 +58,7 @@ export interface ComponentMetaOutput {
 }
 
 export interface ComponentMetaInput {
+    [key: string]: any;
     name: string;
     description?: string;
     type?: string[] | string;

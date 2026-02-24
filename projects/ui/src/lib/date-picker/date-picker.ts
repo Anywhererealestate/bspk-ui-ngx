@@ -58,7 +58,7 @@ export interface DatePickerProps extends FieldControlProps {
  * date.
  *
  * ```html
- * <ui-date-picker [(value)]="selectedDate" />
+ * <ui-date-picker name="date-picker-name" [(value)]="selectedDate" />
  * ```
  *
  * @name DatePicker
@@ -137,7 +137,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
     readonly disabled = input<DatePickerProps['disabled']>();
     readonly readOnly = input<DatePickerProps['readOnly']>();
     readonly closeOnChange = input<DatePickerProps['closeOnChange']>(true);
-    readonly name = input<DatePickerProps['name']>('DatePickerInput');
+    readonly name = input.required<DatePickerProps['name']>();
     readonly placeholder = input<DatePickerProps['placeholder']>('mm/dd/yyyy');
     readonly invalid = input<DatePickerProps['invalid']>(false);
     readonly required = input<DatePickerProps['required']>(false);

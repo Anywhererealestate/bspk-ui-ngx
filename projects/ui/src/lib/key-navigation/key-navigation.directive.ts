@@ -9,6 +9,13 @@ export interface KeyNavigationProps {
 /**
  * A directive to enable key navigation on an element.
  *
+ * ```html
+ * <div [ui-key-navigation]="{ axis: 'horizontal', loop: true }">
+ *     <button>Item 1</button>
+ *     <button>Item 2</button>
+ * </div>
+ * ```
+ *
  * @name KeyNavigation
  * @phase Utility
  */

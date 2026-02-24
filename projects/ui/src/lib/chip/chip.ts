@@ -26,9 +26,6 @@ export interface ChipProps {
     /**
      * The label of the chip.
      *
-     * @example
-     *     Hello I am Chip
-     *
      * @required
      */
     label: string;

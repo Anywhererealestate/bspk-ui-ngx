@@ -12,7 +12,7 @@ export interface SelectFieldProps extends SelectProps, ControlFieldProps {}
  * This component takes properties from the Field and Select components.
  *
  * @name SelectField
- * @phase UXReview
+ * @phase Dev
  *
  * @generated
  */

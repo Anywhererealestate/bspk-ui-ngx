@@ -33,7 +33,7 @@ export interface TagProps {
  * A non-interactive visual indicators to draw attention or categorization of a component.
  *
  * @name Tag
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-tag',

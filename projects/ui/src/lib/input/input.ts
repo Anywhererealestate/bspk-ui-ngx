@@ -59,7 +59,7 @@ export interface InputProps extends FieldControlProps {
  * ```
  *
  * @name Input
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-input',
