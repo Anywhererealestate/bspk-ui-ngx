@@ -29,7 +29,7 @@ export interface RadioProps extends FieldControlProps {
  * ```
  *
  * @name Radio
- * @phase Dev
+ * @phase Utility
  */
 @Component({
     selector: 'ui-radio',

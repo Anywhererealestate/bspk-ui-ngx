@@ -18,7 +18,7 @@ export interface RadioOptionProps extends RadioProps {
  * ```
  *
  * @name RadioOption
- * @phase Dev
+ * @phase Utility
  */
 @Component({
     selector: 'ui-radio-option',

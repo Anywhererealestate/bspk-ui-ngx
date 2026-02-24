@@ -24,7 +24,7 @@ function dimension(value: ExamplePlaceholderDim): string {
  * ```
  *
  * @name ExamplePlaceholder
- * @phase Dev
+ * @phase Utility
  */
 @Component({
     standalone: true,

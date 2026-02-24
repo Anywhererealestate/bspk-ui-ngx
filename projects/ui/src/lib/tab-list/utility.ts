@@ -18,7 +18,7 @@ export const TAB_BADGE_SIZES: Record<TabSize, 'small' | 'x-small'> = {
  * See TabGroup or SegmentedControl for examples.
  *
  * @name TabListUtility
- * @phase Dev
+ * @phase Utility
  */
 @Component({
     selector: 'ui-tab-list-utility',

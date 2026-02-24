@@ -22,7 +22,7 @@ interface OutsideClickProps {
  * ```
  *
  * @name OutsideClick
- * @phase Dev
+ * @phase Utility
  */
 @Directive({
     selector: '[ui-outside-click]',

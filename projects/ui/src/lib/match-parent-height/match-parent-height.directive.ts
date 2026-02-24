@@ -15,7 +15,7 @@ export interface MatchParentHeightProps {}
  * ```
  *
  * @name MatchParentHeight
- * @phase Dev
+ * @phase Utility
  */
 @Directive({
     selector: '[ui-match-parent-height]',

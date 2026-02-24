@@ -15,7 +15,7 @@ export interface FloatingProps {
  * ```
  *
  * @name Floating
- * @phase Dev
+ * @phase Utility
  */
 @Directive({
     selector: '[ui-floating]',

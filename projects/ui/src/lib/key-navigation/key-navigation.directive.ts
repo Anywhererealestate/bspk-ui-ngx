@@ -11,13 +11,13 @@ export interface KeyNavigationProps {
  *
  * ```html
  * <div [ui-key-navigation]="{ axis: 'horizontal', loop: true }">
- *   <button>Item 1</button>
- *   <button>Item 2</button>
+ *     <button>Item 1</button>
+ *     <button>Item 2</button>
  * </div>
  * ```
  *
  * @name KeyNavigation
- * @phase Dev
+ * @phase Utility
  */
 @Directive({
     selector: '[ui-key-navigation]',
