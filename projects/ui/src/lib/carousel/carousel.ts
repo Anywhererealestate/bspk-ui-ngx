@@ -36,6 +36,7 @@ export interface CarouselProps {
     standalone: true,
     selector: 'ui-carousel',
     imports: [CommonModule],
+    styleUrl: './carousel.scss',
     template: `
         <div data-viewport style="overflow:hidden; width:100%;">
             <div
@@ -65,8 +66,9 @@ export interface CarouselProps {
         'data-bspk': 'carousel',
         role: 'region',
         '[attr.aria-label]': 'label() ?? ariaLabel() ?? "Carousel"',
-        style: 'display:block;',
         '(keydown)': 'onKeydown($event)',
+        '[style.--gap]': 'gap() + "px"',
+        '[style.--item-width]': 'itemWidthCss()',
     },
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -89,6 +91,11 @@ export class UICarousel implements AsSignal<CarouselProps> {
     });
 
     readonly indices = computed(() => Array.from({ length: this.length() }, (_, i) => i));
+
+    readonly itemWidthCss = computed(() => {
+        const v = this.itemWidth();
+        return typeof v === 'number' ? `${v}px` : String(v);
+    });
 
     private readonly internal = signal<number>(0);
 

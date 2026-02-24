@@ -46,6 +46,7 @@ export interface PageControlProps {
   standalone: true,
   selector: 'ui-page-control',
   imports: [CommonModule],
+  styleUrl: './page-control.scss',
   template: `
     @if (shouldRender()) {
       <span

@@ -1,0 +1,41 @@
+[data-bspk='carousel'] {
+    /*!
+    --gap: is set via inline style
+    --item-width: is set via inline style
+    */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+    gap: var(--spacing-sizing-02);
+
+    [data-viewport],
+    [data-items-container] {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    [data-track],
+    [data-items-track] {
+        display: flex;
+        align-items: center;
+        gap: var(--gap);
+        min-width: 0;
+    }
+
+    [data-item-wrapper] {
+        min-width: var(--item-width);
+        overflow: hidden;
+    }
+
+    [data-dots],
+    [data-controls] {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sizing-02);
+    }
+}
+
+/** Copyright 2026 Anywhere Real Estate - CC BY 4.0 */

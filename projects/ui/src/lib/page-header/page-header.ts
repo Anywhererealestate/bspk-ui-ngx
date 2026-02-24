@@ -33,6 +33,7 @@ export interface PageHeaderProps {
     standalone: true,
     selector: 'ui-page-header',
     imports: [CommonModule],
+    styleUrl: './page-header.scss',
     template: `
         <span data-bspk="page-header">
             @if (hasBreadcrumb) {

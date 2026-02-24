@@ -37,6 +37,7 @@ export interface ButtonDockProps {
     standalone: true,
     selector: 'ui-button-dock',
     imports: [CommonModule, UIButton],
+    styleUrl: './button-dock.scss',
     template: `
         <div data-bspk="button-dock" [attr.data-mode]="mode()" [attr.data-arrangement]="finalArrangement">
             @if (secondaryButton(); as s) {
@@ -60,9 +61,6 @@ export interface ButtonDockProps {
             }
         </div>
     `,
-    host: {
-        style: 'display:block;',
-    },
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })

@@ -21,6 +21,7 @@ export interface BottomNavigationProps extends TabListBaseProps {
     standalone: true,
     selector: 'ui-bottom-navigation',
     imports: [CommonModule, UITabList],
+    styleUrl: './bottom-navigation.scss',
     template: `
         <ul
             ui-tab-list

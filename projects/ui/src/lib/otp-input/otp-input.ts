@@ -52,6 +52,7 @@ export interface OTPInputProps {
     standalone: true,
     selector: 'ui-otp-input',
     imports: [CommonModule],
+    styleUrl: './otp-input.scss',
     template: `
         <div
             data-bspk="otp-input"

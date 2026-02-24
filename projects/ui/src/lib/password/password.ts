@@ -37,6 +37,10 @@ export interface PasswordProps {
     standalone: true,
     selector: 'ui-password',
     imports: [CommonModule, UIInput],
+    styleUrl: './password.scss',
+    host: {
+        'data-bspk-owner': 'password',
+    },
     template: `
         <ui-input
             [id]="id()"

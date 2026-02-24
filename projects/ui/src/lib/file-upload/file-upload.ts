@@ -59,6 +59,11 @@ export interface FileUploadProps {
     standalone: true,
     selector: 'ui-file-upload',
     imports: [CommonModule, UIFileUploadItem],
+    styleUrl: './file-upload.scss',
+    host: {
+        '[attr.data-bspk-owner]': '"file-upload"',
+        '[attr.data-file-entries]': 'files()?.length ? "" : null',
+    },
     template: `
         <div data-bspk="file-upload">
             <input

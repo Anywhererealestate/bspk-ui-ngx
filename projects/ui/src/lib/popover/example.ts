@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { UIButton } from '../button/button';
 import { UIPopover } from './popover';
 
 @Component({
     selector: 'ui-popover-example',
     standalone: true,
-    imports: [UIPopover, UIButton],
+    imports: [UIPopover],
     template: `
         <ui-popover
             header="Popover Header"
@@ -14,7 +13,7 @@ import { UIPopover } from './popover';
             [secondaryCallToAction]="{ label: 'Cancel' }"
             (callToActionClick)="onAction()"
             (secondaryCallToActionClick)="onSecondary()">
-            <ui-button ui-popover-trigger label="Toggle popover" type="button" />
+            <span ui-popover-trigger>Toggle popover</span>
         </ui-popover>
     `,
 })

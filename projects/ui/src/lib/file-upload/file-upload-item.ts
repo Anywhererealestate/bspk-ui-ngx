@@ -48,6 +48,7 @@ function formatBytes(bytes?: number): string | undefined {
     standalone: true,
     selector: 'ui-file-upload-item',
     imports: [CommonModule],
+    styleUrl: './file-upload-item.scss',
     template: `
         <div data-bspk="file-upload-item" [attr.data-status]="status()">
             <div data-main style="display:flex; justify-content:space-between; gap:var(--spacing-sizing-03);">
