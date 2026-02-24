@@ -3,8 +3,7 @@
     flex-direction: column;
     width: 100%;
 
-    [data-row],
-    [data-main] {
+    [data-row] {
         display: flex;
         flex-direction: row;
         width: 100%;
@@ -20,8 +19,7 @@
         flex: 0 0 auto;
     }
 
-    [data-info],
-    [data-name] {
+    [data-info] {
         display: flex;
         flex-direction: column;
         flex: 1 1 0;
@@ -33,8 +31,7 @@
         font: var(--body-small);
     }
 
-    [data-file-details],
-    [data-size] {
+    [data-file-details] {
         color: var(--foreground-neutral-on-surface-variant-01);
         font: var(--body-x-small);
     }

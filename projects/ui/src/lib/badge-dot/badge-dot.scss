@@ -1,6 +1,6 @@
 [data-bspk='badge-dot'] {
-    /*!
-    --size: is set via inline style
+    /*! 
+    --size: is set via inline style 
     --outline-width: is set via inline style
     */
 
@@ -20,14 +20,6 @@
 
     &[data-outline] {
         border: var(--outline-width) solid var(--surface-neutral-t1-base);
-    }
-}
-
-/* When badge-dot is the only child (no projected content), show in flow */
-[data-attachment-wrapper]:has(> [data-bspk='badge-dot']:only-of-type) {
-    [data-attachment] {
-        position: static;
-        transform: none;
     }
 }
 

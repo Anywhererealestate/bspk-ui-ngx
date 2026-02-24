@@ -8,6 +8,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { execSync } from 'child_process';
 
+const forceFix = process.argv.includes('f');
+
 const ngxDir = 'projects/ui/src/lib';
 
 const ngxFiles = execSync(`find ${ngxDir} -type f -name "*.scss"`)
@@ -42,7 +44,13 @@ ngxFiles.forEach((ngxFilePath: string) => {
     const reactFilePath = reactFiles.find((rf) => path.basename(rf) === fileName);
 
     if (!reactFilePath || !fs.existsSync(reactFilePath)) {
-        missingFiles.push(fileName);
+        if (forceFix) {
+            // delete local ngx file
+            fs.unlinkSync(ngxFilePath);
+            console.log(`\x1b[33m Deleted ${fileName} from Angular version since it doesn't exist in React\x1b[0m`);
+        } else {
+            missingFiles.push(fileName);
+        }
         return;
     }
 
@@ -50,7 +58,10 @@ ngxFiles.forEach((ngxFilePath: string) => {
     const reactContent = fs.readFileSync(reactFilePath, 'utf-8').trim();
 
     if (ngxContent !== reactContent) {
-        errorFiles.push(`Differing SCSS content: code --diff ${ngxFilePath} ${reactFilePath}\n\n`);
+        if (forceFix) {
+            fs.copyFileSync(reactFilePath, ngxFilePath);
+            console.log(`\x1b[33m Force updated ${fileName} with React version\x1b[0m`);
+        } else errorFiles.push(`Differing SCSS content: code --diff ${ngxFilePath} ${reactFilePath}\n\n`);
     }
 
     successFiles.push(`\x1b[32m${fileName}\x1b[0m`);

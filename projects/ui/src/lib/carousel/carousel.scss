@@ -1,5 +1,5 @@
 [data-bspk='carousel'] {
-    /*!
+    /*! 
     --gap: is set via inline style
     --item-width: is set via inline style
     */
@@ -11,13 +11,11 @@
     position: relative;
     gap: var(--spacing-sizing-02);
 
-    [data-viewport],
     [data-items-container] {
         width: 100%;
         overflow: hidden;
     }
 
-    [data-track],
     [data-items-track] {
         display: flex;
         align-items: center;
@@ -30,7 +28,6 @@
         overflow: hidden;
     }
 
-    [data-dots],
     [data-controls] {
         display: flex;
         align-items: center;

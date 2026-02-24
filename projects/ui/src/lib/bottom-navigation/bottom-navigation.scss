@@ -6,8 +6,7 @@ ul[data-bspk-utility='tab-list'][data-bspk='bottom-navigation'] {
     height: var(--spacing-sizing-13);
     gap: var(--spacing-sizing-02);
 
-    &[data-variant='elevated'],
-    &[data-variant='outlined'] {
+    &[data-variant='elevated'] {
         box-shadow: var(--drop-shadow-north);
     }
 

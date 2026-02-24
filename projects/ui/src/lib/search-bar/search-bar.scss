@@ -1,11 +1,16 @@
 [data-bspk='search-bar'] {
     display: flex;
     width: 100%;
+    min-width: 100px;
 }
 
-[data-bspk='search-bar-menu'] {
-    [data-no-results] {
-        padding: var(--spacing-sizing-03);
-        font: var(--body-base);
-    }
+[data-bspk='no-items-found'] {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-sizing-08) var(--spacing-sizing-04);
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sizing-03);
 }
+
+/** Copyright 2026 Anywhere Real Estate - CC BY 4.0 */

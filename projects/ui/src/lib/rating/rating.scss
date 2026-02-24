@@ -10,8 +10,7 @@
             height: var(--spacing-sizing-06);
         }
 
-        icon-star-fill,
-        .icon-star-fill {
+        svg {
             width: var(--spacing-sizing-04);
             height: var(--spacing-sizing-04);
         }
@@ -23,8 +22,7 @@
             height: var(--spacing-sizing-08);
         }
 
-        icon-star-fill,
-        .icon-star-fill {
+        svg {
             width: var(--spacing-sizing-06);
             height: var(--spacing-sizing-06);
         }
@@ -36,8 +34,7 @@
             height: var(--spacing-sizing-10);
         }
 
-        icon-star-fill,
-        .icon-star-fill {
+        svg {
             width: var(--spacing-sizing-08);
             height: var(--spacing-sizing-08);
         }
@@ -72,6 +69,7 @@
             color: var(--status-warning);
         }
 
+        /* half star fill */
         [data-fill-half] {
             position: absolute;
             inset: 0 50% 0 0;

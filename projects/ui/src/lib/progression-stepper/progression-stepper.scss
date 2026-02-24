@@ -59,6 +59,13 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: center;
+
+                [data-variant='horizontal'] & {
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                }
+
                 padding: 0 var(--spacing-sizing-10);
                 font: var(--body-small);
                 text-align: center;
@@ -194,3 +201,5 @@
         }
     }
 }
+
+/** Copyright 2026 Anywhere Real Estate - CC BY 4.0 */
