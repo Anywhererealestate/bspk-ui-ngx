@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation, input } from '@angular/core';
+import { Component, ViewEncapsulation, input, model } from '@angular/core';
 import { AsSignal } from '../../types/common';
 
 export type SkeletonVariant = 'circular' | 'photo' | 'profile' | 'rectangular' | 'thumbnail';
@@ -33,8 +33,8 @@ function toCssSize(value: number | string): string {
  *
  * ```html
  * <ui-skeleton variant="rectangular" [width]="200" [height]="100" />
- * <ui-skeleton variant="circular" [width]="40" [loaded]="loaded()">
- *   <img src="avatar.jpg" alt="User" />
+ * <ui-skeleton variant="circular" [width]="40" [(loaded)]="loaded">
+ *     <img src="avatar.jpg" alt="User" />
  * </ui-skeleton>
  * ```
  *
@@ -53,8 +53,7 @@ function toCssSize(value: number | string): string {
                 [attr.data-variant]="variant()"
                 role="status"
                 [style.--height]="heightCss()"
-                [style.--width]="widthCss()">
-            </div>
+                [style.--width]="widthCss()"></div>
         } @else {
             <ng-content></ng-content>
         }
@@ -66,8 +65,7 @@ export class UISkeleton implements AsSignal<SkeletonProps> {
     readonly variant = input<SkeletonVariant>('rectangular');
     readonly width = input<number | string>(200);
     readonly height = input<number | string>(100);
-    /** When true, show content instead of skeleton. */
-    readonly loaded = input<boolean>(false);
+    readonly loaded = model<boolean>(false);
 
     showSkeleton(): boolean {
         return !this.loaded();

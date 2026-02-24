@@ -1,10 +1,10 @@
-import { Component, ViewEncapsulation, input, output, effect, ElementRef, viewChild } from '@angular/core';
+import { Component, ViewEncapsulation, input, output, effect, ElementRef, viewChild, model } from '@angular/core';
+import { UITooltipDirective } from '@ui/tooltip';
 import { AsSignal, CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIButton } from '../button';
 import { UIFocusTrapDirective } from '../focus-trap';
 import { UIPortalDirective } from '../portal';
-import { UITruncated } from '../truncated';
 
 export interface SnackbarProps {
     id: CommonProps['id'];
@@ -14,8 +14,6 @@ export interface SnackbarProps {
     closeButton?: boolean;
     /** Label for the close button. @default Dismiss */
     closeButtonLabel?: string;
-    /** Callback when the snackbar is dismissed. */
-    onClose: () => void;
     /** Time in ms after which the snackbar will auto dismiss. */
     timeout?: number;
     /** If the snackbar is open. @default false */
@@ -28,11 +26,7 @@ export interface SnackbarProps {
  * Snackbars provide brief feedback about user actions.
  *
  * ```html
- * <ui-snackbar
- *     text="Changes saved."
- *     [open]="snackbarOpen()"
- *     [closeButton]="true"
- *     (close)="snackbarOpen.set(false)" />
+ * <ui-snackbar text="Changes saved." [(open)]="open" [closeButton]="true" />
  * ```
  *
  * @name Snackbar
@@ -41,7 +35,7 @@ export interface SnackbarProps {
 @Component({
     selector: 'ui-snackbar',
     standalone: true,
-    imports: [UIPortalDirective, UIFocusTrapDirective, UITruncated, UIButton],
+    imports: [UIPortalDirective, UIFocusTrapDirective, UIButton, UITooltipDirective],
     template: `
         @if (open()) {
             <div
@@ -58,10 +52,13 @@ export interface SnackbarProps {
                                     <ng-content select="[snackbar-icon]"></ng-content>
                                 </span>
                             }
-                            <ui-truncated data-label>{{ text() }}</ui-truncated>
+                            <span [ui-tooltip]="{ truncated: true }" data-label>{{ text() }}</span>
                         </div>
                         @if (closeButton()) {
-                            <ui-button [label]="closeButtonLabel()" variant="tertiary" (click)="close.emit()">
+                            <ui-button
+                                [label]="closeButtonLabel()"
+                                variant="tertiary"
+                                (click)="open.set(false); onClose.emit()">
                             </ui-button>
                         }
                     </div>
@@ -73,19 +70,16 @@ export interface SnackbarProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UISnackbar implements AsSignal<SnackbarProps> {
+    readonly onClose = output<void>();
+
     readonly text = input.required<string>();
     readonly closeButton = input<boolean>(true);
     readonly closeButtonLabel = input<string>('Dismiss');
-    readonly open = input<boolean>(false);
+    readonly open = model<boolean>(false);
     readonly timeout = input<number | undefined>(undefined);
     readonly disableFocusTrap = input<boolean>(false);
     readonly id = input<string | undefined>(undefined);
 
-    readonly close = output<void>();
-    /** Alias for AsSignal<SnackbarProps>; use (close) in templates. */
-    get onClose() {
-        return this.close;
-    }
     readonly boxRef = viewChild<ElementRef<HTMLDivElement>>('boxRef');
 
     protected readonly generatedId = uniqueId('snackbar');
@@ -98,7 +92,8 @@ export class UISnackbar implements AsSignal<SnackbarProps> {
             const timeout = this.timeout();
             if (isOpen && timeout != null) {
                 this.timeoutId = setTimeout(() => {
-                    this.close.emit();
+                    this.open.set(false);
+                    this.onClose.emit();
                     this.timeoutId = null;
                 }, timeout);
             }

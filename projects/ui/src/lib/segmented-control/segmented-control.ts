@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { AsSignal } from '../../types/common';
-import { TabOption, UITabList, UITabListUtility, TabListProps } from '../tab-list/tab-list';
+import { TabOption, UITabList, UITabListUtility, TabListProps } from '../tab-list';
 
 export interface SegmentedControlOption {
     label: TabOption['label'];

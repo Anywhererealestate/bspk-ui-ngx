@@ -21,6 +21,7 @@ export const TAB_BADGE_SIZES: Record<TabSize, 'small' | 'x-small'> = {
  * @phase Dev
  */
 @Component({
+    selector: 'ui-tab-list-utility',
     template: '',
 })
 export class UITabListUtility<O extends TabOption = TabOption> implements AsSignal<TabListProps<O>> {
