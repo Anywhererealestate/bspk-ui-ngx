@@ -1,22 +1,33 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
 import { AsSignal } from '../../types/common';
-import { UIButton } from '../button';
-
-export type ButtonDockArrangement = 'fill' | 'hug' | 'spread';
-export type ButtonDockMode = 'fixed' | 'inline' | 'stacked';
-
-export interface ButtonDockButton {
-    label: string;
-    disabled?: boolean;
-    ariaLabel?: string;
-}
+import { ButtonProps, UIButton } from '../button';
 
 export interface ButtonDockProps {
-    primaryButton: ButtonDockButton;
-    secondaryButton?: ButtonDockButton;
-    arrangement?: ButtonDockArrangement;
-    mode?: ButtonDockMode;
+    /**
+     * The primary button in the dock. If a secondary button is provided the primary will render on the right side.
+     *
+     * @required
+     */
+    primaryButton: ButtonProps;
+    /**
+     * Secondary button. If provided will render on the left side.
+     *
+     * @required
+     */
+    secondaryButton?: ButtonProps;
+    /**
+     * If more than one button is provided defines how the buttons should be arranged.
+     *
+     * @default fill
+     */
+    arrangement?: 'fill' | 'spread';
+    /**
+     * If the dock should render inline or fixed to the bottom of the viewport.
+     *
+     * @default inline
+     */
+    mode?: 'fixed' | 'inline';
 }
 
 /**
@@ -68,13 +79,13 @@ export class UIButtonDock implements AsSignal<ButtonDockProps> {
     @Output() primaryClick = new EventEmitter<void>();
     @Output() secondaryClick = new EventEmitter<void>();
 
-    readonly primaryButton = input.required<ButtonDockButton>();
-    readonly secondaryButton = input<ButtonDockButton | undefined>();
+    readonly primaryButton = input.required<ButtonDockProps['primaryButton']>();
+    readonly secondaryButton = input<ButtonDockProps['secondaryButton']>();
 
-    readonly arrangement = input<ButtonDockArrangement>('fill');
-    readonly mode = input<ButtonDockMode>('inline');
+    readonly arrangement = input<ButtonDockProps['arrangement']>('fill');
+    readonly mode = input<ButtonDockProps['mode']>('inline');
 
-    get finalArrangement(): ButtonDockArrangement {
+    get finalArrangement() {
         return this.secondaryButton() ? this.arrangement() : 'fill';
     }
 }

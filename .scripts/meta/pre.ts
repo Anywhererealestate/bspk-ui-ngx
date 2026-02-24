@@ -45,7 +45,7 @@ export function preMeta(force = false) {
         {} as Record<string, string[]>,
     );
 
-    const INTERFACES = createInterfaceDictionary(compodocData.interfaces);
+    const INTERFACES = createInterfaceDictionary(compodocData.interfaces, TYPEALIASES);
 
     fs.writeFileSync(
         '.tmp/compodoc.json',
@@ -126,7 +126,12 @@ function createInterfaceDictionary<T extends Interface>(
         if (Array.isArray(prop.type) || ['string', 'number', 'boolean', 'null', 'undefined'].includes(prop.type))
             return prop;
 
-        if (dict[prop.type]?.[prop.name]) {
+        if (prop.type.includes('Exclude')) {
+            // handle this later, until then skip other conditionals
+        } else if (prop.type.includes(' | ')) {
+            const types = prop.type.split(' | ').map((t) => t.trim().replace(/"/g, ''));
+            nextProp.type = types;
+        } else if (dict[prop.type]?.[prop.name]) {
             nextProp = { ...prop, ...findRootPropType(dict[prop.type][prop.name]) };
         } else if (prop.type.endsWith('[]')) {
             const itemType = prop.type.slice(0, -2);

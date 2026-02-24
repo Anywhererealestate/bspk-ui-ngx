@@ -21,20 +21,12 @@ import {
     MetaComponent,
     NavRoute,
 } from '../../projects/shared/src/types';
-import {
-    CompodocDocumentation,
-    CompodocInterfaceProperty,
-    Component,
-    ComponentInput,
-    ComponentOutput,
-    Interface,
-    InterfaceProp,
-} from './types';
+import { CompodocDocumentation, Component, ComponentInput, ComponentOutput, InterfaceProp } from './types';
 import { stripCompodocMarkup } from './utils';
 
 const compodocData: CompodocDocumentation = JSON.parse(fs.readFileSync('.tmp/documentation.json', 'utf-8'));
 
-const { TYPEALIASES, COMPONENT_SELECTORS, INTERFACES } = JSON.parse(fs.readFileSync('.tmp/compodoc.json', 'utf-8')) as {
+const { COMPONENT_SELECTORS, INTERFACES } = JSON.parse(fs.readFileSync('.tmp/compodoc.json', 'utf-8')) as {
     TYPEALIASES: Record<string, string[]>;
     COMPONENT_SELECTORS: Record<string, string>;
     INTERFACES: Record<string, Record<string, InterfaceProp>>;

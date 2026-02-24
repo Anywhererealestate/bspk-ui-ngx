@@ -35,8 +35,8 @@ export interface BadgeDotProps {
  * A non-numeric badge used to indicate something new or its current status.
  *
  * ```html
- * <ui-badge-dot color="primary" [size]="8" [outline]="true">
- *   <button>Messages</button>
+ * <ui-badge-dot color="secondary" [size]="12" [outline]="true">
+ *     <ui-button label="Messages" />
  * </ui-badge-dot>
  * ```
  *
