@@ -372,25 +372,27 @@ function writeComponentMetaFiles(components: ComponentMeta[]) {
                         const name = toPascalCase(`${variant.name} - ${option.name}`);
                         const selector = toKebabCase(name);
                         return {
-                            ...generateComponentContent(name, selector, option.template)!,
+                            ...generateComponentContent(name, selector, option.template, option.classCode)!,
                         };
                     }),
                 ),
             );
 
-        const data = {
+        const dataContent = {
             ...component,
             examplesToGenerate: undefined,
             settings: hasSettings ? addCodeQuotes('settings') : undefined,
             basicUsage: hasOverrideBasicUsage ? undefined : basicUsage,
         };
 
+        const generatedCode = componentsToGenerate.flatMap((c) => c.code);
+
         const code = [
-            ...componentsToGenerate.map((c) => c.code),
-            `\nexport const meta: ComponentMeta = ${removeCodeQuotes(JSON.stringify(data, null, 4))};`,
+            ...generatedCode,
+            `\nexport const meta: ComponentMeta = ${removeCodeQuotes(JSON.stringify(dataContent, null, 4))};`,
         ].join('\n');
 
-        const imports: string[] = [
+        const uiImports: string[] = [
             removeCodeQuotes(component.class as any),
             ...componentsToGenerate.flatMap((c) => c.imports),
         ];
@@ -398,23 +400,18 @@ function writeComponentMetaFiles(components: ComponentMeta[]) {
         const importContent = [`import { ComponentMeta } from '@shared/types';`];
 
         const importIcons =
-            code.match(/\b(Icon[A-Z][a-zA-Z0-9]*)\b/g)?.filter((icon, index, self) => self.indexOf(icon) === index) ||
-            [];
+            generatedCode
+                .join('\n')
+                .match(/\b(Icon[A-Z][a-zA-Z0-9]*)\b/g)
+                ?.filter((icon, index, self) => self.indexOf(icon) === index) || [];
 
         if (importIcons.length) importContent.push(`import { ${importIcons.join(', ')} } from '@ui/icons';`);
 
-        const coreImports = [
-            code.includes('@Component') ? 'Component' : null,
-            code.includes('ViewEncapsulation') ? 'ViewEncapsulation' : null,
-        ].filter(Boolean) as string[];
+        uiImports.push(...Object.keys(INTERFACES).filter((key) => generatedCode.join('\n').includes(key)));
 
-        if (coreImports.length) {
-            importContent.push(`import { ${coreImports.join(', ')} } from '@angular/core';`);
-        }
-
-        if (imports.length)
+        if (uiImports.length)
             importContent.push(
-                `import { ${imports
+                `import { ${uiImports
                     .filter((value, index, self) => value && self.indexOf(value) === index)
                     .sort()
                     .join(', ')} } from '@ui/index';`,
@@ -430,6 +427,23 @@ function writeComponentMetaFiles(components: ComponentMeta[]) {
 
         if (code.includes('sendSnackbar'))
             importContent.push(`import { sendSnackbar } from '@ui/utils/send-snackbar';`);
+
+        const coreImports = [
+            code.includes('@Component') ? 'Component' : null,
+            code.includes('ViewEncapsulation') ? 'ViewEncapsulation' : null,
+            code.includes('signal(') ? 'signal' : null,
+        ].filter(Boolean) as string[];
+
+        if (code.includes('= signal')) coreImports.push('signal');
+        ``;
+        if (coreImports.length) {
+            importContent.push(
+                `import { ${coreImports
+                    .filter((value, index, self) => value && self.indexOf(value) === index)
+                    .sort()
+                    .join(', ')} } from '@angular/core';`,
+            );
+        }
 
         fs.writeFileSync(
             GENERATED_OUTPUT_PATH + `/components/${component.slug}.ts`,
@@ -573,7 +587,7 @@ function parseRawDescription(
           }) || []
         : [];
 
-    if (twoWayBindings.length) {
+    if (!exampleTypeScript && twoWayBindings.length) {
         exampleTypeScript += twoWayBindings
             .map(({ prop, value }) => {
                 const input = inputs.find((input) => input.name === prop);
@@ -588,7 +602,69 @@ function parseRawDescription(
             .join('\n');
     }
     return { description, exampleHtml, exampleTypeScript };
-    ``;
+}
+
+/** Infer class members from template so BasicUsage has signals/models/callbacks the template references. */
+function inferClassMembersFromTemplate(template: string): string {
+    const setCalls = [...(template.match(/\b([a-zA-Z_][a-zA-Z0-9_]*)\.set\s*\(/g) || [])].map((m) =>
+        m.replace(/\.set\s*\($/, ''),
+    );
+    const getterCalls = [...(template.match(/\b([a-zA-Z_][a-zA-Z0-9_]*)\(\)/g) || [])].map((m) =>
+        m.replace(/\(\)$/, ''),
+    );
+    const callbackCalls = [
+        ...(template.match(
+            /\b(on[A-Z][a-zA-Z0-9]*|clearFilters|removeFile|onFilesAdded|onFileRemove|onCode|onCodeComplete|onOutsideClick)\(/g,
+        ) || []),
+    ].map((m) => m.replace(/\($/, ''));
+
+    const asModel = new Set(setCalls.filter((id) => getterCalls.includes(id)));
+    const asSignal = new Set(getterCalls.filter((id) => !asModel.has(id) && !callbackCalls.includes(id)));
+    const asCallback = new Set(callbackCalls.filter((id) => !asModel.has(id) && !asSignal.has(id)));
+
+    const lines: string[] = [];
+    asModel.forEach((id) => {
+        lines.push(`${id} = signal(undefined);`);
+    });
+    asSignal.forEach((id) => {
+        if (asModel.has(id)) return;
+        lines.push(`${id} = signal(undefined);`);
+    });
+    asCallback.forEach((id) => {
+        lines.push(`${id}() {}`);
+    });
+
+    // Common demo refs that may appear without .set in template
+    const maybeOptions = template.match(/\[options\]="([a-zA-Z_][a-zA-Z0-9_]*)\(\)"/);
+    if (maybeOptions && !asModel.has(maybeOptions[1]) && !asSignal.has(maybeOptions[1])) {
+        const id = maybeOptions[1];
+        if (!lines.some((l) => l.startsWith(id + ' '))) lines.push(`${id} = signal([]);`);
+    }
+    const maybeSelected = template.match(/\[\(value\)\]="([a-zA-Z_][a-zA-Z0-9_]*)"/);
+    if (maybeSelected && !asModel.has(maybeSelected[1])) {
+        const id = maybeSelected[1];
+        if (!lines.some((l) => l.startsWith(id + ' '))) lines.push(`${id} = signal(undefined);`);
+    }
+    const maybeUserImg = template.match(/\[src\]="([a-zA-Z_][a-zA-Z0-9_]*)"/);
+    if (maybeUserImg && !lines.some((l) => l.startsWith(maybeUserImg[1] + ' '))) {
+        lines.push(`${maybeUserImg[1]} = signal('');`);
+    }
+    const maybeCustomContainer = template.match(/\[ui-portal\]="([a-zA-Z_][a-zA-Z0-9_]*)"/);
+    if (
+        maybeCustomContainer &&
+        maybeCustomContainer[1] !== 'null' &&
+        !lines.some((l) => l.startsWith(maybeCustomContainer[1] + ' '))
+    ) {
+        lines.push(`${maybeCustomContainer[1]} = signal(null);`);
+    }
+    const maybeFile = template.match(/\[name\]="([a-zA-Z_][a-zA-Z0-9_]*)\.name"/);
+    if (maybeFile) {
+        const id = maybeFile[1];
+        if (!lines.some((l) => l.startsWith(id + ' '))) lines.push(`${id} = signal({ name: '', size: 0 });`);
+    }
+
+    if (lines.length) return '\n    ' + lines.join('\n    ') + '\n';
+    return '';
 }
 
 function generateComponentContent(
@@ -609,6 +685,8 @@ function generateComponentContent(
 
     if (!imports.length) return null;
 
+    const inferredMembers = !classCode ? inferClassMembersFromTemplate(template) : '';
+
     return {
         name,
         selector,
@@ -627,6 +705,9 @@ export class ${componentName} {${
         }${
             //
             classCode ? `\n${classCode}\n` : ''
+        }${
+            //
+            inferredMembers
         }${
             //
             icons.map((icon) => `${icon} = ${icon};`).join('')

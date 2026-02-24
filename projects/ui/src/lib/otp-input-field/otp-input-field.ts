@@ -27,7 +27,17 @@ export interface OTPInputFieldProps {
  * A field wrapper that combines a label, helper/error text, and an OTP input.
  *
  * ```html
- * <ui-otp-input-field label="Verification code" [length]="6" (change)="onCode($event)" />
+ * <ui-otp-input-field
+ *     name="otp-input-field-name"
+ *     label="Verification code"
+ *     [length]="6"
+ *     (change)="onCode($event)" />
+ * ```
+ *
+ * ```typescript
+ * onCode(nextCode: string) {
+ *     sendSnackbar(`Code: ${nextCode}`);
+ * }
  * ```
  *
  * @name OTPInputField

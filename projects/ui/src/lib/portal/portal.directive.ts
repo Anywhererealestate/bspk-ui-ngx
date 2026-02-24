@@ -4,8 +4,8 @@ import { AsSignal } from '../../types/common';
 export type PortalContainer = HTMLElement | (() => HTMLElement | null | undefined) | null | undefined;
 
 export interface PortalProps {
-    /** The container to render the portal content in. */
-    container?: PortalContainer;
+    /** The container to render the portal content in. Empty string is treated as undefined (use body). */
+    container?: PortalContainer | '';
 }
 
 /**
@@ -25,7 +25,7 @@ export interface PortalProps {
 })
 export class UIPortalDirective implements OnDestroy, AsSignal<PortalProps> {
     /** The target element to render the portal into. Defaults to `this.document.body` in the browser. */
-    readonly container = input<PortalProps['container']>(undefined, { alias: 'ui-portal' });
+    readonly container = input<PortalProps['container']>(undefined as PortalProps['container'], { alias: 'ui-portal' });
 
     host = inject<ElementRef<HTMLElement>>(ElementRef);
     renderer = inject(Renderer2);
@@ -37,7 +37,7 @@ export class UIPortalDirective implements OnDestroy, AsSignal<PortalProps> {
                 typeof document === 'undefined' ||
                 !this.host?.nativeElement ||
                 !this.host.nativeElement.parentNode ||
-                !this.container()
+                false
             )
                 return;
 
@@ -47,12 +47,13 @@ export class UIPortalDirective implements OnDestroy, AsSignal<PortalProps> {
 
             let targetElement: HTMLElement | null | undefined;
 
-            const target = this.container();
+            const raw = this.container();
+            const target = raw === '' || raw == null ? undefined : raw;
 
             if (typeof target === 'function') {
                 targetElement = target();
             } else {
-                targetElement = target || this.document.body;
+                targetElement = target ?? this.document.body;
             }
 
             this.renderer.appendChild(targetElement, this.host.nativeElement);

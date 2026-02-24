@@ -1,14 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {
-    ChangeDetectionStrategy,
-    Component,
-    EventEmitter,
-    Output,
-    ViewEncapsulation,
-    computed,
-    input,
-    signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input, model, signal } from '@angular/core';
 import { AsSignal } from '../../types/common';
 
 export interface CarouselProps {
@@ -81,10 +72,8 @@ export interface CarouselProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UICarousel implements AsSignal<CarouselProps> {
-    @Output() change = new EventEmitter<number>();
-
     readonly length = input.required<number>();
-    readonly value = input<number | undefined>();
+    readonly value = model<number | undefined>();
     readonly defaultValue = input<number>(0);
     readonly showDots = input<boolean>(true);
     readonly ariaLabel = input<string>('Carousel');
@@ -118,8 +107,8 @@ export class UICarousel implements AsSignal<CarouselProps> {
 
     setIndex(next: number) {
         const clamped = this.clamp(next);
-        if (this.value() == null) this.internal.set(clamped);
-        this.change.emit(clamped);
+        if (this.value() === undefined) this.internal.set(clamped);
+        else this.value.set(clamped);
     }
 
     private clamp(i: number) {

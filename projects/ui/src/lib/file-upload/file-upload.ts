@@ -32,11 +32,24 @@ export interface FileUploadProps {
  *
  * ```html
  * <ui-file-upload
- *   [multiple]="true"
- *   accept=".pdf,.doc"
- *   [files]="selectedFiles()"
- *   (add)="onFilesAdded($event)"
- *   (remove)="onFileRemove($event)" />
+ *     [multiple]="true"
+ *     accept=".pdf,.doc"
+ *     [files]="selectedFiles()"
+ *     (add)="onFilesAdded($event)"
+ *     (remove)="onFileRemove($event)" />
+ * ```
+ *
+ * ```typescript
+ * // imports UIFileUploadItem
+ *
+ * selectedFiles = signal<FileUploadSelectedFile[]>([]);
+ *
+ * onFilesAdded(files: File[]) {
+ *   sendSnackbar(`Files added:${files.map((f) => f.name).join(', ')}`);
+ * }
+ * onFileRemove(index: number) {
+ *   sendSnackbar(`File removed: ${index}`);
+ * }
  * ```
  *
  * @name FileUpload

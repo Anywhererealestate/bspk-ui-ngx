@@ -27,7 +27,18 @@ export interface ChipGroupProps {
  * A component that manages the layout of a group of chips.
  *
  * ```html
- * <ui-chip-group [items]="chipItems()" />
+ * <ui-chip-group [items]="chipItems" />
+ * ```
+ *
+ * ```typescript
+ * chipItems = [
+ *     { label: 'Chip 1', trailingIcon: IconRemove },
+ *     { label: 'Chip 2', trailingIcon: IconAdd },
+ *     { label: 'Chip 3', trailingBadge: { count: 2 } },
+ *     { label: 'Chip 4', trailingIcon: IconReplay },
+ *     { label: 'Chip 5 selected = true', trailingIcon: IconPlayPause, selected: true },
+ *     { label: 'Chip 6 disabled = true', trailingIcon: IconBlock, disabled: true },
+ * ];
  * ```
  *
  * @name ChipGroup

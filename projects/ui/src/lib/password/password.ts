@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    EventEmitter,
+    Output,
+    ViewEncapsulation,
+    input,
+    model,
+} from '@angular/core';
 import { uniqueId } from '@ui/utils/random';
 import { AsSignal } from '../../types/common';
 import { UIInput } from '../input';
@@ -19,11 +27,7 @@ export interface PasswordProps {
  * A password input control that wraps the standard input with type password.
  *
  * ```html
- * <ui-password
- *     name="password"
- *     [value]="passwordValue()"
- *     placeholder="Enter password"
- *     (change)="passwordValue.set($event)" />
+ * <ui-password name="password" [(value)]="passwordValue" placeholder="Enter password" />
  * ```
  *
  * @name Password
@@ -38,7 +42,7 @@ export interface PasswordProps {
             [id]="id()"
             [name]="name() ?? ''"
             [type]="'password'"
-            [value]="value() ?? ''"
+            [(value)]="value"
             [disabled]="disabled()"
             [readOnly]="readOnly()"
             [required]="required()"
@@ -58,7 +62,7 @@ export class UIPassword implements AsSignal<PasswordProps> {
     readonly id = input<string>(uniqueId('password'));
     readonly name = input.required<string | undefined>();
 
-    readonly value = input<string | undefined>();
+    readonly value = model<string>('');
     readonly defaultValue = input<string | undefined>();
 
     readonly disabled = input<boolean>(false);

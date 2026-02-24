@@ -24,9 +24,11 @@ export interface CheckboxOptionProps extends CheckboxProps {
  * A control that allows users to choose one or more items from a list or turn a feature on or off.
  *
  * ```html
- * <ui-checkbox-option label="Option A" [checked]="checked()" (checkedChange)="checked.set($event)">
- *   <ui-checkbox data-leading [checked]="checked()" (checkedChange)="checked.set($event)" />
- * </ui-checkbox-option>
+ * <ui-checkbox-option
+ *     name="checkbox-option-name"
+ *     value="checkbox-option-value"
+ *     label="Option A"
+ *     [(checked)]="checked" />
  * ```
  *
  * @name CheckboxOption

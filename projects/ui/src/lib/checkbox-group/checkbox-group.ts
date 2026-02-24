@@ -60,7 +60,16 @@ export interface CheckboxGroupProps extends FieldControlProps {
  * A group of checkboxes that allows users to choose one or more items from a list or turn an feature on or off.
  *
  * ```html
- * <ui-checkbox-group [options]="options()" [(value)]="selected" (valueChange)="onChange($event)" />
+ * <ui-checkbox-group name="checkbox-group-name" [options]="options" [(value)]="selected" />
+ * ```
+ *
+ * ```typescript
+ * options = [
+ *     { label: 'Option 1', value: 'option1' },
+ *     { label: 'Option 2', value: 'option2' },
+ *     { label: 'Option 3', value: 'option3' },
+ * ];
+ * selected: string[] = [];
  * ```
  *
  * @name CheckboxGroup

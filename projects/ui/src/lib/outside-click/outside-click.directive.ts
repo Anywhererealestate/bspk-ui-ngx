@@ -11,8 +11,14 @@ interface OutsideClickProps {
  *
  * ```html
  * <div [ui-outside-click]="{ callback: onOutsideClick }">
- *   <button>Inside</button>
+ *     <button>Inside</button>
  * </div>
+ * ```
+ *
+ * ```typescript
+ * onOutsideClick() {
+ *   sendSnackbar('Outside click detected!');
+ * }
  * ```
  *
  * @name OutsideClick

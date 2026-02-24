@@ -31,11 +31,14 @@ function formatBytes(bytes?: number): string | undefined {
  * A single file item in a file upload list, showing name, size, status, and a remove action.
  *
  * ```html
- * <ui-file-upload-item
- *   [name]="file.name"
- *   [sizeBytes]="file.size"
- *   status="idle"
- *   (remove)="removeFile()" />
+ * <ui-file-upload-item [name]="file().name" [sizeBytes]="file().size" status="idle" (remove)="removeFile()" />
+ * ```
+ *
+ * ```typescript
+ * file = signal({ name: '', size: 0 });
+ * removeFile() {
+ *   sendSnackbar('File removed');
+ * }
  * ```
  *
  * @name FileUploadItem

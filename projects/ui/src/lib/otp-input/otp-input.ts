@@ -36,7 +36,13 @@ export interface OTPInputProps {
  * A one-time code input that splits the value into individual digit fields.
  *
  * ```html
- * <ui-otp-input [length]="6" [defaultValue]="''" (change)="onCodeComplete($event)" />
+ * <ui-otp-input name="otp-input-name" [length]="6" [defaultValue]="''" (change)="onCodeComplete($event)" />
+ * ```
+ *
+ * ```typescript
+ * onCodeComplete(nextCode: string) {
+ *     sendSnackbar(`Code: ${nextCode}`);
+ * }
  * ```
  *
  * @name OTPInput

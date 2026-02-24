@@ -41,7 +41,7 @@ export interface PasswordFieldProps extends PasswordProps, ControlFieldProps {
                 [id]="controlId()"
                 [name]="name()"
                 [readOnly]="readOnly() ?? false"
-                [value]="value()"
+                [value]="value() ?? ''"
                 [required]="required() ?? false"
                 [placeholder]="placeholder()" />
         </ui-field>

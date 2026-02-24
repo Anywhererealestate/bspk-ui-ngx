@@ -58,7 +58,7 @@ export interface DatePickerProps extends FieldControlProps {
  * date.
  *
  * ```html
- * <ui-date-picker [(value)]="selectedDate" />
+ * <ui-date-picker name="date-picker-name" [(value)]="selectedDate" />
  * ```
  *
  * @name DatePicker
