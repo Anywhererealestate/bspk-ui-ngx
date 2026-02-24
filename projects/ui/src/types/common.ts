@@ -48,7 +48,7 @@ export interface CallToActionButton {
      *
      * @required
      */
-    onClick: () => void;
+    onClick?: () => void;
     /** The size of the call to action button. */
     size?: ButtonSize;
 }

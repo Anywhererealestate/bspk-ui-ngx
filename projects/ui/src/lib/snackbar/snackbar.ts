@@ -7,21 +7,49 @@ import { UIFocusTrapDirective } from '../focus-trap';
 import { UIPortalDirective } from '../portal';
 
 export interface SnackbarProps {
-    id: CommonProps['id'];
-    /** Text to be shown in the snackbar. */
+    id?: CommonProps['id'];
+
+    /**
+     * Text to be shown in the snackbar
+     *
+     * @required
+     */
     text: string;
-    /** Whether to show a close button. @default true */
+    /**
+     * Whether to show a close button on the snackbar.
+     *
+     * Since there is no default timeout, this is true by default. You can provide a timeout to auto-dismiss the
+     * snackbar in addition to the close button.
+     *
+     * @default true
+     */
     closeButton?: boolean;
-    /** Label for the close button. @default Dismiss */
+    /**
+     * Label for the close button.
+     *
+     * @default Dismiss
+     */
     closeButtonLabel?: string;
     /** Optional icon content (use snackbar-icon slot for projection). */
     icon?: unknown;
-    /** Time in ms after which the snackbar will auto dismiss. */
+    /**
+     * Callback when the snackbar is dismissed. In Angular, subscribe to the (close) output.
+     *
+     * @required
+     */
+    onClose: () => void;
+    /**
+     * Time in milliseconds after which the snackbar will auto dismiss.
+     *
+     * If no timeout is provided, and closeButton is set to false the snackbar will not be dismissable.
+     */
     timeout?: number;
-    /** If the snackbar is open. @default false */
+    /**
+     * If the snackbar is open or not.
+     *
+     * @default false
+     */
     open?: boolean;
-    /** If focus trapping should be disabled. @default false */
-    disableFocusTrap?: boolean;
 }
 
 /**
@@ -46,7 +74,7 @@ export interface SnackbarProps {
                 [attr.id]="id() ?? generatedId"
                 data-bspk="snackbar"
                 [ui-portal]="null">
-                <div [ui-focus-trap]="!disableFocusTrap()">
+                <div [ui-focus-trap]="true">
                     <div data-snackbar-content role="alert">
                         <div data-snackbar-icon-text>
                             @if (iconSlot()) {
@@ -58,7 +86,7 @@ export interface SnackbarProps {
                         </div>
                         @if (closeButton()) {
                             <ui-button
-                                [label]="closeButtonLabel()"
+                                [label]="closeButtonLabel() ?? 'Dismiss'"
                                 variant="tertiary"
                                 (click)="open.set(false); onClose.emit()">
                             </ui-button>
@@ -74,14 +102,13 @@ export interface SnackbarProps {
 export class UISnackbar implements AsSignal<SnackbarProps> {
     readonly onClose = output<void>();
 
-    readonly text = input.required<string>();
-    readonly closeButton = input<boolean>(true);
-    readonly closeButtonLabel = input<string>('Dismiss');
-    readonly open = model<boolean>(false);
-    readonly timeout = input<number | undefined>(undefined);
-    readonly disableFocusTrap = input<boolean>(false);
-    readonly id = input<string | undefined>(undefined);
-    readonly icon = input<unknown>(undefined);
+    readonly text = input.required<SnackbarProps['text']>();
+    readonly closeButton = input<SnackbarProps['closeButton']>(true);
+    readonly closeButtonLabel = input<SnackbarProps['closeButtonLabel']>('Dismiss');
+    readonly open = model<SnackbarProps['open']>(false);
+    readonly timeout = input<SnackbarProps['timeout']>();
+    readonly id = input<SnackbarProps['id']>();
+    readonly icon = input<SnackbarProps['icon']>();
 
     readonly boxRef = viewChild<ElementRef<HTMLDivElement>>('boxRef');
 

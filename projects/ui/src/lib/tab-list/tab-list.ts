@@ -53,13 +53,6 @@ export interface TabListBaseProps<O extends TabOption = TabOption> {
      *
      * If **less than 2** items are provided, the component will not render.
      *
-     * @example
-     *     [
-     *         { value: '1', label: 'Option 1' },
-     *         { value: '2', label: 'Disabled 2 ', disabled: true },
-     *         { value: '3', label: 'Option 3' },
-     *     ];
-     *
      * @type TabOption[]
      * @required
      */

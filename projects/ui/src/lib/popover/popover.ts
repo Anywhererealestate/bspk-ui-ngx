@@ -1,13 +1,4 @@
-import {
-    Component,
-    computed,
-    ElementRef,
-    input,
-    output,
-    signal,
-    viewChild,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, computed, ElementRef, input, output, signal, viewChild, ViewEncapsulation } from '@angular/core';
 import { Placement } from '@floating-ui/dom';
 import { AsSignal } from '../../types/common';
 import { uniqueId } from '../../utils/random';

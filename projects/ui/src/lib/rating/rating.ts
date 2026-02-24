@@ -9,14 +9,10 @@ export interface RatingProps {
      * The value of the rating between 0 and 5.
      *
      * @default 0
+     * @minimum 0
+     * @maximum 5
      */
     value?: number;
-    /**
-     * When true, the rating is interactive (buttons). When false, display only.
-     *
-     * @default true
-     */
-    interactive?: boolean;
     /**
      * The size of the rating.
      *
@@ -38,8 +34,8 @@ function getFill(num: number, value?: number): 'full' | 'half' | undefined {
  * Descriptive and interactive controls that allow customers to indicate their feelings about an experience or product.
  *
  * ```html
- * <ui-rating [(value)]="value" size="medium" [interactive]="true" />
- * <ui-rating [value]="4.5" [interactive]="false" />
+ * <ui-rating [(value)]="value" size="medium" />
+ * <ui-rating [value]="4.5" />
  * ```
  *
  * @name Rating
@@ -94,13 +90,11 @@ function getFill(num: number, value?: number): 'full' | 'half' | undefined {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIRating implements AsSignal<RatingProps> {
-    readonly value = model<number>(0);
-
-    readonly size = input<RatingSize>('medium');
-    readonly interactive = input<boolean>(true);
+    readonly value = model<RatingProps['value']>(0);
+    readonly size = input<RatingProps['size']>('medium');
 
     readonly indices = computed(() => Array.from({ length: MAX_STARS }, (_, i) => i));
-    readonly isInteractive = computed(() => this.interactive());
+    readonly isInteractive = computed(() => true);
 
     readonly ariaLabel = computed(() => {
         const v = this.value();

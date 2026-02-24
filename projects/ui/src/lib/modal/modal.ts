@@ -23,9 +23,6 @@ export interface ModalProps {
     /**
      * Modal header.
      *
-     * @example
-     *     Change your email
-     *
      * @required
      */
     header: string;
@@ -33,9 +30,6 @@ export interface ModalProps {
      * Modal description. Used for the
      * [aria-description](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-description)
      * attribute.
-     *
-     * @example
-     *     Email change confirmation.
      *
      * @required
      */
@@ -48,13 +42,7 @@ export interface ModalProps {
      * @default false
      */
     cancelButton?: boolean | string;
-    /**
-     * The call to action button to display in the footer of the modal.
-     *
-     * @example
-     *     {label: 'Confirm',
-     *     onClick: () => action('Confirm clicked'),}
-     */
+    /** The call to action button to display in the footer of the modal. */
     callToAction?: ModalCallToAction;
     /**
      * The format of the buttons in the footer. Vertical applies only on screen widths less than or equal to 640px.

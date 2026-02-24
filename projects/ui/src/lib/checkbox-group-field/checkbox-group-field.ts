@@ -43,6 +43,7 @@ export interface CheckboxGroupFieldProps extends ControlFieldProps, CheckboxGrou
             [style]="style()"
             [required]="required()">
             <ui-checkbox-group
+                [options]="options()"
                 [ariaLabelledBy]="labelledById()"
                 [ariaDescribedBy]="describedById()"
                 [ariaErrorMessage]="errorMessageId()"

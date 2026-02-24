@@ -10,25 +10,15 @@ export interface ProgressBarProps {
      */
     size?: 'large' | 'small';
     /**
-     * The current progress of the progressbar (0–100). Alias for completion.
+     * The current progress of the progressbar.
      *
-     * @example
-     *     42;
-     *
+     * @default 0
      * @minimum 0
      * @maximum 100
-     */
-    value?: number;
-    /**
-     * The current progress of the progressbar (0–100). When value is set, completion is optional.
      *
-     * @example
-     *     42;
-     *
-     * @minimum 0
-     * @maximum 100
+     * @required
      */
-    completion?: number;
+    completion: number;
     /**
      * The label alignment of the progressbar.
      *
@@ -44,6 +34,13 @@ export interface ProgressBarProps {
      * @default false
      */
     successColor?: boolean;
+    /**
+     * Whether to hide the success color when the progress bar is complete.
+     *
+     * @deprecated This has a very narrow use-case. See guidelines for more information.
+     * @default false
+     */
+    successHidden?: boolean;
 }
 
 /**
@@ -51,7 +48,7 @@ export interface ProgressBarProps {
  * occurring in the background.
  *
  * ```html
- * <ui-progress-bar [value]="0.65" [label]="'65%'" />
+ * <ui-progress-bar [completion]="65" [label]="'65%'" />
  * ```
  *
  * @name ProgressBar
@@ -86,32 +83,22 @@ export interface ProgressBarProps {
 })
 export class UIProgressBar implements AsSignal<ProgressBarProps> {
     readonly size = input<ProgressBarProps['size']>('large');
-    readonly value = input<ProgressBarProps['value']>();
-    readonly completion = input<ProgressBarProps['completion']>();
+    readonly completion = input.required<ProgressBarProps['completion']>();
     readonly align = input<ProgressBarProps['align']>('center');
     readonly label = input.required<ProgressBarProps['label']>();
     readonly successColor = input<ProgressBarProps['successColor']>(false);
+    readonly successHidden = input<ProgressBarProps['successHidden']>(false);
 
     readonly id = uniqueId('progress-bar');
 
-    /** Resolves value (0–1 or 0–100) or completion (0–100) to 0–100. */
-    readonly effectiveCompletion = computed(() => {
-        const v = this.value();
-        const c = this.completion();
-        if (v != null) {
-            const n = Number(v);
-            const scaled = n <= 1 && n >= 0 ? Math.round(n * 100) : Math.round(n);
-            return Math.max(0, Math.min(100, scaled));
-        }
-        return c != null ? Math.max(0, Math.min(100, Math.round(c))) : 0;
-    });
+    readonly effectiveCompletion = computed(() => Math.max(0, Math.min(100, Math.round(this.completion() ?? 0))));
 
     get completionValue() {
         return Math.max(0, Math.min(100, Math.round(this.effectiveCompletion())));
     }
 
     get success() {
-        return this.successColor() && this.effectiveCompletion() === 100 ? 'color' : undefined;
+        return this.successColor() && !this.successHidden() && this.effectiveCompletion() === 100 ? 'color' : undefined;
     }
 
     get ariaBusy() {

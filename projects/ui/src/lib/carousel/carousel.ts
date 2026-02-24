@@ -1,26 +1,59 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input, model, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    ViewEncapsulation,
+    computed,
+    contentChildren,
+    input,
+    model,
+    signal,
+} from '@angular/core';
 import { AsSignal } from '../../types/common';
+import { UIButton } from '../button';
+import { IconChevronLeft, IconChevronRight } from '../icons';
+import { UIPageControl } from '../page-control';
+import { UICarouselSlideDirective } from './carousel-slide.directive';
 
 export interface CarouselProps {
-    /** A label for the carousel (used for aria-label). */
-    label?: string;
-    /** Width of each item (px or CSS value). @default 80% */
+    /**
+     * A label for the carousel for screen readers.
+     *
+     * @required
+     */
+    label: string;
+    /**
+     * The width of each item/child.
+     *
+     * If number is provided, it is treated as pixels.
+     *
+     * If string is provided, it is treated as a CSS width value (%, px, em, rem, etc).
+     *
+     * If a percentage (%) is provided, the item is sized based on the carousel container's width
+     *
+     * @default 80%
+     */
     itemWidth?: number | string;
-    /** Gap between items in pixels. @default 16 */
+    /**
+     * The gap between items in pixels.
+     *
+     * @default 16
+     */
     gap?: number;
-    /** Additional styles for the carousel container. */
+    /** Additional styles to apply to the carousel container. */
     style?: Record<string, number | string>;
 }
 
 /**
- * A horizontal carousel that displays slides with optional dot navigation.
+ * A carousel component for displaying a horizontal list of items with navigation controls.
+ *
+ * Use `ui-carousel-slide` on each direct child. Renders a PageControl and prev/next buttons like the React component.
  *
  * ```html
- * <ui-carousel [length]="3" [showDots]="true" ariaLabel="Image carousel">
- *     <div>Slide 1</div>
- *     <div>Slide 2</div>
- *     <div>Slide 3</div>
+ * <ui-carousel [label]="'Example Carousel'">
+ *     <div ui-carousel-slide style="padding: 16px; background: rgba(255, 0, 0, 0.25)">Slide 1</div>
+ *     <div ui-carousel-slide style="padding: 16px; background: rgba(0, 255, 0, 0.25)">Slide 2</div>
+ *     <div ui-carousel-slide style="padding: 16px; background: rgba(0, 0, 255, 0.25)">Slide 3</div>
  * </ui-carousel>
  * ```
  *
@@ -30,73 +63,86 @@ export interface CarouselProps {
 @Component({
     standalone: true,
     selector: 'ui-carousel',
-    imports: [CommonModule],
+    imports: [CommonModule, UIPageControl, UIButton],
     styleUrl: './carousel.scss',
     template: `
-        <div data-viewport style="overflow:hidden; width:100%;">
-            <div
-                data-track
-                [style.display]="'flex'"
-                [style.transform]="'translateX(' + -activeIndex() * 100 + '%)'"
-                style="transition: transform 200ms ease;">
-                <ng-content></ng-content>
+        <div data-items-container>
+            <div data-items-track tabindex="0" (keydown.capture)="onKeydown($event)">
+                <ng-content select="[ui-carousel-slide]"></ng-content>
             </div>
         </div>
-
-        @if (showDots()) {
-            <div data-dots style="display:flex; gap:var(--spacing-sizing-02); justify-content:center;">
-                @for (i of indices(); track i) {
-                    <button
-                        type="button"
-                        [attr.aria-label]="'Go to slide ' + (i + 1)"
-                        [attr.data-active]="i === activeIndex() ? '' : null"
-                        (click)="setIndex(i)">
-                        <!-- decorative; icon-free -->
-                    </button>
-                }
+        @if (slideCount() >= 2) {
+            <div data-controls>
+                <ui-button
+                    label="Previous"
+                    [ariaLabel]="'Previous Slide'"
+                    [icon]="IconChevronLeft"
+                    [iconOnly]="true"
+                    variant="tertiary"
+                    [disabled]="activeIndex() === 0"
+                    (onClick)="setIndex(activeIndex() - 1)" />
+                <ui-page-control [currentPage]="activeIndex() + 1" [numPages]="slideCount()" />
+                <ui-button
+                    label="Next"
+                    [ariaLabel]="'Next Slide'"
+                    [icon]="IconChevronRight"
+                    [iconOnly]="true"
+                    variant="tertiary"
+                    [disabled]="activeIndex() >= slideCount() - 1"
+                    (onClick)="setIndex(activeIndex() + 1)" />
             </div>
         }
+        <span aria-live="polite" data-sr-only>Slide {{ activeIndex() + 1 }} of {{ slideCount() }}</span>
     `,
     host: {
         'data-bspk': 'carousel',
         role: 'region',
-        '[attr.aria-label]': 'label() ?? ariaLabel() ?? "Carousel"',
+        'aria-roledescription': 'carousel',
+        '[attr.aria-label]': 'label()',
         '(keydown)': 'onKeydown($event)',
-        '[style.--gap]': 'gap() + "px"',
+        '[style.--gap]': 'gapPx()',
         '[style.--item-width]': 'itemWidthCss()',
     },
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
 export class UICarousel implements AsSignal<CarouselProps> {
-    readonly length = input.required<number>();
-    readonly value = model<number | undefined>();
-    readonly defaultValue = input<number>(0);
-    readonly showDots = input<boolean>(true);
-    readonly ariaLabel = input<string>('Carousel');
-    readonly label = input<string | undefined>();
-    readonly itemWidth = input<number | string>('80%');
-    readonly gap = input<number>(16);
-    readonly style = input<Record<string, number | string> | undefined>();
+    readonly label = input.required<CarouselProps['label']>();
+    readonly itemWidth = input<CarouselProps['itemWidth']>('80%');
+    readonly gap = input<CarouselProps['gap']>(16);
+    readonly style = input<CarouselProps['style']>();
 
-    readonly activeIndex = computed(() => {
-        const controlled = this.value();
-        if (typeof controlled === 'number') return this.clamp(controlled);
-        return this.clamp(this.internal() || this.defaultValue());
-    });
+    readonly slides = contentChildren(UICarouselSlideDirective);
+    readonly slideCount = computed(() => this.slides().length);
 
-    readonly indices = computed(() => Array.from({ length: this.length() }, (_, i) => i));
+    readonly activeIndex = model<number>(0);
 
     readonly itemWidthCss = computed(() => {
         const v = this.itemWidth();
         return typeof v === 'number' ? `${v}px` : String(v);
     });
 
-    private readonly internal = signal<number>(0);
+    readonly gapPx = computed(() => `${this.gap() ?? 16}px`);
 
-    trackByIndex = (_: number, i: number) => i;
+    IconChevronLeft = IconChevronLeft;
+    IconChevronRight = IconChevronRight;
 
-    onKeydown(event: KeyboardEvent) {
+    private readonly internalIndex = signal(0);
+
+    setIndex(next: number) {
+        this.activeIndex.set(this.clamp(next));
+
+        this.slides().forEach((slide, i) => {
+            slide.active.set(i === next);
+        });
+
+        const nextElement = this.slides()[next].host?.nativeElement;
+        nextElement?.focus();
+        nextElement?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    }
+
+    onKeydown(event: Event) {
+        if (!(event instanceof KeyboardEvent)) return;
         if (event.key === 'ArrowLeft') {
             this.setIndex(this.activeIndex() - 1);
             event.preventDefault();
@@ -107,14 +153,8 @@ export class UICarousel implements AsSignal<CarouselProps> {
         }
     }
 
-    setIndex(next: number) {
-        const clamped = this.clamp(next);
-        if (this.value() === undefined) this.internal.set(clamped);
-        else this.value.set(clamped);
-    }
-
-    private clamp(i: number) {
-        const len = this.length();
+    private clamp(i: number): number {
+        const len = this.slideCount();
         if (len <= 0) return 0;
         return Math.max(0, Math.min(i, len - 1));
     }

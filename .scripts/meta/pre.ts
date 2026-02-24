@@ -126,6 +126,9 @@ function createInterfaceDictionary<T extends Interface>(
         if (Array.isArray(prop.type) || ['string', 'number', 'boolean', 'null', 'undefined'].includes(prop.type))
             return prop;
 
+        // replace the " | undefined" from the end of the type string
+        prop.type = prop.type.replace(/ \| undefined$/, '');
+
         if (prop.type.includes('Exclude')) {
             // handle this later, until then skip other conditionals
         } else if (prop.type.includes(' | ')) {

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
-import { AsSignal } from '../../types/common';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@angular/core';
+import { AsSignal, CallToActionButton } from '../../types/common';
 import { UIButton } from '../button';
 import { UIFlexDirective } from '../flex';
 import { UITxtDirective } from '../txt';
@@ -13,12 +13,31 @@ export interface EmptyStateCallToAction {
 }
 
 export interface EmptyStateProps {
-    /** Image/icon slot (use default projection). */
-    children?: unknown;
+    /**
+     * The header of the empty state.
+     *
+     * @required
+     */
     header: string;
+    /**
+     * The body of the empty state.
+     *
+     * @type multiline
+     * @required
+     */
     body: string;
-    bodyAlign?: EmptyStateBodyAlign;
-    callToAction?: EmptyStateCallToAction;
+    /**
+     * The text alignment of the body.
+     *
+     * @default center
+     */
+    bodyAlign?: 'center' | 'left';
+    /**
+     * Optional CallToActionButton properties.
+     *
+     * @type CallToActionButton
+     */
+    callToAction?: CallToActionButton;
 }
 
 /**
@@ -26,10 +45,10 @@ export interface EmptyStateProps {
  *
  * ```html
  * <ui-empty-state
- *   header="No results"
- *   body="Try adjusting your search or filters."
- *   [callToAction]="{ label: 'Clear filters' }"
- *   (callToActionClick)="clearFilters()" />
+ *     header="No results"
+ *     body="Try adjusting your search or filters."
+ *     [callToAction]="{ label: 'Clear filters' }"
+ *     (callToActionClick)="clearFilters()" />
  * ```
  *
  * @name EmptyState
@@ -55,7 +74,7 @@ export interface EmptyStateProps {
                     [label]="cta.label"
                     [size]="cta.size || 'medium'"
                     [variant]="'primary'"
-                    (click)="callToActionClick.emit()"></ui-button>
+                    (click)="callToAction()!.onClick?.()"></ui-button>
             }
         </div>
     `,
@@ -63,11 +82,9 @@ export interface EmptyStateProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIEmptyState implements AsSignal<EmptyStateProps> {
-    @Output() callToActionClick = new EventEmitter<void>();
-
     readonly children = input<unknown>();
-    readonly header = input.required<string>();
-    readonly body = input.required<string>();
-    readonly bodyAlign = input<EmptyStateBodyAlign>('center');
-    readonly callToAction = input<EmptyStateCallToAction | undefined>();
+    readonly header = input.required<EmptyStateProps['header']>();
+    readonly body = input.required<EmptyStateProps['body']>();
+    readonly bodyAlign = input<EmptyStateProps['bodyAlign']>('center');
+    readonly callToAction = input<EmptyStateProps['callToAction']>();
 }

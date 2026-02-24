@@ -4,12 +4,7 @@ import { AsSignal } from '../../types/common';
 export interface LinkProps {
     /** The variant of the link. Controls the icon that is displayed and link target. */
     trailingIcon?: 'chevron' | 'external' | 'link';
-    /**
-     * The href of the link.
-     *
-     * @example
-     *     https://bspk.dev
-     */
+    /** The href of the link. */
     href: string | null | undefined;
     /**
      * The size of the link.

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
-import { AlertVariant, AsSignal } from '../../types/common';
+import { AlertVariant, AsSignal, CallToActionButton } from '../../types/common';
 import { UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
 
@@ -35,21 +35,6 @@ export interface BannerAlertProps {
      * @default false
      */
     elevated?: boolean;
-}
-
-export interface CallToActionButton {
-    /**
-     * The label of the call to action button.
-     *
-     * @required
-     */
-    label: string;
-    /**
-     * The callback function for the call to action button.
-     *
-     * @required
-     */
-    onClick: () => void;
 }
 
 /**
@@ -107,7 +92,7 @@ export interface CallToActionButton {
                 @if (callToAction()) {
                     <ui-button
                         [label]="callToAction()!.label"
-                        (click)="callToAction()!.onClick()"
+                        (click)="callToAction()!.onClick?.()"
                         [size]="'small'"
                         [variant]="'tertiary'" />
                 }

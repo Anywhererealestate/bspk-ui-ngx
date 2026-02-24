@@ -15,21 +15,6 @@ export interface RadioGroupProps extends FieldControlProps {
     /**
      * The options for the radios.
      *
-     * @example
-     *     [
-     *         {
-     *             value: '1',
-     *             label: 'Option 1',
-     *         },
-     *         {
-     *             value: '2',
-     *             label: 'Option 2',
-     *             description: 'Description here',
-     *         },
-     *         { value: '3', label: 'Option 3' },
-     *     ];
-     *
-     * @type Array<RadioGroupOption>
      * @required
      */
     options: RadioGroupOption[];

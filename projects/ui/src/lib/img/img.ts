@@ -3,10 +3,18 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, input } from '@a
 import { AsSignal } from '../../types/common';
 
 export interface ImgProps {
+    /**
+     * The URL of the image.
+     *
+     * @required
+     */
     src: string;
+    /**
+     * The alternative text for the image.
+     *
+     * @required
+     */
     alt: string;
-    loading?: 'eager' | 'lazy';
-    decoding?: 'async' | 'auto' | 'sync';
 }
 
 /**
@@ -24,14 +32,12 @@ export interface ImgProps {
     selector: 'ui-img',
     imports: [CommonModule],
     template: `
-        <img data-bspk="img" [src]="src()" [attr.alt]="alt()" [attr.loading]="loading()" [attr.decoding]="decoding()" />
+        <img data-bspk="img" [src]="src()" [attr.alt]="alt()" />
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
 export class UIImg implements AsSignal<ImgProps> {
-    readonly src = input.required<string>();
-    readonly alt = input.required<string>();
-    readonly loading = input<'eager' | 'lazy' | undefined>();
-    readonly decoding = input<'async' | 'auto' | 'sync' | undefined>();
+    readonly src = input.required<ImgProps['src']>();
+    readonly alt = input.required<ImgProps['alt']>();
 }
