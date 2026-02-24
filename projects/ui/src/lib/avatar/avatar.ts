@@ -34,9 +34,6 @@ export interface AvatarProps {
     /**
      * The name of the person or entity represented by the avatar. This is used for accessibility purposes.
      *
-     * @example
-     *     Andre Giant
-     *
      * @required
      */
     name: string;
@@ -57,9 +54,6 @@ export interface AvatarProps {
      *
      * By default, initials are the first letters of the first two words in the name. For a single-word name, only one
      * initial is shown. Names with three or more words, only the first two initials are used.
-     *
-     * @example
-     *     AG;
      */
     initials?: string;
     /**
@@ -74,9 +68,6 @@ export interface AvatarProps {
      * The url to the image to display in the avatar.
      *
      * When provided the image will be displayed instead of the icon or initials.
-     *
-     * @example
-     *     /avatar-01.png
      */
     image?: string;
     /**

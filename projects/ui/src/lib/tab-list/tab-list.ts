@@ -60,9 +60,6 @@ export interface TabListBaseProps<O extends TabOption = TabOption> {
     /**
      * The value of the selected tab.
      *
-     * @example
-     *     1;
-     *
      * @required
      */
     value: TabOption['value'];
