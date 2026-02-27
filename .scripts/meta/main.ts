@@ -21,10 +21,50 @@ import {
     MetaComponent,
     NavRoute,
 } from '../../projects/shared/src/types';
-import { CompodocDocumentation, Component, ComponentInput, ComponentOutput, InterfaceProp } from './types';
+import {
+    CompodocDocumentation,
+    Component,
+    ComponentInput,
+    ComponentOutput,
+    CompodocTypeAlias,
+    InterfaceProp,
+} from './types';
 import { stripCompodocMarkup } from './utils';
+// import { ColorVariant } from '../../projects/ui/src/utils/color-variants';
+
+function resolveType(type: string, typeMap: Record<string, string[]>) {
+    // Exclude<ColorVariant, 'white'>
+    const excludeMatch = type.match(/^Exclude<([A-Za-z0-9_]+),\s*'([^']+)'>$/);
+    if (excludeMatch) {
+        const baseType = excludeMatch[1];
+        const excludeValue = excludeMatch[2];
+        const values = typeMap[baseType];
+        if (Array.isArray(values)) {
+            return values.filter((v) => v !== excludeValue);
+        }
+    }
+    // If it's a known union type
+    if (typeMap[type]) {
+        return typeMap[type];
+    }
+    // fallback: return as string
+    return type;
+}
 
 const compodocData: CompodocDocumentation = JSON.parse(fs.readFileSync('.tmp/documentation.json', 'utf-8'));
+
+const compodocJson = JSON.parse(fs.readFileSync('.tmp/compodoc.json', 'utf-8'));
+const typeAliases: CompodocTypeAlias[] = compodocJson.miscellaneous?.typealiases || [];
+
+const typeMap: Record<string, string[]> = {};
+typeAliases.forEach((alias) => {
+    if (alias.rawtype && alias.rawtype.includes('|')) {
+        typeMap[alias.name] = alias.rawtype
+            .split('|')
+            .map((s) => s.trim().replace(/^'|'$/g, ''))
+            .filter(Boolean);
+    }
+});
 
 const { COMPONENT_SELECTORS, INTERFACES } = JSON.parse(fs.readFileSync('.tmp/compodoc.json', 'utf-8')) as {
     TYPEALIASES: Record<string, string[]>;
@@ -233,10 +273,13 @@ function generateComponentInputsOutputs(component: Component): {
             }
         }
 
+        // Use typeMap to resolve union/Exclude types
+        const resolvedType = resolveType(prop.type, typeMap);
+
         inputs.push({
             name: prop.name,
             description: 'description' in prop ? stripCompodocMarkup(prop.description) : undefined,
-            type: prop.type,
+            type: resolvedType,
             required: 'required' in prop ? prop.required : undefined,
             ...propMeta,
         });
