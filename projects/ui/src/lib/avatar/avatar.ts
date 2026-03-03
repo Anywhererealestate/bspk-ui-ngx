@@ -13,7 +13,7 @@ import {
     DOCUMENT,
 } from '@angular/core';
 import { AsSignal, CommonProps } from '../../types/common';
-import { ColorVariant } from '../../utils/color-variants';
+import { ColorVariants } from '../../utils/color-variants';
 import { IconPerson } from '../icons/person';
 import { TooltipUtility } from '../tooltip/tooltip';
 
@@ -48,7 +48,7 @@ export interface AvatarProps {
      *
      * @default grey
      */
-    color?: Exclude<ColorVariant, 'white'>;
+    color?: ColorVariants;
     /**
      * Customizable initials to display in the avatar limited to 2 characters.
      *

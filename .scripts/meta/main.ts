@@ -238,6 +238,7 @@ function generateComponentInputsOutputs(component: Component): {
             description: 'description' in prop ? stripCompodocMarkup(prop.description) : undefined,
             type: prop.type,
             required: 'required' in prop ? prop.required : undefined,
+            default: prop.defaultValue ?? propMeta?.defaultValue ?? propMeta?.default,
             ...propMeta,
         });
     });
@@ -314,6 +315,8 @@ function writeMetaToFile(): Meta {
             removeCodeQuotes(JSON.stringify(outputMeta, null, 4)) +
             ';',
     );
+
+    fs.writeFileSync('.tmp/meta.json', JSON.stringify(meta, null, 2));
 
     execSync(`npx prettier --write "${generatedMetaPath}"`);
 
