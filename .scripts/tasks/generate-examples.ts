@@ -1,19 +1,13 @@
 /**
- * This script generates example TypeScript files for each Angular component based on the metadata provided in
- * .tmp/meta.json. It creates a simple example template that includes all inputs and outputs of the component, allowing
- * developers to quickly see how to use the component with various props. The generated example files are saved in the
- * respective component directories under projects/ui/src/lib/{component}/example.ts.
+ * This script generates example TypeScript files for each Angular component based on the metadata provided in the
+ * meta.json file. The generated example files include a basic usage template with sample prop values and event
+ * handlers, allowing
  *
- * Note: This script assumes that the component metadata includes a 'selector' field. If not, it will generate a
- * selector based on the component name. The script also generates sample values for different prop types to provide a
- * more realistic example.\
- * Usage: Run this script after generating the meta.json file to create example files for all components. You can
- * customize the generated template and sample values as needed.
+ * $ npx tsx .scripts/tasks/generate-examples.ts [ComponentName]
  *
- * $ npx tsx .scripts/tasks/generate-examples.ts [ComponentName] example: $ npx tsx .scripts/tasks/generate-examples.ts
- * Avatar
+ * The following will generate an example.ts file for the Avatar component:
  *
- * This will generate an example.ts file for the Avatar component
+ * $ npx tsx .scripts/tasks/generate-examples.ts Avatar
  */
 
 import * as fs from 'fs';
@@ -40,6 +34,9 @@ function toKebabCase(str: string) {
 }
 
 function getSampleValue(type: string, name: string) {
+    if (name === 'image') {
+        return `./avatar-01.png`;
+    }
     if (type.includes('boolean')) return 'true';
     if (type.includes('number')) return '42';
     if (type.includes('string[]')) return "['one', 'two']";
@@ -66,9 +63,6 @@ const selector = (component.selector || `ui-${component.slug || component.name}`
 const dir = path.join(componentBaseDir, component.slug || component.name);
 const exampleFile = path.join(dir, 'example.ts');
 
-// Skip if directory doesn't exist
-// if (!fs.existsSync(dir)) return;
-
 // Skip if directory doesn't exist or example.ts already exists
 if (!fs.existsSync(dir) || fs.existsSync(exampleFile)) {
     console.log(`Skipping: ${dir} (already exists or directory missing)`);
@@ -77,19 +71,6 @@ if (!fs.existsSync(dir) || fs.existsSync(exampleFile)) {
 
 const inputs = component.inputs || [];
 const outputs = component.outputs || [];
-
-// Build prop bindings
-// const inputBindings = inputs.map((input: any) => {
-//     const prop = input.name;
-//     const value = getSampleValue(input.type, input.name);
-//     if (input.type.includes('boolean') || input.type.includes('number')) {
-//         return `[${prop}]=${value}`;
-//     }
-//     if (input.type.includes('string[]') || input.type.includes('any[]')) {
-//         return `[${prop}]=${value}`;
-//     }
-//     return `${prop}=${value}`;
-// });
 
 // Build default input bindings with string values for simplicity
 const defaultInputBindings = inputs.map((input: any) => {
@@ -113,7 +94,7 @@ const outputBindings = outputs.map((output: any) => {
     return `(${prop})="on${prop.charAt(0).toUpperCase() + prop.slice(1)}($event)"`;
 });
 
-// Build the example template
+// Build the default example template
 const defaultTemplate = `
 <${selector}
     ${[...defaultInputBindings, ...outputBindings].join('\n    ')}
@@ -122,84 +103,67 @@ const defaultTemplate = `
 </${selector}>
 `.trim();
 
+function buildBindings(inputs: any[], prop: string, value: any) {
+    return inputs
+        .map((i: any) => {
+            if (i.name === prop) {
+                if (typeof value === 'string') return `${i.name}="${value}"`;
+                return `[${i.name}]=${JSON.stringify(value)}`;
+            }
+            if (i.required === true && typeof i.type === 'string' && i.type.includes('string')) {
+                return `${i.name}=${getSampleValue(i.type, i.name)}`;
+            }
+            if (i.required === true) {
+                return `[${i.name}]=${getSampleValue(i.type, i.name)}`;
+            }
+            return '';
+        })
+        .filter(Boolean);
+}
+
 const inputExamples = inputs
     .map((input: any) => {
         const prop = input.name;
-        // If type is an array of values, generate an example for each value
+
+        // Array of values (e.g., union or enum)
         if (Array.isArray(input.type)) {
             return input.type
-                .map((val: any) => {
-                    // Build all default input bindings, but override this input with its value
-                    const bindings = inputs
-                        .map((i: any) => {
-                            if (i.name === prop) {
-                                // Use the current value from the array
-                                if (typeof val === 'string') {
-                                    return `${i.name}="${val}"`;
-                                }
-                                if (typeof val === 'boolean' || typeof val === 'number') {
-                                    return `[${i.name}]=${val}`;
-                                }
-                                return `[${i.name}]=${JSON.stringify(val)}`;
-                            }
-                            // For other props, use required default or skip
-                            if (i.required === true && typeof i.type === 'string' && i.type.includes('string')) {
-                                return `${i.name}=${getSampleValue(i.type, i.name)}`;
-                            }
-                            if (i.required === true) {
-                                return `[${i.name}]=${getSampleValue(i.type, i.name)}`;
-                            }
-                            return '';
-                        })
-                        .filter(Boolean);
-
-                    return `
+                .map((val: any) =>
+                    `
 <h4>${prop}: ${val}</h4>
 <${selector}
-    ${[...bindings, ...outputBindings].join('\n    ')}
+    ${[...buildBindings(inputs, prop, val), ...outputBindings].join('\n    ')}
 >
     Example Content
-</${selector}>
-`.trim();
-                })
+</${selector}>`.trim(),
+                )
                 .join('\n\n');
         }
 
-        // Otherwise, generate a single example as before
-        const value = getSampleValue(input.type, prop);
-        const bindings = inputs
-            .map((i: any) => {
-                if (i.name === prop) {
-                    if (
-                        typeof i.type === 'string' &&
-                        (i.type.includes('boolean') ||
-                            i.type.includes('number') ||
-                            i.type.includes('string[]') ||
-                            i.type.includes('any[]'))
-                    ) {
-                        return `[${i.name}]=${getSampleValue(i.type, i.name)}`;
-                    }
-                    return `${i.name}=${getSampleValue(i.type, i.name)}`;
-                }
-                // For other props, use required default or skip
-                if (i.required === true && typeof i.type === 'string' && i.type.includes('string')) {
-                    return `${i.name}=${getSampleValue(i.type, i.name)}`;
-                }
-                if (i.required === true) {
-                    return `[${i.name}]=${getSampleValue(i.type, i.name)}`;
-                }
-                return '';
-            })
-            .filter(Boolean);
+        // Boolean: true and false examples
+        if (typeof input.type === 'string' && input.type.includes('boolean')) {
+            return [true, false]
+                .map((val) =>
+                    `
+<h4>${prop}: ${val}</h4>
+<${selector}
+    ${[...buildBindings(inputs, prop, val), ...outputBindings].join('\n    ')}
+>
+    Example Content
+</${selector}>`.trim(),
+                )
+                .join('\n\n');
+        }
 
+        // Default: single example
+        const value = getSampleValue(input.type, prop);
         return `
 <h4>${prop}</h4>
 <${selector}
-    ${[...bindings, ...outputBindings].join('\n    ')}
+    ${[...buildBindings(inputs, prop, value), ...outputBindings].join('\n    ')}
 >
     Example Content
-</${selector}>
-`.trim();
+</${selector}>`.trim();
     })
     .join('\n\n');
 
@@ -248,15 +212,16 @@ export class ${className}Example {
 fs.writeFileSync(exampleFile, exampleTs, 'utf-8');
 console.log(`Generated: ${exampleFile}`);
 
-// try {
-//     execSync(`npx eslint --fix "${exampleFile}"`, { stdio: 'inherit' });
-//     console.log(`Linted: ${exampleFile}`);
-// } catch (e) {
-//     console.warn(`Lint failed for ${exampleFile}`);
-// }
 try {
     execSync(`npx prettier --write "${exampleFile}"`, { stdio: 'inherit' });
     console.log(`Formatted: ${exampleFile}`);
 } catch (e) {
     console.warn(`Prettier failed for ${exampleFile}`);
+}
+
+try {
+    execSync(`npx eslint --fix "${exampleFile}"`, { stdio: 'inherit' });
+    console.log(`Linted: ${exampleFile}`);
+} catch (e) {
+    console.warn(`Lint failed for ${exampleFile}`);
 }
