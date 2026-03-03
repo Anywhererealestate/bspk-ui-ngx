@@ -238,6 +238,7 @@ function generateComponentInputsOutputs(component: Component): {
             description: 'description' in prop ? stripCompodocMarkup(prop.description) : undefined,
             type: prop.type,
             required: 'required' in prop ? prop.required : undefined,
+            default: prop.defaultValue ?? propMeta?.defaultValue ?? propMeta?.default,
             ...propMeta,
         });
     });
