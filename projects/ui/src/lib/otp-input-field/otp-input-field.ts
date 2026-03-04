@@ -31,7 +31,7 @@ export interface OTPInputFieldProps {
  *     name="otp-input-field-name"
  *     label="Verification code"
  *     [length]="6"
- *     (change)="onCode($event)" />
+ *     (onChange)="onCode($event)" />
  * ```
  *
  * ```typescript
@@ -70,14 +70,14 @@ export interface OTPInputFieldProps {
                 [ariaLabel]="ariaLabel()"
                 [ariaDescribedBy]="describedById"
                 [ariaErrorMessage]="errorMessageId"
-                (change)="change.emit($event)"></ui-otp-input>
+                (onChange)="onChange.emit($event)"></ui-otp-input>
         </ui-field>
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
 export class UIOTPInputField implements AsSignal<OTPInputFieldProps> {
-    @Output() change = new EventEmitter<string>();
+    @Output() onChange = new EventEmitter<string>();
 
     readonly label = input.required<OTPInputFieldProps['label']>();
     readonly helperText = input<OTPInputFieldProps['helperText']>();

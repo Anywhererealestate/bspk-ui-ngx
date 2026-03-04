@@ -38,7 +38,7 @@ function getSampleValue(type: string, name: string) {
         return `./avatar-01.png`;
     }
     if (type.includes('boolean')) return 'true';
-    if (type.includes('number')) return '42';
+    if (type.includes('number')) return 12;
     if (type.includes('string[]')) return "['one', 'two']";
     if (type.includes('string')) return `example-${name}`;
     if (type.includes('object') || type.includes('Record')) return '{}';
@@ -90,6 +90,10 @@ const outputBindings = outputs.map((output: any) => {
     if (prop === 'onClick') {
         // Use handleClick for onClick
         return `(${prop})="handleClick('${component.className}')"`;
+    }
+    if (prop === 'onChange') {
+        // Use handleChange for onChange
+        return `(${prop})="handleChange($event)"`;
     }
     return `(${prop})="on${prop.charAt(0).toUpperCase() + prop.slice(1)}($event)"`;
 });
@@ -174,11 +178,14 @@ const inputExamples = inputs
     })
     .join('\n\n');
 
+// Check if any output is named 'onClick'
+const hasOnClick = outputs.some((item: any) => item.name === 'onClick');
+
 // Check if any output is named 'onChange'
-const hasOnChange = outputs.some((item: any) => item.name === 'onClick');
+const hasOnChange = outputs.some((item: any) => item.name === 'onChange');
 
 let importBlock = `import { Component } from '@angular/core';\nimport { ${component.className} } from '../${component.slug || component.name}';`;
-if (hasOnChange) {
+if (hasOnClick || hasOnChange) {
     importBlock += `\nimport { sendSnackbar } from '../../utils/send-snackbar';`;
 }
 
@@ -198,7 +205,7 @@ ${inputExamples}
 })
 export class ${className}Example {
     ${
-        hasOnChange
+        hasOnClick
             ? `
     protected handleClick(name: string): void {
         sendSnackbar(\`\${name} clicked!\`);
@@ -206,11 +213,21 @@ export class ${className}Example {
     `
             : ''
     }
+    ${
+        hasOnChange
+            ? `
+
+             protected handleChange(code: string): void {
+        sendSnackbar('change event: ' + code);
+    }
+    `
+            : ''
+    }
     ${outputs
-        .filter((output: any) => output.name !== 'onClick')
+        .filter((output: any) => output.name !== 'onClick' && output.name !== 'onChange')
         .map(
             (output: any) =>
-                `on${output.name.charAt(0).toUpperCase() + output.name.slice(1)}(event: any) { console.log('${output.name} event:', event); }`,
+                `on${output.name.charAt(0).toUpperCase() + output.name.slice(1)}(event: any) { sendSnackbar('${output.name} event: ' + JSON.stringify(event)); }`,
         )
         .join('\n    ')}
 }
