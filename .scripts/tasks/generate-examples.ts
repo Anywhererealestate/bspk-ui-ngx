@@ -107,6 +107,13 @@ function buildBindings(inputs: any[], prop: string, value: any) {
     return inputs
         .map((i: any) => {
             if (i.name === prop) {
+                // If value is a number, or type is a union of numbers, use property binding
+                if (
+                    typeof value === 'number' ||
+                    (Array.isArray(i.type) && i.type.every((v: any) => !isNaN(Number(v))))
+                ) {
+                    return `[${i.name}]=${value}`;
+                }
                 if (typeof value === 'string') return `${i.name}="${value}"`;
                 return `[${i.name}]=${JSON.stringify(value)}`;
             }
