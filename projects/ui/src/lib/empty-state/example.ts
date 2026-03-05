@@ -21,41 +21,41 @@ import { UIEmptyState } from '../empty-state';
         <h4>bodyAlign: left</h4>
         <ui-empty-state body="example-body" bodyAlign="left" header="example-header"> Example Content </ui-empty-state>
 
-        <h4>callToAction: &#123; label: 'Button', onClick: handleClick.bind(this, 'Button') &#125;</h4>
+        <h4>callToAction: &#123; label: 'Button', onClick: handleClick.bind(this, 'Basic') &#125;</h4>
         <ui-empty-state
             body="example-body"
-            [callToAction]="{ label: 'Button', onClick: handleClick.bind(this, 'Button') }"
+            [callToAction]="{ label: 'Button', onClick: handleClick.bind(this, 'Basic') }"
             header="example-header">
             Example Content
         </ui-empty-state>
 
         <h4>
-            callToAction: &#123; label: 'Small Button', onClick: handleClick.bind(this, 'Button'), size: 'small' &#125;
+            callToAction: &#123; label: 'Small Button', onClick: handleClick.bind(this, 'Small'), size: 'small' &#125;
         </h4>
         <ui-empty-state
             body="example-body"
-            [callToAction]="{ label: 'Small Button', onClick: handleClick.bind(this, 'Button'), size: 'small' }"
+            [callToAction]="{ label: 'Small Button', onClick: handleClick.bind(this, 'Small'), size: 'small' }"
             header="example-header">
             Example Content
         </ui-empty-state>
 
         <h4>
-            callToAction: &#123; label: 'Medium Button', onClick: handleClick.bind(this, 'Button'), size: 'medium'
+            callToAction: &#123; label: 'Medium Button', onClick: handleClick.bind(this, 'Medium'), size: 'medium'
             &#125;
         </h4>
         <ui-empty-state
             body="example-body"
-            [callToAction]="{ label: 'Medium Button', onClick: handleClick.bind(this, 'Button'), size: 'medium' }"
+            [callToAction]="{ label: 'Medium Button', onClick: handleClick.bind(this, 'Medium'), size: 'medium' }"
             header="example-header">
             Example Content
         </ui-empty-state>
 
         <h4>
-            callToAction: &#123; label: 'Large Button', onClick: handleClick.bind(this, 'Button'), size: 'large' &#125;
+            callToAction: &#123; label: 'Large Button', onClick: handleClick.bind(this, 'Large'), size: 'large' &#125;
         </h4>
         <ui-empty-state
             body="example-body"
-            [callToAction]="{ label: 'Large Button', onClick: handleClick.bind(this, 'Button'), size: 'large' }"
+            [callToAction]="{ label: 'Large Button', onClick: handleClick.bind(this, 'Large'), size: 'large' }"
             header="example-header">
             Example Content
         </ui-empty-state>
