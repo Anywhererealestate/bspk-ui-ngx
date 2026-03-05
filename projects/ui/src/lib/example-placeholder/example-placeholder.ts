@@ -3,24 +3,17 @@ import { ChangeDetectionStrategy, Component, ViewEncapsulation, computed, input 
 import { AsSignal } from '../../types/common';
 import { UITxtDirective } from '../txt';
 
-export type ExamplePlaceholderDim = number | string;
-
 export interface ExamplePlaceholderProps {
-    width?: ExamplePlaceholderDim;
-    height?: ExamplePlaceholderDim;
+    width?: string;
+    height?: string;
     label?: string;
-}
-
-/** Inline equivalent of React `dimension()` helper. */
-function dimension(value: ExamplePlaceholderDim): string {
-    return typeof value === 'number' ? `${value}px` : value;
 }
 
 /**
  * A placeholder box used in examples to show dimensions or loading layout.
  *
  * ```html
- * <ui-example-placeholder [width]="320" [height]="200" label="320 × 200" />
+ * <ui-example-placeholder width="200px" height="200px" label="200px × 200px" />
  * ```
  *
  * @name ExamplePlaceholder
@@ -63,20 +56,20 @@ function dimension(value: ExamplePlaceholderDim): string {
 })
 export class UIExamplePlaceholder implements AsSignal<ExamplePlaceholderProps> {
     readonly width = input<ExamplePlaceholderProps['width']>('100%');
-    readonly height = input<ExamplePlaceholderProps['height']>(100);
+    readonly height = input<ExamplePlaceholderProps['height']>('100px');
     readonly label = input<ExamplePlaceholderProps['label']>();
 
-    readonly widthCss = computed(() => dimension(this.width() ?? '100%'));
-    readonly heightCss = computed(() => dimension(this.height() ?? 100));
+    readonly widthCss = computed(() => this.width() ?? '100%');
+    readonly heightCss = computed(() => this.height() ?? '100px');
 
     /** Angular doesn't give a cheap "has ng-content" flag; treat empty label + default slot as dims. */
     readonly hasProjectedContent = false;
 
     get widthLabel(): string {
-        return dimension(this.width() ?? '100%');
+        return this.width() ?? '100%';
     }
 
     get heightLabel(): string {
-        return dimension(this.height() ?? 100);
+        return this.height() ?? '100px';
     }
 }

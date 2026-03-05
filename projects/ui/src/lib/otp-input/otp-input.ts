@@ -36,7 +36,7 @@ export interface OTPInputProps {
  * A one-time code input that splits the value into individual digit fields.
  *
  * ```html
- * <ui-otp-input name="otp-input-name" [length]="6" [defaultValue]="''" (change)="onCodeComplete($event)" />
+ * <ui-otp-input name="otp-input-name" [length]="6" [defaultValue]="''" (onChange)="onCodeComplete($event)" />
  * ```
  *
  * ```typescript
@@ -114,7 +114,7 @@ export interface OTPInputProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIOTPInput implements AsSignal<OTPInputProps> {
-    change = output<string>();
+    onChange = output<string>();
 
     readonly id = input<OTPInputProps['id']>(uniqueId('otp-input'));
     readonly name = input.required<OTPInputProps['name']>();
@@ -238,7 +238,7 @@ export class UIOTPInput implements AsSignal<OTPInputProps> {
     private setValues(next: string[]) {
         this._values.set(next);
         const joined = next.join('').trim();
-        if (joined.length === this.length()) this.change.emit(joined);
+        this.onChange.emit(joined); // emit on every change
     }
 
     private focusIndex(index: number) {
