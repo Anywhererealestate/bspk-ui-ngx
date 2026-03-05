@@ -184,8 +184,11 @@ const hasOnClick = outputs.some((item: any) => item.name === 'onClick');
 // Check if any output is named 'onChange'
 const hasOnChange = outputs.some((item: any) => item.name === 'onChange');
 
+// Check if any output is named 'valueChange'
+const hasValueChange = outputs.some((item: any) => item.name === 'valueChange');
+
 let importBlock = `import { Component } from '@angular/core';\nimport { ${component.className} } from '../${component.slug || component.name}';`;
-if (hasOnClick || hasOnChange) {
+if (hasOnClick || hasOnChange || hasValueChange) {
     importBlock += `\nimport { sendSnackbar } from '../../utils/send-snackbar';`;
 }
 
