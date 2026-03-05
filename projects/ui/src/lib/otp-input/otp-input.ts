@@ -235,12 +235,6 @@ export class UIOTPInput implements AsSignal<OTPInputProps> {
         return false;
     }
 
-    // private setValues(next: string[]) {
-    //     this._values.set(next);
-    //     const joined = next.join('').trim();
-    //     if (joined.length === this.length()) this.onChange.emit(joined);
-    // }
-
     private setValues(next: string[]) {
         this._values.set(next);
         const joined = next.join('').trim();
