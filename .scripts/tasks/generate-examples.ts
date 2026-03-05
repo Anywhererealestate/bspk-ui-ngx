@@ -169,7 +169,7 @@ const inputExamples = inputs
         // Default: single example
         const value = getSampleValue(input.type, prop);
         return `
-<h4>${prop}</h4>
+<h4>${prop}: ${value}</h4>
 <${selector}
     ${[...buildBindings(inputs, prop, value), ...outputBindings].join('\n    ')}
 >
