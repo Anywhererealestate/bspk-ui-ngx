@@ -10,11 +10,10 @@ export type EmptyStateBodyAlign = 'center' | 'left';
 export interface EmptyStateCallToAction {
     label: string;
     size?: 'large' | 'medium' | 'small';
+    onClick?: () => void;
 }
 
 export interface EmptyStateProps {
-    /** Projected content (e.g. ng-content). */
-    children?: unknown;
     /**
      * The header of the empty state.
      *
@@ -90,7 +89,6 @@ export interface EmptyStateProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIEmptyState implements AsSignal<EmptyStateProps> {
-    readonly children = input<EmptyStateProps['children']>();
     readonly header = input.required<EmptyStateProps['header']>();
     readonly body = input.required<EmptyStateProps['body']>();
     readonly bodyAlign = input<EmptyStateProps['bodyAlign']>('center');
