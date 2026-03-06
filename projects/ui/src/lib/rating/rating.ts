@@ -34,8 +34,10 @@ function getFill(num: number, value?: number): 'full' | 'half' | undefined {
  * Descriptive and interactive controls that allow customers to indicate their feelings about an experience or product.
  *
  * ```html
- * <ui-rating [(value)]="value" size="medium" />
- * <ui-rating [value]="4.5" />
+ * <div style="display: flex; flex-direction: column; gap: 16px; align-items: center">
+ *     <ui-rating [(value)]="value" size="medium" />
+ *     <ui-rating [value]="4.5" />
+ * </div>
  * ```
  *
  * @name Rating
