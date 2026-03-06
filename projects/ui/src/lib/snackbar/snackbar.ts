@@ -1,9 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation, input, output, effect, ElementRef, viewChild, model } from '@angular/core';
 import { UITooltipDirective } from '@ui/tooltip';
+import { BspkIcon } from '../../types/bspk-icon';
 import { AsSignal, CommonProps } from '../../types/common';
 import { uniqueId } from '../../utils/random';
 import { UIButton } from '../button';
 import { UIFocusTrapDirective } from '../focus-trap';
+import { UIIcon } from '../icon';
 import { UIPortalDirective } from '../portal';
 
 export interface SnackbarProps {
@@ -31,7 +34,7 @@ export interface SnackbarProps {
      */
     closeButtonLabel?: string;
     /** Optional icon content (use snackbar-icon slot for projection). */
-    icon?: unknown;
+    icon?: BspkIcon;
     /**
      * Callback when the snackbar is dismissed. In Angular, subscribe to the (close) output.
      *
@@ -65,7 +68,7 @@ export interface SnackbarProps {
 @Component({
     selector: 'ui-snackbar',
     standalone: true,
-    imports: [UIPortalDirective, UIFocusTrapDirective, UIButton, UITooltipDirective],
+    imports: [CommonModule, UIPortalDirective, UIFocusTrapDirective, UIButton, UIIcon, UITooltipDirective],
     template: `
         @if (open()) {
             <div
@@ -79,6 +82,7 @@ export interface SnackbarProps {
                         <div data-snackbar-icon-text>
                             @if (iconSlot()) {
                                 <span aria-hidden="true" data-snackbar-icon>
+                                    <ui-icon [icon]="icon()!"></ui-icon>
                                     <ng-content select="[snackbar-icon]"></ng-content>
                                 </span>
                             }
@@ -86,7 +90,7 @@ export interface SnackbarProps {
                         </div>
                         @if (closeButton()) {
                             <ui-button
-                                [label]="closeButtonLabel() ?? 'Dismiss'"
+                                [label]="closeButtonLabel() || 'Dismiss'"
                                 variant="tertiary"
                                 (click)="open.set(false); onClose.emit()">
                             </ui-button>
@@ -98,6 +102,9 @@ export interface SnackbarProps {
     `,
     styleUrl: './snackbar.scss',
     encapsulation: ViewEncapsulation.None,
+    host: {
+        style: 'display: contents;',
+    },
 })
 export class UISnackbar implements AsSignal<SnackbarProps> {
     readonly onClose = output<void>();
@@ -136,8 +143,7 @@ export class UISnackbar implements AsSignal<SnackbarProps> {
         });
     }
 
-    /** Whether icon slot has content (simplified: we don't detect projection). */
     iconSlot(): boolean {
-        return false;
+        return !!this.icon();
     }
 }
