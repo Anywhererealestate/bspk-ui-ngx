@@ -15,13 +15,13 @@ export interface SkeletonProps {
      *
      * @default 200
      */
-    width?: number | string;
+    width?: number;
     /**
      * The height of the skeleton. Ignored when variant is 'profile' or 'thumbnail'.
      *
      * @default 100
      */
-    height?: number | string;
+    height?: number;
     /**
      * When true, show projected content instead of the skeleton.
      *
