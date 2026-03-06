@@ -34,11 +34,13 @@ export interface ButtonDockProps {
  * A dock that renders two buttons with enforced size medium and primary/secondary variants.
  *
  * ```html
- * <ui-button-dock
- *     [primaryButton]="{ label: 'Submit' }"
- *     [secondaryButton]="{ label: 'Cancel' }"
- *     (primaryClick)="onSubmit()"
- *     (secondaryClick)="onCancel()" />
+ * <div style="width: 100%">
+ *     <ui-button-dock
+ *         [primaryButton]="{ label: 'Submit' }"
+ *         [secondaryButton]="{ label: 'Cancel' }"
+ *         (primaryClick)="onSubmit()"
+ *         (secondaryClick)="onCancel()" />
+ * </div>
  * ```
  *
  * ```typescript
