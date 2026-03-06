@@ -102,9 +102,6 @@ export interface SnackbarProps {
     `,
     styleUrl: './snackbar.scss',
     encapsulation: ViewEncapsulation.None,
-    // host: {
-    //     style: 'display: contents;',
-    // },
 })
 export class UISnackbar implements AsSignal<SnackbarProps> {
     readonly onClose = output<void>();
