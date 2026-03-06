@@ -38,10 +38,12 @@ function toCssSize(value: number | string): string {
  * A visual placeholder for an element while it is in a loading state.
  *
  * ```html
- * <ui-skeleton variant="rectangular" [width]="200" [height]="100" />
- * <ui-skeleton variant="circular" [width]="40" [(loaded)]="loaded">
- *     <img src="avatar.jpg" alt="User" />
- * </ui-skeleton>
+ * <div style="display: flex; flex-direction: column; gap: 16px; align-items: center">
+ *     <ui-skeleton variant="rectangular" [width]="200" [height]="100" />
+ *     <ui-skeleton variant="circular" [width]="40" [(loaded)]="loaded">
+ *         <img src="avatar.jpg" alt="User" />
+ *     </ui-skeleton>
+ * </div>
  * ```
  *
  * @name Skeleton
