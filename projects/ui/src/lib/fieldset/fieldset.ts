@@ -18,7 +18,13 @@ export interface FieldsetProps {
  *
  * ```html
  * <ui-fieldset label="Email" [required]="true" helperText="We'll never share your email.">
- *     <input type="email" />
+ *     <input
+ *         type="email"
+ *         id="email"
+ *         name="email"
+ *         [attr.aria-labelledby]="null"
+ *         [attr.aria-label]="'Email'"
+ *         placeholder="Enter your email" />
  * </ui-fieldset>
  * ```
  *
