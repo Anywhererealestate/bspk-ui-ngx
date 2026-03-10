@@ -34,16 +34,12 @@ import { UIProgressBar } from '../progress-bar';
         <h4>successColor: false</h4>
         <ui-progress-bar [completion]="100" label="example-label" [successColor]="false" />
 
-        <h4>successHidden: true; completion: 100</h4>
+        <h4>successHidden: true;</h4>
         <p>when successHidden is true, the progress bar will be hidden when completion is 100</p>
         <div style="margin-bottom: 16px">
             <ui-button (click)="startProgress()" label="start progress" />
         </div>
         <ui-progress-bar [completion]="animatedCompletion" label="example-label" [successHidden]="true" />
-
-        <h4>successHidden: true; completion: 99</h4>
-        <p>when successHidden is true, the progress bar will be visible when completion less than 100</p>
-        <ui-progress-bar [completion]="99" label="example-label" [successHidden]="true" />
 
         <h4>successHidden: false; completion: 100</h4>
         <ui-progress-bar [completion]="100" label="example-label" [successHidden]="false" />
