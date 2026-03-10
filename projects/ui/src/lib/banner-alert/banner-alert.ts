@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, ViewEncapsulation, input } from '@angular/core';
-import { AlertVariant, AsSignal } from '../../types/common';
+import { AlertVariant, AsSignal, CallToActionButton } from '../../types/common';
 import { UIButton } from '../button';
 import { IconCheckCircleFill, IconClose, IconErrorFill, IconInfoFill, IconWarningFill } from '../icons';
 
@@ -37,27 +37,26 @@ export interface BannerAlertProps {
     elevated?: boolean;
 }
 
-export interface CallToActionButton {
-    /**
-     * The label of the call to action button.
-     *
-     * @required
-     */
-    label: string;
-    /**
-     * The callback function for the call to action button.
-     *
-     * @required
-     */
-    onClick: () => void;
-}
-
 /**
  * A visual and contextual message used to communicate an important message or notification to users relating to a
  * status or the body content of a page.
  *
+ * ```html
+ * <ui-banner-alert
+ *     variant="error"
+ *     header="Error Banner Alert"
+ *     body="This is an error banner alert. Please take action to resolve the issue."
+ *     [callToAction]="callToAction"
+ *     [elevated]="true"
+ *     (onClose)="sendSnackbar('Banner alert closed!')" />
+ * ```
+ *
+ * ```typescript
+ * callToAction = { label: 'Take Action', onClick: () => sendSnackbar('Action taken!') };
+ * ```
+ *
  * @name BannerAlert
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-banner-alert',
@@ -93,7 +92,7 @@ export interface CallToActionButton {
                 @if (callToAction()) {
                     <ui-button
                         [label]="callToAction()!.label"
-                        (click)="callToAction()!.onClick()"
+                        (click)="callToAction()!.onClick?.()"
                         [size]="'small'"
                         [variant]="'tertiary'" />
                 }

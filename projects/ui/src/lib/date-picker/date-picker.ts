@@ -32,11 +32,9 @@ export interface DatePickerProps extends FieldControlProps {
      *
      * @default true
      */
-    closeCalendarOnChange?: boolean;
+    closeOnChange?: boolean;
     /**
-     * The currently selected date
-     *
-     * String formatted as 'MM/dd/yyyy'.
+     * The currently selected date formatted as 'MM/dd/yyyy'.
      *
      * @type string
      */
@@ -59,11 +57,9 @@ export interface DatePickerProps extends FieldControlProps {
  * An input that allows a customer to manually type in a specific date or triggers a the Calendar component to select a
  * date.
  *
- * @example
- *     <ui-date-picker
- *     [value]="selectedDate"
- *     (valueChange)="handleDateChange($event)"
- *     ></ui-date-picker>
+ * ```html
+ * <ui-date-picker name="date-picker-name" [(value)]="selectedDate" />
+ * ```
  *
  * @name DatePicker
  * @phase Dev
@@ -140,8 +136,8 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
     readonly value = model<DatePickerProps['value']>(undefined);
     readonly disabled = input<DatePickerProps['disabled']>();
     readonly readOnly = input<DatePickerProps['readOnly']>();
-    readonly closeCalendarOnChange = input<DatePickerProps['closeCalendarOnChange']>(true);
-    readonly name = input<DatePickerProps['name']>('DatePickerInput');
+    readonly closeOnChange = input<DatePickerProps['closeOnChange']>(true);
+    readonly name = input.required<DatePickerProps['name']>();
     readonly placeholder = input<DatePickerProps['placeholder']>('mm/dd/yyyy');
     readonly invalid = input<DatePickerProps['invalid']>(false);
     readonly required = input<DatePickerProps['required']>(false);
@@ -228,7 +224,7 @@ export class UIDatePicker implements OnInit, OnChanges, AsSignal<DatePickerProps
         const formatted = format(date, 'MM/dd/yyyy');
         this.internalValue.set(formatted);
         this.activeDate.set(date);
-        if (this.closeCalendarOnChange()) {
+        if (this.closeOnChange()) {
             this.calendarVisible.set(false);
         }
         this.value.set(formatted);

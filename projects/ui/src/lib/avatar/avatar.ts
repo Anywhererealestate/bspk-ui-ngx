@@ -13,7 +13,7 @@ import {
     DOCUMENT,
 } from '@angular/core';
 import { AsSignal, CommonProps } from '../../types/common';
-import { ColorVariant } from '../../utils/color-variants';
+import { ColorVariants } from '../../utils/color-variants';
 import { IconPerson } from '../icons/person';
 import { TooltipUtility } from '../tooltip/tooltip';
 
@@ -34,9 +34,6 @@ export interface AvatarProps {
     /**
      * The name of the person or entity represented by the avatar. This is used for accessibility purposes.
      *
-     * @example
-     *     Andre Giant
-     *
      * @required
      */
     name: string;
@@ -51,15 +48,12 @@ export interface AvatarProps {
      *
      * @default grey
      */
-    color?: Exclude<ColorVariant, 'white'>;
+    color?: ColorVariants;
     /**
      * Customizable initials to display in the avatar limited to 2 characters.
      *
      * By default, initials are the first letters of the first two words in the name. For a single-word name, only one
      * initial is shown. Names with three or more words, only the first two initials are used.
-     *
-     * @example
-     *     AG;
      */
     initials?: string;
     /**
@@ -74,9 +68,6 @@ export interface AvatarProps {
      * The url to the image to display in the avatar.
      *
      * When provided the image will be displayed instead of the icon or initials.
-     *
-     * @example
-     *     /avatar-01.png
      */
     image?: string;
     /**
@@ -90,18 +81,18 @@ export interface AvatarProps {
 /**
  * An avatar is a visual representation of a user or entity. It can be used to display an initials, icon, or image.
  *
- * @example
- *     <ui-avatar
+ * ```html
+ * <ui-avatar
  *     [color]="'blue'"
  *     [image]="'/avatar-01.png'"
  *     [initials]="'AR'"
  *     [name]="'Andre Giant'"
  *     [size]="'large'"
  *     [disabled]="false"
- *     (onClick)="action('Launch avatar popover')"
+ *     (onClick)="sendSnackbar('Launch avatar popover')"
  *     [showIcon]="false"
- *     [hideTooltip]="true"
- *     />;
+ *     [hideTooltip]="true" />
+ * ```
  *
  * @exampleDescription The image if provided is displayed first, followed by the icon if provided, and finally the initials. If no initials are provided, the first two letters of the name will be used as initials.
  *

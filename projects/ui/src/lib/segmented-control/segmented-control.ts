@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { AsSignal } from '../../types/common';
-import { TabOption, UITabList, UITabListUtility, TabListProps } from '../tab-list/tab-list';
+import { TabOption, UITabList, UITabListUtility, TabListProps } from '../tab-list';
 
 export interface SegmentedControlOption {
     label: TabOption['label'];
@@ -15,18 +15,17 @@ export interface SegmentedControlProps extends TabListProps<SegmentedControlOpti
 /**
  * Navigation tool that organizes content across different screens and views.
  *
- * @example
- *     <!-- Angular example -->
- *     <ui-segmented-control
+ * ```html
+ * <ui-segmented-control
  *     [label]="'Example Segments'"
  *     [options]="[
  *     { value: '1', label: 'Option 1' },
  *     { value: '2', label: 'Option 2' },
  *     { value: '3', label: 'Option 3' },
  *     ]"
- *     [value]="selected"
- *     (valueChange)="selected = $event">
- *     </ui-segmented-control>
+ *     [(value)]="selectedOption">
+ * </ui-segmented-control>
+ * ```
  *
  * @name SegmentedControl
  * @phase Dev

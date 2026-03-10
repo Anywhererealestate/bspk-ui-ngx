@@ -4,17 +4,17 @@ import { spyOn } from 'jest-mock';
 import { UITabListExample } from './example';
 
 describe('TabList', () => {
-    let component:  UITabListExample;
-    let fixture: ComponentFixture< UITabListExample>;
+    let component: UITabListExample;
+    let fixture: ComponentFixture<UITabListExample>;
     let errorSpy: any;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [ UITabListExample],
+            imports: [UITabListExample],
         }).compileComponents();
 
         errorSpy = spyOn(console, 'error');
-        fixture = TestBed.createComponent( UITabListExample);
+        fixture = TestBed.createComponent(UITabListExample);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

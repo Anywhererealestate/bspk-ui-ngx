@@ -29,14 +29,6 @@ export interface CheckboxGroupProps extends FieldControlProps {
     /**
      * The options for the checkboxes.
      *
-     * @example
-     *     [
-     *         { label: 'Option 1', value: 'option1' },
-     *         { label: 'Option 2', value: 'option2' },
-     *         { label: 'Option 3', value: 'option3' },
-     *     ];
-     *
-     * @type Array<CheckboxGroupOption>
      * @required
      */
     options: CheckboxGroupOption[];
@@ -59,10 +51,21 @@ export interface CheckboxGroupProps extends FieldControlProps {
 /**
  * A group of checkboxes that allows users to choose one or more items from a list or turn an feature on or off.
  *
- * For a more complete example with field usage, see the CheckboxGroupField component.
+ * ```html
+ * <ui-checkbox-group name="checkbox-group-name" [options]="options" [(value)]="selected" />
+ * ```
+ *
+ * ```typescript
+ * options = [
+ *     { label: 'Option 1', value: 'option1' },
+ *     { label: 'Option 2', value: 'option2' },
+ *     { label: 'Option 3', value: 'option3' },
+ * ];
+ * selected: string[] = [];
+ * ```
  *
  * @name CheckboxGroup
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-checkbox-group',

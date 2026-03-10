@@ -1,13 +1,18 @@
 import { Directive, ElementRef, OnDestroy, AfterViewInit, Renderer2, inject } from '@angular/core';
+import { AsSignal } from '../../types/common';
+
+/** No configurable props; directive uses host element only. */
+export interface MatchParentHeightProps {}
 
 /**
  * Sets the host element's height to match its parent element's clientHeight. Updates on window resize and orientation
  * changes.
  *
- * @example
- *     <div style="height: 400px">
- *     <div ui-match-parent-height>Content fits parent height</div>
- *     </div>
+ * ```html
+ * <div style="height: 400px; background: rgba(255, 0, 0, 0.25); padding: 0 16px">
+ *     <div ui-match-parent-height style="background: rgba(0, 0, 255, 0.25)">Content fits parent height</div>
+ * </div>
+ * ```
  *
  * @name MatchParentHeight
  * @phase Utility
@@ -16,7 +21,7 @@ import { Directive, ElementRef, OnDestroy, AfterViewInit, Renderer2, inject } fr
     selector: '[ui-match-parent-height]',
     standalone: true,
 })
-export class UIMatchParentHeightDirective implements AfterViewInit, OnDestroy {
+export class UIMatchParentHeightDirective implements AfterViewInit, OnDestroy, AsSignal<MatchParentHeightProps> {
     el = inject<ElementRef<HTMLElement>>(ElementRef);
     renderer = inject(Renderer2);
 

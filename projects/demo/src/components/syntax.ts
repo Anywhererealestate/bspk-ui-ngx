@@ -2,7 +2,7 @@ import { Component, ElementRef, input, model, signal, ViewEncapsulation, AfterVi
 import { PrettyParser } from '@shared/types';
 import hljs from 'highlight.js';
 import { pretty } from '../../../shared/src/utils/pretty';
-import { UIFab } from '../../../ui/src';
+import { UICard, UIFab } from '../../../ui/src';
 
 /**
  * A component for displaying syntax-highlighted code snippets, with optional pretty-printing and a copy-to-clipboard
@@ -10,21 +10,24 @@ import { UIFab } from '../../../ui/src';
  */
 @Component({
     selector: 'app-syntax',
-    imports: [UIFab],
+    imports: [UIFab, UICard],
     template: `
-        <ui-fab
-            data-copy-code
-            [label]="copyLabel()"
-            (onClick)="copyCode()"
-            placement="top-right"
-            size="medium"
-            style="margin-top: -10px; margin-right: -10px"
-            variant="neutral" />
-        <pre><code [attr.class]="'language-' + language()">{{source()}}</code></pre>
+        <ui-card variant="outlined">
+            @if (!hideCopy()) {
+                <ui-fab
+                    data-copy-code
+                    [label]="copyLabel()"
+                    (onClick)="copyCode()"
+                    placement="top-right"
+                    size="medium"
+                    style="margin-top: -10px; margin-right: -10px"
+                    variant="neutral" />
+            }
+            <pre><code [attr.class]="'language-' + language()">{{source()}}</code></pre>
+        </ui-card>
     `,
     host: {
-        'data-syntax': '',
-        '[attr.style]': "this.propStyle() || ''",
+        '[attr.data-syntax]': 'true',
     },
     standalone: true,
     encapsulation: ViewEncapsulation.None,
@@ -34,8 +37,9 @@ export class Syntax implements AfterViewInit {
 
     language = input.required<PrettyParser>();
 
-    propStyle = input<string>();
     pretty = input<boolean>(false);
+
+    hideCopy = input<boolean>(false);
 
     DEFAULT_COPY_LABEL = 'Copy';
 

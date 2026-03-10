@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, ViewEncapsulation, input, computed, inject } from '@angular/core';
+import { Component, ViewEncapsulation, input, computed, inject, model } from '@angular/core';
 import { AsSignal, ButtonSize } from '../../types/common';
 import { UIBreakpointService } from '../../utils/breakpoint.service';
 import { UIButton, ButtonWidth } from '../button/button';
@@ -20,12 +20,8 @@ export interface ModalProps {
     id?: DialogProps['id'];
     open?: DialogProps['open'];
     owner?: DialogProps['owner'];
-
     /**
      * Modal header.
-     *
-     * @example
-     *     Change your email
      *
      * @required
      */
@@ -34,9 +30,6 @@ export interface ModalProps {
      * Modal description. Used for the
      * [aria-description](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-description)
      * attribute.
-     *
-     * @example
-     *     Email change confirmation.
      *
      * @required
      */
@@ -49,15 +42,7 @@ export interface ModalProps {
      * @default false
      */
     cancelButton?: boolean | string;
-    /**
-     * The call to action button to display in the footer of the modal.
-     *
-     * @example
-     *     {
-     *     label: 'Confirm',
-     *     onClick: () => action('Confirm clicked'),
-     *     }
-     */
+    /** The call to action button to display in the footer of the modal. */
     callToAction?: ModalCallToAction;
     /**
      * The format of the buttons in the footer. Vertical applies only on screen widths less than or equal to 640px.
@@ -72,15 +57,12 @@ export interface ModalProps {
  * interactions until an action is selected. Modal is a wrapper around the Dialog component that provides a header and
  * footer for the dialog.
  *
- * @example
- *     <ui-button label="Open Modal" (onClick)="open = true"></ui-button>
- *     <ui-modal
- *     description="Example description"
- *     header="Example header"
- *     (onClose)="open = false"
- *     [open]="open">
+ * ```html
+ * <ui-button label="Open Modal" (onClick)="modalOpen = true"></ui-button>
+ * <ui-modal description="Example description" header="Example header" [(open)]="modalOpen">
  *     Example Modal
- *     </ui-modal>
+ * </ui-modal>
+ * ```
  *
  * @name Modal
  * @phase Dev
@@ -92,8 +74,7 @@ export interface ModalProps {
     template: `
         @if (open()) {
             <ui-dialog
-                [open]="open()"
-                (onClose)="onClose.emit()"
+                [(open)]="open"
                 [container]="container()"
                 [disableFocusTrap]="disableFocusTrap()"
                 [id]="id() || undefined"
@@ -109,7 +90,7 @@ export interface ModalProps {
                             label="close"
                             variant="tertiary"
                             [size]="buttonSize()"
-                            (onClick)="onClose.emit()"
+                            (onClick)="open.set(false)"
                             [icon]="iconClose"
                             [iconOnly]="true"></ui-button>
                     </div>
@@ -133,7 +114,7 @@ export interface ModalProps {
                                     [variant]="'tertiary'"
                                     [size]="buttonSize()"
                                     [width]="buttonWidth()"
-                                    (onClick)="onClose.emit()" />
+                                    (onClick)="open.set(false)" />
                             }
                         </div>
                     }
@@ -145,10 +126,9 @@ export interface ModalProps {
     encapsulation: ViewEncapsulation.None,
 })
 export class UIModal implements AsSignal<ModalProps> {
-    /** Emits when modal requests to close. */
-    @Output() onClose = new EventEmitter<void>();
-
     iconClose = IconClose;
+
+    readonly open = model<ModalProps['open']>(false);
 
     readonly header = input.required<ModalProps['header']>();
     readonly description = input.required<ModalProps['description']>();
@@ -156,7 +136,6 @@ export class UIModal implements AsSignal<ModalProps> {
     readonly cancelButton = input<ModalProps['cancelButton']>(false);
     readonly callToAction = input<ModalProps['callToAction']>(undefined);
     readonly buttonFormat = input<ModalProps['buttonFormat']>('horizontal');
-    readonly open = input<ModalProps['open']>(false);
     readonly id = input<ModalProps['id']>(undefined);
     readonly owner = input<ModalProps['owner']>(undefined);
     readonly container = input<ModalProps['container']>(undefined);

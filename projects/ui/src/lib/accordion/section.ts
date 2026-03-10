@@ -46,6 +46,10 @@ export interface AccordionSectionProps {
 /**
  * A utility component representing a single section within an accordion.
  *
+ * ```html
+ * <ui-accordion-section title="Section title">Section content</ui-accordion-section>
+ * ```
+ *
  * @name AccordionSection
  * @phase Utility
  */

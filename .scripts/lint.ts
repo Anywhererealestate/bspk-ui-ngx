@@ -65,7 +65,7 @@ files.forEach((dirent) => {
             !implementsAsSignal
         ) {
             errors.push(
-                `Component "${dirent.name}" in file "${filePath}" does not implenment AsSignal<${pascalCaseName}Props>.`,
+                `Component "${dirent.name}" in file "${filePath}" does not implement AsSignal<${pascalCaseName}Props>.`,
             );
         }
 
@@ -75,7 +75,7 @@ files.forEach((dirent) => {
 
         if (!classNameMatches.length) {
             errors.push(`No class found in file "${filePath}".`);
-        } else if (!classNameMatches.some((name) => name === classNameExpected)) {
+        } else if (!classNameMatches.some((name) => name.toLowerCase() === classNameExpected.toLowerCase())) {
             if (type === 'component')
                 errors.push(
                     `Class name(s) "${classNameMatches.join(', ')}" in file "${filePath}" does not follow the convention and should be ${classNameExpected}.`,

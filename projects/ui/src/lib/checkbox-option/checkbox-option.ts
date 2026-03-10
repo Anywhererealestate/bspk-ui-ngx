@@ -23,10 +23,16 @@ export interface CheckboxOptionProps extends CheckboxProps {
 /**
  * A control that allows users to choose one or more items from a list or turn a feature on or off.
  *
- * If only a checkbox button is needed, consider using the Checkbox component directly.
+ * ```html
+ * <ui-checkbox-option
+ *     name="checkbox-option-name"
+ *     value="checkbox-option-value"
+ *     label="Option A"
+ *     [(checked)]="checked" />
+ * ```
  *
  * @name CheckboxOption
- * @phase UXReview
+ * @phase Dev
  */
 @Component({
     selector: 'ui-checkbox-option',

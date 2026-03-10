@@ -1,16 +1,17 @@
 import { Type } from '@angular/core';
 import { Route } from '@angular/router';
-
-export type ComponentPhase = 'Backlog' | 'Dev' | 'Stable' | 'Utility' | 'UXReview';
+import { ComponentMeta, MetaComponent } from './meta';
 
 export * from './meta';
+
+export type ComponentPhase = 'Backlog' | 'Dev' | 'Stable' | 'Utility' | 'UXReview';
 
 export type PrettyParser = 'css' | 'estree' | 'html' | 'scss' | 'typescript';
 
 export type NavRoute = Route & {
     hide?: boolean;
     title: string;
-    data?: { phase?: ComponentPhase };
+    data?: MetaComponent;
 };
 
 /*
@@ -18,16 +19,16 @@ Settings for generating tests and documentation
 */
 export interface ComponentSettings<P extends Record<string, any> = Record<string, any>> {
     /**
-     * The input values which override default values or add a default value for component inputs.
+     * The input values which override default values or add a default value for component inputs demos.
      *
-     * These values are used for generating the default usage example, variant examples, and test examples.
+     * These values are used for generating the variant examples, and test examples.
      *
      * @example
      *     defaultValues = {
      *         singleOpen: true,
      *     };
      */
-    defaultValues: Record<string, any>;
+    defaultValues?: Record<string, any>;
     /**
      * @example
      *     ngContent = `
@@ -71,6 +72,51 @@ export interface ComponentSettings<P extends Record<string, any> = Record<string
      *     };
      */
     variants?: Partial<Record<keyof P, false | ((variantPrev: Variants) => Variants)>> | false;
+
+    /**
+     * Additional content to be added to the documentation page, such as additional examples or usage instructions. The
+     * position field determines where the content will be placed on the page (e.g. afterDescription, afterExamples,
+     * etc).
+     *
+     * Will be expanded in the future to support additional content types such as markdown, and to allow for more
+     * flexible positioning.
+     */
+    content?: ComponentMetaContent<P>[];
+
+    /**
+     * Replaces the default generated example with a custom example component. This is useful for components with more
+     * complex usage that cannot be easily captured in the default example format, or for components that require
+     * additional setup or context to demonstrate effectively. If this field is provided, the default example will be
+     * ignored and the provided component will be used instead.
+     */
+    basicUsage?: ComponentMeta['basicUsage'];
+
+    /**
+     * Hides the examples section entirely.
+     *
+     * @deprecated This will be removed when static example components are removed.
+     */
+    hideExamples?: boolean;
+}
+
+export interface ComponentMetaContent<P = any> {
+    component:
+        | Type<any>
+        // This only works for components without ng-content.
+        | {
+              description?: string;
+              inputs: P;
+              title?: string;
+          };
+    position:
+        | 'afterAssociatedTypes'
+        | 'afterBasicUsage'
+        | 'afterDescription'
+        | 'afterExamples'
+        | 'afterInputs'
+        | 'afterOutputs'
+        | 'afterStylesheet';
+    code?: string;
 }
 
 /** Precursor to ComponentExamples used for generating example components and code snippets */

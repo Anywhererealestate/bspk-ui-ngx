@@ -21,7 +21,7 @@ import { UIInput } from './input';
         <ui-input
             [value]="valueDefaultPreset()"
             (valueChange)="valueDefaultPreset.set($event)"
-            id="default-input"
+            id="default-preset-value"
             name="default-preset-value"
             ariaLabel="Input Label" />
         <p>The value of the default input is: {{ valueDefaultPreset() || 'null' }}</p>
@@ -92,10 +92,10 @@ import { UIInput } from './input';
     `,
 })
 export class UIInputExample {
-    protected readonly valueDefault = signal<string | undefined>('');
+    protected readonly valueDefault = signal<string | undefined>(undefined);
     protected readonly valueDefaultPreset = signal<string | undefined>('I am a default value');
     protected readonly valueReadOnlyPreset = signal<string | undefined>('I am read only');
-    protected readonly valueTrailing = signal<string | undefined>('');
+    protected readonly valueTrailing = signal<string | undefined>(undefined);
 
     onTrailingButtonClick() {
         sendSnackbar('Trailing UIButton clicked!');

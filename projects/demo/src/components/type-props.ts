@@ -4,7 +4,7 @@ import { ComponentMetaInput } from '@shared/types';
 import { TableColumn, TableRow, UITable, UITableCell } from '@ui/table';
 import { UITag } from '@ui/tag';
 import { UITxtDirective } from '@ui/txt';
-import { Markup } from './markup';
+import { AppMarkup } from './markup';
 
 interface PropRow extends ComponentMetaInput, TableRow {}
 
@@ -80,7 +80,7 @@ todo: add
 */
 @Component({
     selector: 'app-description-type-cell',
-    imports: [UITag, Markup],
+    imports: [UITag, AppMarkup],
     template: `
         <app-markup data-description [source]="row().description" />
         <div data-type-options>
@@ -94,7 +94,7 @@ todo: add
     standalone: true,
     encapsulation: ViewEncapsulation.None,
     host: {
-        style: 'display: flex; flex-direction: column; gap: var(--spacing-sizing-02);',
+        style: 'display: flex; flex-direction: column; gap: var(--spacing-sizing-02); width: 100%;',
     },
 })
 class DescriptionTypeCell extends UITableCell<PropRow> {}
@@ -126,11 +126,6 @@ export class TypeProps {
             width: '1fr',
             valign: 'top',
             component: DescriptionTypeCell,
-            // formatter: (row) => (
-            //     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-sizing-02)' }}>
-            //         {row['description-type']}
-            //     </div>
-            // ),
         },
         {
             key: 'default',
@@ -139,12 +134,6 @@ export class TypeProps {
             valign: 'top',
             component: DefaultCell,
         },
-        // !!onChange && {
-        //     key: 'controls',
-        //     label: 'Controls',
-        //     width: '200px',
-        //     valign: 'top',
-        // },
     ];
 
     propsData = computed(() => {

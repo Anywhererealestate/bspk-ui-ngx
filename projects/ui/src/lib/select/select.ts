@@ -38,21 +38,6 @@ export interface SelectProps extends FieldControlProps {
     /**
      * Array of options to display in the select
      *
-     * @example
-     *     [
-     *         { id: '1', label: 'Option 1' },
-     *         { id: '2', label: 'Option 2' },
-     *         { id: '3', label: 'Option 3' },
-     *         { id: '4', label: 'Option 4' },
-     *         { id: '5', label: 'Option 5' },
-     *         { id: '6', label: 'Option 6' },
-     *         { id: '7', label: 'Option 7' },
-     *         { id: '8', label: 'Option 8' },
-     *         { id: '9', label: 'Option 9' },
-     *         { id: '10', label: 'Option 10' },
-     *     ];
-     *
-     * @type Array<SelectOption>
      * @required
      */
     items: SelectOption[];
@@ -83,21 +68,26 @@ export interface SelectProps extends FieldControlProps {
  *
  * For a more complete example with field usage, see the SelectField component.
  *
- * @example
- *     <ui-field controlId="example-select" helperText="Choose one option" label="Select an option">
+ * ```html
+ * <ui-field controlId="example-select" helperText="Choose one option" label="Select an option">
  *     <ui-select
- *     [id]="'example-select'"
- *     [name]="'example-select'"
- *     [options]="OPTIONS"
- *     [placeholder]="'Select an option'"
- *     [scrollLimit]="5"
- *     [size]="'medium'"
- *     [(value)]="selected">
- *     </ui-select>
- *     </ui-field>
+ *         [id]="'example-select'"
+ *         [name]="'example-select'"
+ *         [items]="[
+ * { value: '1', label: 'Option 1' },
+ * { value: '2', label: 'Option 2' },
+ * { value: '3', label: 'Option 3' },
+ *  { value: '4', label: 'Option 4' },
+ * ]"
+ *         [placeholder]="'Select an option'"
+ *         [scrollLimit]="5"
+ *         [size]="'medium'"
+ *         [(value)]="selectedValue" />
+ * </ui-field>
+ * ```
  *
  * @name Select
- * @phase Stable
+ * @phase Dev
  */
 @Component({
     selector: 'ui-select',

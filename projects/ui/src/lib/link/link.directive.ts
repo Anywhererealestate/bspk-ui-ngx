@@ -4,12 +4,7 @@ import { AsSignal } from '../../types/common';
 export interface LinkProps {
     /** The variant of the link. Controls the icon that is displayed and link target. */
     trailingIcon?: 'chevron' | 'external' | 'link';
-    /**
-     * The href of the link.
-     *
-     * @example
-     *     https://bspk.dev
-     */
+    /** The href of the link. */
     href: string | null | undefined;
     /**
      * The size of the link.
@@ -37,11 +32,12 @@ export interface LinkProps {
 /**
  * This is the standalone link directive. Apply to an `a` element.
  *
- * @example
- *     <a ui-link href="https://anywhere.re" [label]="'Example label'" trailingIcon="external"></a>
+ * ```html
+ * <a ui-link href="https://anywhere.re" trailingIcon="external">Link</a>
+ * ```
  *
  * @name Link
- * @phase Stable
+ * @phase Dev
  */
 @Directive({
     selector: 'a[ui-link]',

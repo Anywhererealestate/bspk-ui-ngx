@@ -20,4 +20,21 @@ export const COLOR_VARIANTS = [
 ] as const;
 export type ColorVariant = (typeof COLOR_VARIANTS)[number];
 
+//used for compodoc type alias generation, currently unaable to use Exclude<ColorVariant, 'white'> to alter the generated type aliases so we generate a separate type at this time and we are using the full set of colors.
+export type ColorVariants =
+    | 'blue'
+    | 'green'
+    | 'grey'
+    | 'lime'
+    | 'magenta'
+    | 'orange'
+    | 'pink'
+    | 'primary'
+    | 'purple'
+    | 'red'
+    | 'secondary'
+    | 'teal'
+    | 'white'
+    | 'yellow';
+
 /** Copyright 2026 Anywhere Real Estate - CC BY 4.0 */
