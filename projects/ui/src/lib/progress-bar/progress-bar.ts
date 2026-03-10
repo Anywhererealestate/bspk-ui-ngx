@@ -58,18 +58,20 @@ export interface ProgressBarProps {
     selector: 'ui-progress-bar',
     imports: [],
     template: `
-        <progress
-            [aria-busy]="ariaBusy"
-            aria-label="A bounded progress bar from 0 to 100"
-            aria-valuemax="100"
-            aria-valuemin="0"
-            [aria-valuenow]="effectiveCompletion()"
-            max="100"
-            [value]="effectiveCompletion()">
-            {{ effectiveCompletion() }}
-        </progress>
-        <div aria-hidden="true" data-bar [style]="barStyle"></div>
-        <label [htmlFor]="id">{{ label() }}</label>
+        @if (!(successHidden() && effectiveCompletion() === 100)) {
+            <progress
+                [aria-busy]="ariaBusy"
+                aria-label="A bounded progress bar from 0 to 100"
+                aria-valuemax="100"
+                aria-valuemin="0"
+                [aria-valuenow]="effectiveCompletion()"
+                max="100"
+                [value]="effectiveCompletion()">
+                {{ effectiveCompletion() }}
+            </progress>
+            <div aria-hidden="true" data-bar [style]="barStyle"></div>
+            <label [htmlFor]="id">{{ label() }}</label>
+        }
     `,
     styleUrl: './progress-bar.scss',
     host: {
